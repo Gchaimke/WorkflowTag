@@ -165,6 +165,15 @@ function centerLoginBox() {
     }
 }
 
+$("#save").click(function () {
+    $.post("save_pdf", {
+        pdf: 'Production/' + GetURLParameter('pr') + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '.pdf'
+    }).done(function (o) {
+        console.log('pdf created in Projects folder on server.');
+    });
+});
+
+
 
 var csv = `Description,Verify
 Create the folders with "Easy Folder Creation" tool,Verify

@@ -97,6 +97,3 @@ $("#close_camera").click(function () {
   $(".video-frame").toggle();
 });
 
-$("#save").click(function () {
-});
-
