@@ -1,5 +1,5 @@
 const video = document.getElementById('video');
-const button = document.getElementById('button');
+const button = document.getElementById('select_camera');
 const select = document.getElementById('select');
 let currentStream;
 
@@ -54,22 +54,38 @@ button.addEventListener('click', event => {
 
 navigator.mediaDevices.enumerateDevices().then(gotDevices);
 
-var pictueCount = 0;
 video.addEventListener("click", function () {
-  $("#photo-stock").append('<span id="delete' + pictueCount + '" onclick="delPhoto(' + pictueCount +
-    ',this.id)" class="btn btn-danger delete-photo">delete</span><canvas id="canvas' + pictueCount +
-    '" class="respondCanvas" width="1920" height="1080"></canvas>');
-  var canvas = document.getElementById('canvas' + pictueCount);
+  var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
   $(".video-frame").toggle();
   context.drawImage(video, 0, 0, 1920, 1080);
   stopMediaTracks(currentStream);
-  pictueCount++;
+  dataURL = canvas.toDataURL();
+  $.post("save_photo", {
+    data: dataURL,
+    pr: GetURLParameter('pr'),
+    sn: GetURLParameter('sn'),
+    num: pictueCount
+  }).done(function (o) {
+    console.log('photo saved to server.');
+    $("#photo-stock").append('<span id="' + GetURLParameter('sn') + '_' + pictueCount + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' + GetURLParameter('sn') + '_' + pictueCount + '"src="/images/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '_' + pictueCount + '.png' + '" class="respondCanvas" >');
+    // If you want the file to be visible in the browser 
+    // - please modify the callback in javascript. All you
+    // need is to return the url to the file, you just saved 
+    // and than put the image in your browser.
+    pictueCount++;
+  });
+  
 });
 
-function delPhoto(id, cur) {
-  $('#canvas' + id).remove();
-  $('#' + cur).remove();
+function delPhoto(id) {
+  $.post("delete_photo", {
+    photo: '/images/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + id + '.png'
+  }).done(function (o) {
+    console.log('photo deleted from the server.');
+    $('[id^='+id+']').remove();
+    pictueCount--;
+  });
 }
 
 // Trigger photo take
@@ -77,14 +93,11 @@ document.getElementById("snap").addEventListener("click", function () {
   $(".video-frame").toggle();
 });
 
-$("#save").click(function () {
-  var canvas = document.getElementById('canvas0');
-  dataURL = canvas.toDataURL();
-  $.post("save_photo", { data: dataURL }).done(function (o) {
-    console.log('photo saved to server.');
-    // If you want the file to be visible in the browser 
-    // - please modify the callback in javascript. All you
-    // need is to return the url to the file, you just saved 
-    // and than put the image in your browser.
-  });
+$("#close_camera").click(function () {
+  stopMediaTracks(currentStream);
+  $(".video-frame").toggle();
 });
+
+$("#save").click(function () {
+});
+

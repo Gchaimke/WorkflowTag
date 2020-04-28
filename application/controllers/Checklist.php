@@ -50,4 +50,9 @@ class Checklist extends CI_Controller
     {
         $this->load->view('checklist/save_photo');
     }
+
+    public function delete_photo()
+    {
+        $this->load->view('checklist/delete_photo');
+    }
 }
