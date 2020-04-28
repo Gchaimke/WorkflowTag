@@ -1,0 +1,18 @@
+main {
+    margin-top: 55px;
+}
+
+@media(min-width: 576px){
+    main {
+        margin-top: 0;
+    }
+}
+
+@media screen and (orientation:portrait) { 
+    
+ }
+@media screen and (orientation:landscape) { 
+    .video-frame {
+        top: 0;
+    }
+ }

@@ -13,6 +13,7 @@ class Checklist extends CI_Controller
     public function index()
     {
         $this->load->view('header');
+        $this->load->view('checklist_menu');
         $this->load->view('checklist/index');
         $this->load->view('footer');
     }
@@ -43,5 +44,10 @@ class Checklist extends CI_Controller
         $this->load->view('header');
         $this->load->view('checklist/delete');
         $this->load->view('footer');
+    }
+
+    public function save_photo()
+    {
+        $this->load->view('checklist/save_photo');
     }
 }

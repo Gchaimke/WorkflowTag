@@ -1,32 +1,94 @@
-<main role="main">
-
-  <!-- Main jumbotron for a primary marketing message or call to action -->
-  <div class="jumbotron">
-    <div class="container">
-      <center>
-        <h2 class="display-3">Welcome to home page</h2>
-      </center>
-    </div>
-  </div>
-  <div class="container">
-    <!-- Example row of columns -->
-    <div class="row">
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-      <div class="col-md-4">
-        <h2>Heading</h2>
-        <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div>
-    </div>
-  </div>
-  <hr>
-</main>
+<main role="main" class="container">
+        <div class="card-deck mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Flex2 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Lap3 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C16 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C17 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-deck mt-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C17 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C17 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C17 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">New Matan C17 Checklist</h5>
+                    <p class="card-text"></p>
+                    <input class="form-control" type="text" placeholder="Serial Number">
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">To create new checklist.</small>
+                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+                </div>
+            </div>
+        </div>
+    </main>

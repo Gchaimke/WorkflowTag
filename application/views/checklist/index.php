@@ -1,12 +1,14 @@
-<main role="main">
-
-      <div class="jumbotron">
-            <div class="container">
-                  <center>
-                        <h2 class="display-3">Index content goes here</h2>
-                  </center>
+<main role="main" class="container">
+      <div class="video-frame container-sm">
+            <div class="controls">
+                  <button id="button">Get camera</button>
+                  <select id="select">
+                        <option></option>
+                  </select>
             </div>
+            <video id="video" width="100%" autoplay playsinline></video>
       </div>
-      <div class="container">
-      </div>
+      <div id="workTable"></div>
+      <div id="photo-stock" class="container-sm"></div>
+
 </main>

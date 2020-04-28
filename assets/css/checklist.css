@@ -1,0 +1,60 @@
+/* Show it is fixed to the top */
+
+body {
+    padding-top: 4.5rem;
+}
+
+.progress.fixed-top {
+    top: 50px;
+}
+
+.table td, .table th {
+    padding: 0.3rem 0.7rem;
+    border: 1px solid #dee2e6;
+}
+
+.table {
+    text-align: center;
+}
+
+.description {
+    text-align: start;
+}
+
+input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    transform: scale(2);
+    -ms-transform: scale(2);
+    /* IE */
+    -moz-transform: scale(2);
+    /* FF */
+    -webkit-transform: scale(2);
+    /* Safari and Chrome */
+    -o-transform: scale(2);
+    /* Opera */
+    padding: 10px;
+}
+
+.video-frame {
+    position: fixed;
+    display: none;
+    z-index: 9999;
+}
+
+.respondCanvas {
+    width: inherit;
+    object-fit: scale-down;
+}
+
+.delete-photo {
+    position: relative;
+    top: 2.4rem;
+}
+
+video#video {
+    position: relative;
+    max-width: 90%;
+}
+select#select {
+    max-width: 90%;
+}

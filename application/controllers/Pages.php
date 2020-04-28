@@ -4,7 +4,7 @@ class Pages extends CI_Controller
 	public function index()
 	{
 		$this->load->view('header');
-		$this->load->view('pages/home');
+		$this->load->view('pages/login');
 		$this->load->view('footer');
 	}
 
@@ -14,6 +14,7 @@ class Pages extends CI_Controller
 			show_404();
 		}
 		$this->load->view('header');
+		$this->load->view('main_menu');
 		$this->load->view('pages/' . $page);
 		$this->load->view('footer');
 	}
