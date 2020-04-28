@@ -4,7 +4,7 @@
         <b id="date" class="navbar-text" href="#">Date: </b>
         <ul class="nav navbar-nav navbar-right">
             <li lass="nav-item">
-                <button id="snap" class="btn btn-success">Snap Photo</button>
+                <button id="snap" class="btn btn-info">Snap Photo</button>
                 <button id="save" class="btn btn-success navbar-btn" onclick="saveData()">Save</button>
             </li>
         </ul>

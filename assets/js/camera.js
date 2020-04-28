@@ -68,7 +68,7 @@ video.addEventListener("click", function () {
     num: pictueCount
   }).done(function (o) {
     console.log('photo saved to server.');
-    $("#photo-stock").append('<span id="' + GetURLParameter('sn') + '_' + pictueCount + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' + GetURLParameter('sn') + '_' + pictueCount + '"src="/images/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '_' + pictueCount + '.png' + '" class="respondCanvas" >');
+    $("#photo-stock").append('<span id="' + GetURLParameter('sn') + '_' + pictueCount + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' + GetURLParameter('sn') + '_' + pictueCount + '"src="/Production/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '_' + pictueCount + '.png' + '" class="respondCanvas" >');
     // If you want the file to be visible in the browser 
     // - please modify the callback in javascript. All you
     // need is to return the url to the file, you just saved 
@@ -80,11 +80,10 @@ video.addEventListener("click", function () {
 
 function delPhoto(id) {
   $.post("delete_photo", {
-    photo: '/images/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + id + '.png'
+    photo: '/Production/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + id + '.png'
   }).done(function (o) {
     console.log('photo deleted from the server.');
     $('[id^='+id+']').remove();
-    pictueCount--;
   });
 }
 

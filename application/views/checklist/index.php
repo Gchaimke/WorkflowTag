@@ -14,7 +14,7 @@
             <canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
 
             <?php
-            $working_dir = '/images/' . $_GET['pr'] . '/' . $_GET['sn'] . '/';
+            $working_dir = '/Production/' . $_GET['pr'] . '/' . $_GET['sn'] . '/';
             echo '<script>var pictueCount=0;</script>';
             if (file_exists(".$working_dir")) {
                   if ($handle = opendir(".$working_dir")) {
