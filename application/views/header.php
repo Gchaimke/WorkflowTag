@@ -11,8 +11,6 @@
   <!-- Bootstrap core CSS -->
   <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
   <link href="<?php echo base_url('assets/css/all.css'); ?>" rel="stylesheet">
-  <link href="<?php echo base_url('assets/css/'.pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME).'.css'); ?>" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
+   <!-- Custom styles for this template -->
 </head>
 <body>

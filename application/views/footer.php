@@ -11,11 +11,13 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
     <script src="<?php echo base_url('assets/js/all.js'); ?>"></script>
-    <script src="<?php echo base_url('assets/js/' . pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME) . '.js'); ?>"></script>
     <?php
-    // Get the content that is in the buffer and put it in your file //
-    if (isset($_GET['sn'])) {
-      echo '<script src="' . base_url("assets/js/camera.js") . '"></script>';
+    if (isset($js_to_load)) {
+      if (is_array($js_to_load)) {
+        foreach ($js_to_load as $row) {
+          echo  "<script type='text/javascript' src='".base_url("assets/js/$row")."'></script>";
+        }
+      }
     }
     ?>
 

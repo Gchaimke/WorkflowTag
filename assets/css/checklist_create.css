@@ -63,3 +63,8 @@ select#select {
     -ms-flex-direction: row;
     flex-direction: row;
 }
+
+nav.navbar.checklist {
+    top: 55px;
+    z-index: 1;
+}

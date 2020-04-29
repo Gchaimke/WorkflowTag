@@ -80,7 +80,7 @@ $db['default'] = array(
 	'password' => 'Sq5!9hp(C9',
 	'database' => 'ignit42',
 	'dbdriver' => 'mysqli',
-	'dbprefix' => 'ne',
+	'dbprefix' => 'wft_',
 	'pconnect' => FALSE,
 	'db_debug' => (ENVIRONMENT !== 'production'),
 	'cache_on' => FALSE,

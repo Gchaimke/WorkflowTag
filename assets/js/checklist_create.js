@@ -16,8 +16,8 @@ $(document).ready(function () {
     processData(csv);
     toggle = true;
     setProgress(localStorage.getItem("progress"));
-    $("#project").append(GetURLParameter('pr'));
-    $("#sn").append(GetURLParameter('sn'));
+    $("#project").append(pr);
+    $("#sn").append(sn);
 
     var today = new Date();
     var dd = today.getDate();
@@ -167,7 +167,7 @@ function centerLoginBox() {
 
 $("#save").click(function () {
     $.post("save_page", {
-        file: 'Production/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '.htm',
+        file: 'Production/' + pr  + '/' + sn + '/' + sn + '.htm',
         page: document.getElementsByTagName('html')[0].innerHTML
       }).done(function (o) {
         console.log('save page.');

@@ -2,10 +2,7 @@ main {
     margin-top: 55px;
 }
 
-@media(min-width: 576px){
-    main {
-        margin-top: 0;
-    }
+@media(max-width: 576px){
 }
 
 @media screen and (orientation:portrait) { 
