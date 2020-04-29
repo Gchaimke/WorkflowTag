@@ -88,7 +88,7 @@ function delPhoto(id) {
 }
 
 // Trigger photo take
-document.getElementById("snap").addEventListener("click", function () {
+$("#snap").click(function () {
   $(".video-frame").toggle();
 });
 

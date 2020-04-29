@@ -58,3 +58,8 @@ video#video {
 select#select {
     max-width: 90%;
 }
+
+.navbar-nav {
+    -ms-flex-direction: row;
+    flex-direction: row;
+}

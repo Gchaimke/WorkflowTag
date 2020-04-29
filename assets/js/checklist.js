@@ -166,11 +166,12 @@ function centerLoginBox() {
 }
 
 $("#save").click(function () {
-    $.post("save_pdf", {
-        pdf: 'Production/' + GetURLParameter('pr') + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '.pdf'
-    }).done(function (o) {
-        console.log('pdf created in Projects folder on server.');
-    });
+    $.post("save_page", {
+        file: 'Production/' + GetURLParameter('pr')  + '/' + GetURLParameter('sn') + '/' + GetURLParameter('sn') + '.htm',
+        page: document.getElementsByTagName('html')[0].innerHTML
+      }).done(function (o) {
+        console.log('save page.');
+      });
 });
 
 
