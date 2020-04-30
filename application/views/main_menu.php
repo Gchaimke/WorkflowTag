@@ -13,7 +13,7 @@
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/dashboard">Manage</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/settings">Settings</a>
+            <a class="dropdown-item" href="/admin/settings">Settings</a>
           </div>
         </li>
         <li class="nav-item dropdown">

@@ -8,15 +8,14 @@ class Users extends CI_Controller
         parent::__construct();
         $this->load->helper('url');
         // Load model
-        $this->load->model('Main_model');
-        //$this->Main_model->dbCreate();
+        $this->load->model('Users_model');
     }
 
     public function index()
     {
-        $this->load->view('header');
         // get data from model
-        $data['users'] = $this->Main_model->getUsers();
+        $data['users'] = $this->Users_model->getUsers();
+        $this->load->view('header');
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('users/index', $data);
@@ -27,16 +26,11 @@ class Users extends CI_Controller
     {
         $this->load->view('header');
         $this->load->view('main_menu');
-        // get data from model
-        $data['users'] = $this->Main_model->getUsers();
-
         if ($this->input->post('submit') != NULL) {
             // POST data
             $postData = $this->input->post();
-            //load model
-            $this->load->model('Main_model');
             // get data
-            $data['response'] = $this->Main_model->insertNewuser($postData);
+            $data['response'] = $this->Users_model->insertNewuser($postData);
             // load view
             $this->load->view('users/create', $data);
         } else {
@@ -47,11 +41,17 @@ class Users extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function edit()
+    public function edit($id='')
     {
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('users/edit');
         $this->load->view('footer');
+    }
+
+    public function delete()
+    {
+        $id = $_POST['id'];
+        $this->Users_model->deleteUser($id);
     }
 }
