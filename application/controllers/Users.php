@@ -21,25 +21,6 @@ class Users extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function create()
-    {
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        if ($this->input->post('submit') != NULL) {
-            // POST data
-            $postData = $this->input->post();
-            // get data
-            $data['response'] = $this->Users_model->insertNewuser($postData);
-            // load view
-            $this->load->view('users/create', $data);
-        } else {
-            //$data['response'] = '';
-            // load view
-            $this->load->view('users/create');
-        }
-        $this->load->view('footer');
-    }
-
     public function edit($id = '')
     {
         $this->load->view('header');
@@ -63,10 +44,8 @@ class Users extends CI_Controller
     // Check for user login process
     public function user_login_process()
     {
-
         $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-
         if ($this->form_validation->run() == FALSE) {
             if (isset($this->session->userdata['logged_in'])) {
                 $this->load->view('header');
@@ -103,7 +82,42 @@ class Users extends CI_Controller
                 $data = array(
                     'error_message' => 'Invalid Username or Password'
                 );
-                $this->load->view('users/login', $data);
+                $this->load->view('/users/login', $data);
+                $this->load->view('footer');
+            }
+        }
+    }
+
+    // Validate and store registration data in database
+    public function create()
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('userrole', 'Userrole', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('/users/create');
+            $this->load->view('footer');
+        } else {
+            $data = array(
+                'username' => $this->input->post('username'),
+                'userrole' => $this->input->post('userrole'),
+                'password' => $this->input->post('password')
+            );
+            $result = $this->Users_model->registration_insert($data);
+            if ($result == TRUE) {
+                $data['message_display'] = 'Registration Successfully !';
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('/users/create', $data);
+                $this->load->view('footer');
+            } else {
+                $data['message_display'] = 'Username already exist!';
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('/users/create', $data);
                 $this->load->view('footer');
             }
         }

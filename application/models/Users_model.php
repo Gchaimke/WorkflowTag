@@ -17,32 +17,25 @@ class Users_model extends CI_Model
 		$this->db->delete('Users', array('id' => $id));
 	}
 
-	function insertNewuser($postData)
+	// Insert registration data in database
+	public function registration_insert($data)
 	{
-		$response = "";
-		if ($postData['txt_name'] != '' || $postData['txt_role'] != '' || $postData['txt_pass'] != '') {
-			// Check entry
-			$this->db->select('count(*) as allcount');
-			$this->db->where('username', $postData['txt_name']);
-			$q = $this->db->get('Users');
-			$result = $q->result_array();
-			if ($result[0]['allcount'] == 0) {
-				// Insert record
-				$newuser = array(
-					"username" => trim($postData['txt_name']),
-					"userrole" => trim($postData['txt_role']),
-					"password" => trim($postData['txt_pass'])
-				);
-				// $this->db->insert( [table-name], Array )
-				$this->db->insert('Users', $newuser);
-				$response = 'User ' . $postData['txt_name'] . ' created successfully.';
-			} else {
-				$response = "Username already in use";
+		// Query to check whether username already exist or not
+		$condition = "username =" . "'" . $data['username'] . "'";
+		$this->db->select('*');
+		$this->db->from('Users');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			// Query to insert data in database
+			$this->db->insert('Users', $data);
+			if ($this->db->affected_rows() > 0) {
+				return true;
 			}
 		} else {
-			$response = "Form is empty.";
+			return false;
 		}
-		return $response;
 	}
 
 	// Read data using username and password
