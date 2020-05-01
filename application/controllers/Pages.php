@@ -4,14 +4,14 @@ class Pages extends CI_Controller
 	public function __construct()
     {
         parent::__construct();
-        $this->load->helper('url');
         // Load model
         $this->load->model('Settings_model');
     }
 	public function index()
 	{
 		$this->load->view('header');
-		$this->load->view('pages/login');
+		$this->load->view('main_menu');
+		$this->load->view('pages/dashboard');
 		$this->load->view('footer');
 	}
 

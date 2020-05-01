@@ -1,6 +1,6 @@
     <footer class="container">
       <p>
-        <center>&copy; WorkflowTag 2020</center>
+        <center>Workflow Tag&copy; <?php echo date('Y');?></center>
       </p>
     </footer>
 
@@ -15,8 +15,10 @@
     if (isset($js_to_load)) {
       if (is_array($js_to_load)) {
         foreach ($js_to_load as $row) {
-          echo  "<script type='text/javascript' src='".base_url("assets/js/$row")."'></script>";
+          echo  "<script type='text/javascript' src='" . base_url("assets/js/$row") . "'></script>";
         }
+      } else {
+        echo  "<script type='text/javascript' src='" . base_url("assets/js/$js_to_load") . "'></script>";
       }
     }
     ?>

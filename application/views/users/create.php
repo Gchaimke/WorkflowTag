@@ -7,28 +7,36 @@
             </div>
       </div>
       <div class="container">
-      <b><?php if (isset($response)) echo $response; ?></b>
-      <form method='post' action='<?php echo base_url('/users/create'); ?>'>
+            <center>
+                        <?php 
+                        if (isset($response)) {
+                              echo '<div class="alert alert-success" role="alert">';
+                              echo $response.' </div>';
+                        }
+                         ?>
+                 
+                  <form method='post' action='<?php echo base_url('/users/create'); ?>'>
 
-            <table>
-                  <tr>
-                        <td>Role</td>
-                        <td><input type='text' name='txt_role'></td>
-                  </tr>
-                  <tr>
-                        <td>Username</td>
-                        <td><input type='text' name='txt_name'></td>
-                  </tr>
-                  <tr>
-                        <td>Password</td>
-                        <td><input type='text' name='txt_pass'></td>
-                  </tr>
-                  <tr>
-                        <td>&nbsp;</td>
-                        <td><input type='submit' name='submit' value='Submit'></td>
-                  </tr>
-            </table>
-      </form>
+                        <table>
+                              <tr>
+                                    <td><select class="form-control" name='txt_role'>
+                                                <option>Assembler</option>
+                                                <option>QC</option>
+                                                <option>Admin</option>
+                                          </select></td>
+                              </tr>
+                              <tr>
+                                    <td><input class="form-control" type="text" name='txt_name' placeholder="Username"></td>
+                              </tr>
+                              <tr>
+                                    <td><input class="form-control" type="text" name='txt_pass' placeholder="Password"></td>
+                              </tr>
+                              <tr>
+                                    <td><input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'></td>
+                              </tr>
+                        </table>
+                  </form>
+            </center>
       </div>
-      
+
 </main>

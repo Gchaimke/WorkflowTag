@@ -15,6 +15,7 @@
                         <th scope="col">Serial Number</th>
                         <th scope="col">Project</th>
                         <th scope="col">Progress</th>
+                        <th scope="col">Date</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
                   </tr>
@@ -27,6 +28,7 @@
                               echo  '<td>' . $checklist['serial'] . '</td>';
                               echo  '<td>' . $checklist['project'] . '</td>';
                               echo  '<td>' . $checklist['progress'] . '</td>';
+                              echo  '<td>' . $checklist['date'] . '</td>';
                               echo "<td><a href='/checklist/edit/" . $checklist['serial'] . "/" . $checklist['project'] . "' class='btn btn-info'>Edit</a></td>";
                               echo "<td><button id='" . $checklist['id'] . "' class='btn btn-danger' onclick='delPhoto(this.id)'>Delete</button></td>";
                               echo '</tr>';

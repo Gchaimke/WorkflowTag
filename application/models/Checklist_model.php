@@ -32,13 +32,14 @@ class Checklist_model extends CI_Model
 					'serial' => trim($postData['serial']),
 					'project' => trim($postData['project']),
 					'data' => trim($postData['data']),
-					'progress' => trim($postData['progress'])
+					'progress' => trim($postData['progress']),
+					'date' => trim($postData['date'])
 				);
 				// $this->db->insert( [table-name], Array )
 				$this->db->insert('Checklists', $newChecklist);
-				$response = "Checklist inserted successfully.";
+				$response = 'Checklist for System '.$postData['serial'].' created successfully.';
 			} else {
-				$response = "Checklist serial number already in use";
+				$response = "Checklist serial number already exists";
 			}
 		} else {
 			$response = "Form is empty.";

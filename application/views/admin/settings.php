@@ -7,7 +7,16 @@
         </div>
     </div>
     <div class="container">
-        <b><?php if (isset($response)) echo $response; ?></b>
+        <?php
+        if (isset($responseUsers)) {
+            echo '<div class="alert alert-success" role="alert">';
+            echo $responseUsers . ' </div>';
+        }
+        if (isset($responseChecklist)) {
+            echo '<div class="alert alert-success" role="alert">';
+            echo $responseChecklist . ' </div>';
+        }
+        ?>
         <form method='post' action='<?php echo base_url('/admin/settings'); ?>'>
             <table>
                 <tr>

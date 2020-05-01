@@ -7,7 +7,6 @@ class Checklist extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        $this->load->helper('url');
         // Load model
         $this->load->model('Checklist_model');
         //$this->load->model('Settings_model');
@@ -20,7 +19,7 @@ class Checklist extends CI_Controller
         $data['checklists'] = $this->Checklist_model->getChecklists();
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('checklist/index', $data);
+        $this->load->view('checklist/manage', $data);
         $this->load->view('footer');
     }
 
@@ -36,9 +35,8 @@ class Checklist extends CI_Controller
             // load view
             $this->load->view('checklist/create', $data);
         } else {
-            $data['response'] = '';
             // load view
-            $this->load->view('checklist/create', $data);
+            $this->load->view('checklist/create');
         }
         $this->load->view('footer');
     }
