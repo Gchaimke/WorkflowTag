@@ -17,33 +17,23 @@ class Checklist_model extends CI_Model
 		$this->db->delete('wft_checklists', array('id' => $id));
 	}
 
-	function insertNewChecklist($postData)
+	public function insertNewChecklist($data)
 	{
-		$response = "";
-		if ($postData['project'] != '' || $postData['serial'] != '') {
-			// Check entry
-			$this->db->select('count(*) as allcount');
-			$this->db->where('serial', $postData['serial']);
-			$q = $this->db->get('Checklists');
-			$result = $q->result_array();
-			if ($result[0]['allcount'] == 0) {
-				// Insert record
-				$newChecklist = array(
-					'serial' => trim($postData['serial']),
-					'project' => trim($postData['project']),
-					'data' => trim($postData['data']),
-					'progress' => trim($postData['progress']),
-					'date' => trim($postData['date'])
-				);
-				// $this->db->insert( [table-name], Array )
-				$this->db->insert('Checklists', $newChecklist);
-				$response = 'Checklist for System '.$postData['serial'].' created successfully.';
-			} else {
-				$response = "Checklist serial number already exists";
+		// Query to check whether username already exist or not
+		$condition = "serial =" . "'" . $data['serial'] . "'";
+		$this->db->select('*');
+		$this->db->from('Checklists');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			// Query to insert data in database
+			$this->db->insert('Checklists', $data);
+			if ($this->db->affected_rows() > 0) {
+				return true;
 			}
 		} else {
-			$response = "Form is empty.";
+			return false;
 		}
-		return $response;
 	}
 }

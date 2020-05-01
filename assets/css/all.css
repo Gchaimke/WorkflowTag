@@ -6,7 +6,17 @@ form.user-create {
     max-width: fit-content;
 }
 
+table {
+    text-align: center;
+}
+
 @media(max-width: 576px){
+    .mobile-hide {
+        display: none;
+    }
+    .table th, .table td {
+        padding: 0.45rem;
+    }
 }
 
 @media screen and (orientation:portrait) { 

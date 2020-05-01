@@ -63,7 +63,6 @@ class Users extends CI_Controller
             );
             $result = $this->Users_model->login($data);
             if ($result == TRUE) {
-
                 $username = $this->input->post('username');
                 $result = $this->Users_model->read_user_information($username);
                 if ($result != false) {
@@ -98,7 +97,7 @@ class Users extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('/users/create');
+            $this->load->view('users/create');
             $this->load->view('footer');
         } else {
             $data = array(
@@ -108,16 +107,17 @@ class Users extends CI_Controller
             );
             $result = $this->Users_model->registration_insert($data);
             if ($result == TRUE) {
+                $data['users'] = $this->Users_model->getUsers();
                 $data['message_display'] = 'Registration Successfully !';
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('/users/create', $data);
+                $this->load->view('users/manage', $data);
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'Username already exist!';
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('/users/create', $data);
+                $this->load->view('users/create', $data);
                 $this->load->view('footer');
             }
         }

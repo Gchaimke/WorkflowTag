@@ -23,25 +23,52 @@ class Checklist extends CI_Controller
         $this->load->view('footer');
     }
 
+    // Validate and store registration data in database
     public function create()
     {
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        if ($this->input->post('submit') != NULL) {
-            // POST data
-            $postData = $this->input->post();
-            // get data
-            $data['response'] = $this->Checklist_model->insertNewChecklist($postData);
-            // load view
-            $this->load->view('checklist/create', $data);
-        } else {
-            // load view
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
+        $this->form_validation->set_rules('assembler', 'Assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
+        $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('header');
+            $this->load->view('main_menu');
             $this->load->view('checklist/create');
+            $this->load->view('footer');
+        } else {
+            $data = array(
+                'project' => $this->input->post('project'),
+                'serial' => $this->input->post('serial'),
+                'data' => $this->input->post('data'),
+                'progress' => $this->input->post('progress'),
+                'assembler' => $this->input->post('assembler'),
+                'qc' => $this->input->post('qc'),
+                'date' => $this->input->post('date')
+            );
+            $result = $this->Checklist_model->insertNewChecklist($data);
+            if ($result == TRUE) {
+                $data['message_display'] = 'Checklist added Successfully !';
+                // get data from model
+                $data['checklists'] = $this->Checklist_model->getChecklists();
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('checklist/manage', $data);
+                $this->load->view('footer');
+            } else {
+                $data['message_display'] = 'Checklist already exist!';
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('checklist/create', $data);
+                $this->load->view('footer');
+            }
         }
-        $this->load->view('footer');
     }
 
-    public function edit($sn = '',$pr='')
+    public function edit($sn = '', $pr = '')
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $this->load->view('header');
