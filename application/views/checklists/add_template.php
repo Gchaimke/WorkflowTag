@@ -3,7 +3,7 @@
             <div class="jumbotron">
                   <div class="container">
                         <center>
-                              <h2 class="display-3">Create checklist</h2>
+                              <h2 class="display-3">Add Template</h2>
                         </center>
                   </div>
             </div>
@@ -18,18 +18,18 @@
                   }
                   ?>
 
-                  <?php echo form_open('checklist/create', 'class=user-create'); ?>
+                  <?php echo form_open('checklists/add_template', 'class=user-create'); ?>
                   <select class="form-control" name='project'>
-                        <option>Flex2</option>
-                        <option>Lap3</option>
-                        <option>Flex Leg</option>
-                  </select>
-                  <input class="form-control " type='text' name='serial' placeholder="Serial Number">
-                  <input type='hidden' name='data' value="">
-                  <input type='hidden' name='progress' value="0">
-                  <input type='hidden' name='assembler' value="">
-                  <input type='hidden' name='qc' value="">
-                  <input type='text' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>">
+                        <?php if (isset($projects)) {
+                              $clients = explode(",",$projects[0]['clients']);
+                              foreach ($clients as $client) {
+                                    echo '<option>' . $client . '</option>';
+                              }
+                        }
+                        ?>
+                  </select></br>
+                  <input type='text' class="form-control" name='template' value=""></br>
+                  <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>
             </center>
