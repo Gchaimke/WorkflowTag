@@ -127,31 +127,35 @@ class Checklists extends CI_Controller
         $rows = explode(PHP_EOL, $project_data);
         $header = explode(";", $rows[0]);
         $status = explode(",", $checklist_data);
-        $table = '<table id="checklist"   class="table"><thead class="thead-dark"><tr>
-            <th scope="col" onclick="saveData()">#</th>
+
+        $table = '<table id="checklist"   class="table"><thead class="thead-dark">';
+           
+        if (count($header) > 0) {
+            $table .=' <tr><th scope="col" onclick="saveData()">#</th>
             <th id="result"  scope="col">' . $header[0] . '</th>
             <th scope="col" onclick="toggleAllCheckboxs()">' . $header[1] . '</th>
             </tr></thead><tbody>';
-        for ($i = 1; $i < count($rows); $i++) {
-            $checked = "";
-            if ($status[$i] == 1) {
-                $checked = "Checked";
-            }
-            if ($i >= 10) {
-                $prefix = '1.';
-            }
-            $col = explode(";", $rows[$i]);
-            if ($col[1] == "QC") {
-                $onClick = ' onclick="getQCCode(this.id)"';
-            } else {
-                $onClick = ' onclick="toggleOne()"';
-            }
-            $verify = '<div class="checkbox">
+            for ($i = 1; $i < count($rows); $i++) {
+                $checked = "";
+                if ($status[$i] == 1) {
+                    $checked = "Checked";
+                }
+                if ($i >= 10) {
+                    $prefix = '1.';
+                }
+                $col = explode(";", $rows[$i]);
+                if ($col[1] == "QC") {
+                    $onClick = ' onclick="getQCCode(this.id)"';
+                } else {
+                    $onClick = ' onclick="toggleOne()"';
+                }
+                $verify = '<div class="checkbox">
                     <input type="checkbox"  id="check_' . $i . '" name="check' . $i . '" ' .
-                $onClick . ' ' . $checked . '></div>';
-            $table .= '<tr><th scope="row">' . $prefix . $i . '</th>';
-            $table .= '<td class="description">' . $col[0] . '</td>';
-            $table .= '<td onclick="restore()">' . $verify . '</td></tr>';
+                    $onClick . ' ' . $checked . '></div>';
+                $table .= '<tr><th scope="row">' . $prefix . $i . '</th>';
+                $table .= '<td class="description">' . $col[0] . '</td>';
+                $table .= '<td onclick="restore()">' . $verify . '</td></tr>';
+            }
         }
         $table .= '</tbody></table>';
         return $table;
@@ -255,7 +259,7 @@ class Checklists extends CI_Controller
         $this->load->view('footer');
     }
 
-    
+
     public function delete()
     {
         $id = $_POST['id'];
