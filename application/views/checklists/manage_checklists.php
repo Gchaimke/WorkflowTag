@@ -13,6 +13,7 @@
 			echo $message_display . '</div>';
 		}
 		?>
+		 <a class="btn btn-success" href="/checklists/add_checklist">Add Checklist</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -34,12 +35,12 @@
 						echo  '<td class="mobile-hide">' . $checklist['id'] . '</td>';
 						echo  '<td>' . $checklist['serial'] . '</td>';
 						echo  '<td>' . $checklist['project'] . '</td>';
+						echo  '<td class="mobile-hide">' . $checklist['progress'] . '</td>';
 						echo  '<td class="mobile-hide">' . $checklist['assembler'] . '</td>';
 						echo  '<td class="mobile-hide">' . $checklist['qc'] . '</td>';
-						echo  '<td class="mobile-hide">' . $checklist['progress'] . '</td>';
 						echo  '<td class="mobile-hide">' . $checklist['date'] . '</td>';
-						echo "<td><a href='/checklists/edit_checklist/" . $checklist['project'] . "/" . $checklist['serial'] . "' class='btn btn-info'>Edit</a></td>";
-						echo "<td><button id='" . $checklist['id'] . "' class='btn btn-danger' onclick='delPhoto(this.id)'>Delete</button></td>";
+						echo "<td><a href='/checklists/edit_checklist/" . $checklist['id'] . "' class='btn btn-info'>Edit</a></td>";
+						echo "<td><button id='" . $checklist['id'] . "' class='btn btn-danger' onclick='delChecklist(this.id)'>Delete</button></td>";
 						echo '</tr>';
 					}
 				} ?>
@@ -48,7 +49,7 @@
 	</div>
 </main>
 <script>
-	function delPhoto(id) {
+	function delChecklist(id) {
 		$.post("/checklists/delete", {
 			id: id
 		}).done(function(o) {

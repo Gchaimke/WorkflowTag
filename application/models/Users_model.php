@@ -12,6 +12,27 @@ class Users_model extends CI_Model
 		return $response;
 	}
 
+	function getUser($id)
+	{
+		$response = array();
+		// Select record
+		$this->db->select('*');
+		$this->db->from('users');
+		$condition = "id ='" . $id . "'";
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$q = $this->db->get();
+		$response = $q->result_array();
+		return $response;
+	}
+
+	public function editUser($data)
+	{
+		$where = "id =" . $data['id'];
+		$data = array('userrole' => $data['userrole'], 'password' => $data['password']);
+		return $this->db->update('users', $data, $where);
+	}
+
 	function deleteUser($id)
 	{
 		$this->db->delete('Users', array('id' => $id));

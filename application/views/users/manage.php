@@ -13,6 +13,7 @@
             echo $message_display . '</div>';
         }
         ?>
+        <a class="btn btn-success" href="/users/create">Add User</a>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -31,7 +32,7 @@
                         echo  '<td class="mobile-hide">' . $user['id'] . '</td>';
                         echo  '<td>' . $user['username'] . '</td>';
                         echo  '<td>' . $user['userrole'] . '</td>';
-                        echo "<td><a href='/checklist/edit/" . $user['id'] . "' class='btn btn-info'>Edit</a></td>";
+                        echo "<td><a href='/users/edit/" . $user['id'] . "' class='btn btn-info'>Edit</a></td>";
                         echo "<td><button id='" . $user['id'] . "' class='btn btn-danger' onclick='delPhoto(this.id)'>Delete</button></td>";
                         echo '</tr>';
                     }

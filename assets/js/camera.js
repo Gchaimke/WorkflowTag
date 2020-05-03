@@ -61,7 +61,7 @@ video.addEventListener("click", function () {
   context.drawImage(video, 0, 0, 1920, 1080);
   stopMediaTracks(currentStream);
   dataURL = canvas.toDataURL();
-  $.post("/checklist/save_photo", {
+  $.post("/checklists/save_photo", {
     data: dataURL,
     pr: pr,
     sn: sn,
@@ -78,7 +78,7 @@ video.addEventListener("click", function () {
 });
 
 function delPhoto(id) {
-  $.post("/checklist/delete_photo", {
+  $.post("/checklists/delete_photo", {
     photo: '/Production/' + pr  + '/' + sn + '/' + id + '.png'
   }).done(function (o) {
     console.log('photo deleted from the server.');

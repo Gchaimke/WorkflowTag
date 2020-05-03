@@ -19,9 +19,13 @@
                   ?>
                   <?php echo form_open('users/create', 'class=user-create'); ?>
                   <select class="form-control" name='userrole'>
-                        <option>Assembler</option>
-                        <option>QC</option>
-                        <option>Admin</option>
+                  <?php if (isset($settings)) {
+                              $arr = explode(",",$settings[0]['userroles']);
+                              foreach ($arr as $role) {
+                                    echo '<option>' . $role . '</option>';
+                              }
+                        }
+                        ?>
                   </select></br>
                   <?php
                   echo form_input('username', '', 'class=form-control') . '<br/>';

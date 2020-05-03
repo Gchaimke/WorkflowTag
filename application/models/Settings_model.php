@@ -56,11 +56,11 @@ class Settings_model extends CI_Model
                 'constraint' => 30,
                 'unique' => TRUE
             ),
-            'project' => array(
+            'client' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 30
             ),
-            'template' => array(
+            'project' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 60
             ),
@@ -92,8 +92,8 @@ class Settings_model extends CI_Model
 
         $demoChecklist = array(
             "serial" => 'FL-0420-001',
-            "project" => 'Simbionix',
-            "template" => 'Flex2',
+            "client" => 'Simbionix',
+            "project" => 'Flex2',
             "data" => '',
             "progress" => '0',
             "assembler" => 'Chaim',
@@ -103,21 +103,21 @@ class Settings_model extends CI_Model
         $this->db->insert('checklists', $demoChecklist);
     }
 
-    function createTemplatesDb()
+    function createProjectsDb()
     {
         $this->load->dbforge();
-        $template = array(
+        $project = array(
             'id' => array(
                 'type' => 'INT',
                 'constraint' => 9,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'project' => array(
+            'client' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 60
             ),
-            'template' => array(
+            'project' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
                 'unique' => TRUE
@@ -127,18 +127,18 @@ class Settings_model extends CI_Model
             )
         );
 
-        $this->dbforge->add_field($template);
+        $this->dbforge->add_field($project);
         // define primary key
         $this->dbforge->add_key('id', TRUE);
         // create table
-        $this->dbforge->create_table('templates');
+        $this->dbforge->create_table('projects');
 
         $tp = array(
-            "project" => 'Simbionix',
-            "template" => 'Flex2',
+            "client" => 'Simbionix',
+            "project" => 'Flex2',
             "data" => '1,2,3,4,5'
         );
-        $this->db->insert('templates', $tp);
+        $this->db->insert('projects', $tp);
     }
 
     function createSettingsDb()
@@ -153,6 +153,9 @@ class Settings_model extends CI_Model
             ),
             'clients' => array(
                 'type' => 'TEXT'
+            ),
+            'userroles' => array(
+                'type' => 'TEXT'
             )
         );
 
@@ -163,12 +166,13 @@ class Settings_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            "clients" => 'Simbionix,Verint,D-fend,Elta,EFI,'
+            "clients" => 'Simbionix,Verint,D-fend,Elta,EFI',
+            'userroles' => 'Admin,Assember,QC'
         );
         $this->db->insert('settings', $st);
     }
 
-    function getClients(){
+    function getSettings(){
         $response = array();
 		// Select record
 		$this->db->select('*');

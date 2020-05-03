@@ -14,23 +14,26 @@
 			echo $message_display . '</div>';
 		}
 		?>
+		<a class="btn btn-success" href="/checklists/add_project">Add Project</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
+					<th scope="col">Client</th>
 					<th scope="col">Project</th>
-					<th scope="col">Template</th>
 					<th scope="col">Edit</th>
 					<th scope="col">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php if (isset($templates)) {
-					foreach ($templates as $template) {
-						echo '<tr id="' . $template['id'] . '">';
-						echo  '<td>' . $template['project'] . '</td>';
-						echo  '<td>' . $template['template'] . '</td>';
-						echo "<td><a href='/checklists/edit_template/" . $template['id'] ."' class='btn btn-info'>Edit</a></td>";
-						echo "<td><button id='" . $template['id'] . "' class='btn btn-danger' onclick='deleteTemplate(this.id)'>Delete</button></td>";
+				<?php if (isset($projects)) {
+					foreach ($projects as $project) {
+						echo '<tr id="' . $project['id'] . '">';
+						echo  '<td>' . $project['client'] . '</td>';
+						echo  '<td>' . $project['project'] . '</td>';
+						echo "<td><a href='/checklists/edit_project/" . $project['id'] . 
+						"' class='btn btn-info'>Edit</a></td>";
+						echo "<td><button id='" . $project['id'] . 
+						"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";
 						echo '</tr>';
 					}
 				} ?>
@@ -39,11 +42,11 @@
 	</div>
 </main>
 <script>
-	function deleteTemplate(id) {
-		$.post("/checklists/delete_template", {
+	function deleteProject(id) {
+		$.post("/checklists/delete_project", {
 			id: id
 		}).done(function(o) {
-			console.log('checklist template deleted.');
+			console.log('Project deleted.');
 			$('[id^=' + id + ']').remove();
 		});
 	}

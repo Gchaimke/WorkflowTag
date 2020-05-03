@@ -8,6 +8,7 @@ class Users extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Users_model');
+        $this->load->model('Settings_model');
     }
 
     public function index()
@@ -23,10 +24,34 @@ class Users extends CI_Controller
 
     public function edit($id = '')
     {
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        $this->load->view('users/edit');
-        $this->load->view('footer');
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('userrole', 'Userrole', 'trim|xss_clean');
+        $this->form_validation->set_rules('username', 'Username', 'trim|xss_clean');
+        $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $data['user'] =  $this->Users_model->getUser($id);
+            $data['settings'] = $this->Settings_model->getSettings();
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('users/edit', $data);
+            $this->load->view('footer');
+        } else {
+            $sql = array(
+                'id' => $this->input->post('id'),
+                'userrole' => $this->input->post('userrole'),
+                'password' => $this->input->post('password')
+            );
+            $data['message_display'] ='';
+            $data['message_display'] .= $this->Users_model->editUser($sql);
+            $data['message_display'] .= ' User edited Successfully!';
+            // get data from model
+            $data['users'] = $this->Users_model->getUsers();
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('users/manage', $data);
+            $this->load->view('footer');
+        }
     }
 
     public function delete()
@@ -95,9 +120,10 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('userrole', 'Userrole', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
+            $data['settings'] = $this->Settings_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('users/create');
+            $this->load->view('users/create',$data);
             $this->load->view('footer');
         } else {
             $data = array(
@@ -108,13 +134,14 @@ class Users extends CI_Controller
             $result = $this->Users_model->registration_insert($data);
             if ($result == TRUE) {
                 $data['users'] = $this->Users_model->getUsers();
-                $data['message_display'] = 'Registration Successfully !';
+                $data['message_display'] = 'User Registration Successfully !';
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/manage', $data);
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'Username already exist!';
+                $data['settings'] = $this->Settings_model->getSettings();
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/create', $data);

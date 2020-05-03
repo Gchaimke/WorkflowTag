@@ -1,8 +1,17 @@
+<?php
+$id = $checklist[0]['id'];
+$project = $checklist[0]['project'];
+$serial = $checklist[0]['serial'];
+$progress = $checklist[0]['progress'];
+$assembler = $checklist[0]['assembler'];
+$qc = $checklist[0]['assembler'];
+$date = $checklist[0]['date'];
+?>
 <link href="<?php echo base_url('assets/css/checklist_create.css'); ?>" rel="stylesheet">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-      <b id="project" class="navbar-text" href="#">Project: </b>
-      <b id="sn" class="navbar-text" href="#">SN: </b>
-      <b id="date" class="navbar-text" href="#">Date: </b>
+      <b id="project" class="navbar-text" href="#">Project: <?php echo $project ?></b>
+      <b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
+      <b id="date" class="navbar-text" href="#">Date: <?php echo $date ?></b>
       <ul class="nav navbar-nav navbar-right">
             <li lass="nav-item">
                   <button id="snap" class="btn btn-info">Snap Photo</button>
@@ -24,14 +33,14 @@
             </div>
             <video id="video" width="100%" autoplay playsinline></video>
       </div>
-      <div id="workTable"></div>
+      <div id="workTable">
+            <?php echo $data ?>
+      </div>
       <div id="photo-stock" class="container-sm">
             <canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
-
             <?php
-
-            $working_dir = '/Production/' . $pr . '/' . $sn . '/';
-            echo "<script>var photoCount=0; var pr='$pr'; var sn='$sn';</script>";
+            $working_dir = '/Production/' . $project . '/' . $serial . '/';
+            echo "<script>var photoCount=0; var pr='" . $project . "'; var sn='" . $serial . "';</script>";
             if (file_exists(".$working_dir")) {
                   if ($handle = opendir(".$working_dir")) {
                         while (false !== ($entry = readdir($handle))) {
@@ -43,7 +52,6 @@
                         closedir($handle);
                   }
             }
-
             ?>
       </div>
 </main>

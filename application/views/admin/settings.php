@@ -14,21 +14,31 @@
         }
         ?>
         <?php
-        echo form_open('admin/settings', 'class=user-create'); 
-        if (isset($clients) && $clients != "") {
-            echo '<textarea rows="4" cols="30">';
-            echo $clients[0]['clients'] . ' </textarea>';
+        echo form_open('admin/settings', 'class=user-create');
+        echo '<div class="form-group"><label>Clients</label><textarea name="clients" class="form-control" rows="2" cols="30">';
+        if (isset($settings) && $settings != "") {
+            echo $settings[0]['clients'];
         }
+        echo "</textarea></div>";
+        echo '<div class="form-group"><label>User Roles</label><textarea name="userroles" class="form-control" rows="2" cols="30">';
+        if (isset($settings) && $settings != "") {
+            echo $settings[0]['userroles'];
+        }
+        echo "</textarea></div>";
         echo "<input type='submit' class='btn btn-info btn-block' name='submit' value='Save'>";
         echo form_close();
         ?>
-
-        <form method='post' action='<?php echo base_url('/admin/settings'); ?>'>
-            <table>
-                <tr>
-                    <td><input type='submit' name='submit' value='Create DB' class="btn btn-info"></td>
-                </tr>
-            </table>
-        </form>
+        </br>
+        <button class="btn btn-info" onclick="createDB(0)">Create DB</button>
     </div>
 </main>
+
+<script>
+    function createDB(id) {
+        $.post("/admin/create", {
+            id: id
+        }).done(function(o) {
+            console.log('Databases created');
+        });
+    }
+</script>

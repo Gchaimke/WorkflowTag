@@ -3,7 +3,7 @@
             <div class="jumbotron">
                   <div class="container">
                         <center>
-                              <h2 class="display-3">Add Template</h2>
+                              <h2 class="display-3">Add Project</h2>
                         </center>
                   </div>
             </div>
@@ -18,19 +18,20 @@
                   }
                   ?>
 
-                  <?php echo form_open('checklists/add_template', 'class=user-create'); ?>
-                  <select class="form-control" name='project'>
-                        <?php if (isset($projects)) {
-                              $clients = explode(",",$projects[0]['clients']);
-                              foreach ($clients as $client) {
+                  <?php echo form_open('checklists/add_project', 'class=user-create'); ?>
+                  <select class="form-control" name='client'>
+                        <?php if (isset($settings)) {
+                              $arr = explode(",",$settings[0]['clients']);
+                              foreach ($arr as $client) {
                                     echo '<option>' . $client . '</option>';
                               }
                         }
                         ?>
                   </select></br>
-                  <input type='text' class="form-control" name='template' value=""></br>
+                  <input type='text' class="form-control" name='project' value=""></br>
                   <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>
             </center>
       </div>
+</main>

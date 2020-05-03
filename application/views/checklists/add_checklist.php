@@ -18,18 +18,22 @@
                   }
                   ?>
                   <?php echo form_open('checklists/add_checklist', 'class=user-create'); ?>
-                  <select class="form-control" name='project'>
-                        <?php if (isset($projects)) {
-                              $clients = explode(",", $projects[0]['clients']);
-                              foreach ($clients as $client) {
-                                    echo '<option>' . $client . '</option>';
+                  <select  class="form-control" name='client' >
+                        <?php if (isset($settings)) {
+                              $arr = explode(",", $settings[0]['clients']);
+                              foreach ($arr as $role) {
+                                    echo '<option>' . $role . '</option>';
                               }
                         }
                         ?>
                   </select></br>
-                  <select class="form-control" name='template'>
-                        <option>Flex2</option>
-                        <option>Lap3</option>
+                  <select class="form-control" name='project'>
+                        <?php if (isset($projects)) {
+                              foreach ($projects as $project) {
+                                    echo '<option>' . $project['project'] . '</option>';
+                              }
+                        }
+                        ?>
                   </select></br>
                   <input class="form-control " type='text' name='serial' placeholder="Serial Number"></br>
                   <input type='text' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
@@ -37,3 +41,4 @@
                   <?php echo form_close(); ?>
             </center>
       </div>
+</main>
