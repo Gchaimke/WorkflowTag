@@ -1,2 +1,2 @@
- #!C:\Program Files\Ampps\python\python.exe
+#!C:\Program Files\Ampps\python\python.exe
 print("Helow python")
