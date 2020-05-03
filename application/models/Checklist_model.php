@@ -41,7 +41,7 @@ class Checklist_model extends CI_Model
 		return $response;
 	}
 
-	function getProject($id = '',$name='')
+	function getProject($id = '', $name = '')
 	{
 		$response = array();
 		$condition = "";
@@ -49,11 +49,11 @@ class Checklist_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('projects');
 		$condition = "id ='" . $id . "'";
-		if (!$id == ''){
+		if (!$id == '') {
 			$condition = "id ='" . $id . "'";
 		}
-			
-		if (!$name == ''){
+
+		if (!$name == '') {
 			$condition = "project ='" . $name . "'";
 		}
 		$this->db->where($condition);
@@ -105,9 +105,19 @@ class Checklist_model extends CI_Model
 
 	public function editProject($data)
 	{
-		$where = "id =" . $data['id'] ;
-		$data = array('data' =>$data['data']);
+		$where = "id =" . $data['id'];
+		$data = array('data' => $data['data']);
 		return $this->db->update('projects', $data, $where);
+	}
+
+	public function updateChecklist($data)
+	{
+		$where = "id =" . $data['id'];
+		$data = array(
+			'data' => $data['data'],
+			'progress' => $data['progress']
+		);
+		return $this->db->update('checklists', $data, $where);
 	}
 
 	function deleteChecklist($id)

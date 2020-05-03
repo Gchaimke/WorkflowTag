@@ -36,7 +36,7 @@ class Checklists extends CI_Controller
     public function add_checklist()
     {
         // Check validation for user input in SignUp form
-        $zero_str = implode (", ", array_fill(0, 400, 0));
+        $zero_str = implode(", ", array_fill(0, 400, 0));
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
@@ -200,6 +200,62 @@ class Checklists extends CI_Controller
         }
     }
 
+    public function save_checklist($id = '')
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
+        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $this->edit_checklist($id);
+        } else {
+            $data = array(
+                'id' =>  $id,
+                'data' =>  $this->input->post('data'),
+                'progress' => $this->input->post('progress'),
+                'assembler' => $this->input->post('assembler'),
+                'qc' => $this->input->post('qc')
+            );
+            $result = $this->Checklist_model->updateChecklist($data);
+            if ($result == TRUE) {
+                $data['message_display'] = 'Checklist saved successfully!';
+                $data['js_to_load'] = array("checklist_create.js", "camera.js");
+                $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $data['data'] = $this->build_checklist($data);
+                $this->load->view('checklists/edit_checklist', $data);
+                $this->load->view('footer');
+            } else {
+                $data['message_display'] = 'Checklist already exist!';
+                $data['js_to_load'] = array("checklist_create.js", "camera.js");
+                $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $data['data'] = $this->build_checklist($data);
+                $this->load->view('checklists/edit_checklist', $data);
+                $this->load->view('footer');
+            }
+        }
+    }
+
+    public function save_page2pdf($id = '')
+    {
+        $data['message_display'] = exec('python "' . getcwd() . '/test.py"');
+        $data['message_display'] .= $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
+        $data['message_display'] .= exec($html2pdf . ' https://localhost/checklists/edit_checklist/1 "' . getcwd() . '\test.pdf"');
+
+        $data['js_to_load'] = array("checklist_create.js", "camera.js");
+        $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $data['data'] = $this->build_checklist($data);
+        $this->load->view('checklists/edit_checklist', $data);
+        $this->load->view('footer');
+    }
+
+    
     public function delete()
     {
         $id = $_POST['id'];
@@ -220,12 +276,5 @@ class Checklists extends CI_Controller
     public function delete_photo()
     {
         $this->load->view('checklists/delete_photo');
-    }
-
-    public function save_page()
-    {
-        echo exec('python "' . getcwd() . '/test.py"');
-        $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
-        echo exec($html2pdf . ' https://localhost/checklist/ "' . getcwd() . '\test.pdf"');
     }
 }

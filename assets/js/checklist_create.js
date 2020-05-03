@@ -6,9 +6,15 @@ var chArray = [];
 
 $(document).ready(function () {
     toggle = true;
+    document.cookie = 'chArray =';
+    document.cookie = 'progress =';
+    CountRows();
     setProgress(localStorage.getItem("progress"));
     if (JSON.parse(localStorage.getItem("chArray")) == null) {
-        chArray = new Array(allTextLines.length);
+        chArray = [];
+        for (var i = 0; i < CountRows(); i++) {
+            chArray[i] = 0;
+        }
     } else {
         chArray = JSON.parse(localStorage.getItem("chArray"));
     }
@@ -18,12 +24,9 @@ function getQCCode(id) {
     var code = prompt("Please enter QC Code", "QC Check");
     id = "#" + id;
     if (code == "1") {
-        //$(id).attr("disabled", true);
         $(id).prop('checked', true);
         toggleOne();
     } else {
-        //$(id).removeClass();
-        //$(id).addClass("btn btn-danger");
         $(id).prop('checked', false);
         toggleOne();
     }
@@ -34,12 +37,14 @@ function saveData() {
     chArray = JSON.parse(localStorage.getItem("chArray"));
     //console.log(chArray);
     localStorage.setItem("progress", len);
+    document.cookie = 'chArray ="' + chArray + '"';
+    document.cookie = 'progress ="' + len + '"';
 }
 
 function updateProgress() {
     var rowCount = $('#checklist tr').length;
     var checked = $("input:checkbox:checked").length;
-    len = 100 / (rowCount-1) * checked
+    len = 100 / (rowCount - 1) * checked
     $("#progress-bar").width(len + "%");
     $("#progress-bar").attr("aria-valuenow", len);
 }
@@ -77,15 +82,31 @@ function toggleAllCheckboxs() {
     chArray.forEach(toggleOne);
 }
 
-$("#save").click(function () {
-    $.post("save_page", {
-        file: 'Production/' + pr + '/' + sn + '/' + sn + '.htm',
-        page: document.getElementsByTagName('html')[0].innerHTML
-    }).done(function (o) {
-        console.log('save page.');
-    });
-});
+function CountRows() {
+    var totalRowCount = 0;
+    var table = document.getElementById("checklist");
+    var rows = table.getElementsByTagName("tr")
+    for (var i = 0; i < rows.length; i++) {
+        totalRowCount++;
+    }
+    document.cookie = 'rowsJS ="' + totalRowCount + '"';
+    return totalRowCount;
+}
 
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 
 function centerLoginBox() {
     var ua = navigator.userAgent.toLowerCase();
