@@ -1,6 +1,5 @@
-var allTextLines = [];
 var toggle;
-var len = "";
+var progress_status = "";
 var chArray = [];
 
 
@@ -8,11 +7,12 @@ $(document).ready(function () {
     toggle = true;
     document.cookie = 'chArray =';
     document.cookie = 'progress =';
-    CountRows();
+    var rowCount = $('#checklist tr.check_row');
+    alert(rowCount.length);
     setProgress(localStorage.getItem("progress"));
     if (JSON.parse(localStorage.getItem("chArray")) == null) {
         chArray = [];
-        for (var i = 0; i < CountRows(); i++) {
+        for (var i = 0; i < rowCount.length; i++) {
             chArray[i] = 0;
         }
     } else {
@@ -36,17 +36,17 @@ function saveData() {
     localStorage.setItem("chArray", JSON.stringify(chArray));
     chArray = JSON.parse(localStorage.getItem("chArray"));
     //console.log(chArray);
-    localStorage.setItem("progress", len);
+    localStorage.setItem("progress", progress_status);
     document.cookie = 'chArray ="' + chArray + '"';
-    document.cookie = 'progress ="' + len + '"';
+    document.cookie = 'progress ="' + progress_status + '"';
 }
 
 function updateProgress() {
     var rowCount = $('#checklist tr').length;
     var checked = $("input:checkbox:checked").length;
-    len = 100 / (rowCount - 1) * checked
-    $("#progress-bar").width(len + "%");
-    $("#progress-bar").attr("aria-valuenow", len);
+    progress_status = 100 / (rowCount - 1) * checked
+    $("#progress-bar").width(progress_status + "%");
+    $("#progress-bar").attr("aria-valuenow", progress_status);
 }
 
 function setProgress(p) {
@@ -80,17 +80,6 @@ function toggleAllCheckboxs() {
         toggle = true;
     }
     chArray.forEach(toggleOne);
-}
-
-function CountRows() {
-    var totalRowCount = 0;
-    var table = document.getElementById("checklist");
-    var rows = table.getElementsByTagName("tr")
-    for (var i = 0; i < rows.length; i++) {
-        totalRowCount++;
-    }
-    document.cookie = 'rowsJS ="' + totalRowCount + '"';
-    return totalRowCount;
 }
 
 function getCookie(cname) {

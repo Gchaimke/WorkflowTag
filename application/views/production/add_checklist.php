@@ -17,7 +17,7 @@
                         echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
                   }
                   ?>
-                  <?php echo form_open('checklists/add_checklist', 'class=user-create'); ?>
+                  <?php echo form_open('production/add_checklist', 'class=user-create'); ?>
                   <select  class="form-control" name='client' >
                         <?php if (isset($settings)) {
                               $arr = explode(",", $settings[0]['clients']);

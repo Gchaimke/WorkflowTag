@@ -18,7 +18,7 @@ $date = $checklist[0]['date'];
 			<button id="snap" class="btn btn-info">Snap Photo</button>
 		</li>
 		<li class="nav-item">
-			<?php echo form_open('checklists/save_checklist/'.$id, 'class=user-create'); ?>
+			<?php echo form_open('production/save_checklist/'.$id, 'class=user-create'); ?>
 				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 				<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
@@ -54,7 +54,7 @@ $date = $checklist[0]['date'];
 	<div id="photo-stock" class="container-sm">
 		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
 		<?php
-		$working_dir = '/Production/' . $project . '/' . $serial . '/';
+		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
 		echo "<script>var photoCount=0; var id='" . $id . "'; var pr='" . $project . "'; var sn='" . $serial . "';</script>";
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {

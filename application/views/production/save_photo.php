@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 // requires php5
-define('UPLOAD_DIR', 'Production/');
+define('UPLOAD_DIR', 'Uploads/');
 $folder = $_POST['pr'] . "/";
 $name = $_POST['sn'];
 $num = $_POST['num'];

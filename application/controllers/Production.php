@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Checklists extends CI_Controller
+class Production extends CI_Controller
 {
 
     public function __construct()
@@ -18,7 +18,7 @@ class Checklists extends CI_Controller
         $data['checklists'] = $this->Checklist_model->getChecklists();
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('checklists/manage_checklists', $data);
+        $this->load->view('production/manage_checklists', $data);
         $this->load->view('footer');
     }
 
@@ -28,7 +28,7 @@ class Checklists extends CI_Controller
         $data['projects'] = $this->Checklist_model->getprojects();
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('checklists/manage_projects', $data);
+        $this->load->view('production/manage_projects', $data);
         $this->load->view('footer');
     }
 
@@ -46,7 +46,7 @@ class Checklists extends CI_Controller
             $data['projects'] = $this->Checklist_model->getprojects();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('checklists/add_checklist', $data);
+            $this->load->view('production/add_checklist', $data);
             $this->load->view('footer');
         } else {
             $data = array(
@@ -63,14 +63,14 @@ class Checklists extends CI_Controller
                 $data['checklists'] = $this->Checklist_model->getChecklists();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('checklists/manage_checklists', $data);
+                $this->load->view('production/manage_checklists', $data);
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'Checklist already exist!';
                 $data['settings'] = $this->Settings_model->getSettings();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('checklists/add_checklist', $data);
+                $this->load->view('production/add_checklist', $data);
                 $this->load->view('footer');
             }
         }
@@ -87,7 +87,7 @@ class Checklists extends CI_Controller
             $data['settings'] = $this->Settings_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('checklists/add_project', $data);
+            $this->load->view('production/add_project', $data);
             $this->load->view('footer');
         } else {
             $data = array(
@@ -102,14 +102,14 @@ class Checklists extends CI_Controller
                 $data['projects'] = $this->Checklist_model->getprojects();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('checklists/manage_projects', $data);
+                $this->load->view('production/manage_projects', $data);
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'project already exist!';
                 $data['settings'] = $this->Settings_model->getSettings();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('checklists/add_project', $data);
+                $this->load->view('production/add_project', $data);
                 $this->load->view('footer');
             }
         }
@@ -117,46 +117,45 @@ class Checklists extends CI_Controller
 
     private function build_checklist($data)
     {
-        $prefix = "1.0";
-        $verify = "";
+        $prefix_count = 0;
         $checked = "";
-        $onClick = "";
         $project = $data['checklist'][0]['project'];
         $checklist_data = $data['checklist'][0]['data'];
         $project_data = $this->Checklist_model->getProject('', $project)[0]['data'];
         $rows = explode(PHP_EOL, $project_data);
-        $header = explode(";", $rows[0]);
         $status = explode(",", $checklist_data);
 
-        $table = '<table id="checklist"   class="table"><thead class="thead-dark">';
-           
-        if (count($header) > 0) {
-            $table .=' <tr><th scope="col" onclick="saveData()">#</th>
-            <th id="result"  scope="col">' . $header[0] . '</th>
-            <th scope="col" onclick="toggleAllCheckboxs()">' . $header[1] . '</th>
-            </tr></thead><tbody>';
-            for ($i = 1; $i < count($rows); $i++) {
-                $checked = "";
-                if ($status[$i] == 1) {
-                    $checked = "Checked";
-                }
-                if ($i >= 10) {
-                    $prefix = '1.';
-                }
-                $col = explode(";", $rows[$i]);
-                if ($col[1] == "QC") {
-                    $onClick = ' onclick="getQCCode(this.id)"';
-                } else {
-                    $onClick = ' onclick="toggleOne()"';
-                }
-                $verify = '<div class="checkbox">
-                    <input type="checkbox"  id="check_' . $i . '" name="check' . $i . '" ' .
-                    $onClick . ' ' . $checked . '></div>';
-                $table .= '<tr><th scope="row">' . $prefix . $i . '</th>';
-                $table .= '<td class="description">' . $col[0] . '</td>';
-                $table .= '<td onclick="restore()">' . $verify . '</td></tr>';
+        $table = '';
+        $count = 1;
+        for ($i = 0; $i < count($rows); $i++) {
+            $tr = '';
+            $checked = "";
+            if ($status[$i] == 1) {
+                $checked = "Checked";
             }
+            if ($count < 10) {
+                $prefix = $prefix_count . '.0';
+            } else {
+                $prefix = $prefix_count . '.';
+            }
+            $col = explode(";", $rows[$i]);
+            if ($col[1] == "HD") {
+                $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col" onclick="saveData()">#</th><th id="result" scope="col">' . $col[0] .
+                    '</th><th scope="col" onclick="toggleAllCheckboxs()">Verify</th></tr></thead><tbody>';
+                $count = 1;
+                $prefix_count++;
+            } else if ($col[1] == "QC") {
+                $tr = "<tr class='check_row'><th scope='row'>$prefix$count</th><td class='description'>" . $col[0] . "</td><td>" .
+                    "<div class='checkbox'><input type='checkbox'  id='$i' name='check$count' onclick='getQCCode(this.id)' $checked></div></td></tr>";
+                $count++;
+            } else {
+                $tr = "<tr class='check_row'><th scope='row'>$prefix$count</th><td class='description'>" . $col[0] . "</td><td>" .
+                    "<div class='checkbox'><input type='checkbox' id='$i' name='check$count' onclick='toggleOne(this.id)' $checked></div></td></tr>";
+                $count++;
+            }
+            $table .= $tr;
         }
+
         $table .= '</tbody></table>';
         return $table;
     }
@@ -169,7 +168,7 @@ class Checklists extends CI_Controller
         $this->load->view('header');
         $this->load->view('main_menu');
         $data['data'] = $this->build_checklist($data);
-        $this->load->view('checklists/edit_checklist', $data);
+        $this->load->view('production/edit_checklist', $data);
         $this->load->view('footer');
     }
 
@@ -185,7 +184,7 @@ class Checklists extends CI_Controller
             $data['project'] =  $this->Checklist_model->getProject($id);
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('checklists/edit_project', $data);
+            $this->load->view('production/edit_project', $data);
             $this->load->view('footer');
         } else {
             $sql = array(
@@ -199,7 +198,7 @@ class Checklists extends CI_Controller
             $data['projects'] = $this->Checklist_model->getprojects();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('checklists/manage_projects', $data);
+            $this->load->view('production/manage_projects', $data);
             $this->load->view('footer');
         }
     }
@@ -229,7 +228,7 @@ class Checklists extends CI_Controller
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $data['data'] = $this->build_checklist($data);
-                $this->load->view('checklists/edit_checklist', $data);
+                $this->load->view('production/edit_checklist', $data);
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'Checklist already exist!';
@@ -238,7 +237,7 @@ class Checklists extends CI_Controller
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $data['data'] = $this->build_checklist($data);
-                $this->load->view('checklists/edit_checklist', $data);
+                $this->load->view('production/edit_checklist', $data);
                 $this->load->view('footer');
             }
         }
@@ -248,14 +247,14 @@ class Checklists extends CI_Controller
     {
         $data['message_display'] = exec('python "' . getcwd() . '/test.py"');
         $data['message_display'] .= $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
-        $data['message_display'] .= exec($html2pdf . ' https://localhost/checklists/edit_checklist/1 "' . getcwd() . '\test.pdf"');
+        $data['message_display'] .= exec($html2pdf . ' https://localhost/production/edit_checklist/1 "' . getcwd() . '\test.pdf"');
 
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Checklist_model->getChecklist($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $data['data'] = $this->build_checklist($data);
-        $this->load->view('checklists/edit_checklist', $data);
+        $this->load->view('production/edit_checklist', $data);
         $this->load->view('footer');
     }
 
@@ -274,11 +273,11 @@ class Checklists extends CI_Controller
 
     public function save_photo()
     {
-        $this->load->view('checklists/save_photo');
+        $this->load->view('production/save_photo');
     }
 
     public function delete_photo()
     {
-        $this->load->view('checklists/delete_photo');
+        $this->load->view('production/delete_photo');
     }
 }

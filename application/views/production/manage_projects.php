@@ -14,7 +14,7 @@
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/checklists/add_project">Add Project</a>
+		<a class="btn btn-success" href="/production/add_project">Add Project</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -30,7 +30,7 @@
 						echo '<tr id="' . $project['id'] . '">';
 						echo  '<td>' . $project['client'] . '</td>';
 						echo  '<td>' . $project['project'] . '</td>';
-						echo "<td><a href='/checklists/edit_project/" . $project['id'] . 
+						echo "<td><a href='/production/edit_project/" . $project['id'] . 
 						"' class='btn btn-info'>Edit</a></td>";
 						echo "<td><button id='" . $project['id'] . 
 						"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";
@@ -43,7 +43,7 @@
 </main>
 <script>
 	function deleteProject(id) {
-		$.post("/checklists/delete_project", {
+		$.post("/production/delete_project", {
 			id: id
 		}).done(function(o) {
 			console.log('Project deleted.');

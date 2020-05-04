@@ -70,7 +70,7 @@ video.addEventListener("click", function () {
     console.log('photo saved to server.');
     $("#photo-stock").append('<span id="' + sn + '_' + photoCount + 
     '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' +
-     sn + '_' + photoCount + '"src="/Production/' + pr  + '/' + sn +
+     sn + '_' + photoCount + '"src="/Uploads/' + pr  + '/' + sn +
       '/' + sn + '_' + photoCount + '.png' + '" class="respondCanvas" >');
     photoCount++;
   });
@@ -79,7 +79,7 @@ video.addEventListener("click", function () {
 
 function delPhoto(id) {
   $.post("/checklists/delete_photo", {
-    photo: '/Production/' + pr  + '/' + sn + '/' + id + '.png'
+    photo: '/Uploads/' + pr  + '/' + sn + '/' + id + '.png'
   }).done(function (o) {
     console.log('photo deleted from the server.');
     $('[id^='+id+']').remove();

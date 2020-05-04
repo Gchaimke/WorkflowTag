@@ -13,13 +13,13 @@ if (isset($this->session->userdata['logged_in'])) {
   <div class="collapse navbar-collapse" id="navbarDefault">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="/checklists/">Checklists</a>
+        <a class="nav-link" href="/production/">Production</a>
       </li>
     </ul>
     <ul class="navbar-nav  pull-right">
       <?php
       if ($role == 'Admin') {
-        echo '<li class="nav-item"><a class="nav-link" href="/checklists/manage_projects">Projects</a></li>';
+        echo '<li class="nav-item"><a class="nav-link" href="/production/manage_projects">Projects</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/users">Users</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/admin/settings">Settings</a></li>';
       } ?>

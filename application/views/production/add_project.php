@@ -18,7 +18,7 @@
                   }
                   ?>
 
-                  <?php echo form_open('checklists/add_project', 'class=user-create'); ?>
+                  <?php echo form_open('production/add_project', 'class=user-create'); ?>
                   <select class="form-control" name='client'>
                         <?php if (isset($settings)) {
                               $arr = explode(",",$settings[0]['clients']);
