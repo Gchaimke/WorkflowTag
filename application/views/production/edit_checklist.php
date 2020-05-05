@@ -7,28 +7,37 @@ $progress = $checklist[0]['progress'];
 $assembler = $checklist[0]['assembler'];
 $qc = $checklist[0]['qc'];
 $date = $checklist[0]['date'];
+
+if (isset($this->session->userdata['logged_in'])) {
+  $username = ($this->session->userdata['logged_in']['username']);
+  $role = ($this->session->userdata['logged_in']['userrole']);
+  if($assembler!=$username){
+	$assembler=$username;
+  }
+}
+
+
 ?>
-<link href="<?php echo base_url('assets/css/checklist_create.css'); ?>" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css');?>" >
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css');?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-	<b id="project" class="navbar-text" href="#">Project: <?php echo $project ?></b>
+<button id="snap" class="btn btn-info">Snap Photo</button>
+	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
-	<b id="date" class="navbar-text" href="#">Date: <?php echo $date ?></b>
+	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
-		<li class="nav-item">
-			<button id="snap" class="btn btn-info">Snap Photo</button>
-		</li>
 		<li class="nav-item">
 			<?php echo form_open('production/save_checklist/'.$id, 'class=user-create'); ?>
 				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 				<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
-				<input type='hidden' name='qc' value="<?php echo $qc ?>">
+				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 				<input id="save" type='submit' class="btn btn-success navbar-btn" value="Save">
 			</form>
 		</li>
 	</ul>
 	<div class="progress fixed-bottom">
-		<div id="progress-bar" class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+		<div id="progress-bar" class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
 	</div>
 </nav>
 <main role="main" class="container">
@@ -38,13 +47,17 @@ $date = $checklist[0]['date'];
 		echo $message_display . '</div>';
 	}
 	?>
+	<div class="name_badges">
+	<h4><span class="badge badge-secondary">Assembler: <?php echo $username?> </span></h4>
+	<h4><span class="badge badge-secondary">QC: <?php echo $qc?></span></h4>
+	</div>
 	<div class="video-frame container-sm">
 		<div class="controls">
 			<button id="select_camera" class="btn btn-success">Select camera</button>
+			<button id="close_camera" class="btn btn-danger">Close camera</button>
 			<select id="select">
 				<option></option>
 			</select>
-			<button id="close_camera" class="btn btn-danger">Close camera</button>
 		</div>
 		<video id="video" width="100%" autoplay playsinline></video>
 	</div>

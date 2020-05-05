@@ -4,7 +4,7 @@ if (isset($this->session->userdata['logged_in'])) {
   $role = ($this->session->userdata['logged_in']['userrole']);
 }
 ?>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark main-menu">
   <a class="navbar-brand" href="/dashboard">Workflow Tag</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>

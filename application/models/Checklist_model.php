@@ -115,7 +115,9 @@ class Checklist_model extends CI_Model
 		$where = "id =" . $data['id'];
 		$data = array(
 			'data' => $data['data'],
-			'progress' => $data['progress']
+			'progress' => $data['progress'],
+			'assembler' => $data['assembler'],
+			'qc' => $data['qc']
 		);
 		return $this->db->update('checklists', $data, $where);
 	}

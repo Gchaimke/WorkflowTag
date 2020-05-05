@@ -2,14 +2,35 @@
 
 class Users_model extends CI_Model
 {
-	function getUsers()
+	function getUsers($role = '')
 	{
 		$response = array();
 		// Select record
 		$this->db->select('*');
-		$q = $this->db->get('Users');
+		$this->db->from('Users');
+		if (!$role == '') {
+			$condition = "userrole ='$role'";
+			$this->db->where($condition);
+		}
+		$q = $this->db->get();
 		$response = $q->result_array();
 		return $response;
+	}
+
+	public function get_qc($role = '',$pass='')
+	{
+		$condition = "userrole ='$role' AND password ='$pass'";
+		$this->db->select('*');
+		$this->db->from('Users');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+
+		if ($query->num_rows() == 1) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
 	}
 
 	function getUser($id)

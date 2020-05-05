@@ -59,12 +59,15 @@ select#select {
     max-width: 90%;
 }
 
-.navbar-nav {
-    -ms-flex-direction: row;
-    flex-direction: row;
-}
-
 nav.navbar.checklist {
     top: 55px;
     z-index: 1;
+}
+
+.name_badges {
+    display: flex;
+}
+
+h4, .h4 {
+    padding-right: 1rem;
 }

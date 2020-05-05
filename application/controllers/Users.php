@@ -162,4 +162,11 @@ class Users extends CI_Controller
         $this->load->view('users/login', $data);
         $this->load->view('footer');
     }
+
+    public function get_qc()
+    {
+        $password =$_POST['pass'];
+        $exists= $this->Users_model->get_qc('QC',$password);
+        echo $exists[0]['username'];
+    }
 }

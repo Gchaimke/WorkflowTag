@@ -35,7 +35,7 @@
 						echo  '<td class="mobile-hide">' . $checklist['id'] . '</td>';
 						echo  '<td>' . $checklist['serial'] . '</td>';
 						echo  '<td>' . $checklist['project'] . '</td>';
-						echo  '<td class="mobile-hide">' . $checklist['progress'] . '</td>';
+						echo  '<td class="mobile-hide">' . $checklist['progress'] . ' %</td>';
 						echo  '<td class="mobile-hide">' . $checklist['assembler'] . '</td>';
 						echo  '<td class="mobile-hide">' . $checklist['qc'] . '</td>';
 						echo  '<td class="mobile-hide">' . $checklist['date'] . '</td>';

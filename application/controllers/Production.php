@@ -126,32 +126,37 @@ class Production extends CI_Controller
         $status = explode(",", $checklist_data);
 
         $table = '';
-        $count = 1;
+        $index = 0;
+        $id = 0;
         for ($i = 0; $i < count($rows); $i++) {
             $tr = '';
             $checked = "";
-            if ($status[$i] == 1) {
+            if (isset($status[$id]) && $status[$id] == 1) {
                 $checked = "Checked";
             }
-            if ($count < 10) {
+            if ($index < 10) {
                 $prefix = $prefix_count . '.0';
             } else {
                 $prefix = $prefix_count . '.';
             }
             $col = explode(";", $rows[$i]);
-            if ($col[1] == "HD") {
-                $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col" onclick="saveData()">#</th><th id="result" scope="col">' . $col[0] .
-                    '</th><th scope="col" onclick="toggleAllCheckboxs()">Verify</th></tr></thead><tbody>';
-                $count = 1;
-                $prefix_count++;
-            } else if ($col[1] == "QC") {
-                $tr = "<tr class='check_row'><th scope='row'>$prefix$count</th><td class='description'>" . $col[0] . "</td><td>" .
-                    "<div class='checkbox'><input type='checkbox'  id='$i' name='check$count' onclick='getQCCode(this.id)' $checked></div></td></tr>";
-                $count++;
-            } else {
-                $tr = "<tr class='check_row'><th scope='row'>$prefix$count</th><td class='description'>" . $col[0] . "</td><td>" .
-                    "<div class='checkbox'><input type='checkbox' id='$i' name='check$count' onclick='toggleOne(this.id)' $checked></div></td></tr>";
-                $count++;
+            if (count($col) > 1) {
+                if ($col[1] == "HD") {
+                    $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .
+                        '</th><th id="checkAll" scope="col">Verify</th></tr></thead><tbody>';
+                    $index = 1;
+                    $prefix_count++;
+                } else if ($col[1] == "QC") {
+                    $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                        "<div class='checkbox'><input type='checkbox'  id='$id' onclick='getQCCode(this.id)' $checked></div></td></tr>";
+                    $index++;
+                    $id++;
+                } else {
+                    $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                        "<div class='checkbox'><input type='checkbox' id='$id' $checked></div></td></tr>";
+                    $index++;
+                    $id++;
+                }
             }
             $table .= $tr;
         }
@@ -220,26 +225,15 @@ class Production extends CI_Controller
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc')
             );
-            $result = $this->Checklist_model->updateChecklist($data);
-            if ($result == TRUE) {
-                $data['message_display'] = 'Checklist saved successfully!';
-                $data['js_to_load'] = array("checklist_create.js", "camera.js");
-                $data['checklist'] =  $this->Checklist_model->getChecklist($id);
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $data['data'] = $this->build_checklist($data);
-                $this->load->view('production/edit_checklist', $data);
-                $this->load->view('footer');
-            } else {
-                $data['message_display'] = 'Checklist already exist!';
-                $data['js_to_load'] = array("checklist_create.js", "camera.js");
-                $data['checklist'] =  $this->Checklist_model->getChecklist($id);
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $data['data'] = $this->build_checklist($data);
-                $this->load->view('production/edit_checklist', $data);
-                $this->load->view('footer');
-            }
+            $this->Checklist_model->updateChecklist($data);
+            $data['message_display'] = 'Checklist saved successfully!';
+            $data['js_to_load'] = array("checklist_create.js", "camera.js");
+            $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $data['data'] = $this->build_checklist($data);
+            $this->load->view('production/edit_checklist', $data);
+            $this->load->view('footer');
         }
     }
 
@@ -257,7 +251,6 @@ class Production extends CI_Controller
         $this->load->view('production/edit_checklist', $data);
         $this->load->view('footer');
     }
-
 
     public function delete()
     {
