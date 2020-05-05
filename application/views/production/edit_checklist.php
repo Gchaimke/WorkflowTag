@@ -55,7 +55,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="controls">
 			<button id="select_camera" class="btn btn-success">Select camera</button>
 			<button id="close_camera" class="btn btn-danger">Close camera</button>
-			<select id="select">
+			<select class="form-control" id="select">
 				<option></option>
 			</select>
 		</div>

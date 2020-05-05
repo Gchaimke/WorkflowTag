@@ -1,5 +1,5 @@
 .DS_Store
-Production/*
+Uploads/*
 application/cache/*
 !application/cache/index.html
 
