@@ -15,8 +15,6 @@ if (isset($this->session->userdata['logged_in'])) {
 	$assembler=$username;
   }
 }
-
-
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css');?>" >
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css');?>">

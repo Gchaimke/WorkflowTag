@@ -4,9 +4,11 @@ const select = document.getElementById('select');
 let currentStream;
 
 function stopMediaTracks(stream) {
-  stream.getTracks().forEach(track => {
-    track.stop();
-  });
+  if (typeof stream !== 'undefined') {
+    stream.getTracks().forEach(track => {
+      track.stop();
+    });
+  }
 }
 
 function gotDevices(mediaDevices) {
@@ -21,6 +23,9 @@ function gotDevices(mediaDevices) {
       const textNode = document.createTextNode(label);
       option.appendChild(textNode);
       select.appendChild(option);
+    } else {
+      option.appendChild("No camers");
+      select.appendChild("no Camera");
     }
   });
 }
@@ -39,20 +44,22 @@ button.addEventListener('click', event => {
     video: videoConstraints,
     audio: false
   };
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then(stream => {
+  if (typeof navigator.mediaDevices !== 'undefined') {
+    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
       currentStream = stream;
       video.srcObject = stream;
       return navigator.mediaDevices.enumerateDevices();
     })
-    .then(gotDevices)
-    .catch(error => {
-      console.error(error);
-    });
+      .then(gotDevices)
+      .catch(error => {
+        console.error(error);
+      });
+  }
 });
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices);
+if (typeof navigator.mediaDevices !== 'undefined') {
+  navigator.mediaDevices.enumerateDevices().then(gotDevices);
+}
 
 video.addEventListener("click", function () {
   var canvas = document.getElementById('canvas');
@@ -60,7 +67,7 @@ video.addEventListener("click", function () {
   $(".video-frame").toggle();
   context.drawImage(video, 0, 0, 1920, 1080);
   stopMediaTracks(currentStream);
-  dataURL = canvas.toDataURL();
+  dataURL = canvas.toDataURL('image/png', 0.1);
   $.post("/production/save_photo", {
     data: dataURL,
     pr: pr,
@@ -68,21 +75,22 @@ video.addEventListener("click", function () {
     num: photoCount
   }).done(function (o) {
     console.log('photo saved to server.');
-    $("#photo-stock").append('<span id="' + sn + '_' + photoCount + 
-    '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' +
-     sn + '_' + photoCount + '"src="/Uploads/' + pr  + '/' + sn +
+    $("#photo-stock").append('<span id="' + sn + '_' + photoCount +
+      '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' +
+      sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
       '/' + sn + '_' + photoCount + '.png' + '" class="respondCanvas" >');
     photoCount++;
+
   });
-  
+
 });
 
 function delPhoto(id) {
   $.post("/production/delete_photo", {
-    photo: '/Uploads/' + pr  + '/' + sn + '/' + id + '.png'
+    photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.png'
   }).done(function (o) {
     console.log('photo deleted from the server.');
-    $('[id^='+id+']').remove();
+    $('[id^=' + id + ']').remove();
   });
 }
 
