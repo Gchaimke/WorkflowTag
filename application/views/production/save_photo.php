@@ -30,6 +30,6 @@ if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
 $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
 $success = file_put_contents($file, $img);
 if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
-    shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --force ' . escapeshellarg($file));
+    shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --speed 10 --nofs --force ' . escapeshellarg($file));
 }
 print $success ? $file : 'Unable to save the file.';
