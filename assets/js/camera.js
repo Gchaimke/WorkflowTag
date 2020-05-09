@@ -83,12 +83,15 @@ video.addEventListener("click", function () {
 });
 
 function delPhoto(id) {
-  $.post("/production/delete_photo", {
-    photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.png'
-  }).done(function (o) {
-    console.log('photo deleted from the server.');
-    $('[id^=' + id + ']').remove();
-  });
+  var r = confirm("Delete Photo with id: " + id + "?");
+  if (r == true) {
+    $.post("/production/delete_photo", {
+      photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.png'
+    }).done(function (o) {
+      console.log('photo deleted from the server.');
+      $('[id^=' + id + ']').remove();
+    });
+  }
 }
 
 // Trigger photo take
