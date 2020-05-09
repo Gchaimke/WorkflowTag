@@ -89,7 +89,6 @@ class Admin_model extends CI_Model
             'serial' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 30,
-                'unique' => TRUE
             ),
             'client' => array(
                 'type' => 'VARCHAR',
@@ -210,6 +209,29 @@ class Admin_model extends CI_Model
 		$this->db->from('settings');
 		$query = $this->db->get();
 		$response = $query->result_array();
+		return $response;
+    }
+
+    function getStatistic(){
+        $response = array();
+        //get users number
+		$this->db->select('*');
+		$this->db->from('users');
+        $query = $this->db->get();
+        $count = $query->result_array();
+        $response['users'] = count($count);
+		//get clients number
+		$this->db->select('*');
+		$this->db->from('clients');
+        $query = $this->db->get();
+        $count = $query->result_array();
+        $response['clients'] = count($count);
+        //get checklists number
+		$this->db->select('*');
+		$this->db->from('checklists');
+        $query = $this->db->get();
+        $count = $query->result_array();
+        $response['checklists'] = count($count);
 		return $response;
     }
 }

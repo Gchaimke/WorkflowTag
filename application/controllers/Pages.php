@@ -5,24 +5,22 @@ class Pages extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('Admin_model');
+		$this->load->model('Admin_model');
     }
-	public function index()
+	public function index($data='')
 	{
+		$data = $this->Admin_model->getStatistic();
 		$this->load->view('header');
 		$this->load->view('main_menu');
-		$this->load->view('pages/dashboard');
+		$this->load->view('pages/dashboard', $data);
 		$this->load->view('footer');
 	}
 
-	function view($page = 'home')
+	public function error($data='')
 	{
-		if (!file_exists('application/views/pages/' . $page . '.php')) {
-			show_404();
-		}
 		$this->load->view('header');
 		$this->load->view('main_menu');
-		$this->load->view('pages/' . $page);
+		$this->load->view('pages/error',$data);
 		$this->load->view('footer');
 	}
 }

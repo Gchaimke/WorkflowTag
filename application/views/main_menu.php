@@ -6,7 +6,7 @@ if (isset($this->session->userdata['logged_in'])) {
 }
 ?>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark main-menu">
-  <a class="navbar-brand" href="/dashboard">Workflow Tag</a>
+  <a class="navbar-brand" href="/">Workflow Tag</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -21,7 +21,7 @@ if (isset($this->session->userdata['logged_in'])) {
       <?php
       if ($role == 'Admin') {
         echo '<li class="nav-item"><a class="nav-link" href="/production/manage_clients">Clients</a></li>';
-        echo '<li class="nav-item"><a class="nav-link" href="/production/manage_projects">Projects</a></li>';
+        echo '<li class="nav-item"><a class="nav-link" href="/production/manage_templates">Templates</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/users">Users</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/admin/settings">Settings</a></li>';
       } ?>

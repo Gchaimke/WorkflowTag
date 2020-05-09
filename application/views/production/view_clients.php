@@ -14,19 +14,21 @@
 		}
 
 		echo '<div class="card-deck mt-4">';
-		foreach ($clients as $client){
-			echo '<div class="card"><center><div class="card-body"><h5 class="card-title">';
+		foreach ($clients as $client) {
+			echo '<div id="'.$client['name'].'" class="card"><center><div class="card-body"><h5 class="card-title">';
 			echo $client['name'];
 			echo '</h5><p class="card-text">Select Project:</p></div>';
 			echo '<div class="card-footer">';
-			$arr = explode(',',$client['projects']);
-			foreach($arr as $project){
-				echo  "<a href='/production/checklists/$project' class='btn btn-primary  btn-block'>$project</a>";
+			if ($client['projects'] != "") {
+				$arr = explode(',', $client['projects']);
+				foreach ($arr as $project) {
+					echo  "<a href='/production/checklists/$project' class='btn btn-primary  btn-block'>$project</a>";
+				}
 			}
 			echo '</div></center></div>';
 		}
-		
+
 		?>
-		</div>
+	</div>
 	</div>
 </main>

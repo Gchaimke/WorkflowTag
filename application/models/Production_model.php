@@ -24,6 +24,26 @@ class Production_model extends CI_Model
 		return $response;
 	}
 
+	public function addClient($data)
+	{
+		// Query to check whether username already exist or not
+		$condition = "name ='" . $data['name'] . "'";
+		$this->db->select('*');
+		$this->db->from('clients');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			// Query to insert data in database
+			$this->db->insert('clients', $data);
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+
 	function getClients($id = '',$projects='')
 	{
 		$response = array();
@@ -91,8 +111,8 @@ class Production_model extends CI_Model
 
 	public function insertNewChecklist($data)
 	{
-		// Query to check whether username already exist or not
-		$condition = "serial =" . "'" . $data['serial'] . "'";
+		// Query to check whether serial already exist or not
+		$condition = "serial ='" . $data['serial'] . "' AND project='" . $data['project'] . "'";
 		$this->db->select('*');
 		$this->db->from('Checklists');
 		$this->db->where($condition);
@@ -156,5 +176,10 @@ class Production_model extends CI_Model
 	function deleteProject($id)
 	{
 		$this->db->delete('wft_projects', array('id' => $id));
+	}
+
+	function deleteClient($id)
+	{
+		$this->db->delete('wft_clients', array('id' => $id));
 	}
 }

@@ -20,7 +20,8 @@ class Users extends CI_Controller
         $this->load->view('header');
         $this->load->view('main_menu');
         if ($role != "Admin") {
-            $this->load->view('/pages/dashboard', $data);
+            $data['message_display'] = "You are not Administrator";
+            $this->load->view('/pages/error', $data);
         } else {
             $this->load->view('users/manage', $data);
         }
@@ -42,20 +43,30 @@ class Users extends CI_Controller
             $this->load->view('users/edit', $data);
             $this->load->view('footer');
         } else {
-            $sql = array(
-                'id' => $this->input->post('id'),
-                'role' => $this->input->post('role'),
-                'password' => $this->input->post('password')
-            );
-            $data['message_display'] = $this->Users_model->editUser($sql);
-            $data['message_display'] .= ' User edited Successfully!';
-            // get data from model
-            $data['users'] = $this->Users_model->getUsers();
-            $this->load->view('header');
-            $this->load->view('main_menu');
             if ($role == "Admin") {
+                $sql = array(
+                    'id' => $this->input->post('id'),
+                    'role' => $this->input->post('role'),
+                    'password' => $this->input->post('password')
+                );
+                $data['message_display'] = $this->Users_model->editUser($sql);
+                $data['message_display'] .= ' User edited Successfully!';
+                // get data from model
+                $data['users'] = $this->Users_model->getUsers();
+                $this->load->view('header');
+                $this->load->view('main_menu');
                 $this->load->view('users/manage', $data);
-            }else{
+            } else {
+                $sql = array(
+                    'id' => $this->input->post('id'),
+                    'role' => $role,
+                    'password' => $this->input->post('password')
+                );
+                $this->Users_model->editUser($sql);
+                $data = $this->Admin_model->getStatistic();
+                $data['message_display'] = " Password saved";
+                $this->load->view('header');
+                $this->load->view('main_menu');
                 $this->load->view("/pages/dashboard", $data);
             }
             $this->load->view('footer');
@@ -84,9 +95,10 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (isset($this->session->userdata['logged_in'])) {
+                $data = $this->Admin_model->getStatistic();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('/pages/dashboard');
+                $this->load->view('/pages/dashboard', $data);
                 $this->load->view('footer');
             } else {
                 $this->load->view('users/login');
@@ -109,9 +121,10 @@ class Users extends CI_Controller
                     );
                     // Add user data in session
                     $this->session->set_userdata('logged_in', $session_data);
+                    $data = $this->Admin_model->getStatistic();
                     $this->load->view('header');
                     $this->load->view('main_menu');
-                    $this->load->view('/pages/dashboard');
+                    $this->load->view('/pages/dashboard', $data);
                     $this->load->view('footer');
                 }
             } else {

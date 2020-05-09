@@ -4,13 +4,21 @@ if (isset($this->session->userdata['logged_in'])) {
         header("location: /dashboard");
     }
 }
+
+if (isset($clients)) {
+      echo '<script>var clients = {};'.PHP_EOL;
+      foreach ($clients as $client) {
+             echo 'clients["'.$client['name'].'"]="' . $client['projects'] . '";'.PHP_EOL;
+       }
+       echo '</script>';
+ }
 ?>
 <main role="main">
       <div class="container">
             <div class="jumbotron">
                   <div class="container">
                         <center>
-                              <h2 class="display-3">Add Project</h2>
+                              <h2 class="display-3">Add Template</h2>
                         </center>
                   </div>
             </div>
@@ -25,8 +33,8 @@ if (isset($this->session->userdata['logged_in'])) {
                   }
                   ?>
 
-                  <?php echo form_open('production/add_project', 'class=user-create'); ?>
-                  <select class="form-control" name='client'>
+                  <?php echo form_open('production/add_template', 'class=user-create'); ?>
+                  <select id="select_client" class="form-control" name='client'>
                         <?php if (isset($clients)) {
                              foreach ($clients as $client) {
                                     echo '<option>' . $client['name'] . '</option>';
@@ -34,7 +42,8 @@ if (isset($this->session->userdata['logged_in'])) {
                         }
                         ?>
                   </select></br>
-                  <input type='text' class="form-control" name='project' value=""></br>
+                  <select id="select_project" class="form-control" name='project'>
+                  </select></br>
                   <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>

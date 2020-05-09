@@ -11,7 +11,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3">Projects</h2>
+					<h2 class="display-3">Templates</h2>
 				</center>
 			</div>
 		</div>
@@ -21,12 +21,12 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/production/add_project">Add Project</a>
+		<a class="btn btn-success" href="/production/add_template">Add Template</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Client</th>
-					<th scope="col">Project</th>
+					<th scope="col">Template</th>
 					<th scope="col">Edit</th>
 					<th scope="col">Delete</th>
 				</tr>
@@ -37,7 +37,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						echo '<tr id="' . $project['id'] . '">';
 						echo  '<td>' . $project['client'] . '</td>';
 						echo  '<td>' . $project['project'] . '</td>';
-						echo "<td><a href='/production/edit_project/" . $project['id'] . 
+						echo "<td><a href='/production/edit_template/" . $project['id'] . 
 						"' class='btn btn-info'>Edit</a></td>";
 						echo "<td><button id='" . $project['id'] . 
 						"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";

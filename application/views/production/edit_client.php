@@ -10,7 +10,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3">Edit Project</h2>
+					<h2 class="display-3">Edit Client</h2>
 				</center>
 			</div>
 		</div>
@@ -32,13 +32,12 @@ if (isset($this->session->userdata['logged_in'])) {
 				$client = $clients[0]['name'];
 				$projects = $clients[0]['projects'];
 			}
-			?>
+			?> 
 			<?php echo form_open("production/edit_client/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
-			<div class="form-group"><label>Projects</label><textarea name="roles" class="form-control" rows="2" cols="30">
-			<?php echo $projects ?>
-			</textarea></div>
+			<div class="form-group"><label>Projects</label>
+			<input type='text' class="form-control" name='projects' value="<?php echo $projects ?>"></div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
 			<?php echo form_close(); ?>
 		</center>

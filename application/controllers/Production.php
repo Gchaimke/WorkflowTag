@@ -16,7 +16,6 @@ class Production extends CI_Controller
     {
         // get data from model
         $data['clients'] = $this->Production_model->getClients();
-        $data['message_display'] = "Hello";
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('production/view_clients', $data);
@@ -53,7 +52,7 @@ class Production extends CI_Controller
             $data = array(
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
-                'serial' => $this->input->post('serial'),
+                'serial' => trim($this->input->post('serial')),
                 'data' =>  $zero_str,
                 'date' => $this->input->post('date')
             );
@@ -77,46 +76,47 @@ class Production extends CI_Controller
     {
         $prefix_count = 0;
         $checked = "";
+        $table = '';
         $project = $data['checklist'][0]['project'];
         $checklist_data = $data['checklist'][0]['data'];
-        $project_data = $this->Production_model->getProject('', $project)[0]['data'];
-        $rows = explode(PHP_EOL, $project_data);
-        $status = explode(",", $checklist_data);
-
-        $table = '';
-        $index = 0;
-        $id = 0;
-        for ($i = 0; $i < count($rows); $i++) {
-            $tr = '';
-            $checked = "";
-            if (isset($status[$id]) && $status[$id] == 1) {
-                $checked = "Checked";
-            }
-            if ($index < 10) {
-                $prefix = $prefix_count . '.0';
-            } else {
-                $prefix = $prefix_count . '.';
-            }
-            $col = explode(";", $rows[$i]);
-            if (count($col) > 1) {
-                if ($col[1] == "HD") {
-                    $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .
-                        '</th><th id="checkAll" scope="col">Verify</th></tr></thead><tbody>';
-                    $index = 1;
-                    $prefix_count++;
-                } else if ($col[1] == "QC") {
-                    $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                        "<div class='checkbox'><input type='checkbox'  id='$id' onclick='getQCCode(this.id)' $checked></div></td></tr>";
-                    $index++;
-                    $id++;
-                } else {
-                    $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                        "<div class='checkbox'><input type='checkbox' id='$id' $checked></div></td></tr>";
-                    $index++;
-                    $id++;
+        if (count($this->Production_model->getProject('', $project)) > 0) {
+            $project_data = $this->Production_model->getProject('', $project)[0]['data'];
+            $rows = explode(PHP_EOL, $project_data);
+            $status = explode(",", $checklist_data);
+            $index = 0;
+            $id = 0;
+            for ($i = 0; $i < count($rows); $i++) {
+                $tr = '';
+                $checked = "";
+                if (isset($status[$id]) && $status[$id] == 1) {
+                    $checked = "Checked";
                 }
+                if ($index < 10) {
+                    $prefix = $prefix_count . '.0';
+                } else {
+                    $prefix = $prefix_count . '.';
+                }
+                $col = explode(";", $rows[$i]);
+                if (count($col) > 1) {
+                    if ($col[1] == "HD") {
+                        $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .
+                            '</th><th id="checkAll" scope="col">Verify</th></tr></thead><tbody>';
+                        $index = 1;
+                        $prefix_count++;
+                    } else if ($col[1] == "QC") {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                            "<div class='checkbox'><input type='checkbox'  id='$id' onclick='getQCCode(this.id)' $checked></div></td></tr>";
+                        $index++;
+                        $id++;
+                    } else {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                            "<div class='checkbox'><input type='checkbox' id='$id' $checked></div></td></tr>";
+                        $index++;
+                        $id++;
+                    }
+                }
+                $table .= $tr;
             }
-            $table .= $tr;
         }
 
         $table .= '</tbody></table>';
@@ -195,28 +195,29 @@ class Production extends CI_Controller
         $this->load->view('production/delete_photo');
     }
 
-    public function manage_projects($data = '')
+    public function manage_templates($data = '')
     {
         // get data from model
         $data['projects'] = $this->Production_model->getprojects();
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('production/manage_projects', $data);
+        $this->load->view('production/manage_templates', $data);
         $this->load->view('footer');
     }
 
     // Validate and store checklist data in database
-    public function add_project()
+    public function add_template()
     {
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
+            $data['js_to_load'] = array("add_template.js");
             $data['clients'] = $this->Production_model->getClients();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('production/add_project', $data);
+            $this->load->view('production/add_template', $data);
             $this->load->view('footer');
         } else {
             $data = array(
@@ -227,19 +228,20 @@ class Production extends CI_Controller
             $result = $this->Production_model->addproject($data);
             if ($result == TRUE) {
                 $data['message_display'] = 'Project added Successfully !';
-                $this->manage_projects($data);
+                $this->manage_templates($data);
             } else {
+                $data['js_to_load'] = array("add_template.js");
                 $data['message_display'] = 'project already exist!';
                 $data['clients'] = $this->Production_model->getClients();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('production/add_project', $data);
+                $this->load->view('production/add_template', $data);
                 $this->load->view('footer');
             }
         }
     }
 
-    public function edit_project($id = '')
+    public function edit_template($id = '')
     {
         // Check validation for user input in form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
@@ -251,7 +253,7 @@ class Production extends CI_Controller
             $data['project'] =  $this->Production_model->getProject($id);
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('production/edit_project', $data);
+            $this->load->view('production/edit_template', $data);
             $this->load->view('footer');
         } else {
             $sql = array(
@@ -260,7 +262,7 @@ class Production extends CI_Controller
             );
             $data['message_display'] = $this->Production_model->editProject($sql);
             $data['message_display'] .= ' Project edited Successfully !';
-            $this->manage_projects($data);
+            $this->manage_templates($data);
         }
     }
 
@@ -270,6 +272,36 @@ class Production extends CI_Controller
         if ($role == "Admin") {
             $id = $_POST['id'];
             $this->Production_model->deleteProject($id);
+        }
+    }
+
+    // Validate and store checklist data in database
+    public function add_client()
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/add_client');
+            $this->load->view('footer');
+        } else {
+            $data = array(
+                'name' => $this->input->post('name'),
+                'projects' => $this->input->post('projects')
+            );
+            $result = $this->Production_model->addClient($data);
+            if ($result == TRUE) {
+                $data['message_display'] = 'Client added Successfully !';
+                $this->manage_clients($data);
+            } else {
+                $data['message_display'] = 'Client already exist!';
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('production/add_client', $data);
+                $this->load->view('footer');
+            }
         }
     }
 
@@ -304,6 +336,15 @@ class Production extends CI_Controller
             $data['message_display'] = $this->Production_model->editClient($sql);
             $data['message_display'] .= ' Client edited Successfully !';
             $this->manage_clients($data);
+        }
+    }
+
+    public function delete_client()
+    {
+        $role = ($this->session->userdata['logged_in']['role']);
+        if ($role == "Admin") {
+            $id = $_POST['id'];
+            $this->Production_model->deleteClient($id);
         }
     }
 }

@@ -1,102 +1,41 @@
 <main role="main">
     <div class="container">
         <?php
+        $users_count = 0;
+        $clients_count = 0;
+        $checklists_count = 0;
         if (isset($message_display)) {
             echo "<div class='alert alert-success' role='alert'>";
             echo $message_display . '</div>';
         }
+
+        if (isset($users) and isset($clients) and isset($checklists)) {
+            $users_count = $users;
+            $clients_count = $clients;
+            $checklists_count = $checklists;
+        }
         ?>
-        <div class="card-deck mt-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Flex2 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
+        <center>
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Workflow Tag</h1>
+                    <p class="lead">System Status</p>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Lap3 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C16 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C17 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-        </div>
-        <div class="card-deck mt-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C17 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C17 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C17 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">New Matan C17 Checklist</h5>
-                    <p class="card-text"></p>
-                    <input class="form-control" type="text" placeholder="Serial Number">
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">To create new checklist.</small>
-                    <button type="button" class="btn btn-primary btn-lg btn-block">Create New</button>
-                </div>
-            </div>
-        </div>
+        </center>
+        <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Users
+                <span class="badge badge-primary badge-pill"><?php echo $users_count?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Clients
+                <span class="badge badge-primary badge-pill"><?php echo $clients_count?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                Checklists
+                <span class="badge badge-primary badge-pill"><?php echo $checklists_count?></span>
+            </li>
+        </ul>
     </div>
 </main>

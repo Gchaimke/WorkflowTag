@@ -21,7 +21,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/production/add_project">Add Project</a>
+		<a class="btn btn-success" href="/production/add_client">Add Client</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>

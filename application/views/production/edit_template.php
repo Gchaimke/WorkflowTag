@@ -10,7 +10,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3">Edit Project</h2>
+					<h2 class="display-3">Edit Template</h2>
 				</center>
 			</div>
 		</div>
@@ -36,7 +36,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			}
 			?>
 
-			<?php echo form_open('production/edit_project', 'class=user-create'); ?>
+			<?php echo form_open('production/edit_template', 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='client' value="<?php echo $client ?>" disabled></br>
 			<input type='text' class="form-control" name='project' value="<?php echo $pr ?>" disabled></br>
