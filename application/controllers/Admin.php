@@ -11,17 +11,17 @@ class Admin extends CI_Controller
 	{
 		$data['settings'] = '';
 		$data['response'] = '';
-		$this->load->model('Settings_model');
+		$this->load->model('Admin_model');
 		$this->load->view('header');
 		$this->load->view('main_menu');
 		if ($this->input->post('submit') != NULL) {
 			$data['response'] = 'Settings saved!';
-			$data['settings'] = $this->Settings_model->getSettings();
+			$data['settings'] = $this->Admin_model->getSettings();
 			$this->load->view('admin/settings', $data);
 		} else {
 			// load view
 			if ($this->db->table_exists('settings')) {
-				$data['settings'] = $this->Settings_model->getSettings();
+				$data['settings'] = $this->Admin_model->getSettings();
 			}
 			$this->load->view('admin/settings', $data);
 		}
@@ -30,34 +30,40 @@ class Admin extends CI_Controller
 
 	function create()
 	{
-		$this->load->model('Settings_model');
+		$this->load->model('Admin_model');
 		$data['response'] = '';
 		if (!$this->db->table_exists('users')) {
-			$this->Settings_model->createUsersDb();
+			$this->Admin_model->createUsersDb();
 			$data['response'] .= "Table 'users' created!<br>";
 		} else {
 			$data['response'] .= "Table 'users' exists!<br>";
 		}
+		if (!$this->db->table_exists('clients')) {
+			$this->Admin_model->createClientsDb();
+			$data['response'] .= "Table 'clients' created!<br>";
+		} else {
+			$data['response'] .= "Table 'clients' exists!<br>";
+		}
 		if (!$this->db->table_exists('checklists')) {
-			$this->Settings_model->createChecklistDb();
+			$this->Admin_model->createChecklistDb();
 			$data['response'] .= "Table 'checklists' created!<br>";
 		} else {
 			$data['response'] .= "Table 'checklists' exists!<br>";
 		}
 		if (!$this->db->table_exists('projects')) {
-			$this->Settings_model->createProjectsDb();
+			$this->Admin_model->createProjectsDb();
 			$data['response'] .= "Table 'projects' created!<br>";
 		} else {
 			$data['response'] .= "Table 'projects' exists!<br>";
 		}
 		if (!$this->db->table_exists('settings')) {
-			$this->Settings_model->createSettingsDb();
-			$data['settings'] = $this->Settings_model->getSettings();
+			$this->Admin_model->createSettingsDb();
+			$data['settings'] = $this->Admin_model->getSettings();
 			$data['response'] .= "Table 'settings' created!<br>";
 		} else {
 			$data['response'] .= "Table 'settings' exists!<br>";
-			$data['settings'] = $this->Settings_model->getSettings();
-		}
+			$data['settings'] = $this->Admin_model->getSettings();
+		}		
 		$this->load->view('/admin/settings', $data);
 		return $data;
 	}

@@ -1,29 +1,55 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Checklist_model extends CI_Model
+class Production_model extends CI_Model
 {
-	function getChecklists()
-	{
-		$response = array();
-		// Select record
-		$this->db->select('*');
-		$q = $this->db->get('Checklists');
-		$response = $q->result_array();
-		return $response;
-	}
 
-	function getChecklist($id = '')
+	function getChecklists($id = '',$project='')
 	{
 		$response = array();
 		// Select record
 		$this->db->select('*');
 		$this->db->from('checklists');
-		$condition = "id ='" . $id . "'";
-		$this->db->where($condition);
-		$this->db->limit(1);
+		if ($id != '') {
+			$condition = "id ='$id'";
+			$this->db->where($condition);
+			$this->db->limit(1);
+		}
+		if ($project != '') {
+			$project = urldecode($project);
+			$condition = "project =\"$project\"";
+			$this->db->where($condition);
+		}
 		$q = $this->db->get();
 		$response = $q->result_array();
 		return $response;
+	}
+
+	function getClients($id = '',$projects='')
+	{
+		$response = array();
+		// Select record
+		$this->db->select('*');
+		$this->db->from('clients');
+		if ($id != '') {
+			$condition = "id ='$id'";
+			$this->db->where($condition);
+			$this->db->limit(1);
+		}
+		if ($projects != '') {
+			$condition = "projects LIKE '%$projects%'";
+			$this->db->where($condition);
+			$this->db->limit(1);
+		}
+		$q = $this->db->get();
+		$response = $q->result_array();
+		return $response;
+	}
+
+	public function editClient($data)
+	{
+		$where = "id ='" . $data['id']."'";
+		$data = array('projects' => $data['projects']);
+		return $this->db->update('clients', $data, $where);
 	}
 
 	function getProjects($client_name = '')
@@ -33,7 +59,7 @@ class Checklist_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('projects');
 		if (!$client_name == '') {
-			$condition = "client =" . "'" . $client_name . "'";
+			$condition = "client ='$client_name'";
 			$this->db->where($condition);
 		}
 		$q = $this->db->get();
@@ -48,9 +74,9 @@ class Checklist_model extends CI_Model
 		// Select record
 		$this->db->select('*');
 		$this->db->from('projects');
-		$condition = "id ='" . $id . "'";
+		$condition = "id ='$id'";
 		if (!$id == '') {
-			$condition = "id ='" . $id . "'";
+			$condition = "id ='$id'";
 		}
 
 		if (!$name == '') {

@@ -17,24 +17,9 @@
                         echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
                   }
                   ?>
-                  <?php echo form_open('production/add_checklist', 'class=user-create'); ?>
-                  <select  class="form-control" name='client' >
-                        <?php if (isset($settings)) {
-                              $arr = explode(",", $settings[0]['clients']);
-                              foreach ($arr as $role) {
-                                    echo '<option>' . $role . '</option>';
-                              }
-                        }
-                        ?>
-                  </select></br>
-                  <select class="form-control" name='project'>
-                        <?php if (isset($projects)) {
-                              foreach ($projects as $project) {
-                                    echo '<option>' . $project['project'] . '</option>';
-                              }
-                        }
-                        ?>
-                  </select></br>
+                  <?php echo form_open("production/add_checklist/$project", 'class=user-create'); ?>
+                  <input type='hidden' name='client' value='<?php echo $client[0]['name']?>'>
+                  <input type='hidden' name='project' value='<?php echo $project?>'>
                   <input class="form-control " type='text' name='serial' placeholder="Serial Number"></br>
                   <input type='text' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>

@@ -1,7 +1,8 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-  $username = ($this->session->userdata['logged_in']['username']);
-  $role = ($this->session->userdata['logged_in']['userrole']);
+  $id = ($this->session->userdata['logged_in']['id']);
+  $username = ($this->session->userdata['logged_in']['name']);
+  $role = ($this->session->userdata['logged_in']['role']);
 }
 ?>
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark main-menu">
@@ -19,6 +20,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <ul class="navbar-nav  pull-right">
       <?php
       if ($role == 'Admin') {
+        echo '<li class="nav-item"><a class="nav-link" href="/production/manage_clients">Clients</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/production/manage_projects">Projects</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/users">Users</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/admin/settings">Settings</a></li>';
@@ -28,6 +30,7 @@ if (isset($this->session->userdata['logged_in'])) {
           Hello <?php echo $username; ?>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/users/edit/<?php echo $id ?>">Password</a>
           <a class="dropdown-item" href="/users/logout">Logout</a>
         </div>
       </li>

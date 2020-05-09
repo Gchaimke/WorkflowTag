@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Settings_model extends CI_Model
+class Admin_model extends CI_Model
 {
     function createUsersDb()
     {
@@ -12,12 +12,12 @@ class Settings_model extends CI_Model
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'username' => array(
+            'name' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 30,
                 'unique' => TRUE
             ),
-            'userrole' => array(
+            'role' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 60
             ),
@@ -34,11 +34,46 @@ class Settings_model extends CI_Model
         $this->dbforge->create_table('users');
 
         $admin = array(
-            "username" => 'Admin',
-            "userrole" => 'Admin',
+            "name" => 'Admin',
+            "role" => 'Admin',
             "password" => 'rom12345'
         );
         $this->db->insert('users', $admin);
+    }
+
+    function createClientsDb()
+    {
+        $this->load->dbforge();
+        $client = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 60,
+                'unique' => TRUE
+            ),
+            'projects' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 500,
+                'unique' => TRUE
+            )
+        );
+
+        $this->dbforge->add_field($client);
+        // define primary key
+        $this->dbforge->add_key('id', TRUE);
+        // create table
+        $this->dbforge->create_table('clients');
+
+        $cl = array(
+            "name" => 'Simbionix',
+            "project" => 'Flex2'
+        );
+        $this->db->insert('clients', $cl);
     }
 
     function createChecklistDb()
@@ -151,10 +186,7 @@ class Settings_model extends CI_Model
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-            'clients' => array(
-                'type' => 'TEXT'
-            ),
-            'userroles' => array(
+            'roles' => array(
                 'type' => 'TEXT'
             )
         );
@@ -166,8 +198,7 @@ class Settings_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            "clients" => 'Simbionix,Verint,D-fend,Elta,EFI',
-            'userroles' => 'Admin,Assember,QC'
+            'roles' => 'Admin,Assember,QC'
         );
         $this->db->insert('settings', $st);
     }

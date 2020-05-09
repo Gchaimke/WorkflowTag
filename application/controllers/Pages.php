@@ -5,7 +5,7 @@ class Pages extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('Settings_model');
+        $this->load->model('Admin_model');
     }
 	public function index()
 	{

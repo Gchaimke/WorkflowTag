@@ -8,30 +8,35 @@ class Users extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Users_model');
-        $this->load->model('Settings_model');
+        $this->load->model('Admin_model');
     }
 
     public function index()
     {
         // get data from model
+        $role = ($this->session->userdata['logged_in']['role']);
         $data['users'] = $this->Users_model->getUsers();
         $this->load->view('header');
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('users/manage', $data);
+        if ($role != "Admin") {
+            $this->load->view('/pages/dashboard', $data);
+        } else {
+            $this->load->view('users/manage', $data);
+        }
         $this->load->view('footer');
     }
 
     public function edit($id = '')
     {
+        $role = ($this->session->userdata['logged_in']['role']);
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('userrole', 'Userrole', 'trim|xss_clean');
-        $this->form_validation->set_rules('username', 'Username', 'trim|xss_clean');
+        $this->form_validation->set_rules('role', 'Role', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['user'] =  $this->Users_model->getUser($id);
-            $data['settings'] = $this->Settings_model->getSettings();
+            $data['settings'] = $this->Admin_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('users/edit', $data);
@@ -39,25 +44,31 @@ class Users extends CI_Controller
         } else {
             $sql = array(
                 'id' => $this->input->post('id'),
-                'userrole' => $this->input->post('userrole'),
+                'role' => $this->input->post('role'),
                 'password' => $this->input->post('password')
             );
-            $data['message_display'] ='';
-            $data['message_display'] .= $this->Users_model->editUser($sql);
+            $data['message_display'] = $this->Users_model->editUser($sql);
             $data['message_display'] .= ' User edited Successfully!';
             // get data from model
             $data['users'] = $this->Users_model->getUsers();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('users/manage', $data);
+            if ($role == "Admin") {
+                $this->load->view('users/manage', $data);
+            }else{
+                $this->load->view("/pages/dashboard", $data);
+            }
             $this->load->view('footer');
         }
     }
 
     public function delete()
     {
-        $id = $_POST['id'];
-        $this->Users_model->deleteUser($id);
+        $role = ($this->session->userdata['logged_in']['role']);
+        if ($role != "Admin") {
+            $id = $_POST['id'];
+            $this->Users_model->deleteUser($id);
+        }
     }
 
     public function login()
@@ -69,7 +80,7 @@ class Users extends CI_Controller
     // Check for user login process
     public function user_login_process()
     {
-        $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             if (isset($this->session->userdata['logged_in'])) {
@@ -83,17 +94,18 @@ class Users extends CI_Controller
             }
         } else {
             $data = array(
-                'username' => $this->input->post('username'),
+                'name' => $this->input->post('name'),
                 'password' => $this->input->post('password')
             );
             $result = $this->Users_model->login($data);
             if ($result == TRUE) {
-                $username = $this->input->post('username');
-                $result = $this->Users_model->read_user_information($username);
+                $name = $this->input->post('name');
+                $result = $this->Users_model->read_user_information($name);
                 if ($result != false) {
                     $session_data = array(
-                        'username' => $result[0]->username,
-                        'userrole' => $result[0]->userrole,
+                        'id' => $result[0]->id,
+                        'name' => $result[0]->name,
+                        'role' => $result[0]->role,
                     );
                     // Add user data in session
                     $this->session->set_userdata('logged_in', $session_data);
@@ -116,19 +128,19 @@ class Users extends CI_Controller
     public function create()
     {
         // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('userrole', 'Userrole', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->Settings_model->getSettings();
+            $data['settings'] = $this->Admin_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('users/create',$data);
+            $this->load->view('users/create', $data);
             $this->load->view('footer');
         } else {
             $data = array(
-                'username' => $this->input->post('username'),
-                'userrole' => $this->input->post('userrole'),
+                'name' => $this->input->post('name'),
+                'role' => $this->input->post('role'),
                 'password' => $this->input->post('password')
             );
             $result = $this->Users_model->registration_insert($data);
@@ -141,7 +153,7 @@ class Users extends CI_Controller
                 $this->load->view('footer');
             } else {
                 $data['message_display'] = 'Username already exist!';
-                $data['settings'] = $this->Settings_model->getSettings();
+                $data['settings'] = $this->Admin_model->getSettings();
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/create', $data);
@@ -155,7 +167,7 @@ class Users extends CI_Controller
     {
         // Removing session data
         $sess_array = array(
-            'username' => ''
+            'name' => ''
         );
         $this->session->unset_userdata('logged_in', $sess_array);
         $data['message_display'] = 'Successfully Logout';
@@ -165,8 +177,8 @@ class Users extends CI_Controller
 
     public function get_qc()
     {
-        $password =$_POST['pass'];
-        $exists= $this->Users_model->get_qc('QC',$password);
-        echo $exists[0]['username'];
+        $password = $_POST['pass'];
+        $exists = $this->Users_model->get_qc('QC', $password);
+        echo $exists[0]['name'];
     }
 }

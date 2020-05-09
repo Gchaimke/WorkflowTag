@@ -1,3 +1,11 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    if($this->session->userdata['logged_in']['role'] != "Admin"){
+        header("location: /dashboard");
+    }
+}
+?>
+
 <main role="main">
     <div class="jumbotron">
         <div class="container">
@@ -15,14 +23,9 @@
         ?>
         <?php
         echo form_open('admin/settings', 'class=user-create');
-        echo '<div class="form-group"><label>Clients</label><textarea name="clients" class="form-control" rows="2" cols="30">';
+        echo '<div class="form-group"><label>User Roles</label><textarea name="roles" class="form-control" rows="2" cols="30">';
         if (isset($settings) && $settings != "") {
-            echo $settings[0]['clients'];
-        }
-        echo "</textarea></div>";
-        echo '<div class="form-group"><label>User Roles</label><textarea name="userroles" class="form-control" rows="2" cols="30">';
-        if (isset($settings) && $settings != "") {
-            echo $settings[0]['userroles'];
+            echo $settings[0]['roles'];
         }
         echo "</textarea></div>";
         echo "<input type='submit' class='btn btn-info btn-block' name='submit' value='Save'>";

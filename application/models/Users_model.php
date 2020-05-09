@@ -9,7 +9,7 @@ class Users_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('Users');
 		if (!$role == '') {
-			$condition = "userrole ='$role'";
+			$condition = "role ='$role'";
 			$this->db->where($condition);
 		}
 		$q = $this->db->get();
@@ -19,7 +19,7 @@ class Users_model extends CI_Model
 
 	public function get_qc($role = '',$pass='')
 	{
-		$condition = "userrole ='$role' AND password ='$pass'";
+		$condition = "role ='$role' AND password ='$pass'";
 		$this->db->select('*');
 		$this->db->from('Users');
 		$this->db->where($condition);
@@ -50,7 +50,7 @@ class Users_model extends CI_Model
 	public function editUser($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array('userrole' => $data['userrole'], 'password' => $data['password']);
+		$data = array('role' => $data['role'], 'password' => $data['password']);
 		return $this->db->update('users', $data, $where);
 	}
 
@@ -62,8 +62,8 @@ class Users_model extends CI_Model
 	// Insert registration data in database
 	public function registration_insert($data)
 	{
-		// Query to check whether username already exist or not
-		$condition = "username =" . "'" . $data['username'] . "'";
+		// Query to check whether name already exist or not
+		$condition = "name =" . "'" . $data['name'] . "'";
 		$this->db->select('*');
 		$this->db->from('Users');
 		$this->db->where($condition);
@@ -80,10 +80,10 @@ class Users_model extends CI_Model
 		}
 	}
 
-	// Read data using username and password
+	// Read data using name and password
 	public function login($data)
 	{
-		$condition = "username =" . "'" . $data['username'] . "' AND " . "password =" . "'" . $data['password'] . "'";
+		$condition = "name =" . "'" . $data['name'] . "' AND " . "password =" . "'" . $data['password'] . "'";
 		$this->db->select('*');
 		$this->db->from('Users');
 		$this->db->where($condition);
@@ -98,9 +98,9 @@ class Users_model extends CI_Model
 	}
 
 	// Read data from database to show data in admin page
-	public function read_user_information($username)
+	public function read_user_information($name)
 	{
-		$condition = "username =" . "'" . $username . "'";
+		$condition = "name =" . "'" . $name . "'";
 		$this->db->select('*');
 		$this->db->from('Users');
 		$this->db->where($condition);

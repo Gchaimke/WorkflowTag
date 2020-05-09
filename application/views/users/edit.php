@@ -1,3 +1,12 @@
+<?php
+if (isset($this->session->userdata['logged_in']) && isset($user)) {
+	if($this->session->userdata['logged_in']['id']!=$user[0]['id']){
+		if($this->session->userdata['logged_in']['role']!="Admin"){
+			header("location: /dashboard");
+		}
+	}
+} 
+?>
 <main role="main">
 	<div class="container">
 		<div class="jumbotron">
@@ -23,29 +32,35 @@
 
 			if (isset($user)) {
 				$id = $user[0]['id'];
-				$role = $user[0]['userrole'];
-				$name =  $user[0]['username'];
+				$role = $user[0]['role'];
+				$name =  $user[0]['name'];
 				$pass = $user[0]['password'];
 			}
 			?>
 
 			<?php echo form_open('users/edit', 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
-			<input type='text' class="form-control" name='username' value="<?php echo $name ?>" disabled></br>
-			<select class="form-control" name='userrole'>
-                        <?php if (isset($settings)) {
-                              $arr = explode(",", $settings[0]['userroles']);
-                              foreach ($arr as $crole) {
-																if($crole ==$role ){
-																	echo '<option selected>' . $crole . '</option>';
-																}else{
-																	echo '<option>' . $crole . '</option>';
-																}
-                                    
-                              }
-                        }
-                        ?>
-                  </select></br>
+			<input type='text' class="form-control" name='name' value="<?php echo $name ?>" disabled></br>
+			<?php
+			$current_role = ($this->session->userdata['logged_in']['role']);
+			if ($current_role == "Admin") {
+				echo "<select class='form-control' name='role'>";
+				if (isset($settings)) {
+					$arr = explode(",", $settings[0]['roles']);
+					foreach ($arr as $crole) {
+						if ($crole == $role) {
+							echo '<option selected>' . $crole . '</option>';
+						} else {
+							echo '<option>' . $crole . '</option>';
+						}
+					}
+				}
+				echo "</select></br>";
+			}else{
+				echo "<input type='hidden' name='role' value='$current_role'>";
+			}
+			?>
+
 			<input type='text' class="form-control" name='password' value="<?php echo $pass ?>"></br>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='update'>
 			<?php echo form_close(); ?>

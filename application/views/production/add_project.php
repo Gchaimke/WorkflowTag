@@ -1,3 +1,10 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    if($this->session->userdata['logged_in']['role'] != "Admin"){
+        header("location: /dashboard");
+    }
+}
+?>
 <main role="main">
       <div class="container">
             <div class="jumbotron">
@@ -20,10 +27,9 @@
 
                   <?php echo form_open('production/add_project', 'class=user-create'); ?>
                   <select class="form-control" name='client'>
-                        <?php if (isset($settings)) {
-                              $arr = explode(",",$settings[0]['clients']);
-                              foreach ($arr as $client) {
-                                    echo '<option>' . $client . '</option>';
+                        <?php if (isset($clients)) {
+                             foreach ($clients as $client) {
+                                    echo '<option>' . $client['name'] . '</option>';
                               }
                         }
                         ?>

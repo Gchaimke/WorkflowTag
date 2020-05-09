@@ -1,4 +1,11 @@
-<main role="main" class="container">
+<main role="main">
+    <div class="container">
+        <?php
+        if (isset($message_display)) {
+            echo "<div class='alert alert-success' role='alert'>";
+            echo $message_display . '</div>';
+        }
+        ?>
         <div class="card-deck mt-4">
             <div class="card">
                 <div class="card-body">
@@ -91,4 +98,5 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
+</main>

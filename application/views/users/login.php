@@ -47,7 +47,7 @@ echo "</div>";
 <img class="mb-4" src="/assets/img/user.png" alt="" width="100" height="100">
 <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 <label for="inputUser" class="sr-only">User Name</label>
-<input type="text" name="username" id="name" class="form-control" placeholder="User Name" required autofocus>
+<input type="text" name="name" id="name" class="form-control" placeholder="User Name" required autofocus>
 <label for="inputPassword" class="sr-only">Password</label>
 <input type="password" name="password" id="password" class="form-control" placeholder="Password" required>
 <input type="submit" value=" Login " name="submit" class="btn btn-lg btn-primary btn-block"/><br />

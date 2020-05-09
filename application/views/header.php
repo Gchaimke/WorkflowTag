@@ -1,8 +1,8 @@
 <!doctype html>
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-  $username = ($this->session->userdata['logged_in']['username']);
-  $role = ($this->session->userdata['logged_in']['userrole']);
+  $username = ($this->session->userdata['logged_in']['name']);
+  $role = ($this->session->userdata['logged_in']['role']);
 } else {
   header("location: /users/login");
 }

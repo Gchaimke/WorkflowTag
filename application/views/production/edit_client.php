@@ -1,8 +1,8 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
-        header("location: /dashboard");
-    }
+	if ($this->session->userdata['logged_in']['role'] != "Admin") {
+		header("location: /dashboard");
+	}
 }
 ?>
 <main role="main">
@@ -16,10 +16,8 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 		<center>
 			<?php
-				$id = "";
+			$id = "";
 			$client = "";
-			$pr =  "";
-			$dt = "";
 			if (isset($message_display)) {
 				echo "<div class='alert alert-danger' role='alert'>";
 				echo $message_display . '</div>';
@@ -28,19 +26,19 @@ if (isset($this->session->userdata['logged_in'])) {
 				echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 			}
 
-			if (isset($project)) {
-				$id = $project[0]['id'];
-				$client = $project[0]['client'];
-				$pr =  $project[0]['project'];
-				$dt = $project[0]['data'];
+			if (isset($clients)) {
+				//print_r($clients);
+				$id = $clients[0]['id'];
+				$client = $clients[0]['name'];
+				$projects = $clients[0]['projects'];
 			}
 			?>
-
-			<?php echo form_open('production/edit_project', 'class=user-create'); ?>
+			<?php echo form_open("production/edit_client/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
-			<input type='text' class="form-control" name='client' value="<?php echo $client ?>" disabled></br>
-			<input type='text' class="form-control" name='project' value="<?php echo $pr ?>" disabled></br>
-			<textarea class="form-control" name='data' rows="10" cols="170"><?php echo $dt ?></textarea></br>
+			<input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
+			<div class="form-group"><label>Projects</label><textarea name="roles" class="form-control" rows="2" cols="30">
+			<?php echo $projects ?>
+			</textarea></div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
 			<?php echo form_close(); ?>
 		</center>

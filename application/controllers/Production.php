@@ -8,32 +8,33 @@ class Production extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('Checklist_model');
-        $this->load->model('Settings_model');
+        $this->load->model('Production_model');
+        $this->load->model('Admin_model');
     }
 
     public function index()
     {
         // get data from model
-        $data['checklists'] = $this->Checklist_model->getChecklists();
+        $data['clients'] = $this->Production_model->getClients();
+        $data['message_display'] = "Hello";
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('production/view_clients', $data);
+        $this->load->view('footer');
+    }
+
+    public function checklists($project = '', $data = '')
+    {
+        // get data from model
+        $data['checklists'] = $this->Production_model->getChecklists('', $project);
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('production/manage_checklists', $data);
         $this->load->view('footer');
     }
 
-    public function manage_projects()
-    {
-        // get data from model
-        $data['projects'] = $this->Checklist_model->getprojects();
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        $this->load->view('production/manage_projects', $data);
-        $this->load->view('footer');
-    }
-
     // Validate and store checklist data in database
-    public function add_checklist()
+    public function add_checklist($project = '', $data = '')
     {
         // Check validation for user input in SignUp form
         $zero_str = implode(", ", array_fill(0, 400, 0));
@@ -42,8 +43,8 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->Settings_model->getSettings();
-            $data['projects'] = $this->Checklist_model->getprojects();
+            $data['client'] = $this->Production_model->getClients('', $project);
+            $data['project'] = $project;
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('production/add_checklist', $data);
@@ -56,60 +57,17 @@ class Production extends CI_Controller
                 'data' =>  $zero_str,
                 'date' => $this->input->post('date')
             );
-            $result = $this->Checklist_model->insertNewChecklist($data);
+            $result = $this->Production_model->insertNewChecklist($data);
             if ($result == TRUE) {
-                $data['message_display'] = 'Checklist added Successfully !';
-                // get data from model
-                $data['checklists'] = $this->Checklist_model->getChecklists();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('production/manage_checklists', $data);
-                $this->load->view('footer');
+                $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' added Successfully !';
+                $this->checklists($this->input->post('project'), $data);
             } else {
-                $data['message_display'] = 'Checklist already exist!';
-                $data['settings'] = $this->Settings_model->getSettings();
+                $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
+                $data['client'] = $this->Production_model->getClients('', $project);
+                $data['project'] = $this->input->post('project');
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('production/add_checklist', $data);
-                $this->load->view('footer');
-            }
-        }
-    }
-
-    // Validate and store checklist data in database
-    public function add_project()
-    {
-        // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->Settings_model->getSettings();
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('production/add_project', $data);
-            $this->load->view('footer');
-        } else {
-            $data = array(
-                'client' => $this->input->post('client'),
-                'project' => $this->input->post('project'),
-                'data' => $this->input->post('data')
-            );
-            $result = $this->Checklist_model->addproject($data);
-            if ($result == TRUE) {
-                $data['message_display'] = 'Project added Successfully !';
-                // get data from model
-                $data['projects'] = $this->Checklist_model->getprojects();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('production/manage_projects', $data);
-                $this->load->view('footer');
-            } else {
-                $data['message_display'] = 'project already exist!';
-                $data['settings'] = $this->Settings_model->getSettings();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('production/add_project', $data);
                 $this->load->view('footer');
             }
         }
@@ -121,7 +79,7 @@ class Production extends CI_Controller
         $checked = "";
         $project = $data['checklist'][0]['project'];
         $checklist_data = $data['checklist'][0]['data'];
-        $project_data = $this->Checklist_model->getProject('', $project)[0]['data'];
+        $project_data = $this->Production_model->getProject('', $project)[0]['data'];
         $rows = explode(PHP_EOL, $project_data);
         $status = explode(",", $checklist_data);
 
@@ -169,43 +127,12 @@ class Production extends CI_Controller
     public function edit_checklist($id = '')
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
-        $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+        $data['checklist'] =  $this->Production_model->getChecklists($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $data['data'] = $this->build_checklist($data);
         $this->load->view('production/edit_checklist', $data);
         $this->load->view('footer');
-    }
-
-    public function edit_project($id = '')
-    {
-        // Check validation for user input in form
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['settings'] = $this->Settings_model->getSettings();
-            $data['project'] =  $this->Checklist_model->getProject($id);
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('production/edit_project', $data);
-            $this->load->view('footer');
-        } else {
-            $sql = array(
-                'id' => $this->input->post('id'),
-                'data' => $this->input->post('data')
-            );
-            $data['message_display'] = '';
-            $data['message_display'] .= $this->Checklist_model->editProject($sql);
-            $data['message_display'] .= ' Project edited Successfully !';
-            // get data from model
-            $data['projects'] = $this->Checklist_model->getprojects();
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('production/manage_projects', $data);
-            $this->load->view('footer');
-        }
     }
 
     public function save_checklist($id = '')
@@ -225,10 +152,10 @@ class Production extends CI_Controller
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc')
             );
-            $this->Checklist_model->updateChecklist($data);
+            $this->Production_model->updateChecklist($data);
             $data['message_display'] = 'Checklist saved successfully!';
             $data['js_to_load'] = array("checklist_create.js", "camera.js");
-            $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+            $data['checklist'] =  $this->Production_model->getChecklists($id);
             $this->load->view('header');
             $this->load->view('main_menu');
             $data['data'] = $this->build_checklist($data);
@@ -244,7 +171,7 @@ class Production extends CI_Controller
         $data['message_display'] .= exec($html2pdf . ' https://localhost/production/edit_checklist/1 "' . getcwd() . '\test.pdf"');
 
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
-        $data['checklist'] =  $this->Checklist_model->getChecklist($id);
+        $data['checklist'] =  $this->Production_model->getChecklists($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $data['data'] = $this->build_checklist($data);
@@ -255,13 +182,7 @@ class Production extends CI_Controller
     public function delete()
     {
         $id = $_POST['id'];
-        $this->Checklist_model->deleteChecklist($id);
-    }
-
-    public function delete_project()
-    {
-        $id = $_POST['id'];
-        $this->Checklist_model->deleteProject($id);
+        $this->Production_model->deleteChecklist($id);
     }
 
     public function save_photo()
@@ -272,5 +193,117 @@ class Production extends CI_Controller
     public function delete_photo()
     {
         $this->load->view('production/delete_photo');
+    }
+
+    public function manage_projects($data = '')
+    {
+        // get data from model
+        $data['projects'] = $this->Production_model->getprojects();
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('production/manage_projects', $data);
+        $this->load->view('footer');
+    }
+
+    // Validate and store checklist data in database
+    public function add_project()
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $data['clients'] = $this->Production_model->getClients();
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/add_project', $data);
+            $this->load->view('footer');
+        } else {
+            $data = array(
+                'client' => $this->input->post('client'),
+                'project' => $this->input->post('project'),
+                'data' => $this->input->post('data')
+            );
+            $result = $this->Production_model->addproject($data);
+            if ($result == TRUE) {
+                $data['message_display'] = 'Project added Successfully !';
+                $this->manage_projects($data);
+            } else {
+                $data['message_display'] = 'project already exist!';
+                $data['clients'] = $this->Production_model->getClients();
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('production/add_project', $data);
+                $this->load->view('footer');
+            }
+        }
+    }
+
+    public function edit_project($id = '')
+    {
+        // Check validation for user input in form
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
+        $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
+        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $data['clients'] = $this->Production_model->getClients();
+            $data['project'] =  $this->Production_model->getProject($id);
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/edit_project', $data);
+            $this->load->view('footer');
+        } else {
+            $sql = array(
+                'id' => $this->input->post('id'),
+                'data' => $this->input->post('data')
+            );
+            $data['message_display'] = $this->Production_model->editProject($sql);
+            $data['message_display'] .= ' Project edited Successfully !';
+            $this->manage_projects($data);
+        }
+    }
+
+    public function delete_project()
+    {
+        $role = ($this->session->userdata['logged_in']['role']);
+        if ($role == "Admin") {
+            $id = $_POST['id'];
+            $this->Production_model->deleteProject($id);
+        }
+    }
+
+    public function manage_clients($data = '')
+    {
+        // get data from model
+        $data['clients'] = $this->Production_model->getClients();
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('production/manage_clients', $data);
+        $this->load->view('footer');
+    }
+
+    public function edit_client($id = '')
+    {
+        // Check validation for user input in form
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
+        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $data['clients'] = $this->Production_model->getClients($id);
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/edit_client', $data);
+            $this->load->view('footer');
+        } else {
+            $sql = array(
+                'id' => $this->input->post('id'),
+                'name' => $this->input->post('name'),
+                'projects' => $this->input->post('projects')
+            );
+            $data['message_display'] = $this->Production_model->editClient($sql);
+            $data['message_display'] .= ' Client edited Successfully !';
+            $this->manage_clients($data);
+        }
     }
 }

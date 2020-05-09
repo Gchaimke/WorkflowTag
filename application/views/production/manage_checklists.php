@@ -1,9 +1,13 @@
+<?php
+$project =  explode("/", $_SERVER['REQUEST_URI'])[3];
+echo urldecode($project);
+?>
 <main role="main">
 	<div class="container">
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3">Checklists</h2>
+					<h2 class="display-3"><?php echo urldecode($project);?> Checklists</h2>
 				</center>
 			</div>
 		</div>
@@ -13,7 +17,7 @@
 			echo $message_display . '</div>';
 		}
 		?>
-		 <a class="btn btn-success" href="/production/add_checklist">Add Checklist</a>
+		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project;?>">Add Checklist</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>

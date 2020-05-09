@@ -9,8 +9,8 @@ $qc = $checklist[0]['qc'];
 $date = $checklist[0]['date'];
 
 if (isset($this->session->userdata['logged_in'])) {
-  $username = ($this->session->userdata['logged_in']['username']);
-  $role = ($this->session->userdata['logged_in']['userrole']);
+  $username = ($this->session->userdata['logged_in']['name']);
+  $role = ($this->session->userdata['logged_in']['role']);
   if($assembler!=$username){
 	$assembler=$username;
   }

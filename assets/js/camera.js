@@ -23,9 +23,6 @@ function gotDevices(mediaDevices) {
       const textNode = document.createTextNode(label);
       option.appendChild(textNode);
       select.appendChild(option);
-    } else {
-      option.appendChild("No camers");
-      select.appendChild("no Camera");
     }
   });
 }
