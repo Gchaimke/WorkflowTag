@@ -2,7 +2,7 @@
 if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	if($this->session->userdata['logged_in']['id']!=$user[0]['id']){
 		if($this->session->userdata['logged_in']['role']!="Admin"){
-			header("location: /dashboard");
+			header("location: /");
 		}
 	}
 } 

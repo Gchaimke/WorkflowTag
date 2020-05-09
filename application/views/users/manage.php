@@ -4,7 +4,7 @@ if (isset($this->session->userdata['logged_in'])) {
     $username = ($this->session->userdata['logged_in']['name']);
     $role = ($this->session->userdata['logged_in']['role']);
     if ($role != "Admin") {
-        header("location: /dashboard");
+        header("location: /");
     }
 }
 ?>
@@ -58,11 +58,14 @@ if (isset($this->session->userdata['logged_in'])) {
 </main>
 <script>
     function delPhoto(id) {
-        $.post("/users/delete", {
-            id: id
-        }).done(function(o) {
-            console.log('user deleted from the server.');
-            $('[id^=' + id + ']').remove();
-        });
+        var r = confirm("Delete User with id: " + id + "?");
+        if (r == true) {
+            $.post("/users/delete", {
+                id: id
+            }).done(function(o) {
+                console.log('user deleted from the server.');
+                $('[id^=' + id + ']').remove();
+            });
+        }
     }
 </script>

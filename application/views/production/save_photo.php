@@ -11,7 +11,7 @@ if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
     $img = substr($img, strpos($img, ',') + 1);
     $type = strtolower($type[1]); // jpg, png, gif
 
-    if (!in_array($type, [ 'jpg', 'jpeg', 'gif', 'png' ])) {
+    if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
         throw new \Exception('invalid image type');
     }
 
@@ -25,9 +25,11 @@ if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
 }
 
 if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
-	mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
+    mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
 }
 $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
 $success = file_put_contents($file, $img);
-shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --force '.escapeshellarg($file));
+if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
+    shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --force ' . escapeshellarg($file));
+}
 print $success ? $file : 'Unable to save the file.';

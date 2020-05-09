@@ -1,8 +1,8 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
-        header("location: /dashboard");
-    }
+	if ($this->session->userdata['logged_in']['role'] != "Admin") {
+		header("location: /");
+	}
 }
 ?>
 <main role="main">
@@ -37,10 +37,10 @@ if (isset($this->session->userdata['logged_in'])) {
 						echo '<tr id="' . $project['id'] . '">';
 						echo  '<td>' . $project['client'] . '</td>';
 						echo  '<td>' . $project['project'] . '</td>';
-						echo "<td><a href='/production/edit_template/" . $project['id'] . 
-						"' class='btn btn-info'>Edit</a></td>";
-						echo "<td><button id='" . $project['id'] . 
-						"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";
+						echo "<td><a href='/production/edit_template/" . $project['id'] .
+							"' class='btn btn-info'>Edit</a></td>";
+						echo "<td><button id='" . $project['id'] .
+							"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";
 						echo '</tr>';
 					}
 				} ?>
@@ -50,11 +50,14 @@ if (isset($this->session->userdata['logged_in'])) {
 </main>
 <script>
 	function deleteProject(id) {
-		$.post("/production/delete_project", {
-			id: id
-		}).done(function(o) {
-			console.log('Project deleted.');
-			$('[id^=' + id + ']').remove();
-		});
+		var r = confirm("Delete Template with id: " + id + "?");
+		if (r == true) {
+			$.post("/production/delete_project", {
+				id: id
+			}).done(function(o) {
+				console.log('Project deleted.');
+				$('[id^=' + id + ']').remove();
+			});
+		}
 	}
 </script>

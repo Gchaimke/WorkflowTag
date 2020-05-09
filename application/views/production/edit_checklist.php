@@ -9,28 +9,28 @@ $qc = $checklist[0]['qc'];
 $date = $checklist[0]['date'];
 
 if (isset($this->session->userdata['logged_in'])) {
-  $username = ($this->session->userdata['logged_in']['name']);
-  $role = ($this->session->userdata['logged_in']['role']);
-  if($assembler!=$username){
-	$assembler=$username;
-  }
+	$username = ($this->session->userdata['logged_in']['name']);
+	$role = ($this->session->userdata['logged_in']['role']);
+	if ($assembler != $username) {
+		$assembler = $username;
+	}
 }
 ?>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css');?>" >
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css');?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-<button id="snap" class="btn btn-info">Snap Photo</button>
+	<button id="snap" class="btn btn-info">Snap Photo</button>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_checklist/'.$id, 'class=user-create'); ?>
-				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
-				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
-				<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
-				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
-				<input id="save" type='submit' class="btn btn-success navbar-btn" value="Save">
+			<?php echo form_open('production/save_checklist/' . $id, 'class=user-create'); ?>
+			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
+			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
+			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
+			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
+			<input id="save" type='submit' class="btn btn-success navbar-btn" value="Save">
 			</form>
 		</li>
 	</ul>
@@ -46,8 +46,8 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 	?>
 	<div class="name_badges">
-	<h4><span class="badge badge-secondary">Assembler: <?php echo $username?> </span></h4>
-	<h4><span class="badge badge-secondary">QC: <?php echo $qc?></span></h4>
+		<h4><span class="badge badge-secondary">Assembler: <?php echo $username ?> </span></h4>
+		<h4><span class="badge badge-secondary">QC: <?php echo $qc ?></span></h4>
 	</div>
 	<div class="video-frame container-sm">
 		<div class="controls">

@@ -16,6 +16,11 @@ if (isset($this->session->userdata['logged_in'])) {
       <li class="nav-item">
         <a class="nav-link" href="/production/">Production</a>
       </li>
+      <?php
+      if (isset($project)) {
+        echo '<li class="nav-item"><a class="nav-link" href="/production/checklists/' . $project . '">' . $project . '</a></li>';
+      }
+      ?>
     </ul>
     <ul class="navbar-nav  pull-right">
       <?php

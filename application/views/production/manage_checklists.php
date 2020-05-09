@@ -7,7 +7,7 @@ echo urldecode($project);
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3"><?php echo urldecode($project);?> Checklists</h2>
+					<h2 class="display-3"><?php echo urldecode($project); ?> Checklists</h2>
 				</center>
 			</div>
 		</div>
@@ -17,7 +17,7 @@ echo urldecode($project);
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project;?>">Add Checklist</a>
+		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">Add Checklist</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -54,11 +54,15 @@ echo urldecode($project);
 </main>
 <script>
 	function delChecklist(id) {
-		$.post("/production/delete", {
-			id: id
-		}).done(function(o) {
-			console.log('checklist deleted from the server.');
-			$('[id^=' + id + ']').remove();
-		});
+		var r = confirm("Delete checklist with id: " + id + "?");
+		if (r == true) {
+			$.post("/production/delete", {
+				id: id
+			}).done(function(o) {
+				$('[id^=' + id + ']').remove();
+				console.log('checklist deleted from the server.');
+				alert("checklist deleted from the server!");
+			});
+		} 
 	}
 </script>

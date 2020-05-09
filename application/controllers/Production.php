@@ -26,8 +26,9 @@ class Production extends CI_Controller
     {
         // get data from model
         $data['checklists'] = $this->Production_model->getChecklists('', $project);
+        $data['project']=$project;
         $this->load->view('header');
-        $this->load->view('main_menu');
+        $this->load->view('main_menu',$data);
         $this->load->view('production/manage_checklists', $data);
         $this->load->view('footer');
     }
@@ -45,7 +46,7 @@ class Production extends CI_Controller
             $data['client'] = $this->Production_model->getClients('', $project);
             $data['project'] = $project;
             $this->load->view('header');
-            $this->load->view('main_menu');
+            $this->load->view('main_menu', $data);
             $this->load->view('production/add_checklist', $data);
             $this->load->view('footer');
         } else {
@@ -128,8 +129,9 @@ class Production extends CI_Controller
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
+        $data['project'] =  $data['checklist'][0]['project'];
         $this->load->view('header');
-        $this->load->view('main_menu');
+        $this->load->view('main_menu',$data);
         $data['data'] = $this->build_checklist($data);
         $this->load->view('production/edit_checklist', $data);
         $this->load->view('footer');

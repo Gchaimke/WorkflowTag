@@ -1,8 +1,8 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
-        header("location: /dashboard");
-    }
+	if ($this->session->userdata['logged_in']['role'] != "Admin") {
+		header("location: /");
+	}
 }
 ?>
 <main role="main">
@@ -35,10 +35,10 @@ if (isset($this->session->userdata['logged_in'])) {
 					foreach ($clients as $client) {
 						echo '<tr id="' . $client['id'] . '">';
 						echo  '<td>' . $client['name'] . '</td>';
-						echo "<td><a href='/production/edit_client/" . $client['id'] . 
-						"' class='btn btn-info'>Edit</a></td>";
-						echo "<td><button id='" . $client['id'] . 
-						"' class='btn btn-danger' onclick='deleteClient(this.id)'>Delete</button></td>";
+						echo "<td><a href='/production/edit_client/" . $client['id'] .
+							"' class='btn btn-info'>Edit</a></td>";
+						echo "<td><button id='" . $client['id'] .
+							"' class='btn btn-danger' onclick='deleteClient(this.id)'>Delete</button></td>";
 						echo '</tr>';
 					}
 				} ?>
@@ -48,11 +48,14 @@ if (isset($this->session->userdata['logged_in'])) {
 </main>
 <script>
 	function deleteClient(id) {
-		$.post("/production/delete_client", {
-			id: id
-		}).done(function(o) {
-			console.log('Client deleted.');
-			$('[id^=' + id + ']').remove();
-		});
+		var r = confirm("Delete Client with id: " + id + "?");
+		if (r == true) {
+			$.post("/production/delete_client", {
+				id: id
+			}).done(function(o) {
+				console.log('Client deleted.');
+				$('[id^=' + id + ']').remove();
+			});
+		}
 	}
 </script>
