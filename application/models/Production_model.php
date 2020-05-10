@@ -3,73 +3,61 @@
 class Production_model extends CI_Model
 {
 
-	function getChecklists($id = '',$project='')
-	{
-		$response = array();
-		// Select record
-		$this->db->select('*');
-		$this->db->from('checklists');
-		if ($id != '') {
-			$condition = "id ='$id'";
-			$this->db->where($condition);
-			$this->db->limit(1);
-		}
-		if ($project != '') {
-			$project = urldecode($project);
-			$condition = "project =\"$project\"";
-			$this->db->where($condition);
-		}
-		$q = $this->db->get();
-		$response = $q->result_array();
-		return $response;
-	}
-
 	public function addClient($data)
 	{
-		// Query to check whether username already exist or not
-		$condition = "name ='" . $data['name'] . "'";
-		$this->db->select('*');
-		$this->db->from('clients');
-		$this->db->where($condition);
-		$this->db->limit(1);
-		$query = $this->db->get();
-		if ($query->num_rows() == 0) {
-			// Query to insert data in database
-			$this->db->insert('clients', $data);
-			if ($this->db->affected_rows() > 0) {
-				return true;
+		if ($this->db->table_exists('clients')) {
+			// Query to check whether username already exist or not
+			$condition = "name ='" . $data['name'] . "'";
+			$this->db->select('*');
+			$this->db->from('clients');
+			$this->db->where($condition);
+			$this->db->limit(1);
+			$query = $this->db->get();
+			if ($query->num_rows() == 0) {
+				// Query to insert data in database
+				$this->db->insert('clients', $data);
+				if ($this->db->affected_rows() > 0) {
+					return true;
+				}
+			} else {
+				return false;
 			}
-		} else {
-			return false;
 		}
 	}
 
-	function getClients($id = '',$projects='')
+	function getClients($id = '', $projects = '')
 	{
 		$response = array();
-		// Select record
-		$this->db->select('*');
-		$this->db->from('clients');
-		if ($id != '') {
-			$condition = "id ='$id'";
-			$this->db->where($condition);
-			$this->db->limit(1);
+		if ($this->db->table_exists('clients')) {
+			// Select record
+			$this->db->select('*');
+			$this->db->from('clients');
+			if ($id != '') {
+				$condition = "id ='$id'";
+				$this->db->where($condition);
+				$this->db->limit(1);
+			}
+			if ($projects != '') {
+				$condition = "projects LIKE '%$projects%'";
+				$this->db->where($condition);
+				$this->db->limit(1);
+			}
+			$q = $this->db->get();
+			$response = $q->result_array();
 		}
-		if ($projects != '') {
-			$condition = "projects LIKE '%$projects%'";
-			$this->db->where($condition);
-			$this->db->limit(1);
-		}
-		$q = $this->db->get();
-		$response = $q->result_array();
 		return $response;
 	}
 
 	public function editClient($data)
 	{
-		$where = "id ='" . $data['id']."'";
+		$where = "id ='" . $data['id'] . "'";
 		$data = array('projects' => $data['projects']);
 		return $this->db->update('clients', $data, $where);
+	}
+	
+	function deleteClient($id)
+	{
+		$this->db->delete('wft_clients', array('id' => $id));
 	}
 
 	function getProjects($client_name = '')
@@ -87,6 +75,26 @@ class Production_model extends CI_Model
 		return $response;
 	}
 
+	public function addProject($data)
+	{
+		// Query to check whether username already exist or not
+		$condition = "project ='" . $data['project'] . "'";
+		$this->db->select('*');
+		$this->db->from('projects');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			// Query to insert data in database
+			$this->db->insert('projects', $data);
+			if ($this->db->affected_rows() > 0) {
+				return true;
+			}
+		} else {
+			return false;
+		}
+	}
+	
 	function getProject($id = '', $name = '')
 	{
 		$response = array();
@@ -109,7 +117,19 @@ class Production_model extends CI_Model
 		return $response;
 	}
 
-	public function insertNewChecklist($data)
+	public function editProject($data)
+	{
+		$where = "id =" . $data['id'];
+		$data = array('data' => $data['data']);
+		return $this->db->update('projects', $data, $where);
+	}
+
+	function deleteProject($id)
+	{
+		$this->db->delete('wft_projects', array('id' => $id));
+	}
+
+	public function addChecklist($data)
 	{
 		// Query to check whether serial already exist or not
 		$condition = "serial ='" . $data['serial'] . "' AND project='" . $data['project'] . "'";
@@ -129,34 +149,30 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function addProject($data)
+	function getChecklists($id = '', $project = '')
 	{
-		// Query to check whether username already exist or not
-		$condition = "project ='" . $data['project'] . "'";
-		$this->db->select('*');
-		$this->db->from('projects');
-		$this->db->where($condition);
-		$this->db->limit(1);
-		$query = $this->db->get();
-		if ($query->num_rows() == 0) {
-			// Query to insert data in database
-			$this->db->insert('projects', $data);
-			if ($this->db->affected_rows() > 0) {
-				return true;
+		$response = array();
+		if ($this->db->table_exists('checklists')) {
+			// Select record
+			$this->db->select('*');
+			$this->db->from('checklists');
+			if ($id != '') {
+				$condition = "id ='$id'";
+				$this->db->where($condition);
+				$this->db->limit(1);
 			}
-		} else {
-			return false;
+			if ($project != '') {
+				$project = urldecode($project);
+				$condition = "project =\"$project\"";
+				$this->db->where($condition);
+			}
+			$q = $this->db->get();
+			$response = $q->result_array();
 		}
+		return $response;
 	}
 
-	public function editProject($data)
-	{
-		$where = "id =" . $data['id'];
-		$data = array('data' => $data['data']);
-		return $this->db->update('projects', $data, $where);
-	}
-
-	public function updateChecklist($data)
+	public function editChecklist($data)
 	{
 		$where = "id =" . $data['id'];
 		$data = array(
@@ -173,13 +189,4 @@ class Production_model extends CI_Model
 		$this->db->delete('wft_checklists', array('id' => $id));
 	}
 
-	function deleteProject($id)
-	{
-		$this->db->delete('wft_projects', array('id' => $id));
-	}
-
-	function deleteClient($id)
-	{
-		$this->db->delete('wft_clients', array('id' => $id));
-	}
 }

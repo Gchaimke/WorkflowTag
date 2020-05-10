@@ -57,7 +57,7 @@ class Production extends CI_Controller
                 'data' =>  $zero_str,
                 'date' => $this->input->post('date')
             );
-            $result = $this->Production_model->insertNewChecklist($data);
+            $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' added Successfully !';
                 $this->checklists($this->input->post('project'), $data);
@@ -125,7 +125,7 @@ class Production extends CI_Controller
     }
 
 
-    public function edit_checklist($id = '')
+    public function edit_checklist($id = '',$data='')
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
@@ -154,15 +154,9 @@ class Production extends CI_Controller
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc')
             );
-            $this->Production_model->updateChecklist($data);
+            $this->Production_model->editChecklist($data);
             $data['message_display'] = 'Checklist saved successfully!';
-            $data['js_to_load'] = array("checklist_create.js", "camera.js");
-            $data['checklist'] =  $this->Production_model->getChecklists($id);
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $data['data'] = $this->build_checklist($data);
-            $this->load->view('production/edit_checklist', $data);
-            $this->load->view('footer');
+            $this->edit_checklist($id,$data);
         }
     }
 

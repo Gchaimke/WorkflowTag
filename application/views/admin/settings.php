@@ -42,6 +42,7 @@ if (isset($this->session->userdata['logged_in'])) {
             id: id
         }).done(function(o) {
             console.log('Databases created');
+            alert(o);
         });
     }
 </script>

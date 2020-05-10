@@ -71,7 +71,7 @@ class Admin_model extends CI_Model
 
         $cl = array(
             "name" => 'Simbionix',
-            "project" => 'Flex2'
+            "projects" => 'Flex2,Lap3'
         );
         $this->db->insert('clients', $cl);
     }
@@ -202,36 +202,44 @@ class Admin_model extends CI_Model
         $this->db->insert('settings', $st);
     }
 
-    function getSettings(){
+    function getSettings()
+    {
         $response = array();
-		// Select record
-		$this->db->select('*');
-		$this->db->from('settings');
-		$query = $this->db->get();
-		$response = $query->result_array();
-		return $response;
+        // Select record
+        $this->db->select('*');
+        $this->db->from('settings');
+        $query = $this->db->get();
+        $response = $query->result_array();
+        return $response;
     }
 
-    function getStatistic(){
+    function getStatistic()
+    {
         $response = array();
         //get users number
-		$this->db->select('*');
-		$this->db->from('users');
-        $query = $this->db->get();
-        $count = $query->result_array();
-        $response['users'] = count($count);
-		//get clients number
-		$this->db->select('*');
-		$this->db->from('clients');
-        $query = $this->db->get();
-        $count = $query->result_array();
-        $response['clients'] = count($count);
+        if ($this->db->table_exists('users')) {
+            $this->db->select('*');
+            $this->db->from('users');
+            $query = $this->db->get();
+            $count = $query->result_array();
+            $response['users'] = count($count);
+        }
+        //get clients number
+        if ($this->db->table_exists('clients')) {
+            $this->db->select('*');
+            $this->db->from('clients');
+            $query = $this->db->get();
+            $count = $query->result_array();
+            $response['clients'] = count($count);
+        }
         //get checklists number
-		$this->db->select('*');
-		$this->db->from('checklists');
-        $query = $this->db->get();
-        $count = $query->result_array();
-        $response['checklists'] = count($count);
-		return $response;
+        if ($this->db->table_exists('checklists')) {
+            $this->db->select('*');
+            $this->db->from('checklists');
+            $query = $this->db->get();
+            $count = $query->result_array();
+            $response['checklists'] = count($count);
+        }
+        return $response;
     }
 }
