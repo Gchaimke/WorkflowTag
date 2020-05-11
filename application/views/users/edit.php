@@ -8,14 +8,14 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 } 
 ?>
 <main role="main">
-	<div class="container">
-		<div class="jumbotron">
+<div class="jumbotron">
 			<div class="container">
 				<center>
 					<h2 class="display-3">Edit User</h2>
 				</center>
 			</div>
 		</div>
+	<div class="container">
 		<center>
 			<?php
 			$id = "";

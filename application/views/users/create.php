@@ -1,19 +1,19 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
-        header("location: /");
-    }
+      if ($this->session->userdata['logged_in']['role'] != "Admin") {
+            header("location: /");
+      }
 }
 ?>
 <main role="main">
-      <div class="container">
-            <div class="jumbotron">
-                  <div class="container">
-                        <center>
-                              <h2 class="display-3">Create new user.</h2>
-                        </center>
-                  </div>
+      <div class="jumbotron">
+            <div class="container">
+                  <center>
+                        <h2 class="display-3">Create new user.</h2>
+                  </center>
             </div>
+      </div>
+      <div class="container">
             <center>
                   <?php
                   if (isset($message_display)) {
@@ -26,8 +26,8 @@ if (isset($this->session->userdata['logged_in'])) {
                   ?>
                   <?php echo form_open('users/create', 'class=user-create'); ?>
                   <select class="form-control" name='role'>
-                  <?php if (isset($settings)) {
-                              $arr = explode(",",$settings[0]['roles']);
+                        <?php if (isset($settings)) {
+                              $arr = explode(",", $settings[0]['roles']);
                               foreach ($arr as $role) {
                                     echo '<option>' . $role . '</option>';
                               }

@@ -1,27 +1,27 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
-        header("location: /");
-    }
+      if ($this->session->userdata['logged_in']['role'] != "Admin") {
+            header("location: /");
+      }
 }
 
 if (isset($clients)) {
-      echo '<script>var clients = {};'.PHP_EOL;
+      echo '<script>var clients = {};' . PHP_EOL;
       foreach ($clients as $client) {
-             echo 'clients["'.$client['name'].'"]="' . $client['projects'] . '";'.PHP_EOL;
-       }
-       echo '</script>';
- }
+            echo 'clients["' . $client['name'] . '"]="' . $client['projects'] . '";' . PHP_EOL;
+      }
+      echo '</script>';
+}
 ?>
 <main role="main">
-      <div class="container">
-            <div class="jumbotron">
-                  <div class="container">
-                        <center>
-                              <h2 class="display-3">Add Template</h2>
-                        </center>
-                  </div>
+      <div class="jumbotron">
+            <div class="container">
+                  <center>
+                        <h2 class="display-3">Add Template</h2>
+                  </center>
             </div>
+      </div>
+      <div class="container">
             <center>
                   <?php
                   if (isset($message_display)) {
@@ -36,7 +36,7 @@ if (isset($clients)) {
                   <?php echo form_open('production/add_template', 'class=user-create'); ?>
                   <select id="select_client" class="form-control" name='client'>
                         <?php if (isset($clients)) {
-                             foreach ($clients as $client) {
+                              foreach ($clients as $client) {
                                     echo '<option>' . $client['name'] . '</option>';
                               }
                         }

@@ -1,12 +1,12 @@
 <main role="main">
-      <div class="container">
-            <div class="jumbotron">
-                  <div class="container">
-                        <center>
-                              <h2 class="display-3">Add checklist</h2>
-                        </center>
-                  </div>
+      <div class="jumbotron">
+            <div class="container">
+                  <center>
+                        <h2 class="display-3">Add checklist</h2>
+                  </center>
             </div>
+      </div>
+      <div class="container">
             <center>
                   <?php
                   if (isset($message_display)) {
@@ -18,8 +18,8 @@
                   }
                   ?>
                   <?php echo form_open("production/add_checklist/$project", 'class=user-create'); ?>
-                  <input type='hidden' name='client' value='<?php echo $client[0]['name']?>'>
-                  <input type='hidden' name='project' value='<?php echo $project?>'>
+                  <input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
+                  <input type='hidden' name='project' value='<?php echo $project ?>'>
                   <input class="form-control " type='text' name='serial' placeholder="Serial Number"></br>
                   <input type='text' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>

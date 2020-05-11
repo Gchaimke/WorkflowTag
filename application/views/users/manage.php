@@ -9,14 +9,14 @@ if (isset($this->session->userdata['logged_in'])) {
 }
 ?>
 <main role="main">
-    <div class="container">
-        <div class="jumbotron">
-            <div class="container">
-                <center>
-                    <h2 class="display-3">Users</h2>
-                </center>
-            </div>
+    <div class="jumbotron">
+        <div class="container">
+            <center>
+                <h2 class="display-3">Users</h2>
+            </center>
         </div>
+    </div>
+    <div class="container">
         <?php
         if (isset($message_display)) {
             echo "<div class='alert alert-success' role='alert'>";

@@ -6,14 +6,14 @@ if (isset($this->session->userdata['logged_in'])) {
 }
 ?>
 <main role="main">
-	<div class="container">
-		<div class="jumbotron">
-			<div class="container">
-				<center>
-					<h2 class="display-3">Edit Client</h2>
-				</center>
-			</div>
+	<div class="jumbotron">
+		<div class="container">
+			<center>
+				<h2 class="display-3">Edit Client</h2>
+			</center>
 		</div>
+	</div>
+	<div class="container">
 		<center>
 			<?php
 			$id = "";
@@ -32,12 +32,12 @@ if (isset($this->session->userdata['logged_in'])) {
 				$client = $clients[0]['name'];
 				$projects = $clients[0]['projects'];
 			}
-			?> 
+			?>
 			<?php echo form_open("production/edit_client/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
 			<div class="form-group"><label>Projects</label>
-			<input type='text' class="form-control" name='projects' value="<?php echo $projects ?>"></div>
+				<input type='text' class="form-control" name='projects' value="<?php echo $projects ?>"></div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
 			<?php echo form_close(); ?>
 		</center>

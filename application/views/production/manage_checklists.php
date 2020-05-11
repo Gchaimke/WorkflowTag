@@ -3,14 +3,14 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 echo urldecode($project);
 ?>
 <main role="main">
-	<div class="container">
-		<div class="jumbotron">
-			<div class="container">
-				<center>
-					<h2 class="display-3"><?php echo urldecode($project); ?> Checklists</h2>
-				</center>
-			</div>
+	<div class="jumbotron">
+		<div class="container">
+			<center>
+				<h2 class="display-3"><?php echo urldecode($project); ?> Checklists</h2>
+			</center>
 		</div>
+	</div>
+	<div class="container">
 		<?php
 		if (isset($message_display)) {
 			echo "<div class='alert alert-success' role='alert'>";
@@ -63,6 +63,6 @@ echo urldecode($project);
 				console.log('checklist deleted from the server.');
 				alert("checklist deleted from the server!");
 			});
-		} 
+		}
 	}
 </script>
