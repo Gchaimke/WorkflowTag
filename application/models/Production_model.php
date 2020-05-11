@@ -54,7 +54,7 @@ class Production_model extends CI_Model
 		$data = array('projects' => $data['projects']);
 		return $this->db->update('clients', $data, $where);
 	}
-	
+
 	function deleteClient($id)
 	{
 		$this->db->delete('wft_clients', array('id' => $id));
@@ -94,7 +94,7 @@ class Production_model extends CI_Model
 			return false;
 		}
 	}
-	
+
 	function getProject($id = '', $name = '')
 	{
 		$response = array();
@@ -189,4 +189,19 @@ class Production_model extends CI_Model
 		$this->db->delete('wft_checklists', array('id' => $id));
 	}
 
+	function getLastChecklist($project)
+	{
+		if ($this->db->table_exists('checklists')) {
+			$project = urldecode($project);
+			$condition = "project =\"$project\"";
+			$this->db->select('*');
+			$this->db->from('checklists');
+			$this->db->where($condition);
+			$this->db->order_by('id', 'DESC');
+			$this->db->limit(1);
+			$q =$this->db->get();
+			$response = $q->result_array();
+			return $response[0]['serial'];
+		}
+	}
 }
