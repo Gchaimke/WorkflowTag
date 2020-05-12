@@ -61,7 +61,10 @@ function getQCCode(id) {
 $("input:checkbox").click(function (e) {
     toggleOne(this.id);
     $('#input_data').val(chArray.toString());
-    $('#input_progress').val(progress_status)
+    $('#input_progress').val(progress_status);
+    var now = new Date();
+    log +=now.toLocaleString()+" "+assembler+" checked "+(parseInt( this.id)+1)+";";
+    $('#input_log').val(log);
 });
 
 function centerLoginBox() {

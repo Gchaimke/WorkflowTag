@@ -3,6 +3,7 @@ $id = $checklist[0]['id'];
 $project = $checklist[0]['project'];
 $serial = $checklist[0]['serial'];
 $checklist_data = $checklist[0]['data'];
+$log = $checklist[0]['log'];
 $progress = $checklist[0]['progress'];
 $assembler = $checklist[0]['assembler'];
 $qc = $checklist[0]['qc'];
@@ -30,6 +31,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
+			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 			<input id="save" type='submit' class="btn btn-success navbar-btn" value="Save">
 			</form>
 		</li>
@@ -66,7 +68,8 @@ if (isset($this->session->userdata['logged_in'])) {
 		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
 		<?php
 		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
-		echo "<script>var photoCount=0; var id='" . $id . "'; var pr='" . $project . "'; var sn='" . $serial . "';</script>";
+		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial';"; //pass PHP data to JS
+		echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
 				while (false !== ($entry = readdir($handle))) {

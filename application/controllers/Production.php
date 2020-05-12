@@ -209,6 +209,7 @@ class Production extends CI_Controller
     {
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
         $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
         $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
         $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
@@ -218,6 +219,7 @@ class Production extends CI_Controller
             $data = array(
                 'id' =>  $id,
                 'data' =>  $this->input->post('data'),
+                'log' =>  $this->input->post('log'),
                 'progress' => $this->input->post('progress'),
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc')

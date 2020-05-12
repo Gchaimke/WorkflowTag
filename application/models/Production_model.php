@@ -177,6 +177,7 @@ class Production_model extends CI_Model
 		$where = "id =" . $data['id'];
 		$data = array(
 			'data' => $data['data'],
+			'log' => $data['log'],
 			'progress' => $data['progress'],
 			'assembler' => $data['assembler'],
 			'qc' => $data['qc']
