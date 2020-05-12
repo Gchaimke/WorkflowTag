@@ -1,6 +1,5 @@
 <?php
 $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
-echo urldecode($project);
 ?>
 <main role="main">
 	<div class="jumbotron">
@@ -18,8 +17,8 @@ echo urldecode($project);
 		}
 		?>
 		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">New Checklist</a>
-		<a class="btn btn-info" onclick="gen_checklist('<?php echo $project; ?>',1)">+1</a>
-		<a class="btn btn-info"  onclick="gen_checklist('<?php echo $project; ?>',5)">+5</a>
+		<a class="btn btn-info" onclick="gen_checklists('<?php echo $project; ?>',1)">+1</a>
+		<a class="btn btn-info"  onclick="gen_checklists('<?php echo $project; ?>',5)">+5</a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -65,14 +64,15 @@ echo urldecode($project);
 		}
 	}
 
-	function gen_checklist(project,count) {
+	function gen_checklists(project,count) {
 		var r = confirm("Add "+ count + " checklist/s to " + project + "?");
 		if (r == true) {
-			$.post("/production/gen_checklist", {
+			$.post("/production/gen_checklists", {
 				client:'<?php echo $checklist['client']?>',
 				project: project,
 				count:count
 			}).done(function(o) {
+				//alert(o);
 				console.log(o+' checklist/s added to the server.');
 				location.reload();
 			});

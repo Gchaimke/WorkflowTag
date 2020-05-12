@@ -45,6 +45,7 @@ class Production extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $data['client'] = $this->Production_model->getClients('', $project);
             $data['project'] = $project;
+            $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
             $this->load->view('header');
             $this->load->view('main_menu', $data);
             $this->load->view('production/add_checklist', $data);
@@ -74,7 +75,7 @@ class Production extends CI_Controller
     }
 
     // Validate and store checklist data in database 
-    public function gen_checklist()
+    public function gen_checklists()
     {
         $zero_str = implode(", ", array_fill(0, 400, 0));
         // Check validation for user input in SignUp form
@@ -82,25 +83,62 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
-        $serial_start = substr($last_serial,0,-3); //FL-0420-
-        $serial_end = substr($last_serial,-3);
-        $zero_count = "00";
+        $serial_template = explode(',', $this->Production_model->getProject('', $this->input->post('project'))[0]['template']); //Get template and explode to array
+        $sep = $serial_template[3];
+        $serial = $serial_template[0] . $sep . $serial_template[1] . $sep . $serial_template[2];
+        $serial = str_replace("yy", date("y"), $serial);
+        $serial = str_replace("mm", date("m"), $serial);
+        $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
+        $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
+        $arr = array("xxxx","xxx","xx");     
         $count = $this->input->post('count');
         for ($i = 1; $i <= $count; $i++) {
-            echo $serial_end++;
-            if ($serial_end > 9) {
-                $zero_count = "0";
-            }
+            $serial_end++;
+            $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
+            $current_serial = str_replace($arr, $zero_count, $serial);
             $data = array(
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
-                'serial' => $serial_start . $zero_count . $serial_end,
+                'serial' => $current_serial,
                 'data' =>  $zero_str,
                 'date' => date("Y-m-d")
             );
             $result = $this->Production_model->addChecklist($data);
         }
         echo $result;
+    }
+
+    private function zero_count($x, $num)
+    {
+        if ($x == 4) {
+            if ($num < 10) {
+                return "000" . $num;
+            } else if ($num < 100) {
+                return "00" . $num;
+            } else {
+                return "0" . $num;
+            }
+        }
+
+        if ($x == 3) {
+            if ($num < 10) {
+                return "00" . $num;
+            } else if ($num < 100) {
+                return "0" . $num;
+            } else {
+                return $num;
+            }
+        }
+
+        if ($x == 2) {
+            if ($num < 10) {
+                return "0" . $num;
+            } else {
+                return $num;
+            }
+        }
+
+        return 0;
     }
 
     private function build_checklist($data)
@@ -235,9 +273,11 @@ class Production extends CI_Controller
     public function add_template()
     {
         // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['js_to_load'] = array("add_template.js");
             $data['clients'] = $this->Production_model->getClients();
@@ -249,7 +289,8 @@ class Production extends CI_Controller
             $data = array(
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
-                'data' => $this->input->post('data')
+                'data' => $this->input->post('data'),
+                'template' => $this->input->post('template')
             );
             $result = $this->Production_model->addproject($data);
             if ($result == TRUE) {
@@ -274,6 +315,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['clients'] = $this->Production_model->getClients();
             $data['project'] =  $this->Production_model->getProject($id);
@@ -284,7 +326,8 @@ class Production extends CI_Controller
         } else {
             $sql = array(
                 'id' => $this->input->post('id'),
-                'data' => $this->input->post('data')
+                'data' => $this->input->post('data'),
+                'template' => $this->input->post('template')
             );
             $data['message_display'] = $this->Production_model->editProject($sql);
             $data['message_display'] .= ' Project edited Successfully !';

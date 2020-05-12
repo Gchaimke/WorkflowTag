@@ -158,6 +158,10 @@ class Admin_model extends CI_Model
             ),
             'data' => array(
                 'type' => 'TEXT'
+            ),
+            'template' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
             )
         );
 

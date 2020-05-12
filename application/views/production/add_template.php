@@ -44,6 +44,9 @@ if (isset($clients)) {
                   </select></br>
                   <select id="select_project" class="form-control" name='project'>
                   </select></br>
+                  <div class="form-group"><label>Serial template</label>
+                  <input type="text" name="template" value="" class="form-control">
+                  </div>
                   <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>

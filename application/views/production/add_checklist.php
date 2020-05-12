@@ -20,7 +20,9 @@
                   <?php echo form_open("production/add_checklist/$project", 'class=user-create'); ?>
                   <input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
                   <input type='hidden' name='project' value='<?php echo $project ?>'>
-                  <input class="form-control " type='text' name='serial' placeholder="Serial Number"></br>
+                  <div class="form-group"><label>Serial template <?php echo $template ?></label>
+                        <input class="form-control " type='text' name='serial' placeholder="Serial Number">
+                  </div></br>
                   <input type='text' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>
