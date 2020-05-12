@@ -118,6 +118,9 @@ class Admin_model extends CI_Model
             'date' => array(
                 'type' => 'DATE',
                 'null' => FALSE
+            ),
+            'log' => array(
+                'type' => 'TEXT'
             )
         );
         $this->dbforge->add_field($checklist);
@@ -132,7 +135,8 @@ class Admin_model extends CI_Model
             "progress" => '0',
             "assembler" => 'Chaim',
             "qc" => 'Michael',
-            "date" => '2020-04-30'
+            "date" => '2020-04-30',
+            "log" => '',
         );
         $this->db->insert('checklists', $demoChecklist);
     }
