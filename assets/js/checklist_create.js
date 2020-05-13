@@ -38,32 +38,52 @@ function toggleOne(id) {
     updateProgress();
 }
 
-function getQCCode(id) {
-    id = "#" + id;
+function toggleQc(id, qc_name) {
+    if (qc_name != '') {
+        chArray[id] = 1;
+
+    } else {
+        chArray[id] = 0;
+    }
+    updateProgress();
+}
+
+$("input:checkbox.qc").click(function (e) {
+    event.preventDefault();
+    id = this.id;
     var code = prompt("Please enter QC Code", "");
     $.post("/users/get_qc",
         {
             pass: code
         },
-        function (data, status) {
-            if (data) {
-                $(id).prop('checked', true);
-                toggleOne(id);
-                $('#input_qc').val(data);
+        function (qc_name) {
+            if (qc_name) {
+                $("#" + id).prop('checked', true);
+                toggleQc(id, qc_name);
+                $('#input_qc').val(qc_name);
+                var now = new Date();
+                log += now.toLocaleString() + " " + qc_name + " checked " + (parseInt(id) + 1) + ";";
+                $('#input_log').val(log);
+                $('#input_data').val(chArray.toString());
+                $('#input_progress').val(progress_status);
             } else {
-                $(id).prop('checked', false);
-                toggleOne(id);
-                $('#input_qc').val("");
+                $("#" + id).prop('checked', false);
+                toggleQc(id, qc_name);
+                $('#input_data').val(chArray.toString());
+                $('#input_progress').val(progress_status);
             }
         });
-}
 
-$("input:checkbox").click(function (e) {
+});
+
+$("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
     $('#input_data').val(chArray.toString());
     $('#input_progress').val(progress_status);
     var now = new Date();
-    log +=now.toLocaleString()+" "+assembler+" checked "+(parseInt( this.id)+1)+";";
+    if ($(event.target).is(":checked")) {
+        log += now.toLocaleString() + " " + assembler + " checked " + (parseInt(this.id) + 1) + ";";
+    }
     $('#input_log').val(log);
 });
 

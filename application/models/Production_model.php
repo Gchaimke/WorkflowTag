@@ -108,6 +108,7 @@ class Production_model extends CI_Model
 		}
 
 		if (!$name == '') {
+			$name = urldecode($name);
 			$condition = "project ='" . $name . "'";
 		}
 		$this->db->where($condition);

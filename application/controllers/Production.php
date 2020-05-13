@@ -26,7 +26,8 @@ class Production extends CI_Controller
     {
         // get data from model
         $data['checklists'] = $this->Production_model->getChecklists('', $project);
-        $data['project'] = $project;
+        $data['project'] = urldecode($project);
+        $data['client'] = $this->Production_model->getClients('', urldecode($project));
         $this->load->view('header');
         $this->load->view('main_menu', $data);
         $this->load->view('production/manage_checklists', $data);
@@ -44,8 +45,12 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['client'] = $this->Production_model->getClients('', $project);
-            $data['project'] = $project;
-            $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+            $data['project'] = urldecode($project);
+            if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
+                $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+            } else {
+                $data['template'] = " - not set!";
+            }
             $this->load->view('header');
             $this->load->view('main_menu', $data);
             $this->load->view('production/add_checklist', $data);
@@ -65,7 +70,7 @@ class Production extends CI_Controller
             } else {
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
                 $data['client'] = $this->Production_model->getClients('', $project);
-                $data['project'] = $this->input->post('project');
+                $data['project'] = urldecode($this->input->post('project'));
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('production/add_checklist', $data);
@@ -90,7 +95,7 @@ class Production extends CI_Controller
         $serial = str_replace("mm", date("m"), $serial);
         $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
         $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
-        $arr = array("xxxx","xxx","xx");     
+        $arr = array("xxxx", "xxx", "xx");
         $count = $this->input->post('count');
         for ($i = 1; $i <= $count; $i++) {
             $serial_end++;
@@ -174,12 +179,12 @@ class Production extends CI_Controller
                         $prefix_count++;
                     } else if ($col[1] == "QC") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox'  id='$id' onclick='getQCCode(this.id)' $checked></div></td></tr>";
+                            "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
                         $index++;
                         $id++;
                     } else {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox' id='$id' $checked></div></td></tr>";
+                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>";
                         $index++;
                         $id++;
                     }
@@ -197,7 +202,7 @@ class Production extends CI_Controller
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
-        $data['project'] =  $data['checklist'][0]['project'];
+        $data['project'] =  urldecode($data['checklist'][0]['project']);
         $this->load->view('header');
         $this->load->view('main_menu', $data);
         $data['data'] = $this->build_checklist($data);
@@ -296,11 +301,11 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addproject($data);
             if ($result == TRUE) {
-                $data['message_display'] = 'Project added Successfully !';
+                $data['message_display'] = 'Template added Successfully !';
                 $this->manage_templates($data);
             } else {
                 $data['js_to_load'] = array("add_template.js");
-                $data['message_display'] = 'project already exist!';
+                $data['message_display'] = 'Template already exist!';
                 $data['clients'] = $this->Production_model->getClients();
                 $this->load->view('header');
                 $this->load->view('main_menu');
