@@ -128,7 +128,7 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('checklists');
 
         $demoChecklist = array(
-            "serial" => 'FL-0420-001',
+            "serial" => 'F001-07-20',
             "client" => 'Simbionix',
             "project" => 'Flex2',
             "data" => '',
