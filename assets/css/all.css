@@ -21,6 +21,10 @@ ul.pagination.left {
     border: 1px solid #dee2e6;
 }
 
+ul.pagination.left>a {
+    margin-right: 10px;
+}
+
 form.user-create {
     max-width: fit-content;
 }
@@ -32,6 +36,26 @@ table {
 footer.container {
     position: static;
     margin-top: 100px;
+}
+
+
+div#show-log {
+    max-width: max-content;
+    position: fixed;
+    left: 45%;
+    top: 30%;
+    background: #e6e6e6;
+    padding: 40px 20px;    
+}
+
+div#show-log ul{
+    overflow-y: auto;
+    max-height: 550px;
+}
+
+button.close {
+    margin-top: -30px;
+    margin-left: -20px;
 }
 
 @media(max-width: 576px){
@@ -51,6 +75,7 @@ footer.container {
     }
     
 }
+
 
 @media screen and (orientation:portrait) { 
     

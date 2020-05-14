@@ -62,7 +62,7 @@ $("input:checkbox.qc").click(function (e) {
                 toggleQc(id, qc_name);
                 $('#input_qc').val(qc_name);
                 var now = new Date();
-                log += now.toLocaleString() + " " + qc_name + " checked " + (parseInt(id) + 1) + ";";
+                log += now.toLocaleString() + " QC " + qc_name + " checked " + (parseInt(id) + 1) + ";";
                 $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
                 $('#input_progress').val(progress_status);

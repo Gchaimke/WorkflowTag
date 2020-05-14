@@ -27,7 +27,7 @@ class Production extends CI_Controller
         $this->load->database();
         // init params
         $params = array();
-        $limit_per_page = 5;
+        $limit_per_page = 10;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
         if ($total_records > 0) {
@@ -64,8 +64,6 @@ class Production extends CI_Controller
             // build paging links
             $params["links"] = $this->pagination->create_links();
         }
-        // get data from model
-        //$data['checklists'] = $this->Production_model->getChecklists('', $project);
         $params['project'] = urldecode($project);
         $params['client'] = $this->Production_model->getClients('', urldecode($project));
         $this->load->view('header');
@@ -105,9 +103,13 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
-                $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' added Successfully !';
-                $this->checklists($this->input->post('project'), $data);
+                header("location: /production/checklists/" . $project);
             } else {
+                if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
+                    $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+                } else {
+                    $data['template'] = " - not set!";
+                }
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
                 $data['client'] = $this->Production_model->getClients('', $project);
                 $data['project'] = urldecode($this->input->post('project'));

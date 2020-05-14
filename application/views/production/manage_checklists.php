@@ -17,21 +17,23 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		}
 		?>
 		<nav aria-label="Checklist navigation">
-		<ul class="pagination left">
-		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">New Checklist</a>
-		<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
-		<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-		</ul>
-		<?php if (isset($links)) { echo $links; }?>
+			<ul class="pagination left">
+				<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">New Checklist</a>
+				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
+				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
+			</ul>
+			<?php if (isset($links)) {
+				echo $links;
+			} ?>
 		</nav>
 		<?php if (isset($results)) { ?>
 			<table class="table">
 				<thead class="thead-dark">
 					<tr>
 						<th scope="col">Serial Number</th>
-						<th scope="col"  class="mobile-hide">Project</th>
-						<th scope="col" class="mobile-hide">>Progress</th>
-						<th scope="col" class="mobile-hide">>Assembler</th>
+						<th scope="col" class="mobile-hide">Project</th>
+						<th scope="col" class="mobile-hide">Progress</th>
+						<th scope="col" class="mobile-hide">Assembler</th>
 						<th scope="col" class="mobile-hide">QC</th>
 						<th scope="col" class="mobile-hide">Date</th>
 						<th scope="col">Edit</th>
@@ -44,11 +46,13 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 						<tr id='<?php echo $data->id ?>'>
 							<td><?php echo $data->serial ?></td>
 							<td class="mobile-hide"><?php echo $data->project ?></td>
-							<td class="mobile-hide">><?php echo $data->progress ?>%</td>
-							<td class="mobile-hide">><?php echo $data->assembler ?></td>
+							<td class="mobile-hide">
+								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>")'>
+									<?php echo $data->progress ?>%</a></td>
+							<td class="mobile-hide"><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
-							<td><a href='/production/edit_checklist/<?php echo $data->id ?>' class='btn btn-info'>Edit</a></td>
+							<td><a href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'>Edit</a></td>
 							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'>Delete</button></td>
 						</tr>
 					<?php } ?>
@@ -57,6 +61,11 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<?php } else { ?>
 			<div>No checklist(s) found.</div>
 		<?php } ?>
+	</div>
+	<div id='show-log' style='display:none;'>
+	<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+		<ul class="list-group list-group-flush">
+		</ul>
 	</div>
 </main>
 <script>
