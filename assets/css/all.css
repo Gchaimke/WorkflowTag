@@ -2,6 +2,25 @@ main {
     margin-top: 35px;
 }
 
+ul.pagination.right {
+    float: right;
+}
+
+ul.pagination.left {
+    float: left;
+}
+
+.num-link>a{
+    position: relative;
+    display: block;
+    padding: 0.5rem 0.75rem;
+    margin-left: -1px;
+    line-height: 1.25;
+    color: #007bff;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+
 form.user-create {
     max-width: fit-content;
 }
@@ -26,6 +45,11 @@ footer.container {
     .display-4,.display-3 {
         font-size: 2.5rem;
     }
+
+    ul.pagination.right , ul.pagination.left {
+        float: none;
+    }
+    
 }
 
 @media screen and (orientation:portrait) { 

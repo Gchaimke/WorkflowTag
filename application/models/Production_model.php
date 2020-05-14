@@ -206,4 +206,38 @@ class Production_model extends CI_Model
 			return $response[0]['serial'];
 		}
 	}
+
+	public function get_current_checklists_records($limit, $start,$project) 
+    {
+		$this->db->limit($limit, $start);
+		if ($project != '') {
+			$project = urldecode($project);
+			$condition = "project =\"$project\"";
+			$this->db->where($condition);
+		}
+		$this->db->order_by('id', 'DESC');
+        $query = $this->db->get("checklists");
+ 
+        if ($query->num_rows() > 0) 
+        {
+            foreach ($query->result() as $row) 
+            {
+                $data[] = $row;
+            }
+             
+            return $data;
+        }
+ 
+        return false;
+    }
+     
+    public function get_total($project='') 
+    {
+		if ($project != '') {
+			$this->db->from('checklists');
+			$project = urldecode($project);
+			$this->db->where('project',$project);
+		}
+        return $this->db->count_all_results();
+    }
 }

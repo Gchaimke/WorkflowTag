@@ -16,43 +16,50 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 			echo $message_display . '</div>';
 		}
 		?>
+		<nav aria-label="Checklist navigation">
+		<ul class="pagination left">
 		<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">New Checklist</a>
 		<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 		<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-		<table class="table">
-			<thead class="thead-dark">
-				<tr>
-					<th scope="col">Serial Number</th>
-					<th scope="col">Project</th>
-					<th scope="col" class="mobile-hide">Progress</th>
-					<th scope="col" class="mobile-hide">Assembler</th>
-					<th scope="col" class="mobile-hide">QC</th>
-					<th scope="col" class="mobile-hide">Date</th>
-					<th scope="col">Edit</th>
-					<th scope="col">Delete</th>
-				</tr>
-			</thead>
-			<tbody>
-				<?php if (isset($checklists)) {
-					foreach ($checklists as $checklist) {
-						echo '<tr id="' . $checklist['id'] . '">';
-						echo  '<td>' . $checklist['serial'] . '</td>';
-						echo  '<td>' . $checklist['project'] . '</td>';
-						echo  '<td class="mobile-hide">' . $checklist['progress'] . ' %</td>';
-						echo  '<td class="mobile-hide">' . $checklist['assembler'] . '</td>';
-						echo  '<td class="mobile-hide">' . $checklist['qc'] . '</td>';
-						echo  '<td class="mobile-hide">' . $checklist['date'] . '</td>';
-						echo "<td><a href='/production/edit_checklist/" . $checklist['id'] . "' class='btn btn-info'>Edit</a></td>";
-						echo "<td><button id='" . $checklist['id'] . "' class='btn btn-danger' onclick='delChecklist(this.id)'>Delete</button></td>";
-						echo '</tr>';
-					}
-				} ?>
-			</tbody>
-		</table>
+		</ul>
+		<?php if (isset($links)) { echo $links; }?>
+		</nav>
+		<?php if (isset($results)) { ?>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Serial Number</th>
+						<th scope="col"  class="mobile-hide">Project</th>
+						<th scope="col" class="mobile-hide">>Progress</th>
+						<th scope="col" class="mobile-hide">>Assembler</th>
+						<th scope="col" class="mobile-hide">QC</th>
+						<th scope="col" class="mobile-hide">Date</th>
+						<th scope="col">Edit</th>
+						<th scope="col">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					<?php foreach ($results as $data) { ?>
+						<tr id='<?php echo $data->id ?>'>
+							<td><?php echo $data->serial ?></td>
+							<td class="mobile-hide"><?php echo $data->project ?></td>
+							<td class="mobile-hide">><?php echo $data->progress ?>%</td>
+							<td class="mobile-hide">><?php echo $data->assembler ?></td>
+							<td class="mobile-hide"><?php echo $data->qc ?></td>
+							<td class="mobile-hide"><?php echo $data->date ?></td>
+							<td><a href='/production/edit_checklist/<?php echo $data->id ?>' class='btn btn-info'>Edit</a></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'>Delete</button></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		<?php } else { ?>
+			<div>No checklist(s) found.</div>
+		<?php } ?>
 	</div>
 </main>
 <script>
-
 	var client = '<?php echo $client[0]['name'] ?>';
 
 	function delChecklist(id) {

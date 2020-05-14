@@ -9,7 +9,7 @@ class Production extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Production_model');
-        $this->load->model('Admin_model');
+        $this->load->library('pagination');
     }
 
     public function index()
@@ -24,13 +24,53 @@ class Production extends CI_Controller
 
     public function checklists($project = '', $data = '')
     {
+        $this->load->database();
+        // init params
+        $params = array();
+        $limit_per_page = 5;
+        $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $total_records = $this->Production_model->get_total($project);
+        if ($total_records > 0) {
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+
+            $config['base_url'] = base_url() . 'production/checklists/' . $project;
+            $config['total_rows'] = $total_records;
+            $config['per_page'] = $limit_per_page;
+            $config["uri_segment"] = 4;
+
+            $config['full_tag_open'] = '<ul class="pagination right">';
+            $config['full_tag_close'] = '</ul>';
+
+            $config['cur_tag_open'] = '<li class="page-item active "><a class="page-link">';
+            $config['cur_tag_close'] = '</a></li>';
+
+            $config['num_tag_open'] = '<li class="page-item num-link">';
+            $config['num_tag_close'] = '</li>';
+
+            $config['first_tag_open'] = '<li class="page-item num-link">';
+            $config['first_tag_close'] = '</li>';
+
+            $config['last_tag_open'] = '<li class="page-item num-link">';
+            $config['last_tag_close'] = '</li>';
+
+            $config['next_tag_open'] = '<li class="page-item num-link">';
+            $config['next_tag_close'] = '</li>';
+
+            $config['prev_tag_open'] = '<li class="page-item num-link">';
+            $config['prev_tag_close'] = '</li>';
+
+            $this->pagination->initialize($config);
+
+            // build paging links
+            $params["links"] = $this->pagination->create_links();
+        }
         // get data from model
-        $data['checklists'] = $this->Production_model->getChecklists('', $project);
-        $data['project'] = urldecode($project);
-        $data['client'] = $this->Production_model->getClients('', urldecode($project));
+        //$data['checklists'] = $this->Production_model->getChecklists('', $project);
+        $params['project'] = urldecode($project);
+        $params['client'] = $this->Production_model->getClients('', urldecode($project));
         $this->load->view('header');
-        $this->load->view('main_menu', $data);
-        $this->load->view('production/manage_checklists', $data);
+        $this->load->view('main_menu', $params);
+        $this->load->view('production/manage_checklists', $params);
         $this->load->view('footer');
     }
 

@@ -226,27 +226,15 @@ class Admin_model extends CI_Model
         $response = array();
         //get users number
         if ($this->db->table_exists('users')) {
-            $this->db->select('*');
-            $this->db->from('users');
-            $query = $this->db->get();
-            $count = $query->result_array();
-            $response['users'] = count($count);
+            $response['users']  = $this->db->count_all("users");
         }
         //get clients number
         if ($this->db->table_exists('clients')) {
-            $this->db->select('*');
-            $this->db->from('clients');
-            $query = $this->db->get();
-            $count = $query->result_array();
-            $response['clients'] = count($count);
+            $response['clients'] = $this->db->count_all("clients");
         }
         //get checklists number
         if ($this->db->table_exists('checklists')) {
-            $this->db->select('*');
-            $this->db->from('checklists');
-            $query = $this->db->get();
-            $count = $query->result_array();
-            $response['checklists'] = count($count);
+            $response['checklists'] = $this->db->count_all("checklists");
         }
         return $response;
     }
