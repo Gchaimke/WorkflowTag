@@ -40,7 +40,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 
 			<?php echo form_open('users/edit', 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
-			<input type='text' class="form-control" name='name' value="<?php echo $name ?>" disabled></br>
+			<input type='text' class="form-control" name='name' value="<?php echo $name ?>"></br>
 			<?php
 			$current_role = ($this->session->userdata['logged_in']['role']);
 			if ($current_role == "Admin") {

@@ -32,6 +32,7 @@ class Users extends CI_Controller
         $role = ($this->session->userdata['logged_in']['role']);
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('role', 'Role', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
@@ -45,6 +46,7 @@ class Users extends CI_Controller
             if ($role == "Admin") {
                 $sql = array(
                     'id' => $this->input->post('id'),
+                    'name' => $this->input->post('name'),
                     'role' => $this->input->post('role'),
                     'password' => $this->input->post('password')
                 );

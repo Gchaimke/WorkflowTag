@@ -17,7 +17,7 @@ class Users_model extends CI_Model
 		return $response;
 	}
 
-	public function get_qc($role = '',$pass='')
+	public function get_qc($role = '', $pass = '')
 	{
 		$condition = "role ='$role' AND password ='$pass'";
 		$this->db->select('*');
@@ -50,7 +50,11 @@ class Users_model extends CI_Model
 	public function editUser($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array('role' => $data['role'], 'password' => $data['password']);
+		$data = array(
+			'role' => $data['role'],
+			'name' => $data['name'],
+			'password' => $data['password']
+		);
 		return $this->db->update('users', $data, $where);
 	}
 
