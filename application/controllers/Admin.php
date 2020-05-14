@@ -7,6 +7,7 @@ class Admin extends CI_Controller
 		// Load model
 		$this->load->model('Users_model');
 	}
+
 	function settings()
 	{
 		$data['settings'] = '';
@@ -14,6 +15,7 @@ class Admin extends CI_Controller
 		$this->load->model('Admin_model');
 		$this->load->view('header');
 		$this->load->view('main_menu');
+		$data = $this->Admin_model->getStatistic();
 		if ($this->input->post('submit') != NULL) {
 			$data['response'] = 'Settings saved!';
 			$data['settings'] = $this->Admin_model->getSettings();
