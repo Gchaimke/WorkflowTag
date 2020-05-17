@@ -50,11 +50,19 @@ class Users_model extends CI_Model
 	public function editUser($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array(
-			'role' => $data['role'],
-			'name' => $data['name'],
-			'password' => $data['password']
-		);
+		if ($data['name'] != '') {
+			$data = array(
+				'role' => $data['role'],
+				'name' => $data['name'],
+				'password' => $data['password']
+			);
+		} else {
+			$data = array(
+				'role' => $data['role'],
+				'password' => $data['password']
+			);
+		}
+
 		return $this->db->update('users', $data, $where);
 	}
 
