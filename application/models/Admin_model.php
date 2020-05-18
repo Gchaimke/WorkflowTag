@@ -199,6 +199,9 @@ class Admin_model extends CI_Model
             ),
             'roles' => array(
                 'type' => 'TEXT'
+            ),
+            'log' => array(
+                'type' => 'LONGTEXT'
             )
         );
 
@@ -209,7 +212,8 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            'roles' => 'Admin,Assember,QC'
+            'roles' => 'Admin,Assember,QC',
+            'log' =>'Database "settings created."'
         );
         $this->db->insert('settings', $st);
     }
