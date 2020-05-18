@@ -24,6 +24,9 @@ class Admin_model extends CI_Model
             'password' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 40
+            ),
+            'log' => array(
+                'type' => 'TEXT'
             )
         );
 
@@ -178,7 +181,8 @@ class Admin_model extends CI_Model
         $tp = array(
             "client" => 'Simbionix',
             "project" => 'Flex2',
-            "data" => '1,2,3,4,5'
+            "data" => 'header;HD',
+            "template" => 'Fxxx,07,yy,-'
         );
         $this->db->insert('projects', $tp);
     }
