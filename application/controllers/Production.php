@@ -113,8 +113,13 @@ class Production extends CI_Controller
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
                 $data['client'] = $this->Production_model->getClients('', $project);
                 $data['project'] = urldecode($this->input->post('project'));
+                if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
+                    $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+                } else {
+                    $data['template'] = " - not set!";
+                }
                 $this->load->view('header');
-                $this->load->view('main_menu');
+                $this->load->view('main_menu',$data);
                 $this->load->view('production/add_checklist', $data);
                 $this->load->view('footer');
             }
@@ -124,34 +129,42 @@ class Production extends CI_Controller
     // Validate and store checklist data in database 
     public function gen_checklists()
     {
+        $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $zero_str = implode(", ", array_fill(0, 400, 0));
+        
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
-        $serial_template = explode(',', $this->Production_model->getProject('', $this->input->post('project'))[0]['template']); //Get template and explode to array
-        $sep = $serial_template[3];
-        $serial = $serial_template[0] . $sep . $serial_template[1] . $sep . $serial_template[2];
-        $serial = str_replace("yy", date("y"), $serial);
-        $serial = str_replace("mm", date("m"), $serial);
-        $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
-        $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
-        $arr = array("xxxx", "xxx", "xx");
-        $count = $this->input->post('count');
-        for ($i = 1; $i <= $count; $i++) {
-            $serial_end++;
+        $serial_project = $this->Production_model->getProject('', $this->input->post('project'));
+        $serial = $serial_project[0]['template']; //Get serial template
+        if ($serial != "") {
+            $serial = str_replace("yy", date("y"), $serial); //add year
+            $serial = str_replace("mm", date("m"), $serial); //add month with zero
+            $serial = str_replace("dm", $dfend_month[date("m")], $serial); //add month from dfend array
+            $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
             $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
-            $current_serial = str_replace($arr, $zero_count, $serial);
-            $data = array(
-                'client' => $this->input->post('client'),
-                'project' => $this->input->post('project'),
-                'serial' => $current_serial,
-                'data' =>  $zero_str,
-                'date' => date("Y-m-d")
-            );
-            $result = $this->Production_model->addChecklist($data);
-        }
+            $arr = array("xxxx", "xxx", "xx");
+            $count = $this->input->post('count');
+            for ($i = 1; $i <= $count; $i++) {
+                $serial_end++;
+                $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
+                $current_serial = str_replace($arr, $zero_count, $serial);
+                $data = array(
+                    'client' => $this->input->post('client'),
+                    'project' => $this->input->post('project'),
+                    'serial' => $current_serial,
+                    'data' =>  $zero_str,
+                    'date' => date("Y-m-d")
+                );
+                $result = $this->Production_model->addChecklist($data);
+                if($result!=1){
+                    echo 'Checklist '.$data['serial'].' exists!';
+                    return;
+                }
+            }
+        }        
         echo $result;
     }
 

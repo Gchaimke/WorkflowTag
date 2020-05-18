@@ -18,7 +18,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		?>
 		<nav aria-label="Checklist navigation">
 			<ul class="pagination left">
-				<a class="btn btn-success" href="/production/add_checklist/<?php echo $project; ?>">New Checklist</a>
+				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>">Custom Serial</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
 			</ul>
@@ -44,7 +44,11 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 
 					<?php foreach ($results as $data) { ?>
 						<tr id='<?php echo $data->id ?>'>
-							<td><?php echo $data->serial ?></td>
+							<td><?php if ($data->serial != '') {
+									echo $data->serial;
+								} else {
+									echo "SN template not found!";
+								}  ?></td>
 							<td class="mobile-hide"><?php echo $data->project ?></td>
 							<td class="mobile-hide">
 								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>")'>
@@ -63,7 +67,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
-	<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+		<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
 		<ul class="list-group list-group-flush">
 		</ul>
 	</div>
@@ -91,8 +95,9 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				project: project,
 				count: count
 			}).done(function(o) {
-				//alert(o);
-				console.log(o + ' checklist/s added to the server.');
+				if(o!=1){
+					alert(o);
+				}
 				location.reload();
 			});
 		}
