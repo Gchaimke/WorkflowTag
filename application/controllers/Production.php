@@ -207,18 +207,22 @@ class Production extends CI_Controller
         $users = $this->Users_model->getUsers();
         $prefix_count = 0;
         $checked = "";
+        $selected = '';
         $table = '';
+        $options = '';
         $project = $data['checklist'][0]['project'];
         $checklist_data = $data['checklist'][0]['data'];
         if (count($this->Production_model->getProject('', $project)) > 0) {
             $project_data = $this->Production_model->getProject('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
+            $table .= $checklist_data;
             $index = 0;
             $id = 0;
+            
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
-                $checked = "";
+                $checked = '';
                 if (isset($status[$id]) && $status[$id] == 1) {
                     $checked = "Checked";
                 }
@@ -231,11 +235,11 @@ class Production extends CI_Controller
                 if (count($col) > 1) {
 
                     if (end($col) == "HD") {
-                        $tr = '<table id="checklist" class="table"><thead class="thead-dark">'.'<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .'</th>';
-                        for ($j = 1; $j < count($col)-1; $j++) {
-                            $tr .= '<th scope="col">'. $col[$j] .'</th>';
+                        $tr = '<table id="checklist" class="table"><thead class="thead-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
+                        for ($j = 1; $j < count($col) - 1; $j++) {
+                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
                         }
-                        $tr .='</tr></thead><tbody>';
+                        $tr .= '</tr></thead><tbody>';
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
@@ -246,11 +250,16 @@ class Production extends CI_Controller
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
-                        $tr .= "<td><select class='form-control review' id='sel1'><option>Select</option>";
-                        foreach($users as $user){
-                            $tr .="<option>".$user['name']."</option>";
+                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        foreach ($users as $user) {
+                            if (isset($status[$id + count($rows)]) && $status[$id + count($rows)] == $user['name']) {
+                                $options .= "<option selected>" . $user['name'] . "</option>";
+                            }else{
+                                $options .= "<option >" . $user['name'] . "</option>";
+                            }
+                            
                         }
-                        $tr .="</select></td>";
+                        $tr .= $options . "</select></td>";
                         $index++;
                         $id++;
                     } else {

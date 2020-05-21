@@ -5,21 +5,29 @@ var chArray = [];
 
 $(document).ready(function () {
     toggle = true;
-    var rowCount = $('div.checkbox input:checkbox');
-    $.each(rowCount, function (id, value) {
+    var rowCheckboxes = $('div.checkbox input:checkbox');
+    var rowSelections = $('select.review');
+    $.each(rowCheckboxes, function (id, value) {
         if (value.checked) {
             chArray[id] = 1;
         } else {
-            chArray[id] = 0;
+            chArray[id] =0;
         }
     });
+
+    var arr = $.map(rowSelections,function(element){
+        chArray[element.id] = element.value;
+        return {id: element.id , name: element.value}; 
+    });
+    console.log(arr);
+    
     updateProgress();
 });
 
 function updateProgress() {
-    var rowCount = $('#checklist tr').length;
+    var rowCheckboxes = $('#checklist tr').length;
     var checked = $("input:checkbox:checked").length;
-    progress_status = 100 / (rowCount - 1) * checked
+    progress_status = 100 / (rowCheckboxes - 1) * checked
     $("#progress-bar").width(progress_status + "%");
     $("#progress-bar").attr("aria-valuenow", progress_status);
 }
@@ -32,6 +40,15 @@ function setProgress(p) {
 function toggleOne(id) {
     if ($(event.target).is(":checked")) {
         chArray[id] = 1;
+    } else {
+        chArray[id] = 0;
+    }
+    updateProgress();
+}
+
+function selectOne(id,name) {
+    if (name != '') {
+        chArray[id] = name;
     } else {
         chArray[id] = 0;
     }
@@ -90,9 +107,13 @@ $("select.review").change(function (e) {
         function (verify) {
             if (verify) {
                 option.prop("selected", true);
+                selectOne(id,name);
+                $('#input_data').val(chArray.toString());
+                $('#input_progress').val(progress_status);                
             } else {
                 alert("Password error!")
                 option.prop("selected", false);
+                $('#input_data').val(chArray.toString());
             }
         });
 
