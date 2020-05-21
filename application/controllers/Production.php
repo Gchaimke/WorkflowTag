@@ -119,7 +119,7 @@ class Production extends CI_Controller
                     $data['template'] = " - not set!";
                 }
                 $this->load->view('header');
-                $this->load->view('main_menu',$data);
+                $this->load->view('main_menu', $data);
                 $this->load->view('production/add_checklist', $data);
                 $this->load->view('footer');
             }
@@ -131,7 +131,7 @@ class Production extends CI_Controller
     {
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $zero_str = implode(", ", array_fill(0, 400, 0));
-        
+
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
@@ -159,12 +159,12 @@ class Production extends CI_Controller
                     'date' => date("Y-m-d")
                 );
                 $result = $this->Production_model->addChecklist($data);
-                if($result!=1){
-                    echo 'Checklist '.$data['serial'].' exists!';
+                if ($result != 1) {
+                    echo 'Checklist ' . $data['serial'] . ' exists!';
                     return;
                 }
             }
-        }        
+        }
         echo $result;
     }
 
@@ -203,6 +203,8 @@ class Production extends CI_Controller
 
     private function build_checklist($data)
     {
+        $this->load->model('Users_model');
+        $users = $this->Users_model->getUsers();
         $prefix_count = 0;
         $checked = "";
         $table = '';
@@ -227,14 +229,28 @@ class Production extends CI_Controller
                 }
                 $col = explode(";", $rows[$i]);
                 if (count($col) > 1) {
-                    if ($col[1] == "HD") {
-                        $tr = '<table id="checklist" class="table"><thead class="thead-dark"><tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .
-                            '</th><th id="checkAll" scope="col">Verify</th></tr></thead><tbody>';
+
+                    if (end($col) == "HD") {
+                        $tr = '<table id="checklist" class="table"><thead class="thead-dark">'.'<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] .'</th>';
+                        for ($j = 1; $j < count($col)-1; $j++) {
+                            $tr .= '<th scope="col">'. $col[$j] .'</th>';
+                        }
+                        $tr .='</tr></thead><tbody>';
                         $index = 1;
                         $prefix_count++;
-                    } else if ($col[1] == "QC") {
+                    } else if (end($col) == "QC") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
                             "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
+                        $index++;
+                        $id++;
+                    } else if (end($col) == "N") {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
+                        $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
+                        $tr .= "<td><select class='form-control review' id='sel1'><option>Select</option>";
+                        foreach($users as $user){
+                            $tr .="<option>".$user['name']."</option>";
+                        }
+                        $tr .="</select></td>";
                         $index++;
                         $id++;
                     } else {

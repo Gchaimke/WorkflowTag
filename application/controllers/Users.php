@@ -170,7 +170,7 @@ class Users extends CI_Controller
                     $this->load->view('footer');
                 }
             }
-        }else{
+        } else {
             header("location: /");
         }
     }
@@ -193,5 +193,21 @@ class Users extends CI_Controller
         $password = $_POST['pass'];
         $exists = $this->Users_model->get_qc('QC', $password);
         echo $exists[0]['name'];
+    }
+
+    public function get_verify()
+    {
+        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('pass', 'Password', 'trim|required|xss_clean');
+        $data = array(
+            'name' => $this->input->post('name'),
+            'password' => $this->input->post('pass')
+        );
+        $result = $this->Users_model->login($data);
+        if ($result == TRUE) {
+            echo true;
+        } else {
+            echo false;
+        }
     }
 }

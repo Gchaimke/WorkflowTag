@@ -76,6 +76,28 @@ $("input:checkbox.qc").click(function (e) {
 
 });
 
+$("select.review").change(function (e) {
+    event.preventDefault();
+    id = this.id;
+    var option = $(this).children("option:selected");
+    var name = option.val();
+    var pass = prompt(name+" please enter your Password.", "");
+    $.post("/users/get_verify",
+        {
+            name: name,
+            pass: pass
+        },
+        function (verify) {
+            if (verify) {
+                option.prop("selected", true);
+            } else {
+                alert("Password error!")
+                option.prop("selected", false);
+            }
+        });
+
+});
+
 $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
     $('#input_data').val(chArray.toString());
