@@ -23,6 +23,8 @@ ul.pagination.left {
 
 ul.pagination.left>a {
     margin-right: 10px;
+    font-size: 20px;
+    font-weight: 700;
 }
 
 form.user-create {
@@ -45,7 +47,7 @@ div#show-log {
     left: 45%;
     top: 30%;
     background: #e6e6e6;
-    padding: 40px 20px;    
+    padding: 5px 5px;    
     z-index: 3;
 }
 
@@ -63,10 +65,15 @@ div#show-log ul{
 }
 
 button.close {
-    margin-top: -60px;
+    margin-top: -15px;
     margin-left: -20px;
+    background: white;
+    padding: 10px;
 }
 
+.fa-user-plus, .fa-file-text{
+    font-size: 30px;
+}
 
 
 @media (max-width: 991.98px){

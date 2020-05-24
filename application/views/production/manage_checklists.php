@@ -18,7 +18,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		?>
 		<nav aria-label="Checklist navigation">
 			<ul class="pagination left">
-				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>">Custom Serial</a>
+				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
 			</ul>
@@ -56,8 +56,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 							<td class="mobile-hide"><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
-							<td><a href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'>Edit</a></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'>Delete</button></td>
+							<td><a href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'><i class="fa fa-trash"></i></button></td>
 						</tr>
 					<?php } ?>
 				</tbody>

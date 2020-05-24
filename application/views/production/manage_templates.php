@@ -20,7 +20,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/production/add_template">Add Template</a>
+		<a class="btn btn-success" href="/production/add_template"><i class="fa fa-file-text"></i></a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -37,9 +37,9 @@ if (isset($this->session->userdata['logged_in'])) {
 						echo  '<td>' . $project['client'] . '</td>';
 						echo  '<td>' . $project['project'] . '</td>';
 						echo "<td><a href='/production/edit_template/" . $project['id'] .
-							"' class='btn btn-info'>Edit</a></td>";
+							"' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
 						echo "<td><button id='" . $project['id'] .
-							"' class='btn btn-danger' onclick='deleteProject(this.id)'>Delete</button></td>";
+							"' class='btn btn-danger' onclick='deleteProject(this.id)'><i class='fa fa-trash'></i></button></td>";
 						echo '</tr>';
 					}
 				} ?>
