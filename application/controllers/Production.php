@@ -76,7 +76,7 @@ class Production extends CI_Controller
     public function add_checklist($project = '', $data = '')
     {
         // Check validation for user input in SignUp form
-        $zero_str = implode(", ", array_fill(0, 400, 0));
+        $zero_str = implode(",", array_fill(0, 400, ""));
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
@@ -130,7 +130,7 @@ class Production extends CI_Controller
     public function gen_checklists()
     {
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
-        $zero_str = implode(", ", array_fill(0, 400, 0));
+        $zero_str = implode(",", array_fill(0, 400, ""));
 
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
@@ -207,7 +207,6 @@ class Production extends CI_Controller
         $users = $this->Users_model->getUsers();
         $prefix_count = 0;
         $checked = "";
-        $selected = '';
         $table = '';
         $options = '';
         $project = $data['checklist'][0]['project'];
@@ -216,15 +215,17 @@ class Production extends CI_Controller
             $project_data = $this->Production_model->getProject('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
-            $table .= $checklist_data;
+            //$table .= $checklist_data;
             $index = 0;
             $id = 0;
-            
+            foreach ($users as $user) {
+                $options .= "<option >" . $user['name'] . "</option>";
+            }
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
                 $checked = '';
-                if (isset($status[$id]) && $status[$id] == 1) {
-                    $checked = "Checked";
+                if (isset($status[$id]) && $status[$id] != '') {
+                    $checked = "Checked name-data='".$status[$id]."'";
                 }
                 if ($index < 10) {
                     $prefix = $prefix_count . '.0';
@@ -251,14 +252,6 @@ class Production extends CI_Controller
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
-                        foreach ($users as $user) {
-                            if (isset($status[$id + count($rows)]) && $status[$id + count($rows)] == $user['name']) {
-                                $options .= "<option selected>" . $user['name'] . "</option>";
-                            }else{
-                                $options .= "<option >" . $user['name'] . "</option>";
-                            }
-                            
-                        }
                         $tr .= $options . "</select></td>";
                         $index++;
                         $id++;

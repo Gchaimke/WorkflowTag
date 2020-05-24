@@ -41,24 +41,35 @@ footer.container {
 
 div#show-log {
     max-width: max-content;
-    position: fixed;
+    position: absolute;
     left: 45%;
     top: 30%;
     background: #e6e6e6;
     padding: 40px 20px;    
+    z-index: 3;
+}
+
+#show-log-header {
+    padding: 10px;
+  cursor: move;
+  z-index: 10;
+  background-color: #2196F3;
+  color: #fff;
 }
 
 div#show-log ul{
     overflow-y: auto;
-    max-height: 550px;
+    max-height: 400px;
 }
 
 button.close {
-    margin-top: -30px;
+    margin-top: -60px;
     margin-left: -20px;
 }
 
-@media(max-width: 576px){
+
+
+@media (max-width: 991.98px){
     .mobile-hide {
         display: none;
     }
@@ -73,7 +84,36 @@ button.close {
     ul.pagination.right , ul.pagination.left {
         float: none;
     }
+
+    .card-columns {
+        display: table;
+    }
     
+}
+
+@media (max-width: 991.98px){
+    .mobile-hide {
+        display: none;
+    }
+    .table th, .table td {
+        padding: 0.45rem;
+    }
+
+    .display-4,.display-3 {
+        font-size: 2.5rem;
+    }
+
+    ul.pagination.right , ul.pagination.left {
+        float: none;
+    }
+
+    .card-columns {
+        display: table;
+    }
+    
+}
+@media (max-width: 1199.98px){
+
 }
 
 

@@ -51,7 +51,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 								}  ?></td>
 							<td class="mobile-hide"><?php echo $data->project ?></td>
 							<td class="mobile-hide">
-								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>")'>
+								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
 									<?php echo $data->progress ?>%</a></td>
 							<td class="mobile-hide"><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
@@ -67,7 +67,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
-		<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+	<div id="show-log-header">
+	<div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button></div>
 		<ul class="list-group list-group-flush">
 		</ul>
 	</div>

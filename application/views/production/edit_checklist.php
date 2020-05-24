@@ -17,10 +17,11 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 }
 ?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-	<button id="snap" class="btn btn-info">Snap Photo</button>
+	<button id="snap" class="btn btn-info"><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
@@ -32,7 +33,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
-			<input id="save" type='submit' class="btn btn-success navbar-btn" value="Save">
+			<button id="save" type='submit' class="btn btn-success navbar-btn " value="Save"><i class="fa fa-save"></i></button>
 			</form>
 		</li>
 	</ul>
@@ -47,10 +48,6 @@ if (isset($this->session->userdata['logged_in'])) {
 		echo $message_display . '</div>';
 	}
 	?>
-	<div class="name_badges">
-		<h4><span class="badge badge-secondary">Assembler: <?php echo $username ?> </span></h4>
-		<h4><span class="badge badge-secondary">QC: <?php echo $qc ?></span></h4>
-	</div>
 	<div class="video-frame container-sm">
 		<div class="controls">
 			<button id="select_camera" class="btn btn-success">Select camera</button>

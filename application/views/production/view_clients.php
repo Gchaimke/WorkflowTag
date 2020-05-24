@@ -13,7 +13,7 @@
 			echo $message_display . '</div>';
 		}
 
-		echo '<div class="card-deck mt-4">';
+		echo '<div class="card-columns">';
 		foreach ($clients as $client) {
 			echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
 			echo $client['name'];
