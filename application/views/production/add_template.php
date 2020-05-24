@@ -47,7 +47,10 @@ if (isset($clients)) {
                   <div class="form-group"><label>Serial template</label>
                   <input type="text" name="template" value="" class="form-control">
                   </div>
-                  <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br>
+                  <div class="form-group"><label>Checklist Data</label>
+                  <textarea class="form-control" name='data' rows="10" cols="100"></textarea></br></div>
+                  <div class="form-group"><label>Scan Data</label>
+                  <textarea class="form-control" name='scans' rows="10" cols="100"></textarea></br></div>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>
             </center>

@@ -121,7 +121,7 @@ class Production_model extends CI_Model
 	public function editProject($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array('data' => $data['data'],'template' => $data['template']);
+		$data = array('data' => $data['data'],'template' => $data['template'],'scans' => $data['scans']);
 		return $this->db->update('projects', $data, $where);
 	}
 

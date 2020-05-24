@@ -169,6 +169,9 @@ class Admin_model extends CI_Model
             'template' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
+            ),
+            'scans' => array(
+                'type' => 'TEXT'
             )
         );
 

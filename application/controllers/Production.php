@@ -358,6 +358,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
+        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['js_to_load'] = array("add_template.js");
             $data['clients'] = $this->Production_model->getClients();
@@ -370,7 +371,8 @@ class Production extends CI_Controller
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
-                'template' => $this->input->post('template')
+                'template' => $this->input->post('template'),
+                'scans' => $this->input->post('scans')
             );
             $result = $this->Production_model->addproject($data);
             if ($result == TRUE) {
@@ -396,6 +398,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
+        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['clients'] = $this->Production_model->getClients();
             $data['project'] =  $this->Production_model->getProject($id);
@@ -407,7 +410,8 @@ class Production extends CI_Controller
             $sql = array(
                 'id' => $this->input->post('id'),
                 'data' => $this->input->post('data'),
-                'template' => $this->input->post('template')
+                'template' => $this->input->post('template'),
+                'scans' => $this->input->post('scans')
             );
             $data['message_display'] = $this->Production_model->editProject($sql);
             $data['message_display'] .= ' Project edited Successfully !';
