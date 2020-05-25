@@ -271,7 +271,7 @@ class Production extends CI_Controller
 
     private function build_scans($data)
     {
-        $table = '<table id="scans" class="table"><thead class="thead-dark">';
+        $table = '';
         $tr = '';
         $columns = 0;
         $id = 0;
@@ -279,24 +279,27 @@ class Production extends CI_Controller
         if (count($this->Production_model->getProject('', $project)) > 0) {
             $project_scans = $this->Production_model->getProject('', $project)[0]['scans'];
             $rows = explode(PHP_EOL, $project_scans);
-            for ($i = 0; $i < count($rows); $i++) {
-                $col = explode(";", $rows[$i]);
-                if (end($col) == "HD") {
-                    $columns = count($col);
-                    $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
-                    for ($j = 1; $j < count($col) - 1; $j++) {
-                        $tr .= '<th scope="col">' . $col[$j] . '</th>';
+            if (count($rows) > 1) {
+                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
+                for ($i = 0; $i < count($rows); $i++) {
+                    $col = explode(";", $rows[$i]);
+                    if (end($col) == "HD") {
+                        $columns = count($col);
+                        $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
+                        for ($j = 1; $j < count($col) - 1; $j++) {
+                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                        }
+                        $tr .= '</tr></thead>';
+                        $table .= $tr;
+                    } else {
+                        $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
+                        for ($j = 2; $j < $columns; $j++) {
+                            $tr .= "<td><input type='text' class='form-control scans'></td>";
+                        }
+                        $tr .=  "</tr>";
+                        $table .= $tr;
+                        $id++;
                     }
-                    $tr .= '</tr></thead>';
-                    $table .= $tr;
-                } else {
-                    $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
-                    for ($j = 2; $j < $columns; $j++) {
-                        $tr .= "<td><input type='text' class='form-control scans'></td>";
-                    }
-                    $tr .=  "</tr>";
-                    $table .= $tr;
-                    $id++;
                 }
             }
         }
@@ -308,12 +311,14 @@ class Production extends CI_Controller
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
-        $this->load->view('header');
-        $this->load->view('main_menu', $data);
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data);
             $data['scans_rows'] = $this->build_scans($data);
+        }
+        $this->load->view('header');
+        $this->load->view('main_menu', $data);
+        if ($data['checklist']) {
             $this->load->view('production/edit_checklist', $data);
         }
         $this->load->view('footer');
@@ -346,19 +351,13 @@ class Production extends CI_Controller
         }
     }
 
-    public function save_page2pdf($id = '')
+    public function save_page2pdf()
     {
-        $data['message_display'] = exec('python "' . getcwd() . '/test.py"');
-        $data['message_display'] .= $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
-        $data['message_display'] .= exec($html2pdf . ' https://localhost/production/edit_checklist/1 "' . getcwd() . '\test.pdf"');
-
-        $data['js_to_load'] = array("checklist_create.js", "camera.js");
-        $data['checklist'] =  $this->Production_model->getChecklists($id);
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        $data['data'] = $this->build_checklist($data);
-        $this->load->view('production/edit_checklist', $data);
-        $this->load->view('footer');
+        $url = $_POST['url'];
+        $cookie = $_POST['cookie'];
+        $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
+        exec($html2pdf . ' '.$url.' --cookie "ci_session" '.$cookie.' "' . getcwd() . '\test.pdf"');
+        echo "ok";
     }
 
     public function delete()

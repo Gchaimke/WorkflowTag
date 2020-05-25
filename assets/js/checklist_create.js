@@ -190,20 +190,53 @@ $(document).on('keypress', 'input,select', function (e) {
 });
 
 document.onkeydown = function (e) {
-
-    if (e.ctrlKey && e.which == 83) {
+    var pathname = window.location.pathname.split("/");
+    if (e.ctrlKey && e.which == 83) { //ctrl + S
         e.preventDefault();
         $(".saveData").submit();
-    } else if (e.ctrlKey && e.which == 37) {
+    } else if (e.ctrlKey && e.which == 37) { //ctrl + <-
         e.preventDefault();
-        var pathname = window.location.pathname.split("/");
         window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) - 1);
-    } else if (e.ctrlKey && e.which == 39) {
+    } else if (e.ctrlKey && e.which == 39) { //ctrl + ->
         e.preventDefault();
-        var pathname = window.location.pathname.split("/");
         window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) + 1);
+    } else if (e.ctrlKey && e.which == 81) { //ctrl+Q
+        e.preventDefault();
+       //print2PDF(window.location.href,ci_session);       
     }
 };
+
+function print2PDF(url,cookie){
+    //alert("Printing "+id);   
+    $.post("/production/save_page2pdf",
+        {
+            url: url,
+            cookie:cookie
+        },
+        function (respond) {
+            if (respond) {
+                alert(respond);
+            } else {
+                alert("no respond");
+            }
+        });
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+  }
 
 function centerLoginBox() {
     var ua = navigator.userAgent.toLowerCase();

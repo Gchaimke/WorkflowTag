@@ -10,6 +10,9 @@ $qc = $checklist[0]['qc'];
 $scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
 
+$this->load->helper('cookie');
+$session = get_cookie('ci_session');
+
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
 	$role = ($this->session->userdata['logged_in']['role']);
@@ -62,18 +65,18 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="workTable">
 		<?php echo $checklist_rows ?>
 	</div>
-	<center><h2> Scans Table</h2></center>
 	<div id="scansTable">
 		<?php echo $scans_rows ?>
 	</div>
-	<div id="photo-stock" class="container-sm">
+	<div id="photo-stock" class="container">
 		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
 		<?php
 		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
-		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial';"; //pass PHP data to JS
+		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial'; var ci_session='$session';"; //pass PHP data to JS
 		echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
+				echo '<center><h2>System Photos</h2></center>';
 				while (false !== ($entry = readdir($handle))) {
 					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'png') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
