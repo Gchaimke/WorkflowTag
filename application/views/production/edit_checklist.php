@@ -7,6 +7,7 @@ $log = $checklist[0]['log'];
 $progress = $checklist[0]['progress'];
 $assembler = $checklist[0]['assembler'];
 $qc = $checklist[0]['qc'];
+$scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
 
 if (isset($this->session->userdata['logged_in'])) {
@@ -26,12 +27,13 @@ if (isset($this->session->userdata['logged_in'])) {
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_checklist/' . $id.'?sn='.$serial, 'class=user-create'); ?>
+			<?php echo form_open('production/save_checklist/' . $id.'?sn='.$serial, 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
+			<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
 			<button id="save" type='submit' class="btn btn-success navbar-btn " value="Save"><i class="fa fa-save"></i></button>
 			</form>
 		</li>
@@ -58,7 +60,11 @@ if (isset($this->session->userdata['logged_in'])) {
 		<video id="video" width="100%" autoplay playsinline></video>
 	</div>
 	<div id="workTable">
-		<?php echo $data ?>
+		<?php echo $checklist_rows ?>
+	</div>
+	<center><h2> Scans Table</h2></center>
+	<div id="scansTable">
+		<?php echo $scans_rows ?>
 	</div>
 	<div id="photo-stock" class="container-sm">
 		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>

@@ -1,32 +1,48 @@
 var toggle;
 var progress_status = "";
 var chArray = [];
+var scansArray = [];
 
 
 $(document).ready(function () {
     toggle = true;
-    var rowCheckboxes = $('.check_row');
-    var rowSelections = $('select.review');
+    var checkRows = $('.check_row');
+    var selectRows = $('select.review');
+    var scanRows = $('.scan_row');
     chArray = $('#input_data').val().split(",");
-    rowCheckboxes.each(function () {
+    scansArray = $('#input_scans').val().split(";").map(function (e) {
+        return e.split(",");
+    });
+    checkRows.each(function () {
         if ($(this).find("input").prop('checked')) {
             $(this).find("input").after("<div class='badge badge-secondary check-lable'>" + chArray[$(this).find("input").attr('id')] + "</div>");
         }
     });
 
-    rowSelections.each(function () {
+    selectRows.each(function () {
         if (chArray[this.id]) {
             $(this).val(chArray[this.id]);
         }
     });
-    chArray = chArray.slice(0, rowCheckboxes.length * 3);
+
+    scanRows.each(function () {
+        var id = $(this).closest('tr').attr('id');
+        if (scansArray[id]) {
+            $(this).find("input:eq(0)").val(scansArray[id][0]);
+            $(this).find("input:eq(1)").val(scansArray[id][1]);
+        } else {
+            scansArray.splice(id, 0, ["", ""]);;
+        }
+    });
+
+    chArray = chArray.slice(0, checkRows.length * 3);
     updateProgress();
 });
 
 function updateProgress() {
-    var rowCheckboxes = $('.check_row').length;
+    var checkRows = $('.check_row').length;
     var checked = $("input:checkbox:checked").length;
-    progress_status = 100 / (rowCheckboxes) * checked
+    progress_status = 100 / (checkRows) * checked
     setProgress(progress_status);
 }
 
@@ -136,6 +152,58 @@ $("select.review").change(function (e) {
         });
 
 });
+
+$(".scans").change(function (e) {
+    var id = $(this).closest('tr').attr('id');
+    var sn = $(this).closest('tr').find("input:eq(0)").val();
+    var rev = $(this).closest('tr').find("input:eq(1)").val();
+    scansArray[id][0] = sn;
+    scansArray[id][1] = rev;
+    $('#input_scans').val(toString2d(scansArray));
+});
+
+
+function toString2d(arr) {
+    var str = '';
+    for (var row = 0; row < arr.length; row++) {
+        str += arr[row].toString();
+        str += ";";
+    }
+    return str
+}
+
+jQuery.extend(jQuery.expr[':'], {
+    focusable: function (el, index, selector) {
+        return $(el).is('a, button, :input, [tabindex]');
+    }
+});
+
+$(document).on('keypress', 'input,select', function (e) {
+    if (e.which == 13) {
+        e.preventDefault();
+        // Get all focusable elements on the page
+        var $canfocus = $(':focusable');
+        var index = $canfocus.index(this) + 1;
+        if (index >= $canfocus.length) index = 0;
+        $canfocus.eq(index).focus();
+    }
+});
+
+document.onkeydown = function (e) {
+
+    if (e.ctrlKey && e.which == 83) {
+        e.preventDefault();
+        $(".saveData").submit();
+    } else if (e.ctrlKey && e.which == 37) {
+        e.preventDefault();
+        var pathname = window.location.pathname.split("/");
+        window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) - 1);
+    } else if (e.ctrlKey && e.which == 39) {
+        e.preventDefault();
+        var pathname = window.location.pathname.split("/");
+        window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) + 1);
+    }
+};
 
 function centerLoginBox() {
     var ua = navigator.userAgent.toLowerCase();

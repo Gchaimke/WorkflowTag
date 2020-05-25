@@ -225,7 +225,7 @@ class Production extends CI_Controller
                 $tr = '';
                 $checked = '';
                 if (isset($status[$id]) && $status[$id] != '') {
-                    $checked = "Checked name-data='".$status[$id]."'";
+                    $checked = "Checked name-data='" . $status[$id] . "'";
                 }
                 if ($index < 10) {
                     $prefix = $prefix_count . '.0';
@@ -234,7 +234,6 @@ class Production extends CI_Controller
                 }
                 $col = explode(";", $rows[$i]);
                 if (count($col) > 1) {
-
                     if (end($col) == "HD") {
                         $tr = '<table id="checklist" class="table"><thead class="thead-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
                         for ($j = 1; $j < count($col) - 1; $j++) {
@@ -270,16 +269,53 @@ class Production extends CI_Controller
         return $table;
     }
 
+    private function build_scans($data)
+    {
+        $table = '<table id="scans" class="table"><thead class="thead-dark">';
+        $tr = '';
+        $columns = 0;
+        $id = 0;
+        $project = $data['checklist'][0]['project'];
+        if (count($this->Production_model->getProject('', $project)) > 0) {
+            $project_scans = $this->Production_model->getProject('', $project)[0]['scans'];
+            $rows = explode(PHP_EOL, $project_scans);
+            for ($i = 0; $i < count($rows); $i++) {
+                $col = explode(";", $rows[$i]);
+                if (end($col) == "HD") {
+                    $columns = count($col);
+                    $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
+                    for ($j = 1; $j < count($col) - 1; $j++) {
+                        $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                    }
+                    $tr .= '</tr></thead>';
+                    $table .= $tr;
+                } else {
+                    $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
+                    for ($j = 2; $j < $columns; $j++) {
+                        $tr .= "<td><input type='text' class='form-control scans'></td>";
+                    }
+                    $tr .=  "</tr>";
+                    $table .= $tr;
+                    $id++;
+                }
+            }
+        }
+        $table .= '</tbody></table>';
+        return $table;
+    }
 
     public function edit_checklist($id = '', $data = '')
     {
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
-        $data['project'] =  urldecode($data['checklist'][0]['project']);
         $this->load->view('header');
         $this->load->view('main_menu', $data);
-        $data['data'] = $this->build_checklist($data);
-        $this->load->view('production/edit_checklist', $data);
+        if ($data['checklist']) {
+            $data['project'] =  urldecode($data['checklist'][0]['project']);
+            $data['checklist_rows'] = $this->build_checklist($data);
+            $data['scans_rows'] = $this->build_scans($data);
+            $this->load->view('production/edit_checklist', $data);
+        }
         $this->load->view('footer');
     }
 
@@ -291,6 +327,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
         $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
         $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
+        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->edit_checklist($id);
         } else {
@@ -300,7 +337,8 @@ class Production extends CI_Controller
                 'log' =>  $this->input->post('log'),
                 'progress' => $this->input->post('progress'),
                 'assembler' => $this->input->post('assembler'),
-                'qc' => $this->input->post('qc')
+                'qc' => $this->input->post('qc'),
+                'scans' => $this->input->post('scans')
             );
             $this->Production_model->editChecklist($data);
             $data['message_display'] = 'Checklist saved successfully!';
