@@ -13,7 +13,8 @@
         -ms-flex-pack: justify;
         justify-content: space-between;
         padding: .9rem 1rem;
-        margin-top: -50px;
+        margin-top: -120px;
+        margin-bottom: 100px;
     }
     .navbar-right, .progress, .delete-photo, .alert, #snap, .main-menu, footer {
         display: none;
@@ -21,5 +22,13 @@
     
     div#photo-stock img {
         padding-bottom: 20px;
+    }
+
+    .badge {
+        border:none;
+    }
+
+    .mobile-hide {
+        display: block;
     }
 }
