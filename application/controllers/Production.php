@@ -537,4 +537,14 @@ class Production extends CI_Controller
             $this->Production_model->deleteClient($id);
         }
     }
+
+    public function serial_search(){
+        $this->form_validation->set_rules('sn', 'Sn', 'trim|xss_clean');
+        $data= $this->Production_model->searchChecklist($this->input->post('sn'));
+        $str = '';
+        foreach($data as $result){
+            $str .= "<a class='badge badge-primary' href='/production/edit_checklist/".$result["id"]."?sn=".$result["serial"]."'>". $result["serial"]."</a>";
+        }
+        echo $str;
+    }
 }

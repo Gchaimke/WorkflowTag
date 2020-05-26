@@ -121,7 +121,7 @@ class Production_model extends CI_Model
 	public function editProject($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array('data' => $data['data'],'template' => $data['template'],'scans' => $data['scans']);
+		$data = array('data' => $data['data'], 'template' => $data['template'], 'scans' => $data['scans']);
 		return $this->db->update('projects', $data, $where);
 	}
 
@@ -202,14 +202,31 @@ class Production_model extends CI_Model
 			$this->db->where($condition);
 			$this->db->order_by('id', 'DESC');
 			$this->db->limit(1);
-			$q =$this->db->get();
+			$q = $this->db->get();
 			$response = $q->result_array();
 			return $response[0]['serial'];
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start,$project) 
-    {
+	function searchChecklist($sn = '')
+	{
+		if ($this->db->table_exists('checklists')) {
+			if ($sn != "") {
+				$sn = urldecode($sn);
+				$condition = "serial LIKE '%$sn%'";
+				$this->db->select('*');
+				$this->db->from('checklists');
+				$this->db->where($condition);
+				$this->db->order_by('id');
+				$q = $this->db->get();
+				$response = $q->result_array();
+				return $response;
+			}
+		}
+	}
+
+	public function get_current_checklists_records($limit, $start, $project)
+	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
 			$project = urldecode($project);
@@ -217,28 +234,26 @@ class Production_model extends CI_Model
 			$this->db->where($condition);
 		}
 		$this->db->order_by('id', 'DESC');
-        $query = $this->db->get("checklists");
- 
-        if ($query->num_rows() > 0) 
-        {
-            foreach ($query->result() as $row) 
-            {
-                $data[] = $row;
-            }
-             
-            return $data;
-        }
- 
-        return false;
-    }
-     
-    public function get_total($project='') 
-    {
+		$query = $this->db->get("checklists");
+
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+
+		return false;
+	}
+
+	public function get_total($project = '')
+	{
 		if ($project != '') {
 			$this->db->from('checklists');
 			$project = urldecode($project);
-			$this->db->where('project',$project);
+			$this->db->where('project', $project);
 		}
-        return $this->db->count_all_results();
-    }
+		return $this->db->count_all_results();
+	}
 }

@@ -2,6 +2,10 @@ main {
     margin-top: 35px;
 }
 
+.pull-right {
+    float: inherit;
+}
+
 ul.pagination.right {
     float: right;
 }
@@ -75,8 +79,18 @@ button.close {
     font-size: 30px;
 }
 
+.badge-primary {
+    font-size: 20px;
+    margin-right: 10px;
+    margin-top: 10px;
+    padding: 10px;
+}
 
-@media (max-width: 991.98px){
+@media (max-width: 576px){
+    .badge-primary {
+        font-size: 12px;
+    }
+
     .mobile-hide {
         display: none;
     }
@@ -90,10 +104,6 @@ button.close {
 
     ul.pagination.right , ul.pagination.left {
         float: none;
-    }
-
-    .card-columns {
-        display: table;
     }
     
 }
@@ -113,12 +123,9 @@ button.close {
     ul.pagination.right , ul.pagination.left {
         float: none;
     }
-
-    .card-columns {
-        display: table;
-    }
-    
 }
+
+
 @media (max-width: 1199.98px){
 
 }

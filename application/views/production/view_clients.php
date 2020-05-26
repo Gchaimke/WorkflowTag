@@ -11,8 +11,16 @@
 		if (isset($message_display)) {
 			echo "<div class='alert alert-success' role='alert'>";
 			echo $message_display . '</div>';
-		}
+		} ?>
 
+		<div class="input-group mb-3">
+			<input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2">
+			<div class="input-group-append">
+				<button class="btn btn-secondary" type="button" onclick="serialSearch()">Search</button>
+			</div>
+		</div>
+		<div id='searchResult'></div>
+		<?php
 		echo '<div class="card-columns">';
 		foreach ($clients as $client) {
 			echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
@@ -32,3 +40,19 @@
 	</div>
 	</div>
 </main>
+<script>
+	function serialSearch() {
+		var sn = document.getElementById("inputSearch").value;
+		if (sn.length >= 3) {
+			$.post("/production/serial_search", {
+				sn: sn
+			}).done(function(e) {
+				$('#searchResult').empty();
+				$('#searchResult').append("<p>" + e + "</p>");
+			});
+		} else {
+			$('#searchResult').empty();
+			$('#searchResult').append("<p>Search must be munimum 3 simbols</p>")
+		}
+	}
+</script>
