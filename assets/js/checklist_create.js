@@ -172,6 +172,61 @@ function toString2d(arr) {
     return str
 }
 
+function print2PDF(url, cookie) {
+    //alert("Printing "+id);   
+    $.post("/production/save_page2pdf",
+        {
+            url: url,
+            cookie: cookie
+        },
+        function (respond) {
+            if (respond) {
+                alert(respond);
+            } else {
+                alert("no respond");
+            }
+        });
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function centerLoginBox() {
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf("android") > -1; // Detect Android devices
+    if (isAndroid) {
+        //window.orientation is different for iOS and Android
+        if (window.orientation == 0 || window.orientation == 180) { //Landscape Mode
+            $('#loginbox').css('margin-top', '20%');
+        }
+        else if (window.orientation == 90 || window.orientation == -90) { //Portrait Mode
+            $('#loginbox').css('margin-top', '40%');
+        }
+    }
+    else {
+        if (window.orientation == 90 || window.orientation == -90) { //Landscape Mode
+            $('#loginbox').css('margin-top', '20%');
+        }
+        else if (window.orientation == 0 || window.orientation == 180) { //Portrait Mode
+            $('#loginbox').css('margin-top', '40%');
+        }
+    }
+}
+
+//KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {
     focusable: function (el, index, selector) {
         return $(el).is('a, button, :input, [tabindex]');
@@ -202,60 +257,21 @@ document.onkeydown = function (e) {
         window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) + 1);
     } else if (e.ctrlKey && e.which == 81) { //ctrl+Q
         e.preventDefault();
-       //print2PDF(window.location.href,ci_session);       
+        //print2PDF(window.location.href,ci_session);       
+    } else if (e.which == 40) {
+        e.preventDefault();
+        var focused = $(':focus')
+        var id = focused.parent().parent().attr('id');
+        if (id >= 0) {
+            var id = parseInt(id) + 1;
+        }
+        $('tr[id^=' + id + '] input:eq(0)').focus();
+    } else if (e.which == 38) {
+        e.preventDefault();
+        var id = $(':focus').parent().parent().attr('id');
+        if (id >= 0) {
+            id = parseInt(id) - 1;
+        }
+        $('tr[id^=' + id + '] input:eq(0)').focus();
     }
 };
-
-function print2PDF(url,cookie){
-    //alert("Printing "+id);   
-    $.post("/production/save_page2pdf",
-        {
-            url: url,
-            cookie:cookie
-        },
-        function (respond) {
-            if (respond) {
-                alert(respond);
-            } else {
-                alert("no respond");
-            }
-        });
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for(var i = 0; i <ca.length; i++) {
-      var c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-  }
-
-function centerLoginBox() {
-    var ua = navigator.userAgent.toLowerCase();
-    var isAndroid = ua.indexOf("android") > -1; // Detect Android devices
-    if (isAndroid) {
-        //window.orientation is different for iOS and Android
-        if (window.orientation == 0 || window.orientation == 180) { //Landscape Mode
-            $('#loginbox').css('margin-top', '20%');
-        }
-        else if (window.orientation == 90 || window.orientation == -90) { //Portrait Mode
-            $('#loginbox').css('margin-top', '40%');
-        }
-    }
-    else {
-        if (window.orientation == 90 || window.orientation == -90) { //Landscape Mode
-            $('#loginbox').css('margin-top', '20%');
-        }
-        else if (window.orientation == 0 || window.orientation == 180) { //Portrait Mode
-            $('#loginbox').css('margin-top', '40%');
-        }
-    }
-}
