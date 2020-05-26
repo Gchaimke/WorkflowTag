@@ -217,7 +217,7 @@ class Production_model extends CI_Model
 				$this->db->select('*');
 				$this->db->from('checklists');
 				$this->db->where($condition);
-				$this->db->order_by('id');
+				$this->db->order_by('project');
 				$q = $this->db->get();
 				$response = $q->result_array();
 				return $response;

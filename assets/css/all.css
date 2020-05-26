@@ -79,21 +79,25 @@ button.close {
     font-size: 30px;
 }
 
-.badge-primary {
+.badge-info {
     font-size: 20px;
-    margin-right: 10px;
-    margin-top: 10px;
+    margin: 10px;
     padding: 10px;
 }
 
-@media (max-width: 576px){
-    .badge-primary {
+@media (min-width: 320px){
+    .jumbotron {
+        padding: 2rem 2rem;
+    }
+
+    .badge-info {
         font-size: 12px;
     }
 
     .mobile-hide {
         display: none;
     }
+
     .table th, .table td {
         padding: 0.45rem;
     }
@@ -108,9 +112,9 @@ button.close {
     
 }
 
-@media (max-width: 991.98px){
+@media (min-width: 991.98px){
     .mobile-hide {
-        display: none;
+        display: table-cell;
     }
     .table th, .table td {
         padding: 0.45rem;

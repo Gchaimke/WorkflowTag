@@ -542,9 +542,11 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('sn', 'Sn', 'trim|xss_clean');
         $data= $this->Production_model->searchChecklist($this->input->post('sn'));
         $str = '';
+        $count=0;
         foreach($data as $result){
-            $str .= "<a class='badge badge-primary' href='/production/edit_checklist/".$result["id"]."?sn=".$result["serial"]."'>". $result["serial"]."</a>";
+            $str .= "<a class='badge badge-info' href='/production/edit_checklist/".$result["id"]."?sn=".$result["serial"]."'>".urldecode($result["project"]).": ".$result["serial"]."</a>";
+            $count++;
         }
-        echo $str;
+        echo "<h2>Found ".$count." serials.</h2>".$str;
     }
 }
