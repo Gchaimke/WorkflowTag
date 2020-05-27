@@ -12,6 +12,7 @@ class Production_model extends CI_Model
 			$condition = "client ='$client_name'";
 			$this->db->where($condition);
 		}
+		$this->db->order_by('client');
 		$q = $this->db->get();
 		$response = $q->result_array();
 		return $response;
@@ -136,6 +137,7 @@ class Production_model extends CI_Model
 
 	function getLastChecklist($project)
 	{
+		$response = array();
 		if ($this->db->table_exists('checklists')) {
 			$project = urldecode($project);
 			$condition = "project =\"$project\"";
@@ -145,8 +147,12 @@ class Production_model extends CI_Model
 			$this->db->order_by('id', 'DESC');
 			$this->db->limit(1);
 			$q = $this->db->get();
-			$response = $q->result_array();
-			return $response[0]['serial'];
+			if ($q->num_rows() > 0) {
+				$response = $q->result_array();
+				return $response[0]['serial'];
+			}else{
+				return '00000000000000000';
+			}
 		}
 	}
 

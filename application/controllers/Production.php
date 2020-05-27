@@ -133,6 +133,7 @@ class Production extends CI_Controller
     // Validate and store checklist data in database 
     public function gen_checklists()
     {
+        $result = 'Serial template not set!';
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $zero_str = implode(",", array_fill(0, 400, ""));
 
@@ -142,8 +143,8 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
         $serial_project = $this->Production_model->getProject('', $this->input->post('project'));
-        $serial = $serial_project[0]['template']; //Get serial template
-        if ($serial != "") {
+        if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
+            $serial = $serial_project[0]['template']; //Get serial template
             $serial = str_replace("yy", date("y"), $serial); //add year
             $serial = str_replace("mm", date("m"), $serial); //add month with zero
             $serial = str_replace("dm", $dfend_month[date("m")], $serial); //add month from dfend array
@@ -387,9 +388,9 @@ class Production extends CI_Controller
         if ($this->form_validation->run() == TRUE) {
             // Use unlink() function to delete a file  
             if (!unlink($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo'))) {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo')." cannot be deleted due to an error");
+                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo') . " cannot be deleted due to an error");
             } else {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo'). " has been deleted");
+                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo') . " has been deleted");
             }
         }
     }
@@ -476,7 +477,7 @@ class Production extends CI_Controller
         }
     }
 
-    public function delete_project()
+    public function delete_template()
     {
         $role = ($this->session->userdata['logged_in']['role']);
         if ($role == "Admin") {
