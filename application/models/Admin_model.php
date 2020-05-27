@@ -61,8 +61,7 @@ class Admin_model extends CI_Model
             ),
             'projects' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 500,
-                'unique' => TRUE
+                'constraint' => 500
             )
         );
 

@@ -10,6 +10,7 @@ class Admin extends CI_Controller
 
 	function settings()
 	{
+		$data = array();
 		$data['settings'] = '';
 		$data['response'] = '';
 		$this->load->model('Admin_model');
@@ -32,6 +33,7 @@ class Admin extends CI_Controller
 
 	function create()
 	{
+		$data = array();
 		$this->load->model('Admin_model');
 		$data['response'] = '';
 		if (!$this->db->table_exists('users')) {

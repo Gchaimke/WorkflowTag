@@ -17,7 +17,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php
 		if (isset($message_display)) {
 			echo "<div class='alert alert-success' role='alert'>";
-			echo $message_display . '</div>';
+			echo $message_display. '</div>';
 		}
 		?>
 		<a class="btn btn-success" href="/production/add_client"><i class="fa fa-user-plus"></i></a>

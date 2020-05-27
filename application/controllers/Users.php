@@ -13,6 +13,7 @@ class Users extends CI_Controller
 
     public function index()
     {
+        $data = array();
         // get data from model
         $role = ($this->session->userdata['logged_in']['role']);
         $data['users'] = $this->Users_model->getUsers();
@@ -27,8 +28,62 @@ class Users extends CI_Controller
         $this->load->view('footer');
     }
 
+    // Validate and store registration data in database
+    public function create()
+    {
+        $data = array();
+        $role = ($this->session->userdata['logged_in']['role']);
+        if ($role == "Admin") {
+            // Check validation for user input in SignUp form
+            $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+            if ($this->form_validation->run() == FALSE) {
+                $data['settings'] = $this->Admin_model->getSettings();
+                $this->load->view('header');
+                $this->load->view('main_menu');
+                $this->load->view('users/create', $data);
+                $this->load->view('footer');
+            } else {
+                $data = array(
+                    'name' => $this->input->post('name'),
+                    'role' => $this->input->post('role'),
+                    'password' => $this->input->post('password')
+                );
+                $result = $this->Users_model->registration_insert($data);
+                if ($result == TRUE) {
+                    $data['users'] = $this->Users_model->getUsers();
+                    $data['message_display'] = 'User Registration Successfully !';
+                    $this->load->view('header');
+                    $this->load->view('main_menu');
+                    $this->load->view('users/manage', $data);
+                    $this->load->view('footer');
+                } else {
+                    $data['message_display'] = 'Username already exist!';
+                    $data['settings'] = $this->Admin_model->getSettings();
+                    $this->load->view('header');
+                    $this->load->view('main_menu');
+                    $this->load->view('users/create', $data);
+                    $this->load->view('footer');
+                }
+            }
+        } else {
+            header("location: /");
+        }
+    }
+
+    public function delete()
+    {
+        $role = ($this->session->userdata['logged_in']['role']);
+        if ($role == "Admin") {
+            $id = $_POST['id'];
+            $this->Users_model->deleteUser($id);
+        }
+    }
+
     public function edit($id = '')
     {
+        //$data = array();
         $role = ($this->session->userdata['logged_in']['role']);
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
@@ -70,17 +125,9 @@ class Users extends CI_Controller
         }
     }
 
-    public function delete()
-    {
-        $role = ($this->session->userdata['logged_in']['role']);
-        if ($role == "Admin") {
-            $id = $_POST['id'];
-            $this->Users_model->deleteUser($id);
-        }
-    }
-
     public function login()
     {
+        $data = array();
         $data['response'] = '';
         $this->load->model('Admin_model');
         if (!$this->db->table_exists('users')) {
@@ -132,52 +179,10 @@ class Users extends CI_Controller
         }
     }
 
-    // Validate and store registration data in database
-    public function create()
-    {
-        $role = ($this->session->userdata['logged_in']['role']);
-        if ($role == "Admin") {
-            // Check validation for user input in SignUp form
-            $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-            if ($this->form_validation->run() == FALSE) {
-                $data['settings'] = $this->Admin_model->getSettings();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('users/create', $data);
-                $this->load->view('footer');
-            } else {
-                $data = array(
-                    'name' => $this->input->post('name'),
-                    'role' => $this->input->post('role'),
-                    'password' => $this->input->post('password')
-                );
-                $result = $this->Users_model->registration_insert($data);
-                if ($result == TRUE) {
-                    $data['users'] = $this->Users_model->getUsers();
-                    $data['message_display'] = 'User Registration Successfully !';
-                    $this->load->view('header');
-                    $this->load->view('main_menu');
-                    $this->load->view('users/manage', $data);
-                    $this->load->view('footer');
-                } else {
-                    $data['message_display'] = 'Username already exist!';
-                    $data['settings'] = $this->Admin_model->getSettings();
-                    $this->load->view('header');
-                    $this->load->view('main_menu');
-                    $this->load->view('users/create', $data);
-                    $this->load->view('footer');
-                }
-            }
-        } else {
-            header("location: /");
-        }
-    }
-
     // Logout from admin page
     public function logout()
     {
+        $data = array();
         // Removing session data
         $sess_array = array(
             'name' => ''

@@ -14,6 +14,7 @@ class Production extends CI_Controller
 
     public function index()
     {
+        $data = array();
         // get data from model
         $data['clients'] = $this->Production_model->getClients();
         $this->load->view('header');
@@ -27,6 +28,7 @@ class Production extends CI_Controller
         $this->load->database();
         // init params
         $params = array();
+        $config = array();
         $limit_per_page = 10;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
@@ -75,6 +77,7 @@ class Production extends CI_Controller
     // Validate and store checklist data in database
     public function add_checklist($project = '', $data = '')
     {
+        $data = array();
         // Check validation for user input in SignUp form
         $zero_str = implode(",", array_fill(0, 400, ""));
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
@@ -307,8 +310,12 @@ class Production extends CI_Controller
         return $table;
     }
 
-    public function edit_checklist($id = '', $data = '')
+    public function edit_checklist($id = '',  $msg = '')
     {
+        $data = array();
+        if ($msg != '') {
+            $data['message_display'] = $msg;
+        }
         $data['js_to_load'] = array("checklist_create.js", "camera.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
@@ -319,7 +326,7 @@ class Production extends CI_Controller
         $this->load->view('header');
         $this->load->view('main_menu', $data);
         if ($data['checklist']) {
-            $this->load->view('production/edit_checklist', $data);
+            $this->load->view('production/edit_checklist');
         }
         $this->load->view('footer');
     }
@@ -346,8 +353,8 @@ class Production extends CI_Controller
                 'scans' => $this->input->post('scans')
             );
             $this->Production_model->editChecklist($data);
-            $data['message_display'] = 'Checklist saved successfully!';
-            $this->edit_checklist($id, $data);
+            $message_display = 'Checklist saved successfully!';
+            $this->edit_checklist($id, $message_display);
         }
     }
 
@@ -356,7 +363,7 @@ class Production extends CI_Controller
         $url = $_POST['url'];
         $cookie = $_POST['cookie'];
         $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
-        exec($html2pdf . ' '.$url.' --cookie "ci_session" '.$cookie.' "' . getcwd() . '\test.pdf"');
+        exec($html2pdf . ' ' . $url . ' --cookie "ci_session" ' . $cookie . ' "' . getcwd() . '\test.pdf"');
         echo "ok";
     }
 
@@ -378,6 +385,7 @@ class Production extends CI_Controller
 
     public function manage_templates($data = '')
     {
+        $data = array();
         // get data from model
         $data['projects'] = $this->Production_model->getprojects();
         $this->load->view('header');
@@ -429,6 +437,7 @@ class Production extends CI_Controller
 
     public function edit_template($id = '')
     {
+        $data = array();
         // Check validation for user input in form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
@@ -468,6 +477,7 @@ class Production extends CI_Controller
     // Validate and store checklist data in database
     public function add_client()
     {
+        $msg = array();
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
         $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
@@ -483,20 +493,24 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addClient($data);
             if ($result == TRUE) {
-                $data['message_display'] = 'Client added Successfully !';
-                $this->manage_clients($data);
+                $msg = 'Client added Successfully !';
+                $this->manage_clients($msg);
             } else {
-                $data['message_display'] = 'Client already exist!';
+                $msg['message_display'] = 'Client already exist!';
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('production/add_client', $data);
+                $this->load->view('production/add_client', $msg);
                 $this->load->view('footer');
             }
         }
     }
 
-    public function manage_clients($data = '')
+    public function manage_clients($msg = '')
     {
+        $data = array();
+        if ($msg != '') {
+            $data['message_display'] = $msg;
+        }
         // get data from model
         $data['clients'] = $this->Production_model->getClients();
         $this->load->view('header');
@@ -523,9 +537,9 @@ class Production extends CI_Controller
                 'name' => $this->input->post('name'),
                 'projects' => $this->input->post('projects')
             );
-            $data['message_display'] = $this->Production_model->editClient($sql);
-            $data['message_display'] .= ' Client edited Successfully !';
-            $this->manage_clients($data);
+            $this->Production_model->editClient($sql);
+            $msg = ' Client updated Successfully !';
+            $this->manage_clients($msg);
         }
     }
 
@@ -538,15 +552,16 @@ class Production extends CI_Controller
         }
     }
 
-    public function serial_search(){
+    public function serial_search()
+    {
         $this->form_validation->set_rules('sn', 'Sn', 'trim|xss_clean');
-        $data= $this->Production_model->searchChecklist($this->input->post('sn'));
+        $data = $this->Production_model->searchChecklist($this->input->post('sn'));
         $str = '';
-        $count=0;
-        foreach($data as $result){
-            $str .= "<a class='badge badge-info' href='/production/edit_checklist/".$result["id"]."?sn=".$result["serial"]."'>".urldecode($result["project"]).": ".$result["serial"]."</a>";
+        $count = 0;
+        foreach ($data as $result) {
+            $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
             $count++;
         }
-        echo "<h2>Found ".$count." serials.</h2>".$str;
+        echo "<h2>Found " . $count . " serials.</h2>" . $str;
     }
 }
