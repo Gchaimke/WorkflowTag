@@ -9,6 +9,7 @@ class Production extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Production_model');
+        $this->load->model('Clients_model');
         $this->load->library('pagination');
     }
 
@@ -16,7 +17,7 @@ class Production extends CI_Controller
     {
         $data = array();
         // get data from model
-        $data['clients'] = $this->Production_model->getClients();
+        $data['clients'] = $this->Clients_model->getClients();
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('production/view_clients', $data);
@@ -67,7 +68,7 @@ class Production extends CI_Controller
             $params["links"] = $this->pagination->create_links();
         }
         $params['project'] = urldecode($project);
-        $params['client'] = $this->Production_model->getClients('', urldecode($project));
+        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
         $this->load->view('header');
         $this->load->view('main_menu', $params);
         $this->load->view('production/manage_checklists', $params);
@@ -85,7 +86,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['client'] = $this->Production_model->getClients('', $project);
+            $data['client'] = $this->Clients_model->getClients('', $project);
             $data['project'] = urldecode($project);
             if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
                 $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
@@ -114,7 +115,7 @@ class Production extends CI_Controller
                     $data['template'] = " - not set!";
                 }
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
-                $data['client'] = $this->Production_model->getClients('', $project);
+                $data['client'] = $this->Clients_model->getClients('', $project);
                 $data['project'] = urldecode($this->input->post('project'));
                 if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
                     $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
@@ -408,7 +409,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['js_to_load'] = array("add_template.js");
-            $data['clients'] = $this->Production_model->getClients();
+            $data['clients'] = $this->Clients_model->getClients();
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('production/add_template', $data);
@@ -428,7 +429,7 @@ class Production extends CI_Controller
             } else {
                 $data['js_to_load'] = array("add_template.js");
                 $data['message_display'] = 'Template already exist!';
-                $data['clients'] = $this->Production_model->getClients();
+                $data['clients'] = $this->Clients_model->getClients();
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('production/add_template', $data);
@@ -448,7 +449,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['clients'] = $this->Production_model->getClients();
+            $data['clients'] = $this->Clients_model->getClients();
             $data['project'] =  $this->Production_model->getProject($id);
             $this->load->view('header');
             $this->load->view('main_menu');

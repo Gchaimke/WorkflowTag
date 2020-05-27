@@ -8,7 +8,7 @@ class Clients extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('Production_model');
+        $this->load->model('Clients_model');
     }
 
     public function index($msg = '')
@@ -18,7 +18,7 @@ class Clients extends CI_Controller
             $data['message_display'] = $msg;
         }
         // get data from model
-        $data['clients'] = $this->Production_model->getClients();
+        $data['clients'] = $this->Clients_model->getClients();
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/manage', $data);
@@ -42,7 +42,7 @@ class Clients extends CI_Controller
                 'name' => $this->input->post('name'),
                 'projects' => $this->input->post('projects')
             );
-            $result = $this->Production_model->addClient($data);
+            $result = $this->Clients_model->addClient($data);
             if ($result == TRUE) {
                 $msg = 'Client added Successfully !';
                 $this->index($msg);
@@ -69,10 +69,10 @@ class Clients extends CI_Controller
                 'name' => $this->input->post('name'),
                 'projects' => $this->input->post('projects')
             );
-            $this->Production_model->editClient($sql);
+            $this->Clients_model->editClient($sql);
             $data['message_display'] = ' Client updated Successfully !';
         }
-        $data['clients'] = $this->Production_model->getClients($id);
+        $data['clients'] = $this->Clients_model->getClients($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/edit', $data);
@@ -84,7 +84,7 @@ class Clients extends CI_Controller
         $role = ($this->session->userdata['logged_in']['role']);
         if ($role == "Admin") {
             $id = $_POST['id'];
-            $this->Production_model->deleteClient($id);
+            $this->Clients_model->deleteClient($id);
         }
     }
 }
