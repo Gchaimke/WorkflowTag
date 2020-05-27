@@ -248,8 +248,8 @@ class Production extends CI_Controller
                         $prefix_count++;
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
-                         //   "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
-                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        //   "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
+                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
@@ -383,7 +383,15 @@ class Production extends CI_Controller
 
     public function delete_photo()
     {
-        $this->load->view('production/delete_photo');
+        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
+        if ($this->form_validation->run() == TRUE) {
+            // Use unlink() function to delete a file  
+            if (!unlink($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo'))) {
+                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo')." cannot be deleted due to an error");
+            } else {
+                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo'). " has been deleted");
+            }
+        }
     }
 
     public function manage_templates($data = '')

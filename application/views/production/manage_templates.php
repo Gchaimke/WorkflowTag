@@ -32,14 +32,14 @@ if (isset($this->session->userdata['logged_in'])) {
 			</thead>
 			<tbody>
 				<?php if (isset($projects)) {
-					foreach ($projects as $project) {
-						echo '<tr id="' . $project['id'] . '">';
-						echo  '<td>' . $project['client'] . '</td>';
-						echo  '<td>' . $project['project'] . '</td>';
-						echo "<td><a href='/production/edit_template/" . $project['id'] .
+					foreach ($projects as $template) {
+						echo '<tr id="' . $template['id'] . '">';
+						echo  '<td>' . $template['client'] . '</td>';
+						echo  '<td>' . $template['project'] . '</td>';
+						echo "<td><a href='/production/edit_template/" . $template['id'] .
 							"' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
-						echo "<td><button id='" . $project['id'] .
-							"' class='btn btn-danger' onclick='deleteProject(this.id)'><i class='fa fa-trash'></i></button></td>";
+						echo "<td><button id='" . $template['id'] .
+							"' class='btn btn-danger' onclick='deleteTemplate(this.id)'><i class='fa fa-trash'></i></button></td>";
 						echo '</tr>';
 					}
 				} ?>
@@ -48,13 +48,13 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <script>
-	function deleteProject(id) {
+	function deleteTemplate(id) {
 		var r = confirm("Delete Template with id: " + id + "?");
 		if (r == true) {
-			$.post("/production/delete_project", {
+			$.post("/production/delete_template", {
 				id: id
 			}).done(function(o) {
-				console.log('Project deleted.');
+				console.log('Template deleted.');
 				$('[id^=' + id + ']').remove();
 			});
 		}

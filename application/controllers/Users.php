@@ -106,7 +106,7 @@ class Users extends CI_Controller
                     'password' => $this->input->post('password')
                 );
                 $data['message_display'] = $this->Users_model->editUser($sql);
-                $data['message_display'] .= ' User edited Successfully!';
+                $data['message_display'] .= ' User updated successfully!';
                 // get data from model
                 $data['users'] = $this->Users_model->getUsers();
                 $this->load->view('header');
