@@ -19,7 +19,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			$id = "";
 			$client = "";
 			if (isset($message_display)) {
-				echo "<div class='alert alert-danger' role='alert'>";
+				echo "<div class='alert alert-success' role='alert'>";
 				echo $message_display . '</div>';
 			}
 			if (validation_errors()) {
@@ -33,12 +33,13 @@ if (isset($this->session->userdata['logged_in'])) {
 				$projects = $clients[0]['projects'];
 			}
 			?>
-			<?php echo form_open("production/edit_client/$id", 'class=user-create'); ?>
+			<?php echo form_open("clients/edit/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
 			<div class="form-group"><label>Projects</label>
-				<input type='text' class="form-control" name='projects' value="<?php echo $projects ?>"></div>
-			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
+				<textarea name="projects" class="form-control" cols="40" rows="5"><?php echo $projects ?></textarea>
+			</div>
+			<input type='submit' class="btn btn-info btn-block" name='submit' value='Update'>
 			<?php echo form_close(); ?>
 		</center>
 	</div>

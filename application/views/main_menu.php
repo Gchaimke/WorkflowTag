@@ -34,7 +34,7 @@ if (isset($this->session->userdata['logged_in'])) {
       </li>
       <?php
       if ($role == 'Admin') {
-        echo '<li class="nav-item"><a class="nav-link" href="/production/manage_clients">Clients</a></li>';
+        echo '<li class="nav-item"><a class="nav-link" href="/clients">Clients</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/production/manage_templates">Templates</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/users">Users</a></li>';
         echo '<li class="nav-item"><a class="nav-link" href="/admin/settings">Settings</a></li>';

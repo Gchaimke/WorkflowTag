@@ -56,15 +56,30 @@ function setProgress(p) {
     }
 }
 
-function toggleOne(id, name) {
+function toggleOne(id) {
     if ($(event.target).is(":checked")) {
         $("#" + id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
-        chArray[id] = name;
+        chArray[id] = assembler;
     } else {
         $("#" + id + "+ div").remove();
         chArray[id] = '';
     }
     updateProgress();
+}
+
+function toggleAll() {
+    $('.verify').each(function () {
+        $("#" + this.id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
+        chArray[this.id] = assembler;
+        var now = new Date();
+        log += now.toLocaleString() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
+        $('#input_log').val(log);
+    });
+    $('.verify').prop('checked', true);
+    updateProgress();
+    $('#input_data').val(chArray.toString());
+    $('#input_progress').val(progress_status);
+    
 }
 
 function toggleQc(id, qc_name) {
@@ -88,12 +103,12 @@ function selectOne(id, name) {
 }
 
 $("input:checkbox.verify").click(function (e) {
-    toggleOne(this.id, assembler);
+    toggleOne(this.id);
     $('#input_data').val(chArray.toString());
     $('#input_progress').val(progress_status);
     var now = new Date();
     if ($(event.target).is(":checked")) {
-        log += now.toLocaleString() + " " + assembler + " checked " + (parseInt(this.id) + 1) + ";";
+        log += now.toLocaleString() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
     }
     $('#input_log').val(log);
 });
@@ -113,7 +128,7 @@ $("input:checkbox.qc").click(function (e) {
                 toggleQc(id, qc_name);
                 $('#input_qc').val(qc_name);
                 var now = new Date();
-                log += now.toLocaleString() + " QC " + qc_name + " checked " + (parseInt(id) + 1) + ";";
+                log += now.toLocaleString() + " QC " + qc_name + " checked " + $(this).closest("tr").find('th').text() + ";";
                 $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
                 $('#input_progress').val(progress_status);
@@ -257,7 +272,8 @@ document.onkeydown = function (e) {
         window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) + 1);
     } else if (e.ctrlKey && e.which == 81) { //ctrl+Q
         e.preventDefault();
-        //print2PDF(window.location.href,ci_session);       
+        //print2PDF(window.location.href,ci_session);
+        toggleAll();
     } else if (e.which == 40) {
         e.preventDefault();
         var focused = $(':focus')

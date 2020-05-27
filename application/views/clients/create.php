@@ -25,7 +25,7 @@ if (isset($this->session->userdata['logged_in'])) {
                   }
                   ?>
 
-                  <?php echo form_open('production/add_client', 'class=user-create'); ?>
+                  <?php echo form_open('clients/create', 'class=client-create'); ?>
                   <input type='text' class="form-control" name='name' value=""></br>
                   <textarea class="form-control" name='projects' rows="10" cols="100"></textarea></br>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>

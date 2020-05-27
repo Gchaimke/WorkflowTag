@@ -246,15 +246,17 @@ class Production extends CI_Controller
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
-                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
+                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
+                         //   "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
+                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
-                        $tr .= $options . "</select></td>";
+                        $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
                     } else {
@@ -471,84 +473,6 @@ class Production extends CI_Controller
         if ($role == "Admin") {
             $id = $_POST['id'];
             $this->Production_model->deleteProject($id);
-        }
-    }
-
-    // Validate and store checklist data in database
-    public function add_client()
-    {
-        $msg = array();
-        // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('production/add_client');
-            $this->load->view('footer');
-        } else {
-            $data = array(
-                'name' => $this->input->post('name'),
-                'projects' => $this->input->post('projects')
-            );
-            $result = $this->Production_model->addClient($data);
-            if ($result == TRUE) {
-                $msg = 'Client added Successfully !';
-                $this->manage_clients($msg);
-            } else {
-                $msg['message_display'] = 'Client already exist!';
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('production/add_client', $msg);
-                $this->load->view('footer');
-            }
-        }
-    }
-
-    public function manage_clients($msg = '')
-    {
-        $data = array();
-        if ($msg != '') {
-            $data['message_display'] = $msg;
-        }
-        // get data from model
-        $data['clients'] = $this->Production_model->getClients();
-        $this->load->view('header');
-        $this->load->view('main_menu');
-        $this->load->view('production/manage_clients', $data);
-        $this->load->view('footer');
-    }
-
-    public function edit_client($id = '')
-    {
-        // Check validation for user input in form
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
-        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['clients'] = $this->Production_model->getClients($id);
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('production/edit_client', $data);
-            $this->load->view('footer');
-        } else {
-            $sql = array(
-                'id' => $this->input->post('id'),
-                'name' => $this->input->post('name'),
-                'projects' => $this->input->post('projects')
-            );
-            $this->Production_model->editClient($sql);
-            $msg = ' Client updated Successfully !';
-            $this->manage_clients($msg);
-        }
-    }
-
-    public function delete_client()
-    {
-        $role = ($this->session->userdata['logged_in']['role']);
-        if ($role == "Admin") {
-            $id = $_POST['id'];
-            $this->Production_model->deleteClient($id);
         }
     }
 
