@@ -7,13 +7,14 @@ if (isset($this->session->userdata['logged_in'])) {
   header("location: /users/login");
 }
 ?>
-<html lang="en">
+<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Language" content="en">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
+  <meta name="description" content="Checklist online">
+  <meta name="author" content="Chaim Gorbov">
   <link rel="icon" href="<?php echo base_url('assets/favicon.ico'); ?>">
   <title>
     <?php
