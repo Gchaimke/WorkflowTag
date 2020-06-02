@@ -10,6 +10,7 @@ class Production extends CI_Controller
         // Load model
         $this->load->model('Production_model');
         $this->load->model('Clients_model');
+        $this->load->model('Templates_model');
         $this->load->library('pagination');
     }
 
