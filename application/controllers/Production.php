@@ -24,7 +24,7 @@ class Production extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function checklists($project = '', $data = '')
+    public function checklists($project = '')
     {
         $this->load->database();
         // init params
@@ -74,6 +74,20 @@ class Production extends CI_Controller
         $this->load->view('production/manage_checklists', $params);
         $this->load->view('footer');
     }
+
+    public function serial_search()
+    {
+        $this->form_validation->set_rules('sn', 'Sn', 'trim|xss_clean');
+        $data = $this->Production_model->searchChecklist($this->input->post('sn'));
+        $str = '';
+        $count = 0;
+        foreach ($data as $result) {
+            $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
+            $count++;
+        }
+        echo "<h2>Found " . $count . " serials.</h2>" . $str;
+    }
+
 
     // Validate and store checklist data in database
     public function add_checklist($project = '', $data = '')
@@ -136,7 +150,6 @@ class Production extends CI_Controller
         $result = 'Serial template not set!';
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $zero_str = implode(",", array_fill(0, 400, ""));
-
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
@@ -249,7 +262,6 @@ class Production extends CI_Controller
                         $prefix_count++;
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
-                        //   "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
                         $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
@@ -362,15 +374,6 @@ class Production extends CI_Controller
         }
     }
 
-    public function save_page2pdf()
-    {
-        $url = $_POST['url'];
-        $cookie = $_POST['cookie'];
-        $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
-        exec($html2pdf . ' ' . $url . ' --cookie "ci_session" ' . $cookie . ' "' . getcwd() . '\test.pdf"');
-        echo "ok";
-    }
-
     public function delete()
     {
         $id = $_POST['id'];
@@ -379,8 +382,42 @@ class Production extends CI_Controller
 
     public function save_photo()
     {
-        $this->load->view('production/save_photo');
+        defined('BASEPATH') or exit('No direct script access allowed');
+        // requires php5
+        define('UPLOAD_DIR', 'Uploads/');
+        $folder = $_POST['pr'];
+        $name = $_POST['sn'];
+        $num = $_POST['num'];
+        $file_name = $name . "_" . $num;
+        $img = $_POST['data'];
+        if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
+            $img = substr($img, strpos($img, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                throw new \Exception('invalid image type');
+            }
+
+            $img = base64_decode($img);
+
+            if ($img === false) {
+                throw new \Exception('base64_decode failed');
+            }
+        } else {
+            throw new \Exception('did not match data URI with image data');
+        }
+
+        if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
+            mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
+        }
+        $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
+        $success = file_put_contents($file, $img);
+        if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
+            shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --speed 10 --nofs --force ' . escapeshellarg($file));
+        }
+        print $success ? $file : 'Unable to save the file.';
     }
+
 
     public function delete_photo()
     {
@@ -395,16 +432,12 @@ class Production extends CI_Controller
         }
     }
 
-    public function serial_search()
+    public function save_page2pdf()
     {
-        $this->form_validation->set_rules('sn', 'Sn', 'trim|xss_clean');
-        $data = $this->Production_model->searchChecklist($this->input->post('sn'));
-        $str = '';
-        $count = 0;
-        foreach ($data as $result) {
-            $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
-            $count++;
-        }
-        echo "<h2>Found " . $count . " serials.</h2>" . $str;
+        $url = $_POST['url'];
+        $cookie = $_POST['cookie'];
+        $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
+        exec($html2pdf . ' ' . $url . ' --cookie "ci_session" ' . $cookie . ' "' . getcwd() . '\test.pdf"');
+        echo "ok";
     }
 }
