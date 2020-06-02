@@ -33,7 +33,7 @@ if (isset($clients)) {
                   }
                   ?>
 
-                  <?php echo form_open('production/add_template', 'class=user-create'); ?>
+                  <?php echo form_open('templates/add_template', 'class=user-create'); ?>
                   <select id="select_client" class="form-control" name='client'>
                         <?php if (isset($clients)) {
                               foreach ($clients as $client) {

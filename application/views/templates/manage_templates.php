@@ -20,7 +20,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/production/add_template"><i class="fa fa-file-text"></i></a>
+		<a class="btn btn-success" href="/templates/add_template"><i class="fa fa-file-text"></i></a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
@@ -36,7 +36,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						echo '<tr id="' . $template['id'] . '">';
 						echo  '<td>' . $template['client'] . '</td>';
 						echo  '<td>' . $template['project'] . '</td>';
-						echo "<td><a href='/production/edit_template/" . $template['id'] .
+						echo "<td><a href='/templates/edit_template/" . $template['id'] .
 							"' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
 						echo "<td><button id='" . $template['id'] .
 							"' class='btn btn-danger' onclick='deleteTemplate(this.id)'><i class='fa fa-trash'></i></button></td>";
@@ -51,7 +51,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	function deleteTemplate(id) {
 		var r = confirm("Delete Template with id: " + id + "?");
 		if (r == true) {
-			$.post("/production/delete_template", {
+			$.post("/templates/delete_template", {
 				id: id
 			}).done(function(o) {
 				console.log('Template deleted.');

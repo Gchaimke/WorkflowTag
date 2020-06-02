@@ -39,7 +39,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			}
 			?>
 
-			<?php echo form_open('production/edit_template', 'class=user-create'); ?>
+			<?php echo form_open('templates/edit_template', 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='client' value="<?php echo $client ?>" disabled></br>
 			<input type='text' class="form-control" name='project' value="<?php echo $pr ?>" disabled></br>
