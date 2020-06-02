@@ -1,6 +1,6 @@
 <?php
 $id = $ids;
-$serial = $checklists[0]['serial'];
+$serials = '';
 $checklist_data = $checklists[0]['data'];
 $log = $checklists[0]['log'];
 $progress = $checklists[0]['progress'];
@@ -12,6 +12,9 @@ $date = $checklists[0]['date'];
 $this->load->helper('cookie');
 $session = get_cookie('ci_session');
 
+foreach ($checklists as $checklist) {
+	$serials .= $checklist['serial'] . '|';
+}
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
 	$role = ($this->session->userdata['logged_in']['role']);
@@ -25,11 +28,11 @@ if (isset($this->session->userdata['logged_in'])) {
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<button id="snap" class="btn btn-info"><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
-	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
+	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serials ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_batch_checklists/' . $ids.'?sn='.$serial, 'class=saveData'); ?>
+			<?php echo form_open('production/save_batch_checklists/' . $ids, 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
@@ -70,19 +73,21 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="photo-stock" class="container">
 		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
 		<?php
-		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
-		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial'; var ci_session='$session';"; //pass PHP data to JS
-		echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
-		if (file_exists(".$working_dir")) {
-			if ($handle = opendir(".$working_dir")) {
-				echo '<center><h2>System Photos</h2></center>';
-				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'png') {
-						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
-						echo '<script>photoCount++</script>';
+		foreach ($checklists as $checklist) {
+			$working_dir = '/Uploads/' . $project . '/' . $checklist['serial'] . '/';
+			echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='" . $checklist['serial'] . "'; var ci_session='$session';"; //pass PHP data to JS
+			echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
+			if (file_exists(".$working_dir")) {
+				if ($handle = opendir(".$working_dir")) {
+					echo '<center><h2>System Photos</h2></center>';
+					while (false !== ($entry = readdir($handle))) {
+						if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'png') {
+							echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">Delete '.pathinfo($entry, PATHINFO_FILENAME).'</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
+							echo '<script>photoCount++</script>';
+						}
 					}
+					closedir($handle);
 				}
-				closedir($handle);
 			}
 		}
 		?>

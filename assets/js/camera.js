@@ -73,7 +73,8 @@ video.addEventListener("click", function () {
   }).done(function (o) {
     console.log('photo saved to server.');
     $("#photo-stock").append('<span id="' + sn + '_' + photoCount +
-      '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete</span><img id="' +
+      '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
+      sn + '_' + photoCount + '</span><img id="' +
       sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
       '/' + sn + '_' + photoCount + '.png' + '" class="respondCanvas" >');
     photoCount++;

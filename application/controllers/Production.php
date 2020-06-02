@@ -383,7 +383,12 @@ class Production extends CI_Controller
         if (count($this->Templates_model->getTemplate('', $project)) > 0) {
             $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
-            $status = explode(",", $checklist_data);
+            $status_arr=array();
+            //foreach ($data['checklists'] as $index => $status) {
+
+               $status = explode(",", $checklist_data);
+            //}
+            
             //$table .= $checklist_data;
             $index = 0;
             $id = 0;
@@ -392,10 +397,6 @@ class Production extends CI_Controller
             }
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
-                $checked = '';
-                if (isset($status[$id]) && $status[$id] != '') {
-                    $checked = "Checked name-data='" . $status[$id] . "'";
-                }
                 if ($index < 10) {
                     $prefix = $prefix_count . '.0';
                 } else {
@@ -406,29 +407,50 @@ class Production extends CI_Controller
                     if (end($col) == "HD") {
                         $tr = '<table id="checklist" class="table"><thead class="thead-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
                         for ($j = 1; $j < count($col) - 1; $j++) {
-                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                            foreach ($data['checklists'] as $column) {
+                                $tr .= '<th scope="col">' . $col[$j] . '<div class="th_serial">' . $column['serial'] . '</div>' . '</th>';
+                            }
                         }
                         $tr .= '</tr></thead><tbody>';
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
-                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
-                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan=' " . (count($data['checklists']) + 1) . "'>" . $col[0];
+                        $tr .= "<select class='form-control review' id='$id'><option>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
-                        $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
-                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
-                        $tr .= $options . "</select></td></tr>";
+                        foreach ($data['checklists'] as $column) {
+                            $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id'";
+                            if (isset($status[$id]) && $status[$id] != '') {
+                                $tr .= "Checked name-data='" . $status[$id] . "'>";
+                            }
+                            $tr .= "</div></td>";
+                            $id++;
+                        }
+
+                        foreach ($data['checklists'] as $column) {
+                            $tr .= "<td><select class='form-control review' id='$id'><option>Select</option>";
+                            $tr .= $options . "</select></td>";
+                            $id++;
+                        }
+                        $tr .= "</tr>";
                         $index++;
-                        $id++;
                     } else {
-                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>";
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
+                        foreach ($data['checklists'] as $column) {
+                            $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify' id='$id'";
+                            if (isset($status[$id]) && $status[$id] != '') {
+                                $tr .= "Checked name-data='" . $status[$id] . "'>";
+                            }
+                            $tr .= "</div></td>";
+                            $id++;
+                        }
+                        $tr .= "</tr>";
+
                         $index++;
-                        $id++;
                     }
                 }
                 $table .= $tr;
@@ -481,6 +503,7 @@ class Production extends CI_Controller
     public function save_batch_checklists($id = '')
     {
         // Check validation for user input in SignUp form
+        $message_display = '';
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
         $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
@@ -488,20 +511,35 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $this->edit_checklist($id);
+            $this->edit_batch($id);
         } else {
-            $data = array(
-                'id' =>  $id,
-                'data' =>  $this->input->post('data'),
-                'log' =>  $this->input->post('log'),
-                'progress' => $this->input->post('progress'),
-                'assembler' => $this->input->post('assembler'),
-                'qc' => $this->input->post('qc'),
-                'scans' => $this->input->post('scans')
-            );
+            $ids = explode(':', $id);
+            $batch_arr = explode(',', $this->input->post('data'));
+
+            foreach ($ids as $index => $current_id) {
+                $checklist_data = array();
+                $test = '';
+                for ($i = $index; $i < count($batch_arr); $i += count($ids)) {
+                    $test .= " " . $i;
+                    array_push($checklist_data, $batch_arr[$i]);
+                }
+
+                $data = array(
+                    'id' =>  $current_id,
+                    'data' =>  implode(',', $checklist_data),
+                    'log' =>  $this->input->post('log'),
+                    'progress' => $this->input->post('progress'),
+                    'assembler' => $this->input->post('assembler'),
+                    'qc' => $this->input->post('qc'),
+                    'scans' => $this->input->post('scans')
+                );
+
+                $message_display .=   $test . ' ' . implode(',', $checklist_data) . $current_id . " ";
+            }
+
             $this->Production_model->editChecklist($data);
-            $message_display = 'Checklist saved successfully!';
-            $this->edit_checklist($id, $message_display);
+            $message_display .= 'Checklists saved successfully!' . $id;
+            $this->edit_batch($id, $message_display);
         }
     }
     public function save_checklist($id = '')
