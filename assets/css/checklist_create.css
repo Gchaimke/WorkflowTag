@@ -12,12 +12,17 @@ body {
     padding: 0.3rem 0.3rem;
     border: 1px solid #dee2e6;
     vertical-align: middle;
+    min-width: fit-content;
 }
 
 .table {
     text-align: center;
 }
 
+select.review {
+    max-width: fit-content;
+    float: right;
+}
 
 .description {
     text-align: start;

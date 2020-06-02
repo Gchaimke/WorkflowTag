@@ -248,9 +248,9 @@ class Production extends CI_Controller
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
-                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
+                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
                         //   "<div class='checkbox'><input type='checkbox' class='qc'  id='$id' $checked></div></td></tr>";
-                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
