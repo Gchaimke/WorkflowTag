@@ -8,7 +8,7 @@ class Templates extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('Production_model');
+        $this->load->model('Templates_model');
         $this->load->model('Clients_model');
     }
 
@@ -16,7 +16,7 @@ class Templates extends CI_Controller
     {
         $data = array();
         // get data from model
-        $data['projects'] = $this->Production_model->getprojects();
+        $data['projects'] = $this->Templates_model->getTemplates();
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('templates/manage_templates', $data);
@@ -48,7 +48,7 @@ class Templates extends CI_Controller
                 'template' => $this->input->post('template'),
                 'scans' => $this->input->post('scans')
             );
-            $result = $this->Production_model->addproject($data);
+            $result = $this->Templates_model->addTemplate($data);
             if ($result == TRUE) {
                 $data['message_display'] = 'Template added Successfully !';
                 $this->index($data);
@@ -76,7 +76,7 @@ class Templates extends CI_Controller
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['clients'] = $this->Clients_model->getClients();
-            $data['project'] =  $this->Production_model->getProject($id);
+            $data['project'] =  $this->Templates_model->getTemplate($id);
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('templates/edit_template', $data);
@@ -88,7 +88,7 @@ class Templates extends CI_Controller
                 'template' => $this->input->post('template'),
                 'scans' => $this->input->post('scans')
             );
-            $data['message_display'] = $this->Production_model->editProject($sql);
+            $data['message_display'] = $this->Templates_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
             $this->index($data);
         }
@@ -99,7 +99,7 @@ class Templates extends CI_Controller
         $role = ($this->session->userdata['logged_in']['role']);
         if ($role == "Admin") {
             $id = $_POST['id'];
-            $this->Production_model->deleteProject($id);
+            $this->Templates_model->deleteTemplate($id);
         }
     }
 }

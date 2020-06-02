@@ -102,8 +102,8 @@ class Production extends CI_Controller
         if ($this->form_validation->run() == FALSE) {
             $data['client'] = $this->Clients_model->getClients('', $project);
             $data['project'] = urldecode($project);
-            if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
-                $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+            if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
+                $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
             } else {
                 $data['template'] = " - not set!";
             }
@@ -123,16 +123,16 @@ class Production extends CI_Controller
             if ($result == TRUE) {
                 header("location: /production/checklists/" . $project);
             } else {
-                if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
-                    $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+                if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
+                    $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
                 } else {
                     $data['template'] = " - not set!";
                 }
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
                 $data['client'] = $this->Clients_model->getClients('', $project);
                 $data['project'] = urldecode($this->input->post('project'));
-                if (isset($this->Production_model->getProject('', $project)[0]['template'])) {
-                    $data['template'] = $this->Production_model->getProject('', $project)[0]['template'];
+                if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
+                    $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
                 } else {
                     $data['template'] = " - not set!";
                 }
@@ -155,7 +155,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
-        $serial_project = $this->Production_model->getProject('', $this->input->post('project'));
+        $serial_project = $this->Templates_model->getTemplate('', $this->input->post('project'));
         if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
             $serial = $serial_project[0]['template']; //Get serial template
             $serial = str_replace("yy", date("y"), $serial); //add year
@@ -229,8 +229,8 @@ class Production extends CI_Controller
         $options = '';
         $project = $data['checklist'][0]['project'];
         $checklist_data = $data['checklist'][0]['data'];
-        if (count($this->Production_model->getProject('', $project)) > 0) {
-            $project_data = $this->Production_model->getProject('', $project)[0]['data'];
+        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
+            $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
             //$table .= $checklist_data;
@@ -295,8 +295,8 @@ class Production extends CI_Controller
         $columns = 0;
         $id = 0;
         $project = $data['checklist'][0]['project'];
-        if (count($this->Production_model->getProject('', $project)) > 0) {
-            $project_scans = $this->Production_model->getProject('', $project)[0]['scans'];
+        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
+            $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
             $rows = explode(PHP_EOL, $project_scans);
             if (count($rows) > 1) {
                 $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
