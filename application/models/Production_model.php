@@ -2,7 +2,7 @@
 
 class Production_model extends CI_Model
 {
-	
+
 	public function addChecklist($data)
 	{
 		// Query to check whether serial already exist or not
@@ -31,9 +31,15 @@ class Production_model extends CI_Model
 			$this->db->select('*');
 			$this->db->from('checklists');
 			if ($id != '') {
-				$condition = "id ='$id'";
-				$this->db->where($condition);
-				$this->db->limit(1);
+				if (strpos($id, ':') == false) {
+					$condition = "id ='$id'";
+					$this->db->where($condition);
+					$this->db->limit(1);
+				}else{
+					$id = str_replace(':',',',$id);
+					$condition = "id IN ($id)";
+					$this->db->where($condition);
+				}
 			}
 			if ($project != '') {
 				$project = urldecode($project);
@@ -80,7 +86,7 @@ class Production_model extends CI_Model
 			if ($q->num_rows() > 0) {
 				$response = $q->result_array();
 				return $response[0]['serial'];
-			}else{
+			} else {
 				return '00000000000000000';
 			}
 		}

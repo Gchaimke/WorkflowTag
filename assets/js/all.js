@@ -64,3 +64,20 @@ function dragElement(elmnt) {
         }
     }
 }
+
+$('.select').click(function () {
+
+    var id = $(this).attr('id');
+    var link = document.getElementById('batchLink');
+    if ($(event.target).is(":checked")) {
+        $('#batchLink').attr('href', link.pathname + id + ':');
+    } else {
+        $('#batchLink').attr('href', link.pathname.replace(id + ':', ''));
+    }
+
+});
+
+function cleanString(){
+    var link =  document.getElementById('batchLink');
+    $('#batchLink').attr('href', link.pathname.replace(/:\s*$/, ""));
+}

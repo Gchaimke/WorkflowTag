@@ -220,6 +220,27 @@ class Production extends CI_Controller
         return 0;
     }
 
+    public function edit_checklist($id = '',  $msg = '')
+    {
+        $data = array();
+        if ($msg != '') {
+            $data['message_display'] = $msg;
+        }
+        $data['js_to_load'] = array("edit_checklist.js", "camera.js");
+        $data['checklist'] =  $this->Production_model->getChecklists($id);
+        if ($data['checklist']) {
+            $data['project'] =  urldecode($data['checklist'][0]['project']);
+            $data['checklist_rows'] = $this->build_checklist($data);
+            $data['scans_rows'] = $this->build_scans($data);
+        }
+        $this->load->view('header');
+        $this->load->view('main_menu', $data);
+        if ($data['checklist']) {
+            $this->load->view('production/edit_checklist');
+        }
+        $this->load->view('footer');
+    }
+
     private function build_checklist($data)
     {
         $this->load->model('Users_model');
@@ -327,27 +348,162 @@ class Production extends CI_Controller
         return $table;
     }
 
-    public function edit_checklist($id = '',  $msg = '')
+    public function edit_batch($ids = '', $msg = '')
     {
         $data = array();
         if ($msg != '') {
             $data['message_display'] = $msg;
         }
-        $data['js_to_load'] = array("checklist_create.js", "camera.js");
-        $data['checklist'] =  $this->Production_model->getChecklists($id);
-        if ($data['checklist']) {
-            $data['project'] =  urldecode($data['checklist'][0]['project']);
-            $data['checklist_rows'] = $this->build_checklist($data);
-            $data['scans_rows'] = $this->build_scans($data);
+        $data['ids'] = $ids;
+        $data['js_to_load'] = array("edit_checklist.js", "camera.js");
+        $data['checklists'] =  $this->Production_model->getChecklists($ids);
+        if ($data['checklists']) {
+            $data['project'] =  urldecode($data['checklists'][0]['project']);
+            $data['checklist_rows'] = $this->build_batch_checklist($data);
+            $data['scans_rows'] = $this->build_batch_scans($data);
         }
         $this->load->view('header');
         $this->load->view('main_menu', $data);
-        if ($data['checklist']) {
-            $this->load->view('production/edit_checklist');
+        if ($data['checklists']) {
+            $this->load->view('production/edit_batch');
         }
         $this->load->view('footer');
     }
 
+    private function build_batch_checklist($data)
+    {
+        $this->load->model('Users_model');
+        $users = $this->Users_model->getUsers();
+        $prefix_count = 0;
+        $checked = "";
+        $table = '';
+        $options = '';
+        $project = $data['checklists'][0]['project'];
+        $checklist_data = $data['checklists'][0]['data'];
+        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
+            $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
+            $rows = explode(PHP_EOL, $project_data);
+            $status = explode(",", $checklist_data);
+            //$table .= $checklist_data;
+            $index = 0;
+            $id = 0;
+            foreach ($users as $user) {
+                $options .= "<option >" . $user['name'] . "</option>";
+            }
+            for ($i = 0; $i < count($rows); $i++) {
+                $tr = '';
+                $checked = '';
+                if (isset($status[$id]) && $status[$id] != '') {
+                    $checked = "Checked name-data='" . $status[$id] . "'";
+                }
+                if ($index < 10) {
+                    $prefix = $prefix_count . '.0';
+                } else {
+                    $prefix = $prefix_count . '.';
+                }
+                $col = explode(";", $rows[$i]);
+                if (count($col) > 1) {
+                    if (end($col) == "HD") {
+                        $tr = '<table id="checklist" class="table"><thead class="thead-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
+                        for ($j = 1; $j < count($col) - 1; $j++) {
+                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                        }
+                        $tr .= '</tr></thead><tbody>';
+                        $index = 1;
+                        $prefix_count++;
+                    } else if (end($col) == "QC") {
+                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
+                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= $options . "</select></td></tr>";
+                        $index++;
+                        $id++;
+                    } else if (end($col) == "N") {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
+                        $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
+                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= $options . "</select></td></tr>";
+                        $index++;
+                        $id++;
+                    } else {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>";
+                        $index++;
+                        $id++;
+                    }
+                }
+                $table .= $tr;
+            }
+        }
+
+        $table .= '</tbody></table>';
+        return $table;
+    }
+
+    private function build_batch_scans($data)
+    {
+        $table = '';
+        $tr = '';
+        $columns = 0;
+        $id = 0;
+        $project = $data['checklists'][0]['project'];
+        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
+            $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
+            $rows = explode(PHP_EOL, $project_scans);
+            if (count($rows) > 1) {
+                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
+                for ($i = 0; $i < count($rows); $i++) {
+                    $col = explode(";", $rows[$i]);
+                    if (end($col) == "HD") {
+                        $columns = count($col);
+                        $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
+                        for ($j = 1; $j < count($col) - 1; $j++) {
+                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                        }
+                        $tr .= '</tr></thead>';
+                        $table .= $tr;
+                    } else {
+                        $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
+                        for ($j = 2; $j < $columns; $j++) {
+                            $tr .= "<td><input type='text' class='form-control scans'></td>";
+                        }
+                        $tr .=  "</tr>";
+                        $table .= $tr;
+                        $id++;
+                    }
+                }
+            }
+        }
+        $table .= '</tbody></table>';
+        return $table;
+    }
+
+
+    public function save_batch_checklists($id = '')
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
+        $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
+        $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
+        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
+        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
+        if ($this->form_validation->run() == FALSE) {
+            $this->edit_checklist($id);
+        } else {
+            $data = array(
+                'id' =>  $id,
+                'data' =>  $this->input->post('data'),
+                'log' =>  $this->input->post('log'),
+                'progress' => $this->input->post('progress'),
+                'assembler' => $this->input->post('assembler'),
+                'qc' => $this->input->post('qc'),
+                'scans' => $this->input->post('scans')
+            );
+            $this->Production_model->editChecklist($data);
+            $message_display = 'Checklist saved successfully!';
+            $this->edit_checklist($id, $message_display);
+        }
+    }
     public function save_checklist($id = '')
     {
         // Check validation for user input in SignUp form

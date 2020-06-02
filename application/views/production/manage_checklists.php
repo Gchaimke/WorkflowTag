@@ -21,6 +21,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
+				<a id='batchLink' class="btn btn-info" href="/production/edit_batch/" onclick="cleanString()">Edit Selected</a>
 			</ul>
 			<?php if (isset($links)) {
 				echo $links;
@@ -30,6 +31,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 			<table class="table">
 				<thead class="thead-dark">
 					<tr>
+						<th scope="col">*</th>
 						<th scope="col">Serial Number</th>
 						<th scope="col" class="mobile-hide">Project</th>
 						<th scope="col" class="mobile-hide">Progress</th>
@@ -44,6 +46,9 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 
 					<?php foreach ($results as $data) { ?>
 						<tr id='<?php echo $data->id ?>'>
+							<td>
+								<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
+							</td>
 							<td><?php if ($data->serial != '') {
 									echo $data->serial;
 								} else {
@@ -67,8 +72,9 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
-	<div id="show-log-header">
-	<div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button></div>
+		<div id="show-log-header">
+			<div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+		</div>
 		<ul class="list-group list-group-flush">
 		</ul>
 	</div>
@@ -96,7 +102,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				project: project,
 				count: count
 			}).done(function(o) {
-				if(o!=1){
+				if (o != 1) {
 					alert(o);
 				}
 				location.reload();
