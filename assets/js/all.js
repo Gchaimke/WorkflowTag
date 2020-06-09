@@ -1,3 +1,4 @@
+var count=0;
 function showLog(log_data, serial) {
     if (log_data != '') {
         log_arr = log_data.split(';')
@@ -66,18 +67,24 @@ function dragElement(elmnt) {
 }
 
 $('.select').click(function () {
-
     var id = $(this).attr('id');
     var link = document.getElementById('batchLink');
     if ($(event.target).is(":checked")) {
         $('#batchLink').attr('href', link.pathname + id + ':');
+        count+=1;
     } else {
         $('#batchLink').attr('href', link.pathname.replace(id + ':', ''));
+        count-=1;
     }
-
+    
+    if(count>0){
+        $('#batchLink').removeClass('disabled');
+    }else{
+        $('#batchLink').addClass('disabled');
+    }
 });
 
-function cleanString(){
+function cleanUrl(){
     var link =  document.getElementById('batchLink');
     $('#batchLink').attr('href', link.pathname.replace(/:\s*$/, ""));
 }

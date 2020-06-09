@@ -241,7 +241,7 @@ class Production extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function edit_batch($ids = '', $msg = '')
+    public function edit_batch($ids = '0', $msg = '')
     {
         $data = array();
         if ($msg != '') {

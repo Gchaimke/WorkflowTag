@@ -21,7 +21,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-				<a id='batchLink' class="btn btn-info fa  fa-check-square-o" href="/production/edit_batch/" onclick="cleanString()"></a>
+				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',10)">+10</a>
+				<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
 			</ul>
 			<?php if (isset($links)) {
 				echo $links;
@@ -35,7 +36,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 						<th scope="col">Serial Number</th>
 						<th scope="col" class="mobile-hide">Project</th>
 						<th scope="col" class="mobile-hide">Progress</th>
-						<th scope="col" class="mobile-hide">Assembler</th>
+						<th scope="col" class="mobile-hide">Last Edited By</th>
 						<th scope="col" class="mobile-hide">QC</th>
 						<th scope="col" class="mobile-hide">Date</th>
 						<th scope="col">Edit</th>

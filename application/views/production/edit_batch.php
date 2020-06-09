@@ -59,5 +59,5 @@ if (isset($this->session->userdata['logged_in'])) {
 </main>
 <?php
 echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var sn='$serials'; var ci_session='$session';"; //pass PHP data to JS
-echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
+echo "var log='$log'; var assembler =' $assembler'; var qc_name='$qc'</script>";  //pass PHP data to JS
 ?>

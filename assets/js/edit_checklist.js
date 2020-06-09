@@ -71,20 +71,18 @@ function toggleAll() {
     $('.verify').each(function () {
         $("#" + this.id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
         chArray[this.id] = assembler;
-        var now = new Date();
-        log += now.toLocaleString() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
+        log += getDateTime() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
         $('#input_log').val(log);
     });
     $('.verify').prop('checked', true);
     updateProgress();
     $('#input_data').val(chArray.toString());
     $('#input_progress').val(progress_status);
-    
+
 }
 
 function toggleQc(id, qc_name) {
     if (qc_name != '') {
-        $("#" + id).after("<div class='badge badge-secondary check-lable'>" + qc_name + "</div>");
         chArray[id] = qc_name;
     } else {
         $("#" + id + "+ div").remove();
@@ -106,9 +104,8 @@ $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
     $('#input_data').val(chArray.toString());
     $('#input_progress').val(progress_status);
-    var now = new Date();
     if ($(event.target).is(":checked")) {
-        log += now.toLocaleString() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
+        log += getDateTime() + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
     }
     $('#input_log').val(log);
 });
@@ -127,8 +124,7 @@ $("input:checkbox.qc").click(function (e) {
                 $("#" + id).prop('checked', true);
                 toggleQc(id, qc_name);
                 $('#input_qc').val(qc_name);
-                var now = new Date();
-                log += now.toLocaleString() + " QC " + qc_name + " checked " + $(this).closest("tr").find('th').text() + ";";
+                log += getDateTime() + " QC " + qc_name + " checked " + $(this).closest("tr").find('th').text() + ";";
                 $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
                 $('#input_progress').val(progress_status);
@@ -156,16 +152,18 @@ $("select.review").change(function (e) {
         function (verify) {
             if (verify) {
                 option.val(name);
-                selectOne(id, name);
+                toggleQc(id, name);
+                $('#input_qc').val(name);
+                log += getDateTime() + " QC " + name + " checked " + $(this).closest("tr").find('th').text() + ";";
+                $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
             } else {
-                option.val("Select");
-                selectOne(id, "Select");
+                option.val('Select');
+                toggleQc(id, "Select");
                 alert("Password error!");
                 $('#input_data').val(chArray.toString());
             }
         });
-
 });
 
 $(".scans").change(function (e) {
@@ -187,6 +185,20 @@ function toString2d(arr) {
     return str
 }
 
+$('#result').click(function () {
+    //alert(getDateTime());
+});
+
+function getDateTime() {
+    var now = new Date();
+    const ye = new Intl.DateTimeFormat('en', { year: '2-digit' }).format(now);
+    const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(now);
+    const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
+    const H = now.getHours();
+    const M = now.getMinutes();
+    return `${da}/${mo}/${ye} ${H}:${M}`;
+}
+
 function print2PDF(url, cookie) {
     //alert("Printing "+id);   
     $.post("/production/save_page2pdf",
@@ -201,22 +213,6 @@ function print2PDF(url, cookie) {
                 alert("no respond");
             }
         });
-}
-
-function getCookie(cname) {
-    var name = cname + "=";
-    var decodedCookie = decodeURIComponent(document.cookie);
-    var ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
 
 function centerLoginBox() {
