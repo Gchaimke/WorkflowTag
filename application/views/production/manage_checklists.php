@@ -21,7 +21,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
 				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-				<a id='batchLink' class="btn btn-info" href="/production/edit_batch/" onclick="cleanString()">Edit Selected</a>
+				<a id='batchLink' class="btn btn-info fa  fa-check-square-o" href="/production/edit_batch/" onclick="cleanString()"></a>
 			</ul>
 			<?php if (isset($links)) {
 				echo $links;
@@ -92,6 +92,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				console.log('checklist deleted from the server.');
 			});
 		}
+		location.reload();
 	}
 
 	function gen_checklists(project, count) {

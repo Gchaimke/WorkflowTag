@@ -2,6 +2,10 @@ main {
     margin-top: 35px;
 }
 
+a.fa {
+    font-weight: 100 !important;
+}
+
 .pull-right {
     float: inherit;
 }
@@ -128,11 +132,15 @@ button.close {
     .th_serial {
         min-width: max-content;
     }
+
+    .card-columns .card {
+        margin-bottom: 50px;
+    }
 }
 
 
 @media (max-width: 1199.98px){
-
+    
 }
 
 

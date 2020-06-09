@@ -66,6 +66,19 @@ class Production_model extends CI_Model
 		return $this->db->update('checklists', $data, $where);
 	}
 
+	public function batchEditChecklist($data)
+	{
+		$where = "id =" . $data['id'];
+		$data = array(
+			'data' => $data['data'],
+			'log' => $data['log'],
+			'progress' => $data['progress'],
+			'assembler' => $data['assembler'],
+			'qc' => $data['qc'],
+		);
+		return $this->db->update('checklists', $data, $where);
+	}
+
 	function deleteChecklist($id)
 	{
 		$this->db->delete('wft_checklists', array('id' => $id));
