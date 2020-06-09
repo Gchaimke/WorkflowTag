@@ -93,6 +93,10 @@ button.close {
     padding: 10px;
 }
 
+label.custom-file-label {
+    text-align: start;
+}
+
 @media (min-width: 320px){
     .jumbotron {
         padding: 2rem 2rem;

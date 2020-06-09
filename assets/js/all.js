@@ -88,3 +88,8 @@ function cleanUrl(){
     var link =  document.getElementById('batchLink');
     $('#batchLink').attr('href', link.pathname.replace(/:\s*$/, ""));
 }
+
+$('input[type="files"]').change(function(e){
+    var fileName = e.target.files[0].name;
+    alert('The file "' + fileName +  '" has been selected.');
+});

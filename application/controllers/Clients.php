@@ -56,8 +56,11 @@ class Clients extends CI_Controller
         }
     }
 
-    public function edit($id = '')
+    public function edit($id = '',$msg='')
     {
+        if ($msg != '') {
+            $data['message_display'] = $msg;
+        }
         $data = array();
         // Check validation for user input in form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
@@ -77,6 +80,28 @@ class Clients extends CI_Controller
         $this->load->view('main_menu');
         $this->load->view('clients/edit', $data);
         $this->load->view('footer');
+    }
+
+    public function logo_upload($id = '')
+    {
+        define('UPLOAD_DIR', 'Uploads/');
+        $data = array();
+        $config = array(
+            'upload_path' => UPLOAD_DIR,
+            'allowed_types' => "gif|jpg|png|jpeg|pdf",
+            'overwrite' => TRUE
+            //'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
+            //'max_height' => "768",
+            //'max_width' => "1024"
+        );
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload('logo')) {
+            $data['message_display'] = array('upload_data' => $this->upload->data());
+            $this->edit($id, $data);
+        } else {
+            $data['message_display'] = array('error' => $this->upload->display_errors());
+            $this->edit($id, $data);
+        }
     }
 
     public function delete()

@@ -434,8 +434,7 @@ class Production extends CI_Controller
 
     public function save_photo()
     {
-        defined('BASEPATH') or exit('No direct script access allowed');
-        // requires php5
+       // requires php5
         define('UPLOAD_DIR', 'Uploads/');
         $folder = $_POST['pr'];
         $name = $_POST['sn'];

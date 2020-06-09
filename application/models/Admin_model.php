@@ -62,6 +62,10 @@ class Admin_model extends CI_Model
             'projects' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 500
+            ),
+            'logo' =>array(
+                'type' => 'VARCHAR',
+                'constraint' => 500
             )
         );
 
@@ -73,7 +77,8 @@ class Admin_model extends CI_Model
 
         $cl = array(
             "name" => 'Simbionix',
-            "projects" => 'Flex2,Lap3'
+            "projects" => 'Flex2,Lap3',
+            "logo"=> '/assets/img/logo.png'
         );
         $this->db->insert('clients', $cl);
     }
