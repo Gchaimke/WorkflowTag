@@ -114,6 +114,7 @@ $("input:checkbox.verify").click(function (e) {
 $("input:checkbox.qc").click(function (e) {
     event.preventDefault();
     id = this.id;
+    curent_th = $(this).closest("tr").find('th').text();
     var code = prompt("Please enter QC Code", "");
     $.post("/users/get_qc",
         {
@@ -124,7 +125,7 @@ $("input:checkbox.qc").click(function (e) {
                 $("#" + id).prop('checked', true);
                 toggleQc(id, qc_name);
                 $('#input_qc').val(qc_name);
-                log += getDateTime() + " QC " + qc_name + " checked " + $(this).closest("tr").find('th').text() + ";";
+                log += getDateTime() + " QC " + qc_name + " checked " + curent_th + ";";
                 $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
                 $('#input_progress').val(progress_status);
@@ -141,6 +142,7 @@ $("input:checkbox.qc").click(function (e) {
 $("select.review").change(function (e) {
     event.preventDefault();
     id = this.id;
+    curent_th = $(this).closest("tr").find('th').text();
     var option = $(this).children("option:selected");
     var name = option.val();
     var pass = prompt(name + " please enter your Password.", "");
@@ -154,7 +156,7 @@ $("select.review").change(function (e) {
                 option.val(name);
                 toggleQc(id, name);
                 $('#input_qc').val(name);
-                log += getDateTime() + " QC " + name + " checked " + $(this).closest("tr").find('th').text() + ";";
+                log += getDateTime() + " QC " + name + " checked " + curent_th + ";";
                 $('#input_log').val(log);
                 $('#input_data').val(chArray.toString());
             } else {
