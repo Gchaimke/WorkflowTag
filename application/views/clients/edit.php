@@ -37,13 +37,10 @@ if (isset($this->session->userdata['logged_in'])) {
 			<?php echo form_open("clients/edit/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<label>Client</label><input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
-			<label>Logo</label>
-			<?php echo form_open_multipart('clients/logo_upload/'.$id); ?>
-			<?php echo "<input type='file' name='logo' size='20' />"; ?>
-			<?php echo "<input type='submit' name='submit' value='upload' /> "; ?>
-			<?php echo "</form>" ?>
-
+			<label>Logo</label></br>
+			<img class="img-thumbnail" src="<?php echo $logo ?>">
 			<div class="input-group">
+			
 				<div class="custom-file">
 					<input type="file" class="custom-file-input" id="logo">
 					<label class="custom-file-label" for="logo"><?php echo $logo ?></label>
