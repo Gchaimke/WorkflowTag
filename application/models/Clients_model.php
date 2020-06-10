@@ -51,7 +51,10 @@ class Clients_model extends CI_Model
     public function editClient($data)
     {
         $where = "id ='" . $data['id'] . "'";
-        $data = array('projects' => $data['projects']);
+        $data = array(
+            'projects' => $data['projects'],
+            'logo' => $data['logo']
+		);
         return $this->db->update('clients', $data, $where);
     }
 

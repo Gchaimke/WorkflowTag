@@ -65,10 +65,12 @@ class Clients extends CI_Controller
         // Check validation for user input in form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
+        $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
         $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
         if ($this->form_validation->run() == TRUE) {
             $sql = array(
                 'id' => $this->input->post('id'),
+                'logo' => $this->input->post('logo'),
                 'name' => $this->input->post('name'),
                 'projects' => $this->input->post('projects')
             );
@@ -88,6 +90,7 @@ class Clients extends CI_Controller
         define('UPLOAD_DIR', 'Uploads/Clients/');
         $file_name = $_POST['client'] . "_logo";
         $img = $_POST['data'];
+        $ext = $_POST['ext'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
             $img = substr($img, strpos($img, ',') + 1);
             $type = strtolower($type[1]); // jpg, png, gif
@@ -107,7 +110,7 @@ class Clients extends CI_Controller
         if (!file_exists(UPLOAD_DIR)) {
             mkdir(UPLOAD_DIR, 0770, true);
         }
-        $file = UPLOAD_DIR . $file_name . ".$type";
+        $file = UPLOAD_DIR . $file_name . ".$ext";
         $success = file_put_contents($file, $img);
         if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
             //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --speed 5 --nofs --force ' . escapeshellarg($file));
