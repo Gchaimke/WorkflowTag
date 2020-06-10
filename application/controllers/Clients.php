@@ -82,14 +82,11 @@ class Clients extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function logo_upload($id = '')
+    public function logo_upload()
     {
         // requires php5
-        define('UPLOAD_DIR', 'Uploads/');
-        $folder = $_POST['pr'];
-        $name = $_POST['sn'];
-        $num = $_POST['num'];
-        $file_name = $name . "_" . $num;
+        define('UPLOAD_DIR', 'Uploads/Clients/');
+        $file_name = $_POST['client'] . "_logo";
         $img = $_POST['data'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
             $img = substr($img, strpos($img, ',') + 1);
@@ -98,23 +95,22 @@ class Clients extends CI_Controller
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
                 throw new \Exception('invalid image type');
             }
-
             $img = base64_decode($img);
-
             if ($img === false) {
+                echo 'base64_decode failed';
                 throw new \Exception('base64_decode failed');
             }
         } else {
+            echo 'did not match data URI with image data';
             throw new \Exception('did not match data URI with image data');
         }
-
-        if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
-            mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
+        if (!file_exists(UPLOAD_DIR)) {
+            mkdir(UPLOAD_DIR, 0770, true);
         }
-        $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
+        $file = UPLOAD_DIR . $file_name . ".$type";
         $success = file_put_contents($file, $img);
         if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
-            //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
+            //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --speed 5 --nofs --force ' . escapeshellarg($file));
         }
         print $success ? $file : 'Unable to save the file.';
     }

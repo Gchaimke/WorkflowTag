@@ -38,7 +38,9 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<label>Client</label><input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
 			<label>Logo</label></br>
-			<img class="img-thumbnail" src="<?php echo $logo ?>">
+			<div id="photo-stock" class="container"></div>
+			<div id="preview"></div>
+			<img class="img-thumbnail" src="<?php echo $logo ?>" onclick="document.getElementById('browse').click();">
 			<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
 			<div id="preview"></div>
 			<div class="form-group"><label>Projects</label>
@@ -50,44 +52,39 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <script>
+	var client = '<?php echo $client ?>';
+
 	function snapPhoto() {
-		//var preview = document.querySelector('#preview');
+		var preview = document.querySelector('#preview');
 		var files = document.querySelector('input[type=file]').files;
+
 		function readAndPreview(file) {
 			// Make sure `file.name` matches our extensions criteria
-			if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+			if (/\.(jpe?g|jpeg|jpg|png|gif)$/i.test(file.name)) {
 				var reader = new FileReader();
 				reader.addEventListener("load", function() {
 					var image = new Image();
 					image.title = file.name;
 					image.src = this.result;
-					//preview.appendChild(image);
-					saveToServer(this.result)
+					preview.appendChild(image);
+					saveToServer(this.result);					
 				}, false);
 				reader.readAsDataURL(file);
 			}
 		}
-
 		if (files) {
 			[].forEach.call(files, readAndPreview);
 		}
 	}
 
 	function saveToServer(file) {
-		$.post("/production/save_photo", {
+		$.post("/clients/logo_upload", {
 			data: file,
-			pr: pr,
-			sn: sn,
-			num: photoCount
+			client: client
 		}).done(function(o) {
 			console.log('photo saved to server.');
-			$("#photo-stock").append('<span id="' + sn + '_' + photoCount +
-				'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
-				sn + '_' + photoCount + '</span><img id="' +
-				sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
-				'/' + sn + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
-			photoCount++;
-
+			console.log(o);
+			//$("#photo-stock").append('<img id="logo-image" src="/Uploads/Clients/' + client + '_logo' + '.jpeg' + '" class="respondCanvas" >');
 		});
 	}
 </script>
