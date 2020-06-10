@@ -62,9 +62,9 @@ video.addEventListener("click", function () {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
   $(".video-frame").toggle();
-  context.drawImage(video, 0, 0, 1920, 1080);
+  context.drawImage(video);
   stopMediaTracks(currentStream);
-  dataURL = canvas.toDataURL('image/png', 0.1);
+  dataURL = canvas.toDataURL('image/png', 1.0);
   $.post("/production/save_photo", {
     data: dataURL,
     pr: pr,
