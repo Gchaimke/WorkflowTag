@@ -52,7 +52,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'production';
 $route['users'] = 'users';
 $route['clients'] = 'clients';
-$route['upload'] = 'upload';
 $route['templates'] = 'templates';
 $route['(:any)'] = 'pages/view/$1';
 $route['404_override'] = '';

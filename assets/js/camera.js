@@ -1,74 +1,29 @@
-const video = document.getElementById('video');
-const button = document.getElementById('select_camera');
-const select = document.getElementById('select');
-let currentStream;
-
-function stopMediaTracks(stream) {
-  if (typeof stream !== 'undefined') {
-    stream.getTracks().forEach(track => {
-      track.stop();
-    });
-  }
-}
-
-function gotDevices(mediaDevices) {
-  select.innerHTML = '';
-  select.appendChild(document.createElement('option'));
-  let count = 1;
-  mediaDevices.forEach(mediaDevice => {
-    if (mediaDevice.kind === 'videoinput') {
-      const option = document.createElement('option');
-      option.value = mediaDevice.deviceId;
-      const label = mediaDevice.label || `Camera ${count++}`;
-      const textNode = document.createTextNode(label);
-      option.appendChild(textNode);
-      select.appendChild(option);
+function snapPhoto() {
+  //var preview = document.querySelector('#preview');
+  var files = document.querySelector('input[type=file]').files;
+  function readAndPreview(file) {
+    // Make sure `file.name` matches our extensions criteria
+    if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+      var reader = new FileReader();
+      reader.addEventListener("load", function () {
+        var image = new Image();
+        image.title = file.name;
+        image.src = this.result;
+        //preview.appendChild(image);
+        saveToServer(this.result)
+      }, false);
+      reader.readAsDataURL(file);
     }
-  });
+  }
+
+  if (files) {
+    [].forEach.call(files, readAndPreview);
+  }
 }
 
-button.addEventListener('click', event => {
-  if (typeof currentStream !== 'undefined') {
-    stopMediaTracks(currentStream);
-  }
-  const videoConstraints = {};
-  if (select.value === '') {
-    videoConstraints.facingMode = 'environment';
-  } else {
-    videoConstraints.deviceId = { exact: select.value };
-  }
-  const constraints = {
-    video: videoConstraints,
-    audio: false
-  };
-  if (typeof navigator.mediaDevices !== 'undefined') {
-    navigator.mediaDevices.getUserMedia(constraints).then(stream => {
-      currentStream = stream;
-      video.srcObject = stream;
-      return navigator.mediaDevices.enumerateDevices();
-    })
-      .then(gotDevices)
-      .catch(error => {
-        console.error(error);
-      });
-  }
-});
-
-if (typeof navigator.mediaDevices !== 'undefined') {
-  navigator.mediaDevices.enumerateDevices().then(gotDevices);
-}
-
-video.addEventListener("click", function () {
-  var canvas = document.getElementById('canvas');
-  var context = canvas.getContext('2d');
-  context.imageSmoothingEnabled = false;
-  context.imageSmoothingEnabled = true;
-  $(".video-frame").toggle();
-  context.drawImage(video, 0, 0, 1920, 1080);
-  stopMediaTracks(currentStream);
-  dataURL = canvas.toDataURL('image/png', 1.0);
+function saveToServer(file) {
   $.post("/production/save_photo", {
-    data: dataURL,
+    data: file,
     pr: pr,
     sn: sn,
     num: photoCount
@@ -78,18 +33,17 @@ video.addEventListener("click", function () {
       '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
       sn + '_' + photoCount + '</span><img id="' +
       sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
-      '/' + sn + '_' + photoCount + '.png' + '" class="respondCanvas" >');
+      '/' + sn + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
     photoCount++;
 
   });
-
-});
+}
 
 function delPhoto(id) {
   var r = confirm("Delete Photo with id: " + id + "?");
   if (r == true) {
     $.post("/production/delete_photo", {
-      photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.png'
+      photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.jpeg'
     }).done(function (o) {
       console.log('photo deleted from the server.');
       $('[id^=' + id + ']').remove();
@@ -97,13 +51,6 @@ function delPhoto(id) {
   }
 }
 
-// Trigger photo take
-$("#snap").click(function () {
-  $(".video-frame").toggle();
-});
 
-$("#close_camera").click(function () {
-  stopMediaTracks(currentStream);
-  $(".video-frame").toggle();
-});
+
 

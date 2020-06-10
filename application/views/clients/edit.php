@@ -39,16 +39,8 @@ if (isset($this->session->userdata['logged_in'])) {
 			<label>Client</label><input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
 			<label>Logo</label></br>
 			<img class="img-thumbnail" src="<?php echo $logo ?>">
-			<div class="input-group">
-			
-				<div class="custom-file">
-					<input type="file" class="custom-file-input" id="logo">
-					<label class="custom-file-label" for="logo"><?php echo $logo ?></label>
-				</div>
-				<div class="input-group-append">
-					<button class="btn btn-outline-secondary" type="button">Upload</button>
-				</div>
-			</div>
+			<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+			<div id="preview"></div>
 			<div class="form-group"><label>Projects</label>
 				<textarea name="projects" class="form-control" cols="40" rows="5"><?php echo $projects ?></textarea>
 			</div>
@@ -57,3 +49,45 @@ if (isset($this->session->userdata['logged_in'])) {
 		</center>
 	</div>
 </main>
+<script>
+	function snapPhoto() {
+		//var preview = document.querySelector('#preview');
+		var files = document.querySelector('input[type=file]').files;
+		function readAndPreview(file) {
+			// Make sure `file.name` matches our extensions criteria
+			if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+				var reader = new FileReader();
+				reader.addEventListener("load", function() {
+					var image = new Image();
+					image.title = file.name;
+					image.src = this.result;
+					//preview.appendChild(image);
+					saveToServer(this.result)
+				}, false);
+				reader.readAsDataURL(file);
+			}
+		}
+
+		if (files) {
+			[].forEach.call(files, readAndPreview);
+		}
+	}
+
+	function saveToServer(file) {
+		$.post("/production/save_photo", {
+			data: file,
+			pr: pr,
+			sn: sn,
+			num: photoCount
+		}).done(function(o) {
+			console.log('photo saved to server.');
+			$("#photo-stock").append('<span id="' + sn + '_' + photoCount +
+				'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
+				sn + '_' + photoCount + '</span><img id="' +
+				sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
+				'/' + sn + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
+			photoCount++;
+
+		});
+	}
+</script>

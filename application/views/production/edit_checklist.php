@@ -24,13 +24,14 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-	<button id="snap" class="btn btn-info"><i class="fa fa-camera"></i></button>
+	<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
+
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_checklist/' . $id.'?sn='.$serial, 'class=saveData'); ?>
+			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
@@ -78,7 +79,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			if ($handle = opendir(".$working_dir")) {
 				echo '<center><h2>System Photos</h2></center>';
 				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'png') {
+					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
 						echo '<script>photoCount++</script>';
 					}
@@ -88,4 +89,6 @@ if (isset($this->session->userdata['logged_in'])) {
 		}
 		?>
 	</div>
+	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+	<div id="preview"></div>
 </main>

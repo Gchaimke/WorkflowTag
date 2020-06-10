@@ -2,6 +2,14 @@ main {
     margin-top: 35px;
 }
 
+div#preview {
+    max-width: 100%;
+}
+
+div#preview img {
+    width: 100%;
+}
+
 a.fa {
     font-weight: 100 !important;
 }

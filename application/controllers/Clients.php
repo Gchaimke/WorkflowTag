@@ -84,24 +84,39 @@ class Clients extends CI_Controller
 
     public function logo_upload($id = '')
     {
+        // requires php5
         define('UPLOAD_DIR', 'Uploads/');
-        $data = array();
-        $config = array(
-            'upload_path' => UPLOAD_DIR,
-            'allowed_types' => "gif|jpg|png|jpeg|pdf",
-            'overwrite' => TRUE
-            //'max_size' => "2048000", // Can be set to particular file size , here it is 2 MB(2048 Kb)
-            //'max_height' => "768",
-            //'max_width' => "1024"
-        );
-        $this->load->library('upload', $config);
-        if ($this->upload->do_upload('logo')) {
-            $data['message_display'] = array('upload_data' => $this->upload->data());
-            $this->edit($id, $data);
+        $folder = $_POST['pr'];
+        $name = $_POST['sn'];
+        $num = $_POST['num'];
+        $file_name = $name . "_" . $num;
+        $img = $_POST['data'];
+        if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
+            $img = substr($img, strpos($img, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                throw new \Exception('invalid image type');
+            }
+
+            $img = base64_decode($img);
+
+            if ($img === false) {
+                throw new \Exception('base64_decode failed');
+            }
         } else {
-            $data['message_display'] = array('error' => $this->upload->display_errors());
-            $this->edit($id, $data);
+            throw new \Exception('did not match data URI with image data');
         }
+
+        if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
+            mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
+        }
+        $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
+        $success = file_put_contents($file, $img);
+        if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
+            //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
+        }
+        print $success ? $file : 'Unable to save the file.';
     }
 
     public function delete()
