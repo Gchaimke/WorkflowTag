@@ -61,8 +61,10 @@ if (typeof navigator.mediaDevices !== 'undefined') {
 video.addEventListener("click", function () {
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
+  context.imageSmoothingEnabled = false;
+  context.imageSmoothingEnabled = true;
   $(".video-frame").toggle();
-  context.drawImage(video);
+  context.drawImage(video, 0, 0, 1920, 1080);
   stopMediaTracks(currentStream);
   dataURL = canvas.toDataURL('image/png', 1.0);
   $.post("/production/save_photo", {

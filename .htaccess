@@ -3,11 +3,3 @@ RewriteCond $1 !^(index\.php|assets|images|js|css|Uploads|favicon.png)
 RewriteCond %(REQUEST_FILENAME) !-f
 RewriteCond %(REQUEST_FILENAME) !-d
 RewriteRule ^(.*)$ ./index.php/$1 [L]
-
-Order Deny,Allow
-Deny from all
-Allow from 192.168.0
-Allow from 192.168.1
-Allow from 192.168.2
-Allow from 127.0.0
-Satisfy any
