@@ -232,6 +232,7 @@ class Production extends CI_Controller
             $data['project'] =  urldecode($data['checklist'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data);
             $data['scans_rows'] = $this->build_scans($data);
+            $data['client'] = $this->Clients_model->getClients('', $data['project']);
         }
         $this->load->view('header');
         $this->load->view('main_menu', $data);

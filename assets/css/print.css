@@ -16,7 +16,7 @@
         margin-top: -120px;
         margin-bottom: 100px;
     }
-    .navbar-right, .progress, .delete-photo, .alert, #snap, .main-menu, footer {
+    .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer {
         display: none;
     }
     
@@ -30,5 +30,21 @@
 
     .mobile-hide {
         display: block;
+    }
+
+    img.img-thumbnail.checklist-logo {
+        max-width: 300px;
+        max-height: 150px;
+        display: block;
+    }
+
+    b#date {
+        margin-right: 50px;
+    }
+
+    img.respondCanvas {
+        display: block;
+        break-inside: avoid;
+        max-height: 1500px;
     }
 }

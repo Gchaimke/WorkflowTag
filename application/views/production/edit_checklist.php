@@ -9,6 +9,7 @@ $assembler = $checklist[0]['assembler'];
 $qc = $checklist[0]['qc'];
 $scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
+$logo = $client[0]['logo'];
 
 $this->load->helper('cookie');
 $session = get_cookie('ci_session');
@@ -24,8 +25,8 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
+<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>"?>
 	<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
-
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
