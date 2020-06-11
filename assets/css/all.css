@@ -10,6 +10,10 @@ div#preview img {
     width: 100%;
 }
 
+img#logo_img {
+    max-height: 200px;
+}
+
 a.fa {
     font-weight: 100 !important;
 }
