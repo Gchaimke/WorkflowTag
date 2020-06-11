@@ -70,14 +70,16 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php echo $scans_rows ?>
 	</div>
 	<div id="photo-stock" class="container">
-		<canvas id="canvas" style="display:none;" width="1920" height="1080"></canvas>
+		<center>
+			<h2>System Photos</h2>
+		</center>
 		<?php
 		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
 		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial'; var ci_session='$session';"; //pass PHP data to JS
 		echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
-				echo '<center><h2>System Photos</h2></center>';
+
 				while (false !== ($entry = readdir($handle))) {
 					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';

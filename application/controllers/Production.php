@@ -226,7 +226,7 @@ class Production extends CI_Controller
         if ($msg != '') {
             $data['message_display'] = $msg;
         }
-        $data['js_to_load'] = array("edit_checklist.js", "camera.js");
+        $data['js_to_load'] = array("edit_checklist.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);

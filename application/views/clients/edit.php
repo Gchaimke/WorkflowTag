@@ -40,7 +40,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<label>Logo</label></br>
 			<input id="logo_path" type='text' class="form-control" name='logo' value="<?php echo $logo ?>">
 			<img id="logo_img" class="img-thumbnail" src="<?php echo $logo ?>" onclick="document.getElementById('browse').click();">
-			<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+			<input id="browse" style="display:none;" type="file" onchange="snapLogo()" multiple>
 			<div class="form-group"><label>Projects</label>
 				<textarea name="projects" class="form-control" cols="40" rows="5"><?php echo $projects ?></textarea>
 			</div>
@@ -52,41 +52,4 @@ if (isset($this->session->userdata['logged_in'])) {
 <script>
 	var client = '<?php echo $client ?>';
 	var ext ='';
-
-	function snapPhoto() {
-		var logo_path = document.getElementById('logo_path');
-		var logo_img = document.getElementById('logo_img');
-		var files = document.querySelector('input[type=file]').files;
-
-		function readAndPreview(file) {
-			// Make sure `file.name` matches our extensions criteria
-			ext = file.name.substr((file.name.lastIndexOf('.') + 1));
-			if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
-				var reader = new FileReader();
-				reader.addEventListener("load", function() {
-					var image = new Image();
-					image.title = file.name;
-					image.src = this.result;
-					saveToServer(this.result);
-					logo_path.value = "/Uploads/Clients/"+client+"_logo."+ext;
-					logo_img.src =   logo_path.value;
-				}, false);
-				reader.readAsDataURL(file);
-			}
-		}
-		if (files) {
-			[].forEach.call(files, readAndPreview);
-		}
-	}
-
-	function saveToServer(file) {
-		$.post("/clients/logo_upload", {
-			data: file,
-			client: client,
-			ext : ext
-		}).done(function(o) {
-			console.log('photo saved to server.');
-			console.log(o);
-		});
-	}
 </script>
