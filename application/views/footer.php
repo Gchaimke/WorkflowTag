@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="<?php echo base_url('assets/js/bootstrap.min.js'); ?>"></script>
-    <script src="<?php echo base_url('assets/js/all.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/all.js?'. filemtime('assets/js/all.js') ); ?>"></script>
     <?php
     if (isset($js_to_load)) {
       if (is_array($js_to_load)) {

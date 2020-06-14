@@ -2,12 +2,20 @@ main {
     margin-top: 35px;
 }
 
+ul.navbar-nav.pull-right {
+    margin-right: 50px;
+}
+
 div#preview {
     max-width: 100%;
 }
 
 div#preview img {
     width: 100%;
+}
+ 
+td.td_file_manager {
+    max-width: 150px;
 }
 
 img#logo_img {

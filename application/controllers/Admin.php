@@ -31,6 +31,16 @@ class Admin extends CI_Controller
 		$this->load->view('footer');
 	}
 
+	function mange_uploads($dir="Uploads")
+	{
+		$data = array();
+		$data['dir'] = $dir;
+		$this->load->view('header');
+		$this->load->view('main_menu');
+		$this->load->view('admin/mange_uploads', $data );
+		$this->load->view('footer');
+	}
+
 	function create()
 	{
 		$data = array();
@@ -38,34 +48,34 @@ class Admin extends CI_Controller
 		$data['response'] = '';
 		if (!$this->db->table_exists('users')) {
 			$this->Admin_model->createUsersDb();
-			$data['response'] .= "Table 'users' created!".PHP_EOL;
+			$data['response'] .= "Table 'users' created!" . PHP_EOL;
 		} else {
-			$data['response'] .= "Table 'users' exists!".PHP_EOL;
+			$data['response'] .= "Table 'users' exists!" . PHP_EOL;
 		}
 		if (!$this->db->table_exists('clients')) {
 			$this->Admin_model->createClientsDb();
-			$data['response'] .= "Table 'clients' created!".PHP_EOL;
+			$data['response'] .= "Table 'clients' created!" . PHP_EOL;
 		} else {
-			$data['response'] .= "Table 'clients' exists!".PHP_EOL;
+			$data['response'] .= "Table 'clients' exists!" . PHP_EOL;
 		}
 		if (!$this->db->table_exists('checklists')) {
 			$this->Admin_model->createChecklistDb();
-			$data['response'] .= "Table 'checklists' created!".PHP_EOL;
+			$data['response'] .= "Table 'checklists' created!" . PHP_EOL;
 		} else {
-			$data['response'] .= "Table 'checklists' exists!".PHP_EOL;
+			$data['response'] .= "Table 'checklists' exists!" . PHP_EOL;
 		}
 		if (!$this->db->table_exists('projects')) {
 			$this->Admin_model->createProjectsDb();
-			$data['response'] .= "Table 'projects' created!".PHP_EOL;
+			$data['response'] .= "Table 'projects' created!" . PHP_EOL;
 		} else {
-			$data['response'] .= "Table 'projects' exists!".PHP_EOL;
+			$data['response'] .= "Table 'projects' exists!" . PHP_EOL;
 		}
 		if (!$this->db->table_exists('settings')) {
 			$this->Admin_model->createSettingsDb();
 			$data['settings'] = $this->Admin_model->getSettings();
-			$data['response'] .= "Table 'settings' created!".PHP_EOL;
+			$data['response'] .= "Table 'settings' created!" . PHP_EOL;
 		} else {
-			$data['response'] .= "Table 'settings' exists!".PHP_EOL;
+			$data['response'] .= "Table 'settings' exists!" . PHP_EOL;
 			$data['settings'] = $this->Admin_model->getSettings();
 		}
 		echo $data['response'];

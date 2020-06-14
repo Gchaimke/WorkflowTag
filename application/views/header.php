@@ -27,7 +27,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <!-- Bootstrap core CSS -->
   <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
-  <link href="<?php echo base_url('assets/css/all.css'); ?>" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/all.css?'. filemtime('assets/css/all.css')); ?>" rel="stylesheet">
   <!-- Custom styles for this template -->
   <?php
   if (isset($css_to_load)) {

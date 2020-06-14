@@ -188,6 +188,19 @@ function delPhoto(id) {
     }
 }
 
+function delFile(id) {
+    var r = confirm("Delete Photo with id: " + id + "?");
+    if (r == true) {
+        $.post("/production/delete_photo", {
+            photo: id
+        }).done(function (o) {
+            console.log('photo deleted from the server.');
+            sleep(1000)
+            location.reload();
+        });
+    }
+}
+
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
