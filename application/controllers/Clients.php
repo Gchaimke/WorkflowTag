@@ -30,7 +30,9 @@ class Clients extends CI_Controller
     {
         $msg = array();
         // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
         $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('header');
@@ -40,6 +42,7 @@ class Clients extends CI_Controller
         } else {
             $data = array(
                 'name' => $this->input->post('name'),
+                'logo' => $this->input->post('logo'),
                 'projects' => $this->input->post('projects')
             );
             $result = $this->Clients_model->addClient($data);

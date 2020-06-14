@@ -105,10 +105,11 @@ function snapLogo() {
         if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
             var reader = new FileReader();
             reader.addEventListener("load", function() {
+                saveLogoToServer(this.result);
+                sleep(2000);
                 var image = new Image();
                 image.title = file.name;
                 image.src = this.result;
-                saveLogoToServer(this.result);
                 logo_path.value = "/Uploads/Clients/"+client+"_logo."+ext;
                 logo_img.src =   logo_path.value;
             }, false);
@@ -183,4 +184,12 @@ function snapPhoto() {
         $('[id^=' + id + ']').remove();
       });
     }
+  }
+
+  function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
   }

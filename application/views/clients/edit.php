@@ -36,12 +36,18 @@ if (isset($this->session->userdata['logged_in'])) {
 			?>
 			<?php echo form_open("clients/edit/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
-			<label>Client</label><input type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></br>
-			<label>Logo</label></br>
-			<input id="logo_path" type='text' class="form-control" name='logo' value="<?php echo $logo ?>">
+			<label>Client</label><input id='client_name' type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></hr>
+			<label>Logo</label>
+			<div class="input-group mb-3">
+				<input id="logo_path" type='text' class="form-control" name='logo' value="<?php echo $logo ?>">
+				<div class="input-group-append">
+					<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('browse').click();">Upload</button>
+				</div>
+			</div>
 			<img id="logo_img" class="img-thumbnail" src="<?php echo $logo ?>" onclick="document.getElementById('browse').click();">
-			<input id="browse" style="display:none;" type="file" onchange="snapLogo()" multiple>
-			<div class="form-group"><label>Projects</label>
+			<input id="browse" style="display:none;" type="file" onchange="snapLogo()" ></hr>
+
+			<div class="form-group"><label>Client Projects</label>
 				<textarea name="projects" class="form-control" cols="40" rows="5"><?php echo $projects ?></textarea>
 			</div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Update'>
@@ -50,6 +56,6 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <script>
-	var client = '<?php echo $client ?>';
-	var ext ='';
+	var client = document.getElementById("client_name").value;
+	var ext = '';
 </script>

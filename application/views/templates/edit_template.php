@@ -20,7 +20,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			$client = "";
 			$pr =  "";
 			$dt = "";
-			$sd="";
+			$sd = "";
 			if (isset($message_display)) {
 				echo "<div class='alert alert-danger' role='alert'>";
 				echo $message_display . '</div>';
@@ -43,11 +43,14 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input type='hidden' name='id' value="<?php echo $id ?>">
 			<input type='text' class="form-control" name='client' value="<?php echo $client ?>" disabled></br>
 			<input type='text' class="form-control" name='project' value="<?php echo $pr ?>" disabled></br>
-			<div class="form-group"><label>Serial template</label>
+			<div class="form-group"><label>Serial template</label><br>
+				<label>yy = Year | mm = Month | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 				<input type="text" name="template" value="<?php echo $tp ?>" class="form-control">
 			</div>
-			<div class="form-group"><label>Checklist Data</label>
+			<div class="form-group"><label>Checklist Data</label><br>
+				<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | </label>
 				<textarea class="form-control" name='data' rows="10" cols="170"><?php echo $dt ?></textarea></br></div>
-			<div class="form-group"><label>Scan Data</label>
+			<div class="form-group"><label>Scan Data</label><br>
+                  <label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header  </label>
 				<textarea class="form-control" name='scans' rows="5" cols="170"><?php echo $sd ?></textarea></br></div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'></ <?php echo form_close(); ?> </center> </div> </main>
