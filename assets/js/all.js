@@ -141,7 +141,7 @@ function snapPhoto() {
             var reader = new FileReader();
             reader.addEventListener("load", function () {
                 savePhotoToServer(this.result);
-                sleep(2000);
+                //sleep(2000);
                 var image = new Image();
                 image.title = file.name;
                 image.src = this.result;
