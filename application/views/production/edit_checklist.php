@@ -10,9 +10,7 @@ $qc = $checklist[0]['qc'];
 $scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
 $logo = $client[0]['logo'];
-
-$this->load->helper('cookie');
-$session = get_cookie('ci_session');
+$client = $client[0]['name'];
 
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
@@ -25,7 +23,7 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
-<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>"?>
+	<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 	<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
@@ -75,12 +73,11 @@ if (isset($this->session->userdata['logged_in'])) {
 			<h2>System Photos</h2>
 		</center>
 		<?php
-		$working_dir = '/Uploads/' . $project . '/' . $serial . '/';
-		echo "<script>var photoCount=0; var id='$id'; var pr='$project'; var sn='$serial'; var ci_session='$session';"; //pass PHP data to JS
-		echo "var log='$log'; var assembler =' $assembler'</script>";  //pass PHP data to JS
+		$working_dir = '/Uploads/' . $client . '/' . $project . '/' . $serial . '/';
+		echo "<script>var photoCount=0; var id='$id'; var project='$project'; var serial='$serial';"; //pass PHP data to JS
+		echo "var log='$log'; var assembler =' $assembler'; var client='$client';</script>";  //pass PHP data to JS
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
-
 				while (false !== ($entry = readdir($handle))) {
 					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';

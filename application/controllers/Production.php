@@ -435,12 +435,14 @@ class Production extends CI_Controller
 
     public function save_photo()
     {
-       // requires php5
+        // requires php5
         define('UPLOAD_DIR', 'Uploads/');
-        $folder = $_POST['pr'];
-        $name = $_POST['sn'];
+        $folder = $_POST['project'];
+        $client = $_POST['client'];
+        $serial = $_POST['serial'];
         $num = $_POST['num'];
-        $file_name = $name . "_" . $num;
+        $file_name = $serial . "_" . $num;
+        $upload_folder = UPLOAD_DIR . $client . "/" . $folder . "/" . $serial;
         $img = $_POST['data'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
             $img = substr($img, strpos($img, ',') + 1);
@@ -459,10 +461,10 @@ class Production extends CI_Controller
             throw new \Exception('did not match data URI with image data');
         }
 
-        if (!file_exists(UPLOAD_DIR . $folder . "/" . $name)) {
-            mkdir(UPLOAD_DIR . $folder . "/" . $name, 0770, true);
+        if (!file_exists($upload_folder)) {
+            mkdir($upload_folder, 0770, true);
         }
-        $file = UPLOAD_DIR . $folder . "/" . $name . "/" . $file_name . ".$type";
+        $file = $upload_folder . "/" . $file_name . ".$type";
         $success = file_put_contents($file, $img);
         if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
             //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));

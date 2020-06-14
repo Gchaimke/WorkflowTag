@@ -1,4 +1,4 @@
-var count=0;
+var count = 0;
 function showLog(log_data, serial) {
     if (log_data != '') {
         log_arr = log_data.split(';')
@@ -71,27 +71,27 @@ $('.select').click(function () {
     var link = document.getElementById('batchLink');
     if ($(event.target).is(":checked")) {
         $('#batchLink').attr('href', link.pathname + id + ':');
-        count+=1;
+        count += 1;
     } else {
         $('#batchLink').attr('href', link.pathname.replace(id + ':', ''));
-        count-=1;
+        count -= 1;
     }
-    
-    if(count>0){
+
+    if (count > 0) {
         $('#batchLink').removeClass('disabled');
-    }else{
+    } else {
         $('#batchLink').addClass('disabled');
     }
 });
 
-function cleanUrl(){
-    var link =  document.getElementById('batchLink');
+function cleanUrl() {
+    var link = document.getElementById('batchLink');
     $('#batchLink').attr('href', link.pathname.replace(/:\s*$/, ""));
 }
 
-$('input[type="files"]').change(function(e){
+$('input[type="files"]').change(function (e) {
     var fileName = e.target.files[0].name;
-    alert('The file "' + fileName +  '" has been selected.');
+    alert('The file "' + fileName + '" has been selected.');
 });
 
 function snapLogo() {
@@ -104,14 +104,14 @@ function snapLogo() {
         ext = file.name.substr((file.name.lastIndexOf('.') + 1));
         if (/\.(jpe?g|png|gif)$/i.test(file.name)) {
             var reader = new FileReader();
-            reader.addEventListener("load", function() {
+            reader.addEventListener("load", function () {
                 saveLogoToServer(this.result);
                 sleep(2000);
                 var image = new Image();
                 image.title = file.name;
                 image.src = this.result;
-                logo_path.value = "/Uploads/Clients/"+client+"_logo."+ext;
-                logo_img.src =   logo_path.value;
+                logo_path.value = "/Uploads/Clients/" + client + "_logo." + ext;
+                logo_img.src = logo_path.value;
             }, false);
             reader.readAsDataURL(file);
         }
@@ -125,8 +125,8 @@ function saveLogoToServer(file) {
     $.post("/clients/logo_upload", {
         data: file,
         client: client,
-        ext : ext
-    }).done(function(o) {
+        ext: ext
+    }).done(function (o) {
         console.log('photo saved to server.');
         console.log(o);
     });
@@ -136,60 +136,62 @@ function snapPhoto() {
     //var preview = document.querySelector('#preview');
     var files = document.querySelector('input[type=file]').files;
     function readAndPreview(file) {
-      // Make sure `file.name` matches our extensions criteria
-      if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
-        var reader = new FileReader();
-        reader.addEventListener("load", function () {
-          var image = new Image();
-          image.title = file.name;
-          image.src = this.result;
-          //preview.appendChild(image);
-          savePhotoToServer(this.result)
-        }, false);
-        reader.readAsDataURL(file);
-      }
+        // Make sure `file.name` matches our extensions criteria
+        if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                savePhotoToServer(this.result);
+                sleep(2000);
+                var image = new Image();
+                image.title = file.name;
+                image.src = this.result;
+                //preview.appendChild(image);
+            }, false);
+            reader.readAsDataURL(file);
+        }
     }
-  
+
     if (files) {
-      [].forEach.call(files, readAndPreview);
+        [].forEach.call(files, readAndPreview);
     }
-  }
-  
-  function savePhotoToServer(file) {
+}
+
+function savePhotoToServer(file) {
     $.post("/production/save_photo", {
-      data: file,
-      pr: pr,
-      sn: sn,
-      num: photoCount
+        data: file,
+        client: client,
+        project: project,
+        serial: serial,
+        num: photoCount
     }).done(function (o) {
-      console.log('photo saved to server.');
-      console.log(o);
-      $("#photo-stock").append('<span id="' + sn + '_' + photoCount +
-        '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
-        sn + '_' + photoCount + '</span><img id="' +
-        sn + '_' + photoCount + '"src="/Uploads/' + pr + '/' + sn +
-        '/' + sn + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
-      photoCount++;
-  
+        console.log('photo saved to server.');
+        console.log(o);
+        $("#photo-stock").append('<span id="' + serial + '_' + photoCount +
+            '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
+            serial + '_' + photoCount + '</span><img id="' +
+            serial + '_' + photoCount + '"src="/Uploads/' + client + '/' + project + '/' + serial +
+            '/' + serial + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
+        photoCount++;
+
     });
-  }
-  
-  function delPhoto(id) {
+}
+
+function delPhoto(id) {
     var r = confirm("Delete Photo with id: " + id + "?");
     if (r == true) {
-      $.post("/production/delete_photo", {
-        photo: '/Uploads/' + pr + '/' + sn + '/' + id + '.jpeg'
-      }).done(function (o) {
-        console.log('photo deleted from the server.');
-        $('[id^=' + id + ']').remove();
-      });
+        $.post("/production/delete_photo", {
+            photo: '/Uploads/' + client + '/' + project + '/' + serial + '/' + id + '.jpeg'
+        }).done(function (o) {
+            console.log('photo deleted from the server.');
+            $('[id^=' + id + ']').remove();
+        });
     }
-  }
+}
 
-  function sleep(milliseconds) {
+function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;
     do {
-      currentDate = Date.now();
+        currentDate = Date.now();
     } while (currentDate - date < milliseconds);
-  }
+}
