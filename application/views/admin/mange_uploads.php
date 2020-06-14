@@ -40,23 +40,24 @@ if (isset($this->session->userdata['logged_in'])) {
         echo "</thead>\n";
         echo "<tbody>\n";
 
-        $dir = explode('/', $dir);
-        array_pop($dir);
-        $dir = implode('/', $dir);
+        $dir = explode('/', $dir);  //string to array
+        array_pop($dir);            //remove last element
+        $dir = implode('/', $dir);  //array to string
         echo  "<a href='?folder=$dir'>$dir /<a>\n";
 
-
         foreach ($dirlistR as $file) {
+            //filter file types
             if ($file['type'] != 'image/png' && $file['type'] != 'image/jpeg' && $file['type'] != 'image/jpg' && $file['type'] != 'dir') {
                 continue;
             }
 
             if ($file['type'] == 'dir') {
                 $subDir = getFileList($file['name']);
+                $count = count(array_filter($subDir, function($x) { return $x['type']!='text/html'; })); //count all files, filter html
                 echo '<a class="btn btn-primary folder" href="?folder=' .
                     $file['name'] . '" role="button"><i class="fa fa-folder"></i> ',
                     basename($file['name']),
-                    ' (' . count($subDir) . ')</a>';
+                    ' (' .  $count . ')</a>';
             } else {
                 echo "<tr>\n";
                 echo  "<td class='td_file_manager'><a target='_blank' href=\"/{$file['name']}\"><img class='img-thumbnail' src=\"/{$file['name']}\"></a>",
@@ -71,7 +72,6 @@ if (isset($this->session->userdata['logged_in'])) {
         }
         echo "</tbody>\n";
         echo "</table>\n\n";
-
         ?>
     </div>
 </main>
@@ -125,4 +125,5 @@ function human_filesize($bytes, $decimals = 2)
     $factor = floor((strlen($bytes) - 1) / 3);
     return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
 }
+
 ?>
