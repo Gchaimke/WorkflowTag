@@ -70,6 +70,10 @@ table {
     text-align: center;
 }
 
+table.table.files td {
+    vertical-align: middle;
+}
+
 footer.container {
     position: static;
     margin-top: 100px;
@@ -120,6 +124,10 @@ label.custom-file-label {
     text-align: start;
 }
 
+a.btn.btn-primary.folder {
+    margin-right: 5px;
+}
+
 @media (min-width: 320px){
     .jumbotron {
         padding: 2rem 2rem;
@@ -136,7 +144,7 @@ label.custom-file-label {
     .table th, .table td {
         padding: 0.45rem;
     }
-
+    
     .display-4,.display-3 {
         font-size: 2.5rem;
     }
