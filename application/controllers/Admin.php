@@ -88,7 +88,7 @@ class Admin extends CI_Controller
         $params = array();
         $config = array();
         $limit_per_page = 10;
-        $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
         $total_records = $this->Admin_model->get_total($project);
         if ($total_records > 0) {
             $params["results"] = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
@@ -96,7 +96,7 @@ class Admin extends CI_Controller
             $config['base_url'] = base_url() . 'admin/manage_trash';
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
-            $config["uri_segment"] = 4;
+            $config["uri_segment"] = 3;
 
             $config['full_tag_open'] = '<ul class="pagination right">';
             $config['full_tag_close'] = '</ul>';

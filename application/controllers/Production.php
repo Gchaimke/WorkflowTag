@@ -82,7 +82,12 @@ class Production extends CI_Controller
         $str = '';
         $count = 0;
         foreach ($data as $result) {
-            $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
+            if (strpos($result["project"], 'Trash') !== false){
+                $str .= "<div class='badge badge-danger' >" . urldecode($result["project"]) . ": " . $result["serial"] . "</div>"; 
+            }else{
+                $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
+            }
+                
             $count++;
         }
         echo "<h2>Found " . $count . " serials.</h2>" . $str;
