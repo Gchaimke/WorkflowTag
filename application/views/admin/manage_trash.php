@@ -5,7 +5,7 @@ $project =  'Trash';
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3"><?php echo urldecode($project); ?> Checklists</h2>
+				<h2 class="display-3">Checklists in <?php echo urldecode($project); ?> </h2>
 			</center>
 		</div>
 	</div>
