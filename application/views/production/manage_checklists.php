@@ -63,7 +63,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
 							<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>")'><i class="fa fa-trash"></i></button></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 						</tr>
 					<?php } ?>
 				</tbody>
@@ -83,8 +83,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 <script>
 	var client = '<?php echo $client[0]['name'] ?>';
 
-	function trashChecklist(id,project) {
-		var r = confirm("Trash checklist with id: " + id + "?");
+	function trashChecklist(id,project,serial) {
+		var r = confirm("Trash checklist " + serial + "?");
 		if (r == true) {
 			$.post("/production/trashChecklist", {
 				id: id,
