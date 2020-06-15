@@ -33,6 +33,10 @@ a.fa {
     font-weight: 100 !important;
 }
 
+a#edit_checklist {
+    margin: 0 25px;
+}
+
 .pull-right {
     float: inherit;
 }
