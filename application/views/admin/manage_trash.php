@@ -51,7 +51,7 @@ $project =  'Trash';
 							<td class="mobile-hide"><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restoreChecklist(this.id,"<?php echo $data->project ?>")'><i class="fa fa-edit"></i></button></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restoreChecklist(this.id,"<?php echo $data->project ?>")'><i class="fa fa-undo"></i></button></td>
 							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'><i class="fa fa-trash"></i></button></td>
 						</tr>
 					<?php } ?>
