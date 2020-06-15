@@ -36,7 +36,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<b id="date" class="navbar-text mobile-hide">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_batch_checklists/' . $ids, 'class=saveData'); ?>
+			<?php echo form_open('production/save_batch_checklists/' . $ids, 'id=ajax-form', 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
@@ -52,12 +52,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </nav>
 <main role="main" class="container">
-	<?php
-	if (isset($message_display)) {
-		echo "<div class='alert alert-success' role='alert'>";
-		echo $message_display . '</div>';
-	}
-	?>
+<div id="form-messages" class='alert hidden' role='alert'></div>
 	<div id="workTable">
 		<?php echo $checklist_rows ?>
 	</div>

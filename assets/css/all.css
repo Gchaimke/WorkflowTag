@@ -2,6 +2,10 @@ main {
     margin-top: 35px;
 }
 
+.hidden {
+    display: none;
+}
+
 ul.navbar-nav.pull-right {
     margin-right: 50px;
 }

@@ -3,7 +3,6 @@ var progress_status = "";
 var chArray = [];
 var scansArray = [];
 
-
 $(document).ready(function () {
     toggle = true;
     var checkRows = $('.check_row');
@@ -201,43 +200,64 @@ function getDateTime() {
     return `${da}/${mo}/${ye} ${H}:${M}`;
 }
 
-function print2PDF(url, cookie) {
-    //alert("Printing "+id);   
-    $.post("/production/save_page2pdf",
-        {
-            url: url,
-            cookie: cookie
-        },
-        function (respond) {
-            if (respond) {
-                alert(respond);
-            } else {
-                alert("no respond");
-            }
-        });
+function savePhotoToServer(file) {
+    $.post("/production/save_photo", {
+        data: file,
+        client: client,
+        project: project,
+        serial: serial,
+        num: photoCount
+    }).done(function (o) {
+        console.log('photo saved to server.');
+        console.log(o);
+        $("#photo-stock").append('<span id="' + serial + '_' + photoCount +
+            '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
+            serial + '_' + photoCount + '</span><img id="' +
+            serial + '_' + photoCount + '"src="/Uploads/' + client + '/' + project + '/' + serial +
+            '/' + serial + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
+        photoCount++;
+
+    });
 }
 
-function centerLoginBox() {
-    var ua = navigator.userAgent.toLowerCase();
-    var isAndroid = ua.indexOf("android") > -1; // Detect Android devices
-    if (isAndroid) {
-        //window.orientation is different for iOS and Android
-        if (window.orientation == 0 || window.orientation == 180) { //Landscape Mode
-            $('#loginbox').css('margin-top', '20%');
-        }
-        else if (window.orientation == 90 || window.orientation == -90) { //Portrait Mode
-            $('#loginbox').css('margin-top', '40%');
-        }
-    }
-    else {
-        if (window.orientation == 90 || window.orientation == -90) { //Landscape Mode
-            $('#loginbox').css('margin-top', '20%');
-        }
-        else if (window.orientation == 0 || window.orientation == 180) { //Portrait Mode
-            $('#loginbox').css('margin-top', '40%');
-        }
+function delPhoto(id) {
+    var r = confirm("Delete Photo with id: " + id + "?");
+    if (r == true) {
+        $.post("/production/delete_photo", {
+            photo: '/Uploads/' + client + '/' + project + '/' + serial + '/' + id + '.jpeg'
+        }).done(function (o) {
+            $('#photo-messages').removeClass('hidden');
+            $('#photo-messages').addClass('alert-success');
+            // Set the message text.
+            $('#photo-messages').text('photo deleted from the server.');
+            $('[id^=' + id + ']').remove();
+        });
     }
 }
+
+$('#ajax-form').submit(function (event) {
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+    var formData = $('#ajax-form').serialize();
+    $.ajax({
+        type: 'POST',
+        url: $('#ajax-form').attr('action'),
+        data: formData
+    }).done(function (response) {
+        // Make sure that the formMessages div has the 'success' class.
+        $('#form-messages').removeClass('hidden');
+        $('#form-messages').addClass('alert-success');
+        // Set the message text.
+        $('#form-messages').text(response);
+    }).fail(function (data) {
+        // Make sure that the formMessages div has the 'error' class.
+        $('#form-messages').removeClass('hidden');
+        $('#form-messages').addClass('alert-danger');
+        // Set the message text.
+        $('#form-messages').text('Oops! An error occured and your message could not be sent.');
+    });
+});
+
 
 //KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {

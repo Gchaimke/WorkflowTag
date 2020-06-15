@@ -3,7 +3,6 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Production extends CI_Controller
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -220,12 +219,9 @@ class Production extends CI_Controller
         return 0;
     }
 
-    public function edit_checklist($id = '',  $msg = '')
+    public function edit_checklist($id = '')
     {
         $data = array();
-        if ($msg != '') {
-            $data['message_display'] = $msg;
-        }
         $data['js_to_load'] = array("edit_checklist.js");
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
@@ -393,15 +389,13 @@ class Production extends CI_Controller
                 'scans' => $this->input->post('scans')
             );
             $this->Production_model->editChecklist($data);
-            $message_display = 'Checklist saved successfully!';
-            $this->edit_checklist($id, $message_display);
+            echo 'Checklist saved successfully!';
         }
     }
 
     public function save_batch_checklists($ids = '')
     {
         // Check validation for user input in SignUp form
-        $message_display = '';
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
         $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
@@ -422,8 +416,8 @@ class Production extends CI_Controller
                 );
                 $this->Production_model->batchEditChecklist($data);
             }
-            $message_display .= 'Checklists saved successfully!' . $ids;
-            $this->edit_batch($ids, $message_display);
+            echo 'Checklists saved successfully!', $ids;
+            //$this->edit_batch($ids, $message_display);
         }
     }
 

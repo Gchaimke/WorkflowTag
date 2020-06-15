@@ -24,13 +24,13 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
-	<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
 	<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'class=saveData'); ?>
+		<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
+			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form','class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
@@ -46,22 +46,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </nav>
 <main role="main" class="container">
-	<?php
-	if (isset($message_display)) {
-		echo "<div class='alert alert-success' role='alert'>";
-		echo $message_display . '</div>';
-	}
-	?>
-	<div class="video-frame container-sm">
-		<div class="controls">
-			<button id="select_camera" class="btn btn-success">Select camera</button>
-			<button id="close_camera" class="btn btn-danger">Close camera</button>
-			<select class="form-control" id="select">
-				<option></option>
-			</select>
-		</div>
-		<video id="video" width="100%" autoplay playsinline></video>
-	</div>
+	<div id="form-messages" class='alert hidden' role='alert'></div>
 	<div id="workTable">
 		<?php echo $checklist_rows ?>
 	</div>
@@ -72,6 +57,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<center>
 			<h2>System Photos</h2>
 		</center>
+		<div id="photo-messages" class='alert hidden' role='alert'></div>
 		<?php
 		$working_dir = '/Uploads/' . $client . '/' . $project . '/' . $serial . '/';
 		echo "<script>var photoCount=0; var id='$id'; var project='$project'; var serial='$serial';"; //pass PHP data to JS

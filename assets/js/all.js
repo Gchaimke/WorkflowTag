@@ -156,45 +156,13 @@ function snapPhoto() {
     }
 }
 
-function savePhotoToServer(file) {
-    $.post("/production/save_photo", {
-        data: file,
-        client: client,
-        project: project,
-        serial: serial,
-        num: photoCount
-    }).done(function (o) {
-        console.log('photo saved to server.');
-        console.log(o);
-        $("#photo-stock").append('<span id="' + serial + '_' + photoCount +
-            '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
-            serial + '_' + photoCount + '</span><img id="' +
-            serial + '_' + photoCount + '"src="/Uploads/' + client + '/' + project + '/' + serial +
-            '/' + serial + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
-        photoCount++;
-
-    });
-}
-
-function delPhoto(id) {
-    var r = confirm("Delete Photo with id: " + id + "?");
+function delFile(file) {
+    var r = confirm("Delete File " + file + "?");
     if (r == true) {
         $.post("/production/delete_photo", {
-            photo: '/Uploads/' + client + '/' + project + '/' + serial + '/' + id + '.jpeg'
+            photo: file
         }).done(function (o) {
-            console.log('photo deleted from the server.');
-            $('[id^=' + id + ']').remove();
-        });
-    }
-}
-
-function delFile(id) {
-    var r = confirm("Delete Photo with id: " + id + "?");
-    if (r == true) {
-        $.post("/production/delete_photo", {
-            photo: id
-        }).done(function (o) {
-            console.log('photo deleted from the server.');
+            console.log('File deleted from the server.');
             sleep(1000)
             location.reload();
         });
@@ -207,4 +175,26 @@ function sleep(milliseconds) {
     do {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
+}
+
+function centerLoginBox() {
+    var ua = navigator.userAgent.toLowerCase();
+    var isAndroid = ua.indexOf("android") > -1; // Detect Android devices
+    if (isAndroid) {
+        //window.orientation is different for iOS and Android
+        if (window.orientation == 0 || window.orientation == 180) { //Landscape Mode
+            $('#loginbox').css('margin-top', '20%');
+        }
+        else if (window.orientation == 90 || window.orientation == -90) { //Portrait Mode
+            $('#loginbox').css('margin-top', '40%');
+        }
+    }
+    else {
+        if (window.orientation == 90 || window.orientation == -90) { //Landscape Mode
+            $('#loginbox').css('margin-top', '20%');
+        }
+        else if (window.orientation == 0 || window.orientation == 180) { //Portrait Mode
+            $('#loginbox').css('margin-top', '40%');
+        }
+    }
 }
