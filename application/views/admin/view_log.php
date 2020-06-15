@@ -1,5 +1,4 @@
 <?php
-
 $calendar = new PN_Calendar();
 echo $calendar->draw();
 ?>
@@ -42,7 +41,7 @@ echo $calendar->draw();
             <tr>
                 <?php $counter = 0; ?>
                 <?php for ($d = $w; $d <= $w + 6; $d++) : ?>
-                    <td style="<?php if ($counter > 4){ echo "color: red;";} if ($current_day == $d) { echo "background-color:yellow; color:green; font-weight:bold;";}?>">
+                    <td class="td_current" style="float: initial;<?php if ($counter > 4){ echo "color: red;";} if ($current_day == $d) { echo "background-color:yellow; color:green; font-weight:bold;";}?>">
                         <?php echo ($d > 0 ? ($d > $days_count ? '' : $d) : '') ?>
                     </td>
                     <?php $counter++; ?>

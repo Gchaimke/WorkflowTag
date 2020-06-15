@@ -10,6 +10,7 @@ class PN_Calendar {
     public $min_select_year = 1991;
     public $max_select_year = 2045;
     public $show_month_selector = true;
+    public $view = 'view_log';
  
     public function __construct($atts = array()) {
         if (isset($atts['first_day_of_week'])) {
