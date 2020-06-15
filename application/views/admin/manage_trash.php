@@ -1,5 +1,5 @@
 <?php
-$project =  explode("/", $_SERVER['REQUEST_URI'])[3];
+$project =  'Trash';
 ?>
 <main role="main">
 	<div class="jumbotron">
@@ -17,13 +17,6 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		}
 		?>
 		<nav aria-label="Checklist navigation">
-			<ul class="pagination left">
-				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',10)">+10</a>
-				<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
-			</ul>
 			<?php if (isset($links)) {
 				echo $links;
 			} ?>
@@ -32,24 +25,20 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 			<table class="table">
 				<thead class="thead-dark">
 					<tr>
-						<th scope="col">*</th>
 						<th scope="col">Serial Number</th>
 						<th scope="col" class="mobile-hide">Project</th>
 						<th scope="col" class="mobile-hide">Progress</th>
 						<th scope="col" class="mobile-hide">Last Edited By</th>
 						<th scope="col" class="mobile-hide">QC</th>
 						<th scope="col" class="mobile-hide">Date</th>
-						<th scope="col">Edit</th>
-						<th scope="col">Trash</th>
+						<th scope="col">Restore</th>
+						<th scope="col">Delete</th>
 					</tr>
 				</thead>
 				<tbody>
 
 					<?php foreach ($results as $data) { ?>
 						<tr id='<?php echo $data->id ?>'>
-							<td>
-								<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
-							</td>
 							<td><?php if ($data->serial != '') {
 									echo $data->serial;
 								} else {
@@ -62,14 +51,14 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 							<td class="mobile-hide"><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
-							<td><a href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>")'><i class="fa fa-trash"></i></button></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restoreChecklist(this.id,"<?php echo $data->project ?>")'><i class="fa fa-edit"></i></button></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'><i class="fa fa-trash"></i></button></td>
 						</tr>
 					<?php } ?>
 				</tbody>
 			</table>
 		<?php } else { ?>
-			<div>No checklist(s) found.</div>
+			<div>No trashed checklist(s) found.</div>
 		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
@@ -81,14 +70,11 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 	</div>
 </main>
 <script>
-	var client = '<?php echo $client[0]['name'] ?>';
-
-	function trashChecklist(id,project) {
-		var r = confirm("Trash checklist with id: " + id + "?");
+	function delChecklist(id) {
+		var r = confirm("Delete checklist with id: " + id + "?");
 		if (r == true) {
-			$.post("/production/trashChecklist", {
-				id: id,
-				project : project
+			$.post("/admin/delete_from_trash", {
+				id: id
 			}).done(function(o) {
 				//$('[id^=' + id + ']').remove();
 				location.reload();
@@ -96,17 +82,14 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		}
 	}
 
-	function gen_checklists(project, count) {
-		var r = confirm("Add " + count + " checklist/s to " + project + "?");
+    function restoreChecklist(id,project) {
+		var r = confirm("Restore checklist with id: " + id + "?");
 		if (r == true) {
-			$.post("/production/gen_checklists", {
-				client: client,
-				project: project,
-				count: count
+			$.post("/admin/restoreChecklist", {
+				id: id,
+                project : project
 			}).done(function(o) {
-				if (o != 1) {
-					alert(o);
-				}
+				//$('[id^=' + id + ']').remove();
 				location.reload();
 			});
 		}

@@ -79,9 +79,13 @@ class Production_model extends CI_Model
 		return $this->db->update('checklists', $data, $where);
 	}
 
-	function deleteChecklist($id)
+	function move_to_trash($data)
 	{
-		$this->db->delete('wft_checklists', array('id' => $id));
+		$where = "id =" . $data['id'];
+		$data = array(
+			'project' => 'Trash '. $data['project']
+		);
+		return $this->db->update('checklists', $data, $where);
 	}
 
 	function getLastChecklist($project)

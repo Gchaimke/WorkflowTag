@@ -256,4 +256,52 @@ class Admin_model extends CI_Model
         }
         return $response;
     }
+
+    public function get_current_checklists_records($limit, $start, $project)
+	{
+		$this->db->limit($limit, $start);
+		if ($project != '') {
+			$project = urldecode($project);
+			$condition = "project LIKE \"$project%\"";
+			$this->db->where($condition);
+		}
+		$this->db->order_by('id', 'DESC');
+		$query = $this->db->get("checklists");
+
+		if ($query->num_rows() > 0) {
+			foreach ($query->result() as $row) {
+				$data[] = $row;
+			}
+
+			return $data;
+		}
+
+		return false;
+	}
+
+    public function get_total($project = '')
+	{
+		if ($project != '') {
+			$this->db->from('checklists');
+            $project = urldecode($project);
+            $condition = "project LIKE '$project%'";
+			$this->db->where($condition);
+		}
+		return $this->db->count_all_results();
+    }
+    
+    function deleteChecklist($id)
+	{
+		$this->db->delete('wft_checklists', array('id' => $id));
+    }
+    
+    function restore_from_trash($data)
+	{
+        $where = "id =" . $data['id'];
+        $project = str_replace('Trash ','',$data['project']);
+		$data = array(
+			'project' => $project
+		);
+		return $this->db->update('checklists', $data, $where);
+	}
 }

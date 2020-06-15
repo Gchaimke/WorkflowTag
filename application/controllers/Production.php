@@ -427,10 +427,16 @@ class Production extends CI_Controller
         }
     }
 
-    public function delete()
+    public function trashChecklist()
     {
-        $id = $_POST['id'];
-        $this->Production_model->deleteChecklist($id);
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
+
+        $data = array(
+            'id' =>  $this->input->post('id'),
+            'project' => $this->input->post('project')
+        );
+        $this->Production_model->move_to_trash($data);
     }
 
     public function save_photo()
