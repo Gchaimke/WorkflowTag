@@ -1,78 +1,98 @@
 <?php
-$calendar = new PN_Calendar();
-echo $calendar->draw();
+$project =  'Trash';
+log_message('info', 'test log');
 ?>
 <main role="main">
-    <div class="jumbotron">
-        <div class="container">
-            <center>
-                <h2 class="display-3">Log</h2>
-            </center>
-        </div>
-    </div>
-    <div class="container">
-        <?php
-        if (isset($message_display)) {
-            echo "<div class='alert alert-success' role='alert'>";
-            echo $message_display . '</div>';
-        }
-        ?>
-        <nav aria-label="Checklist navigation">
-            <?php if (isset($links)) {
-                echo $links;
-            } ?>
-        </nav>
-        <?php if (isset($results)) { 
-            $days_count = date('t');
-            $current_day = date('d');
-            $week_day_first = date('N', mktime(0, 0, 0, date('m'), 1, date('Y')));
-            ?>
-                <table>
-        <tr>
-            <th>MO</th>
-            <th>TU</th>
-            <th>WE</th>
-            <th>TH</th>
-            <th>FR</th>
-            <th style="color: red;">SU</th>
-            <th style="color: red;">SA</th>
-        </tr>
-        <?php for ($w = 1 - $week_day_first + 1; $w <= $days_count; $w = $w + 7) : ?>
-            <tr>
-                <?php $counter = 0; ?>
-                <?php for ($d = $w; $d <= $w + 6; $d++) : ?>
-                    <td class="td_current" style="float: initial;<?php if ($counter > 4){ echo "color: red;";} if ($current_day == $d) { echo "background-color:yellow; color:green; font-weight:bold;";}?>">
-                        <?php echo ($d > 0 ? ($d > $days_count ? '' : $d) : '') ?>
-                    </td>
-                    <?php $counter++; ?>
-                <?php endfor; ?>
-            </tr>
-        <?php endfor; ?>
-    </table>
-        <?php } else { ?>
-            <div>No trashed checklist(s) found.</div>
-        <?php } ?>
-    </div>
-    <div id='show-log' style='display:none;'>
-        <div id="show-log-header">
-            <div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
-        </div>
-        <ul class="list-group list-group-flush">
-        </ul>
-    </div>
+	<div class="jumbotron">
+		<div class="container">
+			<center>
+				<h2 class="display-3">Manage Logs </h2>
+			</center>
+		</div>
+	</div>
+	<div class="container">
+		<?php
+		if (isset($message_display)) {
+			echo "<div class='alert alert-success' role='alert'>";
+			echo $message_display . '</div>';
+		}
+		?>
+		<nav aria-label="Checklist navigation">
+			<?php if (isset($links)) {
+				echo $links;
+			} ?>
+		</nav>
+		<?php if (isset($results)) { ?>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Serial Number</th>
+						<th scope="col" class="mobile-hide">Project</th>
+						<th scope="col" class="mobile-hide">Progress</th>
+						<th scope="col" class="mobile-hide">Last Edited By</th>
+						<th scope="col" class="mobile-hide">QC</th>
+						<th scope="col" class="mobile-hide">Date</th>
+						<th scope="col">Restore</th>
+						<th scope="col">Delete</th>
+					</tr>
+				</thead>
+				<tbody>
 
+					<?php foreach ($results as $data) { ?>
+						<tr id='<?php echo $data->id ?>'>
+							<td><?php if ($data->serial != '') {
+									echo $data->serial;
+								} else {
+									echo "SN template not found!";
+								}  ?></td>
+							<td class="mobile-hide"><?php echo $data->project ?></td>
+							<td class="mobile-hide">
+								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
+									<?php echo $data->progress ?>%</a></td>
+							<td class="mobile-hide"><?php echo $data->assembler ?></td>
+							<td class="mobile-hide"><?php echo $data->qc ?></td>
+							<td class="mobile-hide"><?php echo $data->date ?></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restoreChecklist(this.id,"<?php echo $data->project ?>")'><i class="fa fa-undo"></i></button></td>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'><i class="fa fa-trash"></i></button></td>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		<?php } else { ?>
+			<div>No trashed checklist(s) found.</div>
+		<?php } ?>
+	</div>
+	<div id='show-log' style='display:none;'>
+		<div id="show-log-header">
+			<div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+		</div>
+		<ul class="list-group list-group-flush">
+		</ul>
+	</div>
 </main>
 <script>
-    function restoreChecklist(id, project) {
-        var r = confirm("Restore checklist with id: " + id + "?");
-        if (r == true) {
-            $.post("/admin/restoreChecklist", {
-                id: id,
-                project: project
-            }).done(function(o) {
-                //$('[id^=' + id + ']').remove();
-                location.reload();
-            });
-        }
-    }
+	function delChecklist(id) {
+		var r = confirm("Delete checklist with id: " + id + "?");
+		if (r == true) {
+			$.post("/admin/delete_from_trash", {
+				id: id
+			}).done(function(o) {
+				//$('[id^=' + id + ']').remove();
+				location.reload();
+			});
+		}
+	}
+
+    function restoreChecklist(id,project) {
+		var r = confirm("Restore checklist with id: " + id + "?");
+		if (r == true) {
+			$.post("/admin/restoreChecklist", {
+				id: id,
+                project : project
+			}).done(function(o) {
+				//$('[id^=' + id + ']').remove();
+				location.reload();
+			});
+		}
+	}
 </script>
