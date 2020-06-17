@@ -27,8 +27,8 @@ if (isset($this->session->userdata['logged_in'])) {
 		margin-top: 150px;
 	}
 </style>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?'.filemtime('assets/css/checklist_create.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?'.filemtime('assets/css/print.css')); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<button id="snap" class="btn btn-info" disabled><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide">Project: <?php echo $project ?></b>

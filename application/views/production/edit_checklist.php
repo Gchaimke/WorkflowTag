@@ -20,8 +20,8 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 }
 ?>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css'); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css'); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?'.filemtime('assets/css/checklist_create.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?'.filemtime('assets/css/print.css')); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
@@ -65,8 +65,8 @@ if (isset($this->session->userdata['logged_in'])) {
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
 				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg') {
-						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
+					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME !='') {
+						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
 						echo '<script>photoCount++</script>';
 					}
 				}

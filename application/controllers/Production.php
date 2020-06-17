@@ -227,7 +227,7 @@ class Production extends CI_Controller
     public function edit_checklist($id = '')
     {
         $data = array();
-        $data['js_to_load'] = array("edit_checklist.js");
+        $data['js_to_load'] = array("edit_checklist.js?".filemtime('assets/js/edit_checklist.js'));
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);
@@ -250,7 +250,7 @@ class Production extends CI_Controller
             $data['message_display'] = $msg;
         }
         $data['ids'] = $ids;
-        $data['js_to_load'] = array("edit_checklist.js");
+        $data['js_to_load'] = array("edit_checklist.js?".filemtime('assets/js/edit_checklist.js'));
         $data['checklists'] =  $this->Production_model->getChecklists($ids);
         if ($data['checklists']) {
             $data['checklist'] = $data['checklists'];
@@ -446,7 +446,6 @@ class Production extends CI_Controller
         $client = $_POST['client'];
         $serial = $_POST['serial'];
         $num = $_POST['num'];
-        $file_name = $serial . "_" . $num;
         $upload_folder = UPLOAD_DIR . $client . "/" . $folder . "/" . $serial;
         $img = $_POST['data'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
@@ -469,8 +468,14 @@ class Production extends CI_Controller
         if (!file_exists($upload_folder)) {
             mkdir($upload_folder, 0770, true);
         }
-        $file = $upload_folder . "/" . $file_name . ".$type";
-        $success = file_put_contents($file, $img);
+        $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
+        if (!file_exists($file)) {
+            $success = file_put_contents($file, $img);
+        }else{
+            $num++;
+            $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
+            $success = file_put_contents($file, $img);
+        }
         if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
             //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
         }

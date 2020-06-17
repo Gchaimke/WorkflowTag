@@ -208,23 +208,20 @@ function savePhotoToServer(file) {
         serial: serial,
         num: photoCount
     }).done(function (o) {
-        console.log('photo saved to server.');
         console.log(o);
-        $("#photo-stock").append('<span id="' + serial + '_' + photoCount +
-            '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo">delete ' +
-            serial + '_' + photoCount + '</span><img id="' +
-            serial + '_' + photoCount + '"src="/Uploads/' + client + '/' + project + '/' + serial +
-            '/' + serial + '_' + photoCount + '.jpeg' + '" class="respondCanvas" >');
+        var photo_id = o.split("/")[4].replace(".jpeg", ""); //get photo id
+        $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
+            photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
         photoCount++;
-
     });
 }
 
 function delPhoto(id) {
-    var r = confirm("Delete Photo with id: " + id + "?");
+    var photo = $("img#"+id).attr('src');
+    var r = confirm("Delete " + photo + "?");
     if (r == true) {
         $.post("/production/delete_photo", {
-            photo: '/Uploads/' + client + '/' + project + '/' + serial + '/' + id + '.jpeg'
+            photo: photo
         }).done(function (o) {
             $('#photo-messages').removeClass('hidden');
             $('#photo-messages').addClass('alert-success');
