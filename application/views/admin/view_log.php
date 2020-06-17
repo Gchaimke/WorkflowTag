@@ -1,6 +1,5 @@
 <?php
 $project =  'Trash';
-log_message('info', 'test log');
 ?>
 <main role="main">
 	<div class="jumbotron">
