@@ -11,55 +11,15 @@ $project =  'Trash';
 	</div>
 	<div class="container">
 		<?php
-		if (isset($message_display)) {
-			echo "<div class='alert alert-success' role='alert'>";
-			echo $message_display . '</div>';
+		$dirlistR = getFileList('application/logs/admin');
+		foreach ($dirlistR as $file) {
+			if ($file['type'] != 'text/plain') {
+				continue;
+			}
+			$log = urldecode( $file['name']);
+			echo  '<a href="#" onclick="showLogFile(\''.$log.'\')">'.$log.'</a></br>'; //basename($file['name'])
 		}
 		?>
-		<nav aria-label="Checklist navigation">
-			<?php if (isset($links)) {
-				echo $links;
-			} ?>
-		</nav>
-		<?php if (isset($results)) { ?>
-			<table class="table">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col">Serial Number</th>
-						<th scope="col" class="mobile-hide">Project</th>
-						<th scope="col" class="mobile-hide">Progress</th>
-						<th scope="col" class="mobile-hide">Last Edited By</th>
-						<th scope="col" class="mobile-hide">QC</th>
-						<th scope="col" class="mobile-hide">Date</th>
-						<th scope="col">Restore</th>
-						<th scope="col">Delete</th>
-					</tr>
-				</thead>
-				<tbody>
-
-					<?php foreach ($results as $data) { ?>
-						<tr id='<?php echo $data->id ?>'>
-							<td><?php if ($data->serial != '') {
-									echo $data->serial;
-								} else {
-									echo "SN template not found!";
-								}  ?></td>
-							<td class="mobile-hide"><?php echo $data->project ?></td>
-							<td class="mobile-hide">
-								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
-									<?php echo $data->progress ?>%</a></td>
-							<td class="mobile-hide"><?php echo $data->assembler ?></td>
-							<td class="mobile-hide"><?php echo $data->qc ?></td>
-							<td class="mobile-hide"><?php echo $data->date ?></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restoreChecklist(this.id,"<?php echo $data->project ?>")'><i class="fa fa-undo"></i></button></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delChecklist(this.id)'><i class="fa fa-trash"></i></button></td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-		<?php } else { ?>
-			<div>No trashed checklist(s) found.</div>
-		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
 		<div id="show-log-header">
@@ -70,28 +30,53 @@ $project =  'Trash';
 	</div>
 </main>
 <script>
-	function delChecklist(id) {
-		var r = confirm("Delete checklist with id: " + id + "?");
-		if (r == true) {
-			$.post("/admin/delete_from_trash", {
-				id: id
-			}).done(function(o) {
-				//$('[id^=' + id + ']').remove();
-				location.reload();
-			});
-		}
-	}
+	function showLogFile(file) {
+		$.post("/admin/get_log", {
+			file: file
+		}).done(function(o) {
+			alert(o);
+		});
 
-    function restoreChecklist(id,project) {
-		var r = confirm("Restore checklist with id: " + id + "?");
-		if (r == true) {
-			$.post("/admin/restoreChecklist", {
-				id: id,
-                project : project
-			}).done(function(o) {
-				//$('[id^=' + id + ']').remove();
-				location.reload();
-			});
-		}
 	}
 </script>
+<?php
+//echo file_get_contents( APPPATH . 'logs/admin/log-2020-06-18.php' ); 
+
+function getFileList($dir, $recurse = FALSE)
+{
+	$retval = [];
+
+	// add trailing slash if missing
+	if (substr($dir, -1) != "/") {
+		$dir .= "/";
+	}
+
+	// open pointer to directory and read list of files
+	$d = @dir($dir) or die("getFileList: Failed opening directory {$dir} for reading");
+	while (FALSE !== ($entry = $d->read())) {
+		// skip hidden files
+		if ($entry[0] == ".") continue;
+		if (is_dir("{$dir}{$entry}")) {
+			$retval[] = [
+				'name' => "{$dir}{$entry}",
+				'type' => filetype("{$dir}{$entry}"),
+				'size' => 0,
+				'lastmod' => filemtime("{$dir}{$entry}")
+			];
+			if ($recurse && is_readable("{$dir}{$entry}/")) {
+				$retval = array_merge($retval, getFileList("{$dir}{$entry}/", TRUE));
+			}
+		} elseif (is_readable("{$dir}{$entry}")) {
+			$retval[] = [
+				'name' => "{$dir}{$entry}",
+				'type' => mime_content_type("{$dir}{$entry}"),
+				'size' => filesize("{$dir}{$entry}"),
+				'lastmod' => filemtime("{$dir}{$entry}")
+			];
+		}
+	}
+	$d->close();
+
+	return $retval;
+}
+?>

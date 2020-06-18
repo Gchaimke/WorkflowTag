@@ -206,4 +206,9 @@ class Admin extends CI_Controller
 		$this->load->view('admin/view_log', $params);
 		$this->load->view('footer');
 	}
+
+	public function get_log(){
+		$this->form_validation->set_rules('file', 'File', 'trim|xss_clean');
+		echo file_get_contents( $this->input->post('file') );
+	}
 }
