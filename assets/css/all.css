@@ -136,6 +136,14 @@ a.btn.btn-primary.folder {
     margin-right: 5px;
 }
 
+div#form-messages {
+    width: 100%;
+    left: 0;
+    position: fixed;
+    text-align: center;
+    z-index: 1;
+}
+
 @media (min-width: 320px){
     .jumbotron {
         padding: 2rem 2rem;

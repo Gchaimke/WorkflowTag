@@ -208,53 +208,31 @@ function savePhotoToServer(file) {
         serial: serial,
         num: photoCount
     }).done(function (o) {
-        console.log(o);
         var photo_id = o.split("/")[4].replace(".jpeg", ""); //get photo id
         $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
             photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
         photoCount++;
+        $('#form-messages').addClass('alert-success');
+        // Set the message text.
+        $('#form-messages').text('photo uploaded : '+o).fadeIn(1000).delay(3000).fadeOut(1000);
     });
 }
 
 function delPhoto(id) {
-    var photo = $("img#"+id).attr('src');
+    var photo = $('img[id^=' + id + ']').attr('src');
     var r = confirm("Delete " + photo + "?");
     if (r == true) {
         $.post("/production/delete_photo", {
             photo: photo
         }).done(function (o) {
-            $('#photo-messages').removeClass('hidden');
-            $('#photo-messages').addClass('alert-success');
+            $('#form-messages').addClass('alert-success');
             // Set the message text.
-            $('#photo-messages').text('photo deleted from the server.');
+            $('#form-messages').text(o).fadeIn(1000).delay(3000).fadeOut(1000);
             $('[id^=' + id + ']').remove();
+            photoCount--;
         });
     }
 }
-
-$('#ajax-form').submit(function (event) {
-    // Stop the browser from submitting the form.
-    event.preventDefault();
-    var formData = $('#ajax-form').serialize();
-    $.ajax({
-        type: 'POST',
-        url: $('#ajax-form').attr('action'),
-        data: formData
-    }).done(function (response) {
-        // Make sure that the formMessages div has the 'success' class.
-        $('#form-messages').removeClass('hidden');
-        $('#form-messages').addClass('alert-success');
-        // Set the message text.
-        $('#form-messages').text(response);
-    }).fail(function (data) {
-        // Make sure that the formMessages div has the 'error' class.
-        $('#form-messages').removeClass('hidden');
-        $('#form-messages').addClass('alert-danger');
-        // Set the message text.
-        $('#form-messages').text('Oops! An error occured and your message could not be sent.');
-    });
-});
-
 
 //KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {

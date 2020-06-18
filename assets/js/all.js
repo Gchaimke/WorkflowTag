@@ -169,6 +169,28 @@ function delFile(file) {
     }
 }
 
+$('#ajax-form').submit(function (event) {
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+    var formData = $('#ajax-form').serialize();
+    $.ajax({
+        type: 'POST',
+        url: $('#ajax-form').attr('action'),
+        data: formData
+    }).done(function (response) {
+        // Make sure that the formMessages div has the 'success' class.
+        $('#form-messages').addClass('alert-success');
+        // Set the message text.
+        $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
+    }).fail(function () {
+        // Make sure that the formMessages div has the 'error' class.
+        $('#form-messages').addClass('alert-danger');
+        // Set the message text.
+        $('#form-messages').text('Oops! An error occured and your message could not be sent.').fadeIn(1000).delay(3000).fadeOut(1000);
+    });
+
+});
+
 function sleep(milliseconds) {
     const date = Date.now();
     let currentDate = null;

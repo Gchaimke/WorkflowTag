@@ -1,6 +1,6 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-    if($this->session->userdata['logged_in']['role'] != "Admin"){
+    if ($this->session->userdata['logged_in']['role'] != "Admin") {
         header("location: /");
     }
 }
@@ -15,7 +15,7 @@ if (isset($this->session->userdata['logged_in'])) {
         </div>
     </div>
     <div class="container">
-    <?php
+        <?php
         $users_count = 0;
         $clients_count = 0;
         $checklists_count = 0;
@@ -44,14 +44,9 @@ if (isset($this->session->userdata['logged_in'])) {
                 <span class="badge badge-primary badge-pill"><?php echo $checklists_count ?></span>
             </li>
         </ul><br>
+        <div id="form-messages" class='alert hidden' role='alert'></div>
         <?php
-        if (isset($response) && $response != "") {
-            echo '<div class="alert alert-success" role="alert">';
-            echo $response . ' </div>';
-        }
-        ?>
-        <?php
-        echo form_open('admin/settings', 'class=user-create');
+        echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create');
         echo '<div class="form-group"><label>User Roles</label><textarea name="roles" class="form-control" rows="2" cols="30">';
         if (isset($settings) && $settings != "") {
             echo $settings[0]['roles'];
@@ -70,8 +65,11 @@ if (isset($this->session->userdata['logged_in'])) {
         $.post("/admin/create", {
             id: id
         }).done(function(o) {
-            console.log('Databases created');
-            alert(o);
+            // Make sure that the formMessages div has the 'success' class.
+            $('#form-messages').removeClass('hidden');
+            $('#form-messages').addClass('alert-success');
+            // Set the message text.
+            $('#form-messages').html(o);
         });
     }
 </script>

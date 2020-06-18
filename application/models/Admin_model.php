@@ -222,7 +222,7 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            'roles' => 'Admin,Assember,QC',
+            'roles' => 'Admin,Assembler,QC',
             'log' =>'Database "settings created."'
         );
         $this->db->insert('settings', $st);
@@ -238,6 +238,15 @@ class Admin_model extends CI_Model
         $response = $query->result_array();
         return $response;
     }
+
+    public function save_settings($data)
+	{
+		$where = "id =1";
+		$data = array(
+			'roles' => $data['roles']
+		);
+		return $this->db->update('settings', $data, $where);
+	}
 
     function getStatistic()
     {
