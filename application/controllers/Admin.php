@@ -153,24 +153,32 @@ class Admin extends CI_Controller
 
 	public function delete_from_trash()
 	{
-		$id = $_POST['id'];
+		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
+		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
+		$id = $this->input->post('id');
+		$project = $this->input->post('project');
+		$serial = $this->input->post('serial');
 		$this->Admin_model->deleteChecklist($id);
+		$this->log_data("deleted from '$project' checklist '$serial'",3);
 	}
 
 	public function view_log()
 	{
-		$project = 'Trash';
-		$this->load->database();
+		if (!file_exists('application/logs/admin')) {
+			mkdir('application/logs/admin', 0770, true);
+		}
+		$dirlistR = $this->getFileList('application/logs/admin');
 		// init params
 		$params = array();
 		$config = array();
 		$limit_per_page = 10;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$total_records = $this->Admin_model->get_total($project);
+		$total_records = count($dirlistR);
 		if ($total_records > 0) {
-			$params["results"] = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+			$params["results"] = array_slice($dirlistR, $start_index, $limit_per_page);
 
-			$config['base_url'] = base_url() . 'admin/manage_trash';
+			$config['base_url'] = base_url() . 'admin/view_log';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
 			$config["uri_segment"] = 3;
@@ -197,7 +205,6 @@ class Admin extends CI_Controller
 			$config['prev_tag_close'] = '</li>';
 
 			$this->pagination->initialize($config);
-
 			// build paging links
 			$params["links"] = $this->pagination->create_links();
 		}
@@ -207,8 +214,58 @@ class Admin extends CI_Controller
 		$this->load->view('footer');
 	}
 
-	public function get_log(){
+	public function get_log()
+	{
 		$this->form_validation->set_rules('file', 'File', 'trim|xss_clean');
-		echo file_get_contents( $this->input->post('file') );
+		echo file_get_contents(APPPATH . 'logs/admin/' . $this->input->post('file'));
 	}
+
+	function getFileList($dir, $recurse = FALSE)
+	{
+		$retval = [];
+		// add trailing slash if missing
+		if (substr($dir, -1) != "/") {
+			$dir .= "/";
+		}
+		// open pointer to directory and read list of files
+		$d = @dir($dir) or die("getFileList: Failed opening directory {$dir} for reading");
+		while (FALSE !== ($entry = $d->read())) {
+			// skip hidden files
+			if ($entry[0] == ".") continue;
+			if (is_dir("{$dir}{$entry}")) {
+				$retval[] = [
+					'name' => "{$dir}{$entry}",
+					'type' => filetype("{$dir}{$entry}"),
+					'size' => 0,
+					'lastmod' => filemtime("{$dir}{$entry}")
+				];
+				if ($recurse && is_readable("{$dir}{$entry}/")) {
+					$retval = array_merge($retval, getFileList("{$dir}{$entry}/", TRUE));
+				}
+			} elseif (is_readable("{$dir}{$entry}")) {
+				$retval[] = [
+					'name' => "{$dir}{$entry}",
+					'type' => mime_content_type("{$dir}{$entry}"),
+					'size' => filesize("{$dir}{$entry}"),
+					'lastmod' => filemtime("{$dir}{$entry}")
+				];
+			}
+		}
+		$d->close();
+
+		return $retval;
+	}
+
+    public function log_data($msg,$level=0)
+    {
+		if (!file_exists('application/logs/admin')) {
+			mkdir('application/logs/admin', 0770, true);
+		}
+		$level_arr = array('INFO','CREATE','TRASH','DELETE');
+        $user = $this->session->userdata['logged_in']['name'];
+        $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
+        $fp = fopen($log_file, 'a'); //opens file in append mode  
+        fwrite($fp, $level_arr[$level]." - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+        fclose($fp);
+    }
 }

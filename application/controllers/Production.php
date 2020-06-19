@@ -82,12 +82,12 @@ class Production extends CI_Controller
         $str = '';
         $count = 0;
         foreach ($data as $result) {
-            if (strpos($result["project"], 'Trash') !== false){
-                $str .= "<div class='badge badge-danger' >" . urldecode($result["project"]) . ": " . $result["serial"] . "</div>"; 
-            }else{
+            if (strpos($result["project"], 'Trash') !== false) {
+                $str .= "<div class='badge badge-danger' >" . urldecode($result["project"]) . ": " . $result["serial"] . "</div>";
+            } else {
                 $str .= "<a class='badge badge-info' href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "'>" . urldecode($result["project"]) . ": " . $result["serial"] . "</a>";
             }
-                
+
             $count++;
         }
         echo "<h2>Found " . $count . " serials.</h2>" . $str;
@@ -117,6 +117,7 @@ class Production extends CI_Controller
             $this->load->view('production/add_checklist', $data);
             $this->load->view('footer');
         } else {
+            $serial = trim($this->input->post('serial'));
             $data = array(
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
@@ -126,6 +127,7 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
+                $this->log_data("created '$project' checklist with serial '$serial'",1);
                 header("location: /production/checklists/" . $project);
             } else {
                 if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
@@ -174,9 +176,10 @@ class Production extends CI_Controller
                 $serial_end++;
                 $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
                 $current_serial = str_replace($arr, $zero_count, $serial);
+                $project = $this->input->post('project');
                 $data = array(
                     'client' => $this->input->post('client'),
-                    'project' => $this->input->post('project'),
+                    'project' => $project,
                     'serial' => $current_serial,
                     'data' =>  $zero_str,
                     'date' => date("Y-m-d")
@@ -185,6 +188,9 @@ class Production extends CI_Controller
                 if ($result != 1) {
                     echo 'Checklist ' . $data['serial'] . ' exists!';
                     return;
+                }
+                if ($result == TRUE) {
+                    $this->log_data("created '$project' checklist with serial '$current_serial'",1);
                 }
             }
         }
@@ -227,7 +233,7 @@ class Production extends CI_Controller
     public function edit_checklist($id = '')
     {
         $data = array();
-        $data['js_to_load'] = array("edit_checklist.js?".filemtime('assets/js/edit_checklist.js'));
+        $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);
@@ -250,7 +256,7 @@ class Production extends CI_Controller
             $data['message_display'] = $msg;
         }
         $data['ids'] = $ids;
-        $data['js_to_load'] = array("edit_checklist.js?".filemtime('assets/js/edit_checklist.js'));
+        $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
         $data['checklists'] =  $this->Production_model->getChecklists($ids);
         if ($data['checklists']) {
             $data['checklist'] = $data['checklists'];
@@ -430,12 +436,15 @@ class Production extends CI_Controller
     {
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-
+        $this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
+        $project = $this->input->post('project');
+        $serial = $this->input->post('serial');
         $data = array(
             'id' =>  $this->input->post('id'),
-            'project' => $this->input->post('project')
+            'project' => $project
         );
         $this->Production_model->move_to_trash($data);
+        $this->log_data("trashed '$project' checklist with serial '$serial'",2);
     }
 
     public function save_photo()
@@ -471,7 +480,7 @@ class Production extends CI_Controller
         $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
         if (!file_exists($file)) {
             $success = file_put_contents($file, $img);
-        }else{
+        } else {
             $num++;
             $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
             $success = file_put_contents($file, $img);
@@ -485,13 +494,16 @@ class Production extends CI_Controller
 
     public function delete_photo()
     {
-        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
+        $this->form_validation->set_rules('photo', 'Photo', 'trim|xss_clean');
+        
         if ($this->form_validation->run() == TRUE) {
+            $photo = $this->input->post('photo');
             // Use unlink() function to delete a file  
-            if (!unlink($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo'))) {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo') . " cannot be deleted due to an error");
+            if (!unlink($_SERVER["DOCUMENT_ROOT"] . $photo)) {
+                echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " cannot be deleted due to an error");
             } else {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $this->input->post('photo') . " has been deleted");
+                echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " has been deleted");
+                $this->log_data('deleted '.$photo,3);
             }
         }
     }
@@ -503,5 +515,18 @@ class Production extends CI_Controller
         $html2pdf = '"' . getcwd() . '\assets\exec\html2pdf\wkhtmltopdf.exe" ';
         exec($html2pdf . ' ' . $url . ' --cookie "ci_session" ' . $cookie . ' "' . getcwd() . '\test.pdf"');
         echo "ok";
+    }
+
+    public function log_data($msg,$level=0)
+    {
+        if (!file_exists('application/logs/admin')) {
+			mkdir('application/logs/admin', 0770, true);
+		}
+		$level_arr = array('INFO','CREATE','TRASH','DELETE');
+        $user = $this->session->userdata['logged_in']['name'];
+        $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
+        $fp = fopen($log_file, 'a'); //opens file in append mode  
+        fwrite($fp, $level_arr[$level]." - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+        fclose($fp);
     }
 }

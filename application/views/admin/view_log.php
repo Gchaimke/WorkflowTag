@@ -10,16 +10,34 @@ $project =  'Trash';
 		</div>
 	</div>
 	<div class="container">
-		<?php
-		$dirlistR = getFileList('application/logs/admin');
-		foreach ($dirlistR as $file) {
-			if ($file['type'] != 'text/plain') {
-				continue;
-			}
-			$log = urldecode( $file['name']);
-			echo  '<a href="#" onclick="showLogFile(\''.$log.'\')">'.$log.'</a></br>'; //basename($file['name'])
-		}
-		?>
+		<nav aria-label="Checklist navigation">
+			<?php if (isset($links)) {
+				echo $links;
+			} ?>
+		</nav>
+		<?php if (isset($results)) { ?>
+			<table class="table">
+				<thead class="thead-dark">
+					<tr>
+						<th scope="col">Logs</th>
+						<th scope="col">Size</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ($results as $file) { ?>
+						<tr>
+							<?php
+							$log_name = basename($file['name']);
+							echo "<td><a href='#' onclick=showLogFile('$log_name') >$log_name</a></td>";
+							echo '<td>', human_filesize($file['size']), '</td>';
+							?>
+						</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		<?php } else { ?>
+			<div>No logs found.</div>
+		<?php } ?>
 	</div>
 	<div id='show-log' style='display:none;'>
 		<div id="show-log-header">
@@ -34,49 +52,32 @@ $project =  'Trash';
 		$.post("/admin/get_log", {
 			file: file
 		}).done(function(o) {
-			alert(o);
+			if (o != '') {
+				log_arr = o.split(/\r?\n/)
+				$("#show-log").show();
+				$("#show-log .list-group").empty();
+				$("#serial-header").text(file);
+				log_arr.forEach(element => {
+					if (element != '') {
+						if (~element.indexOf("DELETE")) {
+							$("#show-log .list-group").append("<li class='list-group-item list-group-item-danger'>" + element + "</li>");
+						} else if (~element.indexOf("TRASH")){
+							$("#show-log .list-group").append("<li class='list-group-item list-group-item-warning'>" + element + "</li>");
+						}else{
+							$("#show-log .list-group").append("<li class='list-group-item list-group-item-info'>" + element + "</li>");
+						}
+					}
+				});
+			}
 		});
 
 	}
 </script>
 <?php
-//echo file_get_contents( APPPATH . 'logs/admin/log-2020-06-18.php' ); 
-
-function getFileList($dir, $recurse = FALSE)
+function human_filesize($bytes, $decimals = 2)
 {
-	$retval = [];
-
-	// add trailing slash if missing
-	if (substr($dir, -1) != "/") {
-		$dir .= "/";
-	}
-
-	// open pointer to directory and read list of files
-	$d = @dir($dir) or die("getFileList: Failed opening directory {$dir} for reading");
-	while (FALSE !== ($entry = $d->read())) {
-		// skip hidden files
-		if ($entry[0] == ".") continue;
-		if (is_dir("{$dir}{$entry}")) {
-			$retval[] = [
-				'name' => "{$dir}{$entry}",
-				'type' => filetype("{$dir}{$entry}"),
-				'size' => 0,
-				'lastmod' => filemtime("{$dir}{$entry}")
-			];
-			if ($recurse && is_readable("{$dir}{$entry}/")) {
-				$retval = array_merge($retval, getFileList("{$dir}{$entry}/", TRUE));
-			}
-		} elseif (is_readable("{$dir}{$entry}")) {
-			$retval[] = [
-				'name' => "{$dir}{$entry}",
-				'type' => mime_content_type("{$dir}{$entry}"),
-				'size' => filesize("{$dir}{$entry}"),
-				'lastmod' => filemtime("{$dir}{$entry}")
-			];
-		}
-	}
-	$d->close();
-
-	return $retval;
+	$sz = 'BKMGTP';
+	$factor = floor((strlen($bytes) - 1) / 3);
+	return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
 }
 ?>

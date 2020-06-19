@@ -88,7 +88,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		if (r == true) {
 			$.post("/production/trashChecklist", {
 				id: id,
-				project : project
+				project : project,
+				serial : serial
 			}).done(function(o) {
 				//$('[id^=' + id + ']').remove();
 				location.reload();
