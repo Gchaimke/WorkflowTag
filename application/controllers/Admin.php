@@ -40,16 +40,6 @@ class Admin extends CI_Controller
 		}
 	}
 
-	function mange_uploads($dir = "Uploads")
-	{
-		$data = array();
-		$data['dir'] = $dir;
-		$this->load->view('header');
-		$this->load->view('main_menu');
-		$this->load->view('admin/mange_uploads', $data);
-		$this->load->view('footer');
-	}
-
 	function create()
 	{
 		$data = array();
@@ -160,7 +150,7 @@ class Admin extends CI_Controller
 		$project = $this->input->post('project');
 		$serial = $this->input->post('serial');
 		$this->Admin_model->deleteChecklist($id);
-		$this->log_data("deleted from '$project' checklist '$serial'",3);
+		$this->log_data("deleted from '$project' checklist '$serial'", 3);
 	}
 
 	public function view_log()
@@ -223,6 +213,9 @@ class Admin extends CI_Controller
 	function getFileList($dir, $recurse = FALSE)
 	{
 		$retval = [];
+		$patterns[0] = '/\:/';
+		$patterns[1] = '/\./';
+		$dir = preg_replace($patterns, '',  $dir);
 		// add trailing slash if missing
 		if (substr($dir, -1) != "/") {
 			$dir .= "/";
@@ -256,16 +249,95 @@ class Admin extends CI_Controller
 		return $retval;
 	}
 
-    public function log_data($msg,$level=0)
-    {
+	function human_filesize($bytes, $decimals = 2)
+	{
+		$sz = 'BKMGTP';
+		$factor = floor((strlen($bytes) - 1) / 3);
+		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+	}
+
+	public function log_data($msg, $level = 0)
+	{
 		if (!file_exists('application/logs/admin')) {
 			mkdir('application/logs/admin', 0770, true);
 		}
-		$level_arr = array('INFO','CREATE','TRASH','DELETE');
-        $user = $this->session->userdata['logged_in']['name'];
-        $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
-        $fp = fopen($log_file, 'a'); //opens file in append mode  
-        fwrite($fp, $level_arr[$level]." - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
-        fclose($fp);
-    }
+		$level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
+		$user = $this->session->userdata['logged_in']['name'];
+		$log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
+		$fp = fopen($log_file, 'a'); //opens file in append mode  
+		fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+		fclose($fp);
+	}
+
+	function mange_uploads()
+	{
+		$data = array();
+		$folder = $this->security->xss_clean($this->input->get('folder'));
+		$data['folders'] = $this->build_folder_view($folder);
+		$this->load->view('header');
+		$this->load->view('main_menu');
+		$this->load->view('admin/mange_uploads', $data);
+		$this->load->view('footer');
+	}
+
+	function build_folder_view($dir = "Uploads")
+	{
+		if ($dir == '') {
+			$dir = "Uploads";
+		}
+		$html_view = '';
+		$dirlistR = $this->getFileList($dir);
+		$dir = explode('/', $dir);  //string to array
+		$last_dir = array_pop($dir);            //remove last element
+		$dir = implode('/', $dir);  //array to string
+		if($dir!=''){
+			$html_view .=  "<a href='?folder=$dir'>$dir/<a><b>" . $last_dir . "/</b><br>";
+		}
+		// output file list as HTML table
+		$html_view .= "<table class='table files'";
+		$html_view .= "<thead>\n";
+		$html_view .= "<tr><th>image</th><th>Path</th><th>Type</th><th>Size</th><th>Last Modified</th><th>Delete</th></tr>\n";
+		$html_view .= "</thead>\n";
+		$html_view .= "<tbody>\n";
+		foreach ($dirlistR as $file) {
+			//filter file types
+			if ($file['type'] != 'image/png' && $file['type'] != 'image/jpeg' && $file['type'] != 'image/jpg' && $file['type'] != 'dir') {
+				continue;
+			}
+
+			if ($file['type'] == 'dir') {
+				$subDir = $this->getFileList($file['name']);
+				$count = count(array_filter($subDir, function ($x) {
+					return $x['type'] != 'text/html';
+				})); //count all files, filter html
+				$html_view .= '<a class="btn btn-primary folder" href="?folder=' . $file['name'] .
+					'" role="button"><i class="fa fa-folder"></i> ' .
+					basename($file['name']) . ' (' .  $count . ')</a>';
+			} else {
+				$html_view .= "<tr>\n";
+				$html_view .=  "<td class='td_file_manager'><a target='_blank' href=\"/{$file['name']}\"><img class='img-thumbnail' src=\"/{$file['name']}\"></a>" .
+					"</td>\n"; //basename($file['name'])
+				$html_view .=  "<td>" . $file['name'] . "</td>\n"; //basename($file['name'])
+				$html_view .= "<td>{$file['type']}</td>\n";
+				$html_view .= "<td>" . $this->human_filesize($file['size']) . "</td>\n";
+				$html_view .= "<td>" . date('d/m/Y h:i:s', $file['lastmod']) . "</td>\n";
+				$html_view .= '<td><span id="/' . $file['name'] . '" onclick="delFile(this.id)" class="btn btn-danger delete-photo">delete</span></td>';
+				$html_view .= "</tr>\n";
+			}
+		}
+		$html_view .= "</tbody>\n";
+		$html_view .= "</table>\n\n";
+		return $html_view;
+	}
+
+	function RemoveEmptySubFolders($path = 'Uploads', $msg = "")
+	{
+		$msg .= "Cleaning folder: " . $path . "<br>";
+		$empty = true;
+		foreach (glob($path . DIRECTORY_SEPARATOR . "*") as $file) {
+			$empty &= is_dir($file) && $this->RemoveEmptySubFolders($file);
+		}
+		echo $msg;
+		return $empty && rmdir($path);
+	}
 }
