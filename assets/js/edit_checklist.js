@@ -80,7 +80,7 @@ function toggleAll() {
 
 }
 
-$('.thead-dark').click(function (e) { 
+$('#date').click(function (e) { 
     e.preventDefault();
     toggleAll();
 });
