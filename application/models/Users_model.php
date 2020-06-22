@@ -33,33 +33,20 @@ class Users_model extends CI_Model
 		}
 	}
 
-	function getUser($id)
-	{
-		$response = array();
-		// Select record
-		$this->db->select('*');
-		$this->db->from('users');
-		$condition = "id ='" . $id . "'";
-		$this->db->where($condition);
-		$this->db->limit(1);
-		$q = $this->db->get();
-		$response = $q->result_array();
-		return $response;
-	}
-
 	public function editUser($data)
 	{
+		$password = password_hash($data['password'], PASSWORD_DEFAULT);
 		$where = "id =" . $data['id'];
 		if ($data['name'] != '') {
 			$data = array(
 				'role' => $data['role'],
 				'name' => $data['name'],
-				'password' => $data['password']
+				'password' => $password
 			);
 		} else {
 			$data = array(
 				'role' => $data['role'],
-				'password' => $data['password']
+				'password' => $password
 			);
 		}
 
@@ -95,17 +82,19 @@ class Users_model extends CI_Model
 	// Read data using name and password
 	public function login($data)
 	{
-		$condition = "name =" . "'" . $data['name'] . "' AND " . "password =" . "'" . $data['password'] . "'";
+		$condition = "name ='" . $data['name'] . "'";
 		$this->db->select('*');
 		$this->db->from('Users');
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-
+		$row = $query->row_array();
 		if ($query->num_rows() == 1) {
-			return true;
-		} else {
-			return false;
+			if (password_verify($data['password'], $row['password'])) {
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
 
@@ -124,5 +113,19 @@ class Users_model extends CI_Model
 		} else {
 			return false;
 		}
+	}
+
+	function getUser($id)
+	{
+		$response = array();
+		// Select record
+		$this->db->select('*');
+		$this->db->from('users');
+		$condition = "id ='" . $id . "'";
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$q = $this->db->get();
+		$response = $q->result_array();
+		return $response;
 	}
 }

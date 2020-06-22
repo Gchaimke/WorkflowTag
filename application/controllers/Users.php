@@ -48,7 +48,7 @@ class Users extends CI_Controller
                 $data = array(
                     'name' => $this->input->post('name'),
                     'role' => $this->input->post('role'),
-                    'password' => $this->input->post('password')
+                    'password' =>password_hash($this->input->post('password'), PASSWORD_DEFAULT) 
                 );
                 $result = $this->Users_model->registration_insert($data);
                 if ($result == TRUE) {
@@ -156,7 +156,7 @@ class Users extends CI_Controller
                 'password' => $this->input->post('password')
             );
             $result = $this->Users_model->login($data);
-            if ($result == TRUE) {
+            if ($result == true) {
                 $name = $this->input->post('name');
                 $result = $this->Users_model->read_user_information($name);
                 if ($result != false) {
@@ -195,7 +195,7 @@ class Users extends CI_Controller
 
     public function get_qc()
     {
-        $password = $_POST['pass'];
+        $password =password_hash($_POST['pass'], PASSWORD_DEFAULT) ;
         $exists = $this->Users_model->get_qc('QC', $password);
         echo $exists[0]['name'];
     }
@@ -206,7 +206,7 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('pass', 'Password', 'trim|required|xss_clean');
         $data = array(
             'name' => $this->input->post('name'),
-            'password' => $this->input->post('pass')
+            'password' =>password_hash($this->input->post('pass'), PASSWORD_DEFAULT)  
         );
         $result = $this->Users_model->login($data);
         if ($result == TRUE) {

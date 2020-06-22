@@ -61,7 +61,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 			}
 			?>
 
-			<input type='text' class="form-control" name='password' value="<?php echo $pass ?>"></br>
+			<input type='password' class="form-control" name='password' value="<?php echo $pass ?>"></br>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='update'>
 			<?php echo form_close(); ?>
 		</center>

@@ -23,7 +23,7 @@ class Admin_model extends CI_Model
             ),
             'password' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 40
+                'constraint' => 500
             ),
             'log' => array(
                 'type' => 'TEXT'
