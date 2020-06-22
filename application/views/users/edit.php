@@ -21,7 +21,6 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 			$id = "";
 			$role = "";
 			$name =  "";
-			$pass = "";
 			if (isset($message_display)) {
 				echo "<div class='alert alert-danger' role='alert'>";
 				echo $message_display . '</div>';
@@ -34,7 +33,6 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				$id = $user[0]['id'];
 				$role = $user[0]['role'];
 				$name =  $user[0]['name'];
-				$pass = $user[0]['password'];
 			}
 			?>
 
@@ -56,12 +54,10 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 					}
 				}
 				echo "</select></br>";
-			}else{
-				echo "<input type='hidden' name='role' value='$current_role'>";
 			}
 			?>
 
-			<input type='password' class="form-control" name='password' value="<?php echo $pass ?>"></br>
+			<input type='password' class="form-control" name='password' value=""></br>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='update'>
 			<?php echo form_close(); ?>
 		</center>

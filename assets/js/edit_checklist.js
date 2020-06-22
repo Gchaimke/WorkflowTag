@@ -80,6 +80,11 @@ function toggleAll() {
 
 }
 
+$('.thead-dark').click(function (e) { 
+    e.preventDefault();
+    toggleAll();
+});
+
 function toggleQc(id, qc_name) {
     if (qc_name != '') {
         chArray[id] = qc_name;
@@ -109,49 +114,20 @@ $("input:checkbox.verify").click(function (e) {
     $('#input_log').val(log);
 });
 
-
-$("input:checkbox.qc").click(function (e) {
-    event.preventDefault();
-    id = this.id;
-    curent_th = $(this).closest("tr").find('th').text();
-    var code = prompt("Please enter QC Code", "");
-    $.post("/users/get_qc",
-        {
-            pass: code
-        },
-        function (qc_name) {
-            if (qc_name) {
-                $("#" + id).prop('checked', true);
-                toggleQc(id, qc_name);
-                $('#input_qc').val(qc_name);
-                log += getDateTime() + " QC " + qc_name + " checked " + curent_th + ";";
-                $('#input_log').val(log);
-                $('#input_data').val(chArray.toString());
-                $('#input_progress').val(progress_status);
-            } else {
-                $("#" + id).prop('checked', false);
-                toggleQc(id, qc_name);
-                $('#input_data').val(chArray.toString());
-                $('#input_progress').val(progress_status);
-            }
-        });
-
-});
-
 $("select.review").change(function (e) {
     event.preventDefault();
     id = this.id;
     curent_th = $(this).closest("tr").find('th').text();
     var option = $(this).children("option:selected");
     var name = option.val();
-    var pass = prompt(name + " please enter your Password.", "");
+    var password = prompt(name + "- please enter your Password.", "");
     $.post("/users/get_verify",
         {
             name: name,
-            pass: pass
+            password: password
         },
         function (verify) {
-            if (verify) {
+            if (verify == true) {
                 option.val(name);
                 toggleQc(id, name);
                 $('#input_qc').val(name);
@@ -161,7 +137,7 @@ $("select.review").change(function (e) {
             } else {
                 option.val('Select');
                 toggleQc(id, "Select");
-                alert("Password error!");
+                alert("Password error!"+verify);
                 $('#input_data').val(chArray.toString());
             }
         });

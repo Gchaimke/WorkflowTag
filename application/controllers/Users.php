@@ -102,23 +102,26 @@ class Users extends CI_Controller
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
-                    'role' => $this->input->post('role'),
-                    'password' => $this->input->post('password')
+                    'role' => $this->input->post('role')
                 );
+                if($this->input->post('password')!=''){
+                    $sql += array('password' => $this->input->post('password'));
+                }
                 $data['message_display'] = $this->Users_model->editUser($sql);
-                $data['message_display'] .= ' User updated successfully!';
                 // get data from model
                 $data['users'] = $this->Users_model->getUsers();
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/manage', $data);
             } else {
-                $sql = array(
-                    'id' => $this->input->post('id'),
-                    'role' => $role,
-                    'password' => $this->input->post('password')
-                );
-                $this->Users_model->editUser($sql);
+                if($this->input->post('password')!=''){
+                    $sql = array(
+                        'id' => $this->input->post('id'),
+                        'name' => $this->input->post('name'),
+                        'password' => $this->input->post('password')
+                    );
+                    $this->Users_model->editUser($sql);
+                }
                 header("location: /");
             }
             $this->load->view('footer');
@@ -193,20 +196,13 @@ class Users extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function get_qc()
-    {
-        $password =password_hash($_POST['pass'], PASSWORD_DEFAULT) ;
-        $exists = $this->Users_model->get_qc('QC', $password);
-        echo $exists[0]['name'];
-    }
-
     public function get_verify()
     {
         $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('pass', 'Password', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         $data = array(
             'name' => $this->input->post('name'),
-            'password' =>password_hash($this->input->post('pass'), PASSWORD_DEFAULT)  
+            'password' =>$this->input->post('password')  
         );
         $result = $this->Users_model->login($data);
         if ($result == TRUE) {

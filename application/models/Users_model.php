@@ -2,55 +2,30 @@
 
 class Users_model extends CI_Model
 {
-	function getUsers($role = '')
+	function getUsers()
 	{
 		$response = array();
 		// Select record
 		$this->db->select('*');
 		$this->db->from('Users');
-		if (!$role == '') {
-			$condition = "role ='$role'";
-			$this->db->where($condition);
-		}
 		$q = $this->db->get();
 		$response = $q->result_array();
 		return $response;
 	}
 
-	public function get_qc($role = '', $pass = '')
-	{
-		$condition = "role ='$role' AND password ='$pass'";
-		$this->db->select('*');
-		$this->db->from('Users');
-		$this->db->where($condition);
-		$this->db->limit(1);
-		$query = $this->db->get();
-
-		if ($query->num_rows() == 1) {
-			return $query->result_array();
-		} else {
-			return false;
-		}
-	}
-
 	public function editUser($data)
 	{
-		$password = password_hash($data['password'], PASSWORD_DEFAULT);
+		if (isset($data['password'])) {
+			$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
+		}
 		$where = "id =" . $data['id'];
 		if ($data['name'] != '') {
-			$data = array(
-				'role' => $data['role'],
-				'name' => $data['name'],
-				'password' => $password
-			);
-		} else {
-			$data = array(
-				'role' => $data['role'],
-				'password' => $password
-			);
+			$this->db->update('users', $data, $where);
+			if ($this->db->affected_rows() > 0) {
+				return 'User data updated!';
+			}	
 		}
-
-		return $this->db->update('users', $data, $where);
+		return 'User data not updated!';
 	}
 
 	function deleteUser($id)
@@ -101,13 +76,12 @@ class Users_model extends CI_Model
 	// Read data from database to show data in admin page
 	public function read_user_information($name)
 	{
-		$condition = "name =" . "'" . $name . "'";
 		$this->db->select('*');
 		$this->db->from('Users');
+		$condition = "name =" . "'" . $name . "'";
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$query = $this->db->get();
-
 		if ($query->num_rows() == 1) {
 			return $query->result();
 		} else {
@@ -124,8 +98,11 @@ class Users_model extends CI_Model
 		$condition = "id ='" . $id . "'";
 		$this->db->where($condition);
 		$this->db->limit(1);
-		$q = $this->db->get();
-		$response = $q->result_array();
-		return $response;
+		$query = $this->db->get();
+		if ($query->num_rows() == 1) {
+			return $query->result_array();
+		} else {
+			return false;
+		}
 	}
 }
