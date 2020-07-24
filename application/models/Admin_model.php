@@ -39,7 +39,8 @@ class Admin_model extends CI_Model
         $admin = array(
             "name" => 'Admin',
             "role" => 'Admin',
-            "password" => password_hash('Admin', PASSWORD_DEFAULT)
+            "password" => password_hash('Admin', PASSWORD_DEFAULT),
+            'log' => 'New User created! username:Admin, Password:Admin.'
         );
         $this->db->insert('users', $admin);
     }
@@ -76,8 +77,8 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('clients');
 
         $cl = array(
-            "name" => 'Simbionix',
-            "projects" => 'Flex2,Lap3',
+            "name" => 'Avdor-HLT',
+            "projects" => 'Project1,Project 2',
             "logo"=> '/assets/img/logo.png'
         );
         $this->db->insert('clients', $cl);
@@ -138,15 +139,15 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('checklists');
 
         $demoChecklist = array(
-            "serial" => 'F001-07-20',
-            "client" => 'Simbionix',
-            "project" => 'Flex2',
+            "serial" => 'P001-07-20',
+            "client" => 'Avdor-HLT',
+            "project" => 'Project1',
             "data" => '',
             "progress" => '0',
-            "assembler" => 'Chaim',
-            "qc" => 'Michael',
+            "assembler" => 'User',
+            "qc" => 'Admin',
             "date" => '2020-04-30',
-            "log" => '',
+            "log" => 'New checklist creatin in project Project1 for client Avdor-HLT',
         );
         $this->db->insert('checklists', $demoChecklist);
     }
@@ -189,10 +190,10 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('projects');
 
         $tp = array(
-            "client" => 'Simbionix',
-            "project" => 'Flex2',
+            "client" => 'Avdor-HLT',
+            "project" => 'Project1',
             "data" => 'header;HD',
-            "template" => 'Fxxx,07,yy,-'
+            "template" => 'Pxxx,mm,yy,-'
         );
         $this->db->insert('projects', $tp);
     }
