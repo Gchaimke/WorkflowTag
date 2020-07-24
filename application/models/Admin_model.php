@@ -39,7 +39,7 @@ class Admin_model extends CI_Model
         $admin = array(
             "name" => 'Admin',
             "role" => 'Admin',
-            "password" => 'rom12345'
+            "password" => password_hash('Admin', PASSWORD_DEFAULT)
         );
         $this->db->insert('users', $admin);
     }
