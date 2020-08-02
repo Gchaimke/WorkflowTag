@@ -18,7 +18,6 @@ class Users extends CI_Controller
         $role = ($this->session->userdata['logged_in']['role']);
         $data['users'] = $this->Users_model->getUsers();
         $this->load->view('header');
-        $this->load->view('header');
         $this->load->view('main_menu');
         if ($role != "Admin") {
             header("location: /");
@@ -38,6 +37,8 @@ class Users extends CI_Controller
             $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
             $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('view_name', 'view_name', 'trim|xss_clean');
+            $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
             if ($this->form_validation->run() == FALSE) {
                 $data['settings'] = $this->Admin_model->getSettings();
                 $this->load->view('header');
@@ -47,8 +48,10 @@ class Users extends CI_Controller
             } else {
                 $data = array(
                     'name' => $this->input->post('name'),
+                    'view_name' => $this->input->post('view_name'),
                     'role' => $this->input->post('role'),
-                    'password' =>password_hash($this->input->post('password'), PASSWORD_DEFAULT) 
+                    'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+                    'email' => $this->input->post('email')
                 );
                 $result = $this->Users_model->registration_insert($data);
                 if ($result == TRUE) {
@@ -84,12 +87,14 @@ class Users extends CI_Controller
     public function edit($id = '')
     {
         //$data = array();
-        $role = ($this->session->userdata['logged_in']['role']);
+        $role = $this->session->userdata['logged_in']['role'];
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
+        $this->form_validation->set_rules('view_name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('role', 'Role', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
+        $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['user'] =  $this->Users_model->getUser($id);
             $data['settings'] = $this->Admin_model->getSettings();
@@ -102,29 +107,25 @@ class Users extends CI_Controller
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
-                    'role' => $this->input->post('role')
+                    'view_name' => $this->input->post('view_name'),
+                    'role' => $this->input->post('role'),
+                    'email' => $this->input->post('email')
                 );
-                if($this->input->post('password')!=''){
+                if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
                 }
-                $data['message_display'] = $this->Users_model->editUser($sql);
-                // get data from model
-                $data['users'] = $this->Users_model->getUsers();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('users/manage', $data);
+                print_r($this->Users_model->editUser($sql));
             } else {
-                if($this->input->post('password')!=''){
-                    $sql = array(
-                        'id' => $this->input->post('id'),
-                        'name' => $this->input->post('name'),
-                        'password' => $this->input->post('password')
-                    );
-                    $this->Users_model->editUser($sql);
+                $sql = array(
+                    'id' => $this->input->post('id'),
+                    'view_name' => $this->input->post('view_name'),
+                    'email' => $this->input->post('email')
+                );
+                if ($this->input->post('password') != '') {
+                    $sql += array('password' => $this->input->post('password'));
                 }
-                header("location: /");
+                print_r($this->Users_model->editUser($sql));
             }
-            $this->load->view('footer');
         }
     }
 
@@ -135,10 +136,9 @@ class Users extends CI_Controller
         $this->load->model('Admin_model');
         if (!$this->db->table_exists('users')) {
             $this->Admin_model->createUsersDb();
-            $this->Admin_model->createClientsDb();
-            $this->Admin_model->createChecklistDb();
-            $this->Admin_model->createProjectsDb();
             $this->Admin_model->createSettingsDb();
+            $this->Admin_model->createCompaniesDb();
+            $this->Admin_model->createFormsDb();
             $data['response'] .= "All Tables created!<br> username:Admin <br> Password:Admin.";
         }
         $this->load->view('users/login', $data);
@@ -170,7 +170,9 @@ class Users extends CI_Controller
                     $session_data = array(
                         'id' => $result[0]->id,
                         'name' => $result[0]->name,
+                        'view_name' => $result[0]->view_name,
                         'role' => $result[0]->role,
+                        'email' => $result[0]->email
                     );
                     // Add user data in session
                     $this->session->set_userdata('logged_in', $session_data);
@@ -206,7 +208,7 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
         $data = array(
             'name' => $this->input->post('name'),
-            'password' =>$this->input->post('password')  
+            'password' => $this->input->post('password')
         );
         $result = $this->Users_model->login($data);
         if ($result == TRUE) {

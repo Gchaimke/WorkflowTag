@@ -139,6 +139,7 @@ a.btn.btn-primary.folder {
 div#form-messages {
     width: 100%;
     left: 0;
+    top: 120px;
     position: fixed;
     text-align: center;
     z-index: 1;

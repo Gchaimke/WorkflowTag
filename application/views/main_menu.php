@@ -2,6 +2,7 @@
 if (isset($this->session->userdata['logged_in'])) {
   $id = ($this->session->userdata['logged_in']['id']);
   $username = ($this->session->userdata['logged_in']['name']);
+  $user_view_name = ($this->session->userdata['logged_in']['view_name']);
   $role = ($this->session->userdata['logged_in']['role']);
 }
 ?>
@@ -25,10 +26,10 @@ if (isset($this->session->userdata['logged_in'])) {
     <ul class="navbar-nav  pull-right">
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Hello <?php echo $username; ?>
+          Hi <?php echo $user_view_name; ?>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/users/edit/<?php echo $id ?>">Password</a>
+          <a class="dropdown-item" href="/users/edit/<?php echo $id ?>">Edit <?php echo $username?> profile</a>
           <a class="dropdown-item" href="/users/logout">Logout</a>
         </div>
       </li>
