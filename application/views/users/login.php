@@ -12,7 +12,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="<?php echo base_url('assets/favicon.ico'); ?>">
-    <title>גרעין מערכות&copy; <?php echo date('Y'); ?> </title>
+    <title>WorkFlow Tag&copy; <?php echo date('Y'); ?> </title>
 
     <!-- Bootstrap core CSS -->
     <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
