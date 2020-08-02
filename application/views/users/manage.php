@@ -28,7 +28,7 @@ if (isset($this->session->userdata['logged_in'])) {
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Username</th>
-                    <th scope="col">Real Name</th>
+                    <th scope="col" class="mobile-hide">Real Name</th>
                     <th scope="col">Role</th>
                     <th scope="col">Change</th>
                     <th scope="col">Delete</th>
@@ -40,7 +40,7 @@ if (isset($this->session->userdata['logged_in'])) {
                         echo '<tr>';
                         echo '<tr id="' . $user['id'] . '">';
                         echo  '<td>' . $user['name'] . '</td>';
-                        echo  '<td>' . $user['view_name'] . '</td>';
+                        echo  '<td class="mobile-hide">' . $user['view_name'] . '</td>';
                         echo  '<td>' . $user['role'] . '</td>';
                         echo "<td><a href='/users/edit/" . $user['id'] . "' class='btn btn-outline-info'><i class='fa fa-edit'></i></a></td>";
                         if ($user['name'] == $username) {

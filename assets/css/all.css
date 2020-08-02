@@ -6,6 +6,10 @@ main {
     min-height: calc(100vh - 100px);
 }
 
+a.navbar-brand {
+    font-size: 1rem;
+}
+
 .footer {
     height: 50px;
 }
@@ -68,14 +72,8 @@ ul.pagination.left {
     border: 1px solid #dee2e6;
 }
 
-.navbar-nav {
-    display: -ms-flexbox;
+.inline {
     display: -webkit-box;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    padding-left: 0;
-    margin-bottom: 0;
-    list-style: none;
 }
 
 ul.pagination.left>a {
