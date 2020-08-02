@@ -65,7 +65,7 @@ if (isset($this->session->userdata['logged_in'])) {
                                 <label for="inputPassword" class="sr-only">password</label>
                                 <input type="password" name="password" id="password" class="form-control center" placeholder="Password" required>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-lg">להתחבר</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
                             </form>
                         </div>
                     </div>

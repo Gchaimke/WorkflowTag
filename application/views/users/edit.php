@@ -76,7 +76,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						<div class="input-group-prepend">
 							<div class="input-group-text">Password</div>
 						</div>
-						<input type='text' class="form-control" placeholder="********" name='password'>
+						<input type='password' class="form-control" name='password'>
 					</div>
 				</div>
 

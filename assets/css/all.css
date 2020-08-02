@@ -2,6 +2,15 @@ main {
     margin-top: 35px;
 }
 
+main {
+    min-height: calc(100vh - 100px);
+}
+
+.footer {
+    height: 50px;
+    background-color: #343a404f;
+}
+
 .hidden {
     display: none;
 }

@@ -8,6 +8,7 @@ class Users_model extends CI_Model
 		// Select record
 		$this->db->select('*');
 		$this->db->from('Users');
+		$this->db->order_by('name');
 		$q = $this->db->get();
 		$response = $q->result_array();
 		return $response;
@@ -19,13 +20,10 @@ class Users_model extends CI_Model
 			$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 		}
 		$where = "id =" . $data['id'];
-		if ($data['name'] != '') {
-			$this->db->update('users', $data, $where);
-			if ($this->db->affected_rows() > 0) {
-				return 'User data updated!';
-			}	
+		$this->db->update('users', $data, $where);
+		if ($this->db->affected_rows() > 0) {
+			return 'User data updated!';
 		}
-		return 'User data not updated!';
 	}
 
 	function deleteUser($id)

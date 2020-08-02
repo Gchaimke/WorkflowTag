@@ -35,8 +35,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 						<th scope="col">*</th>
 						<th scope="col">Serial Number</th>
 						<th scope="col" class="mobile-hide">Project</th>
-						<th scope="col" class="mobile-hide">Progress</th>
-						<th scope="col" class="mobile-hide">Last Edited By</th>
+						<th scope="col" >Progress</th>
+						<th scope="col">Last Edited By</th>
 						<th scope="col" class="mobile-hide">QC</th>
 						<th scope="col" class="mobile-hide">Date</th>
 						<th scope="col">Edit</th>
@@ -56,10 +56,10 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 									echo "SN template not found!";
 								}  ?></td>
 							<td class="mobile-hide"><?php echo $data->project ?></td>
-							<td class="mobile-hide">
+							<td>
 								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
 									<?php echo $data->progress ?>%</a></td>
-							<td class="mobile-hide"><?php echo $data->assembler ?></td>
+							<td><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>
 							<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
