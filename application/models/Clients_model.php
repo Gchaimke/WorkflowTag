@@ -32,6 +32,7 @@ class Clients_model extends CI_Model
             // Select record
             $this->db->select('*');
             $this->db->from('clients');
+            $this->db->order_by('name');
             if ($id != '') {
                 $condition = "id ='$id'";
                 $this->db->where($condition);
