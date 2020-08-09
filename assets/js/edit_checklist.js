@@ -163,7 +163,7 @@ function toString2d(arr) {
 }
 
 $('#result').click(function () {
-    //alert(getDateTime());
+    alert(getDateTime());
 });
 
 function getDateTime() {
@@ -171,8 +171,8 @@ function getDateTime() {
     const ye = new Intl.DateTimeFormat('en', { year: '2-digit' }).format(now);
     const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(now);
     const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
-    const H = now.getHours();
-    const M = now.getMinutes();
+    const H = (now.getHours()<10?'0':'') + now.getHours();
+    const M = (now.getMinutes()<10?'0':'') + now.getMinutes();
     return `${da}/${mo}/${ye} ${H}:${M}`;
 }
 
