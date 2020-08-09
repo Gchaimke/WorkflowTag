@@ -1,17 +1,19 @@
-var toggle;
+var toggle = true;
 var progress_status = "";
-var chArray = [];
+var chArray = $('#input_data').val().split(",");
 var scansArray = [];
+var checkRows = $('.check_row');
+var selectRows = $('select.review');
+var scanRows = $('.scan_row');
+var AllCheckRows = $('.verify').length + $('.review').length;
+var AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
 
 $(document).ready(function () {
-    toggle = true;
-    var checkRows = $('.check_row');
-    var selectRows = $('select.review');
-    var scanRows = $('.scan_row');
-    chArray = $('#input_data').val().split(",");
     scansArray = $('#input_scans').val().split(";").map(function (e) {
         return e.split(",");
     });
+
+    //Get checked rows and add Name after
     checkRows.each(function () {
         if ($(this).find("input").prop('checked')) {
             $(this).find("input").after("<div class='badge badge-secondary check-lable'>" + chArray[$(this).find("input").attr('id')] + "</div>");
@@ -21,6 +23,8 @@ $(document).ready(function () {
     selectRows.each(function () {
         if (chArray[this.id]) {
             $(this).val(chArray[this.id]);
+        }else{
+            $(this).val('Select');
         }
     });
 
@@ -39,9 +43,9 @@ $(document).ready(function () {
 });
 
 function updateProgress() {
-    var checkRows = $('.check_row').length + $('.qc_row').length;
-    var checked = $("input:checkbox:checked").length + $('.qc_row option:selected[value!="Select"]').length;
-    progress_status = 100 / (checkRows) * checked
+    AllCheckRows = $('.verify').length + $('.review').length;
+    AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
+    progress_status = 100 / (AllCheckRows) * AllChecked
     setProgress(progress_status);
 }
 
@@ -146,7 +150,7 @@ $("select.review").change(function (e) {
         toggleQc(id, "Select");
         $('#input_data').val(chArray.toString());
     }
-    
+
 });
 
 $(".scans").change(function (e) {
