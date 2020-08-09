@@ -2,7 +2,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-4">Select Checklist Project</h2>
+				<h2 class="display-4">Select RMA Project</h2>
 			</center>
 		</div>
 	</div>
@@ -16,7 +16,7 @@
 			<div class="input-group mb-3">
 				<input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
 				<div class="input-group-append">
-					<button class="btn btn-secondary" type="button" onclick="serialSearch()">Search</button>
+					<button class="btn btn-secondary" type="button" onclick="rmaSearch()">Search</button>
 				</div>
 			</div>
 			<div id='searchResult'></div>
@@ -31,7 +31,7 @@
 				if ($client['projects'] != "") {
 					$arr = explode(',', $client['projects']);
 					foreach ($arr as $project) {
-						echo  "<a href='/production/checklists/$project' class='btn btn-primary  btn-block'>$project</a>";
+						echo  "<a href='/production/rma/$project' class='btn btn-primary  btn-block'>$project</a>";
 					}
 				}
 				echo '</div></center></div>';
@@ -42,18 +42,18 @@
 	</div>
 </main>
 <script>
-	function serialSearch() {
-		var sn = document.getElementById("inputSearch").value;
+	function rmaSearch() {
+		var search = document.getElementById("inputSearch").value;
 		if (sn.length >= 3) {
-			$.post("/production/serial_search", {
-				sn: sn
+			$.post("/production/rma_search", {
+				sn: search
 			}).done(function(e) {
 				if (e.length > 0) {
 					$('#searchResult').empty();
 					$('#searchResult').append( e );
 				} else {
 					$('#searchResult').empty();
-					$('#searchResult').append("<h2>Serial: "+sn+" not found!</h2>");
+					$('#searchResult').append("<h2>RMA form with "+search+" not found!</h2>");
 				}
 			});
 		} else {

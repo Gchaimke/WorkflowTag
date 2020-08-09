@@ -26,7 +26,6 @@ class Production extends CI_Controller
 
     public function checklists($project = '')
     {
-        $this->load->database();
         // init params
         $params = array();
         $config = array();
@@ -445,6 +444,66 @@ class Production extends CI_Controller
         );
         $this->Production_model->move_to_trash($data);
         $this->log_data("trashed '$project' checklist with serial '$serial'",2);
+    }
+
+    public function clients_rma(){
+        $data = array();
+        // get data from model
+        $data['clients'] = $this->Clients_model->getClients();
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('production/view_rma_clients', $data);
+        $this->load->view('footer');
+    }
+
+    public function rma($project = '')
+    {
+        // init params
+        $params = array();
+        $config = array();
+        $limit_per_page = 20;
+        $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $total_records = $this->Production_model->get_total($project);
+        if ($total_records > 0) {
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+
+            $config['base_url'] = base_url() . 'production/rma/' . $project;
+            $config['total_rows'] = $total_records;
+            $config['per_page'] = $limit_per_page;
+            $config["uri_segment"] = 4;
+
+            $config['full_tag_open'] = '<ul class="pagination right">';
+            $config['full_tag_close'] = '</ul>';
+
+            $config['cur_tag_open'] = '<li class="page-item active "><a class="page-link">';
+            $config['cur_tag_close'] = '</a></li>';
+
+            $config['num_tag_open'] = '<li class="page-item num-link">';
+            $config['num_tag_close'] = '</li>';
+
+            $config['first_tag_open'] = '<li class="page-item num-link">';
+            $config['first_tag_close'] = '</li>';
+
+            $config['last_tag_open'] = '<li class="page-item num-link">';
+            $config['last_tag_close'] = '</li>';
+
+            $config['next_tag_open'] = '<li class="page-item num-link">';
+            $config['next_tag_close'] = '</li>';
+
+            $config['prev_tag_open'] = '<li class="page-item num-link">';
+            $config['prev_tag_close'] = '</li>';
+
+            $this->pagination->initialize($config);
+
+            // build paging links
+            $params["links"] = $this->pagination->create_links();
+        }
+        $params['project'] = urldecode($project);
+        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
+        $this->load->view('header');
+        $this->load->view('main_menu', $params);
+        $this->load->view('production/manage_rma', $params);
+        $this->load->view('footer');
     }
 
     public function save_photo()

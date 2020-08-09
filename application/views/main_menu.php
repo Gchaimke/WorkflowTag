@@ -25,6 +25,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
     </div>
     <ul class="navbar-nav">
+    <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/production/rma">RMA</a>
       <?php if ($role == 'Admin') { ?>
         <a class="nav-item nav-item btn btn-outline-info mx-1 mt-3 mt-lg-0 text-white" href="/clients">Clients</a>
         <a class="nav-item nav-item btn btn-outline-primary mx-1 mt-3 mt-lg-0 text-white" href="/templates">Templates</a>
