@@ -39,8 +39,8 @@ $(document).ready(function () {
 });
 
 function updateProgress() {
-    var checkRows = $('.check_row').length;
-    var checked = $("input:checkbox:checked").length;
+    var checkRows = $('.check_row').length + $('.qc_row').length;
+    var checked = $("input:checkbox:checked").length + $('.qc_row option:selected[value!="Select"]').length;
     progress_status = 100 / (checkRows) * checked
     setProgress(progress_status);
 }
@@ -53,6 +53,8 @@ function setProgress(p) {
         $("#progress-bar").width("100%");
         $("#progress-bar").attr("aria-valuenow", 100);
     }
+
+    $('#input_progress').val(progress_status);
 }
 
 function toggleOne(id) {
@@ -76,11 +78,9 @@ function toggleAll() {
     $('.verify').prop('checked', true);
     updateProgress();
     $('#input_data').val(chArray.toString());
-    $('#input_progress').val(progress_status);
-
 }
 
-$('#date').click(function (e) { 
+$('#date').click(function (e) {
     e.preventDefault();
     toggleAll();
 });
@@ -89,7 +89,7 @@ function toggleQc(id, qc_name) {
     if (qc_name != '') {
         chArray[id] = qc_name;
     } else {
-        $("#" + id + "+ div").remove();
+        //$("#" + id + "+ div").remove();
         chArray[id] = '';
     }
     updateProgress();
@@ -107,7 +107,6 @@ function selectOne(id, name) {
 $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
     $('#input_data').val(chArray.toString());
-    $('#input_progress').val(progress_status);
     if ($(event.target).is(":checked")) {
         log += getDateTime() + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
     }
@@ -120,27 +119,34 @@ $("select.review").change(function (e) {
     curent_th = $(this).closest("tr").find('th').text();
     var option = $(this).children("option:selected");
     var name = option.val();
-    var password = prompt(name + "- please enter your Password.", "");
-    $.post("/users/get_verify",
-        {
-            name: name,
-            password: password
-        },
-        function (verify) {
-            if (verify == true) {
-                option.val(name);
-                toggleQc(id, name);
-                $('#input_qc').val(name);
-                log += getDateTime() + " QC " + name + " checked " + curent_th + ";";
-                $('#input_log').val(log);
-                $('#input_data').val(chArray.toString());
-            } else {
-                option.val('Select');
-                toggleQc(id, "Select");
-                alert("Password error!"+verify);
-                $('#input_data').val(chArray.toString());
-            }
-        });
+    if (option.val() != "0") {
+        var password = prompt(name + "- please enter your Password.", "");
+        $.post("/users/get_verify",
+            {
+                name: name,
+                password: password
+            },
+            function (verify) {
+                if (verify == true) {
+                    option.val(name);
+                    toggleQc(id, name);
+                    $('#input_qc').val(name);
+                    log += getDateTime() + " QC " + name + " checked " + curent_th + ";";
+                    $('#input_log').val(log);
+                    $('#input_data').val(chArray.toString());
+                } else {
+                    option.val('Select');
+                    toggleQc(id, "Select");
+                    alert("Password error!" + verify);
+                    $('#input_data').val(chArray.toString());
+                }
+            });
+    } else {
+        option.val('Select');
+        toggleQc(id, "Select");
+        $('#input_data').val(chArray.toString());
+    }
+    
 });
 
 $(".scans").change(function (e) {
@@ -163,7 +169,7 @@ function toString2d(arr) {
 }
 
 $('#result').click(function () {
-    alert(getDateTime());
+    //alert(getDateTime());
 });
 
 function getDateTime() {
@@ -171,8 +177,8 @@ function getDateTime() {
     const ye = new Intl.DateTimeFormat('en', { year: '2-digit' }).format(now);
     const mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(now);
     const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
-    const H = (now.getHours()<10?'0':'') + now.getHours();
-    const M = (now.getMinutes()<10?'0':'') + now.getMinutes();
+    const H = (now.getHours() < 10 ? '0' : '') + now.getHours();
+    const M = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
     return `${da}/${mo}/${ye} ${H}:${M}`;
 }
 
@@ -190,7 +196,7 @@ function savePhotoToServer(file) {
         photoCount++;
         $('#form-messages').addClass('alert-success');
         // Set the message text.
-        $('#form-messages').text('photo uploaded : '+o).fadeIn(1000).delay(3000).fadeOut(1000);
+        $('#form-messages').text('photo uploaded : ' + o).fadeIn(1000).delay(3000).fadeOut(1000);
     });
 }
 

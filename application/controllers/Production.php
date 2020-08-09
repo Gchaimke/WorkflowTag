@@ -289,7 +289,7 @@ class Production extends CI_Controller
             $index = 0;
             $id = 0;
             foreach ($users as $user) {
-                $options .= "<option >" . $user['name'] . "</option>";
+                $options .= "<option value=".$user['name'].">" . $user['name'] . "</option>";
             }
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
@@ -314,14 +314,14 @@ class Production extends CI_Controller
                         $prefix_count++;
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
-                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
-                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option>Select</option>";
+                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
