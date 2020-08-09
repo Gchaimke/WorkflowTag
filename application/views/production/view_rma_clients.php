@@ -1,5 +1,5 @@
 <main role="main">
-	<div class="jumbotron">
+	<div class="jumbotron rma">
 		<div class="container">
 			<center>
 				<h2 class="display-4">Select RMA Project</h2>
@@ -14,7 +14,7 @@
 		} ?>
 		<form id="form">
 			<div class="input-group mb-3">
-				<input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
+				<input id='inputSearch' type="text" class="form-control" placeholder="Search for RMA Form #" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
 				<div class="input-group-append">
 					<button class="btn btn-secondary" type="button" onclick="rmaSearch()">Search</button>
 				</div>
@@ -25,7 +25,7 @@
 			echo '<div class="card-columns">';
 			foreach ($clients as $client) {
 				echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
-				echo $client['name'];
+				echo $client['name'].' RMA';
 				echo '</h5><p class="card-text">Select Project:</p></div>';
 				echo '<div class="card-footer">';
 				if ($client['projects'] != "") {

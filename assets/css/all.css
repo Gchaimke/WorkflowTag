@@ -1,9 +1,10 @@
 main {
     margin-top: 35px;
+    min-height: calc(100vh - 100px);
 }
 
-main {
-    min-height: calc(100vh - 100px);
+.rma {
+    background-color: #ffe3b8;
 }
 
 a.navbar-brand {

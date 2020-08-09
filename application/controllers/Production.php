@@ -446,7 +446,7 @@ class Production extends CI_Controller
         $this->log_data("trashed '$project' checklist with serial '$serial'",2);
     }
 
-    public function clients_rma(){
+    public function view_rma_clients(){
         $data = array();
         // get data from model
         $data['clients'] = $this->Clients_model->getClients();
