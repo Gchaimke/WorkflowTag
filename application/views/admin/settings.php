@@ -19,6 +19,7 @@ if (isset($this->session->userdata['logged_in'])) {
         $users_count = 0;
         $clients_count = 0;
         $checklists_count = 0;
+        $rma_forms_count=0;
         if (isset($message_display)) {
             echo "<div class='alert alert-success' role='alert'>";
             echo $message_display . '</div>';
@@ -28,6 +29,7 @@ if (isset($this->session->userdata['logged_in'])) {
             $users_count = $users;
             $clients_count = $clients;
             $checklists_count = $checklists;
+            $rma_forms_count = $rma_forms;
         }
         ?>
         <ul class="list-group">
@@ -42,6 +44,10 @@ if (isset($this->session->userdata['logged_in'])) {
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 Checklists
                 <span class="badge badge-primary badge-pill"><?php echo $checklists_count ?></span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                RMA Forms
+                <span class="badge badge-primary badge-pill"><?php echo $rma_forms_count ?></span>
             </li>
         </ul><br>
         <div id="form-messages" class='alert hidden' role='alert'></div>

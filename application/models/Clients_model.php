@@ -25,7 +25,7 @@ class Clients_model extends CI_Model
         }
     }
 
-    function getClients($id = '', $projects = '')
+    function getClients($id = '', $project = '')
     {
         $response = array();
         if ($this->db->table_exists('clients')) {
@@ -38,8 +38,8 @@ class Clients_model extends CI_Model
                 $this->db->where($condition);
                 $this->db->limit(1);
             }
-            if ($projects != '') {
-                $condition = "projects LIKE '%$projects%'";
+            if ($project != '') {
+                $condition = "projects LIKE '%$project%'";
                 $this->db->where($condition);
                 $this->db->limit(1);
             }

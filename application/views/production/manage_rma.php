@@ -16,9 +16,9 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
             echo $message_display . '</div>';
         }
         ?>
-        <nav aria-label="Checklist navigation">
+        <nav aria-label="rma navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="/production/add_rma/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -42,12 +42,12 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
                     <?php foreach ($results as $data) { ?>
                         <tr id='<?php echo $data->id ?>'>
                             <td class="mobile-hide"><?php echo $data->date ?></td>
-                            <td class="mobile-hide"><?php echo $data->number ?></td>
-                            <td class="mobile-hide"><?php echo $data->project ?></td>
+                            <td><?php echo $data->number ?></td>
+                            <td><?php echo $data->project ?></td>
                             <td class="mobile-hide"><?php echo $data->serial ?></td>
-                            <td><?php echo $data->assembler ?></td>
-                            <td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-                            <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+                            <td class="mobile-hide"><?php echo $data->assembler ?></td>
+                            <td><a id='edit_rma' href='/production/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+                            <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                         </tr>
                     <?php } ?>
                 </tbody>
@@ -67,10 +67,10 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 <script>
     var client = '<?php echo $client[0]['name'] ?>';
 
-    function trashRMA(id, project, serial) {
+    function trash_rma(id, project, serial) {
         var r = confirm("Trash RMA Form " + serial + "?");
         if (r == true) {
-            $.post("/production/trashRMA", {
+            $.post("/production/trash_rma", {
                 id: id,
                 project: project,
                 serial: serial

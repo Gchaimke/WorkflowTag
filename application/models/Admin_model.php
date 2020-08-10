@@ -209,7 +209,7 @@ class Admin_model extends CI_Model
             "assembler" => 'User',
             "problem" => 'client problem',
             "repair" => 'repair comment',
-            "parts" => 'CPU:i7;RAM:8gb',
+            "parts" => 'CPU:i7;RAM:8gb'
         );
         $this->db->insert('rma_forms', $demoRMA);
     }
@@ -325,6 +325,9 @@ class Admin_model extends CI_Model
         //get checklists number
         if ($this->db->table_exists('checklists')) {
             $response['checklists'] = $this->db->count_all("checklists");
+        }
+        if ($this->db->table_exists('rma_forms')) {
+            $response['rma_forms'] = $this->db->count_all("rma_forms");
         }
         return $response;
     }

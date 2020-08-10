@@ -126,7 +126,7 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
-                $this->log_data("created '$project' checklist with serial '$serial'",1);
+                $this->log_data("created '$project' checklist with serial '$serial'", 1);
                 header("location: /production/checklists/" . $project);
             } else {
                 if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
@@ -189,7 +189,7 @@ class Production extends CI_Controller
                     return;
                 }
                 if ($result == TRUE) {
-                    $this->log_data("created '$project' checklist with serial '$current_serial'",1);
+                    $this->log_data("created '$project' checklist with serial '$current_serial'", 1);
                 }
             }
         }
@@ -288,7 +288,7 @@ class Production extends CI_Controller
             $index = 0;
             $id = 0;
             foreach ($users as $user) {
-                $options .= "<option value=".$user['name'].">" . $user['name'] . "</option>";
+                $options .= "<option value=" . $user['name'] . ">" . $user['name'] . "</option>";
             }
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
@@ -443,10 +443,110 @@ class Production extends CI_Controller
             'project' => $project
         );
         $this->Production_model->move_to_trash($data);
-        $this->log_data("trashed '$project' checklist with serial '$serial'",2);
+        $this->log_data("trashed '$project' checklist with serial '$serial'", 2);
     }
 
-    public function view_rma_clients(){
+    public function add_rma($project = '')
+    {
+        $data = array();
+        if ($project != '') {
+            $data['client_name'] = $this->Clients_model->getClients('', $project)[0]['name'];
+            $data['project'] = $project;
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/add_rma', $data);
+            $this->load->view('footer');
+        }
+    }
+
+    public function create_rma()
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('date', 'date', 'trim|xss_clean');
+        $this->form_validation->set_rules('number', 'number', 'trim|xss_clean');
+        $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
+        $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
+        $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
+        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
+        $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
+        $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
+        if ($this->form_validation->run() != FALSE) {
+            $data = array(
+                "date" => $this->input->post('date'),
+                "number" =>$this->input->post('number'),
+                "serial" => $this->input->post('serial'),
+                "client" => $this->input->post('client'),
+                "project" => $this->input->post('project'),
+                "assembler" => $this->input->post('assembler'),
+                "problem" => $this->input->post('problem'),
+                "repair" => $this->input->post('repair'),
+                "parts" => $this->input->post('parts')
+            );
+            echo $this->Production_model->create_rma($data);
+        }
+    }
+
+    public function edit_rma($id = '')
+    {
+        $data = array();
+        if ($id != '') {
+            $data['rma_form'] = $this->Production_model->get_rma($id);
+            $this->load->view('header');
+            $this->load->view('main_menu');
+            $this->load->view('production/edit_rma', $data);
+            $this->load->view('footer');
+        }else{
+            header("location: /production/rma/");
+        }
+    }
+
+    public function update_rma()
+    {
+        // Check validation for user input in SignUp form
+        $this->form_validation->set_rules('id', 'id', 'trim|xss_clean');
+        $this->form_validation->set_rules('date', 'date', 'trim|xss_clean');
+        $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
+        $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
+        $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
+        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
+        $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
+        $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
+        if ($this->form_validation->run() != FALSE) {
+            $data = array(
+                "id" => $this->input->post('id'),
+                "date" => $this->input->post('date'),
+                "serial" => $this->input->post('serial'),
+                "client" => $this->input->post('client'),
+                "project" => $this->input->post('project'),
+                "assembler" => $this->input->post('assembler'),
+                "problem" => $this->input->post('problem'),
+                "repair" => $this->input->post('repair'),
+                "parts" => $this->input->post('parts')
+            );
+            echo $this->Production_model->update_rma($data);
+        }
+    }
+
+    public function trash_rma()
+    {
+        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+        $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
+        $this->form_validation->set_rules('number', 'number', 'trim|xss_clean');
+        $project = $this->input->post('project');
+        $number = $this->input->post('number');
+        $data = array(
+            'id' =>  $this->input->post('id'),
+            'number' =>  $number,
+            'project' => $project
+        );
+        $this->Production_model->move_to_trash($data,'rma_forms');
+        $this->log_data("trashed '$project' RMA #'$number'", 2);
+    }
+
+    public function view_rma_clients()
+    {
         $data = array();
         // get data from model
         $data['clients'] = $this->Clients_model->getClients();
@@ -463,9 +563,9 @@ class Production extends CI_Controller
         $config = array();
         $limit_per_page = 20;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        $total_records = $this->Production_model->get_total($project,'rma_forms');
+        $total_records = $this->Production_model->get_total($project, 'rma_forms');
         if ($total_records > 0) {
-            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project,'rma_forms');
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
 
             $config['base_url'] = base_url() . 'production/rma/' . $project;
             $config['total_rows'] = $total_records;
@@ -501,7 +601,7 @@ class Production extends CI_Controller
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project));
         $this->load->view('header');
-        $this->load->view('main_menu', $params);
+        $this->load->view('main_menu');
         $this->load->view('production/manage_rma', $params);
         $this->load->view('footer');
     }
@@ -554,7 +654,7 @@ class Production extends CI_Controller
     public function delete_photo()
     {
         $this->form_validation->set_rules('photo', 'Photo', 'trim|xss_clean');
-        
+
         if ($this->form_validation->run() == TRUE) {
             $photo = $this->input->post('photo');
             // Use unlink() function to delete a file  
@@ -562,7 +662,7 @@ class Production extends CI_Controller
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " cannot be deleted due to an error");
             } else {
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " has been deleted");
-                $this->log_data('deleted '.$photo,3);
+                $this->log_data('deleted ' . $photo, 3);
             }
         }
     }
@@ -576,16 +676,16 @@ class Production extends CI_Controller
         echo "ok";
     }
 
-    public function log_data($msg,$level=0)
+    public function log_data($msg, $level = 0)
     {
         if (!file_exists('application/logs/admin')) {
-			mkdir('application/logs/admin', 0770, true);
-		}
-		$level_arr = array('INFO','CREATE','TRASH','DELETE');
+            mkdir('application/logs/admin', 0770, true);
+        }
+        $level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
         $user = $this->session->userdata['logged_in']['name'];
         $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
         $fp = fopen($log_file, 'a'); //opens file in append mode  
-        fwrite($fp, $level_arr[$level]." - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+        fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
         fclose($fp);
     }
 }

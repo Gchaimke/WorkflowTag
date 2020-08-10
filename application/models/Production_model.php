@@ -35,8 +35,8 @@ class Production_model extends CI_Model
 					$condition = "id ='$id'";
 					$this->db->where($condition);
 					$this->db->limit(1);
-				}else{
-					$id = str_replace(':',',',$id);
+				} else {
+					$id = str_replace(':', ',', $id);
 					$condition = "id IN ($id)";
 					$this->db->where($condition);
 				}
@@ -79,13 +79,18 @@ class Production_model extends CI_Model
 		return $this->db->update('checklists', $data, $where);
 	}
 
-	function move_to_trash($data)
+	function move_to_trash($data, $table = 'checklists')
 	{
 		$where = "id =" . $data['id'];
 		$data = array(
-			'project' => 'Trash '. $data['project']
+			'project' => 'Trash ' . $data['project']
 		);
-		return $this->db->update('checklists', $data, $where);
+		$this->db->update($table, $data, $where);
+		if ($this->db->affected_rows() > 0) {
+			echo 'OK: Moved to Trash!';
+		} else {
+			echo "ERROR: Not moved to Trash!";
+		}
 	}
 
 	function getLastChecklist($project)
@@ -126,7 +131,57 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start, $project,$table='checklists')
+	public function create_rma($data)
+	{
+		// Query to check whether serial already exist or not
+		$condition = "number ='" . $data['number'] . "' AND project='" . $data['project'] . "'";
+		$this->db->select('*');
+		$this->db->from('rma_forms');
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 0) {
+			// Query to insert data in database
+			$out = $this->db->insert('rma_forms', $data);
+			if ($this->db->affected_rows() > 0) {
+				echo 'OK: New RMA Created!';
+			} else {
+				echo $out;
+			}
+		} else {
+			echo "ERROR: RMA number exists!";
+		}
+	}
+
+	public function update_rma($data)
+	{
+		$where = "id =" . $data['id'];
+		$this->db->update('rma_forms', $data, $where);
+		if ($this->db->affected_rows() > 0) {
+			echo 'OK: RMA Updated!';
+		} else {
+			echo "ERROR: No new data!";
+		}
+	}
+
+	function get_rma($id = '')
+	{
+		if ($this->db->table_exists('rma_forms')) {
+			if ($id != "") {
+				$id = urldecode($id);
+				$condition = "id = $id";
+				$this->db->select('*');
+				$this->db->from('rma_forms');
+				$this->db->where($condition);
+				$this->db->limit(1);
+				$q = $this->db->get();
+				$response = $q->result_array();
+				return $response;
+			}
+		}
+	}
+
+	public function get_current_checklists_records($limit, $start, $project, $table = 'checklists')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
@@ -148,7 +203,7 @@ class Production_model extends CI_Model
 		return false;
 	}
 
-	public function get_total($project = '',$table='checklists')
+	public function get_total($project = '', $table = 'checklists')
 	{
 		if ($project != '') {
 			$this->db->from($table);
