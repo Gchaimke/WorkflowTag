@@ -181,6 +181,20 @@ class Production_model extends CI_Model
 		}
 	}
 
+	function search_rma($sarch)
+	{
+		if ($this->db->table_exists('rma_forms')) {
+			$condition = "serial LIKE '%$sarch%' OR number LIKE '%$sarch%'";
+			$this->db->select('*');
+			$this->db->from('rma_forms');
+			$this->db->where($condition);
+			$this->db->order_by('project');
+			$q = $this->db->get();
+			$response = $q->result_array();
+			return $response;
+		}
+	}
+
 	public function get_current_checklists_records($limit, $start, $project, $table = 'checklists')
 	{
 		$this->db->limit($limit, $start);

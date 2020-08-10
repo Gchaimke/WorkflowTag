@@ -474,7 +474,7 @@ class Production extends CI_Controller
         if ($this->form_validation->run() != FALSE) {
             $data = array(
                 "date" => $this->input->post('date'),
-                "number" =>$this->input->post('number'),
+                "number" => $this->input->post('number'),
                 "serial" => $this->input->post('serial'),
                 "client" => $this->input->post('client'),
                 "project" => $this->input->post('project'),
@@ -496,7 +496,7 @@ class Production extends CI_Controller
             $this->load->view('main_menu');
             $this->load->view('production/edit_rma', $data);
             $this->load->view('footer');
-        }else{
+        } else {
             header("location: /production/rma/");
         }
     }
@@ -541,8 +541,26 @@ class Production extends CI_Controller
             'number' =>  $number,
             'project' => $project
         );
-        $this->Production_model->move_to_trash($data,'rma_forms');
+        $this->Production_model->move_to_trash($data, 'rma_forms');
         $this->log_data("trashed '$project' RMA #'$number'", 2);
+    }
+
+    public function search_rma()
+    {
+        $this->form_validation->set_rules('search', 'search', 'trim|xss_clean');
+        $data = $this->Production_model->search_rma($this->input->post('search'));
+        $str = '';
+        $count = 0;
+        foreach ($data as $result) {
+            if (strpos($result["project"], 'Trash') !== false) {
+                $str .= "<div class='badge badge-danger' >" . urldecode($result["project"]) . ": " . $result["number"] . "</div>";
+            } else {
+                $str .= "<a class='badge badge-info' href='/production/edit_rma/" . $result["id"] . "'>" . urldecode($result["project"]) . ": " . $result["number"] . "</a>";
+            }
+
+            $count++;
+        }
+        echo "<h2>Found " . $count . " serials.</h2>" . $str;
     }
 
     public function view_rma_clients()

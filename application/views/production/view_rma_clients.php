@@ -14,9 +14,9 @@
 		} ?>
 		<form id="form">
 			<div class="input-group mb-3">
-				<input id='inputSearch' type="text" class="form-control" placeholder="Search for RMA Form #" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
+				<input id='inputSearch' type="text" class="form-control" placeholder="Search for RMA Form by number or system SN" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
 				<div class="input-group-append">
-					<button class="btn btn-secondary" type="button" onclick="rmaSearch()">Search</button>
+					<button class="btn btn-secondary" type="button" onclick="search_rma()">Search</button>
 				</div>
 			</div>
 			<div id='searchResult'></div>
@@ -42,11 +42,11 @@
 	</div>
 </main>
 <script>
-	function rmaSearch() {
+	function search_rma() {
 		var search = document.getElementById("inputSearch").value;
-		if (sn.length >= 3) {
-			$.post("/production/rma_search", {
-				sn: search
+		if (search.length >= 3) {
+			$.post("/production/search_rma", {
+				search: search
 			}).done(function(e) {
 				if (e.length > 0) {
 					$('#searchResult').empty();
@@ -66,7 +66,7 @@
 		var pathname = window.location.pathname.split("/");
 		if (e.which == 13) { //enter
 			e.preventDefault();
-			serialSearch();
+			search_rma();
 		}
 	};
 </script>
