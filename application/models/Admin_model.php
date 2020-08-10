@@ -152,6 +152,68 @@ class Admin_model extends CI_Model
         $this->db->insert('checklists', $demoChecklist);
     }
 
+    function createRMADb()
+    {
+        $this->load->dbforge();
+        $rma = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'date' => array(
+                'type' => 'DATE',
+                'null' => FALSE
+            ),
+            'number' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30,
+            ),
+            'serial' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30,
+            ),
+            'client' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30
+            ),
+            'project' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 60
+            ),
+            'assembler' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
+            ),
+            'problem' => array(
+                'type' => 'TEXT'
+            ),
+            'repair' => array(
+                'type' => 'TEXT'
+            ),
+            'parts' => array(
+                'type' => 'TEXT'
+            )
+        );
+        $this->dbforge->add_field($rma);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('rma_forms');
+
+        $demoRMA = array(
+            "date" => '2020-04-30',
+            "number" => '5001',
+            "serial" => 'P001-07-20',
+            "client" => 'Avdor-HLT',
+            "project" => 'Project1',
+            "assembler" => 'User',
+            "problem" => 'client problem',
+            "repair" => 'repair comment',
+            "parts" => 'CPU:i7;RAM:8gb',
+        );
+        $this->db->insert('rma_forms', $demoRMA);
+    }
+
     function createProjectsDb()
     {
         $this->load->dbforge();

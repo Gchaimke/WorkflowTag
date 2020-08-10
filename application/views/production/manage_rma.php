@@ -30,8 +30,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
                     <tr>
                         <th scope="col" class="mobile-hide">Date</th>
                         <th scope="col">RMA Number</th>
-                        <th scope="col" class="mobile-hide">Client</th>
-                        <th scope="col" >Project</th>
+                        <th scope="col">Project</th>
                         <th scope="col" class="mobile-hide">Serial Number</th>
                         <th scope="col" class="mobile-hide">Created by</th>
                         <th scope="col">Edit</th>
@@ -42,21 +41,11 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 
                     <?php foreach ($results as $data) { ?>
                         <tr id='<?php echo $data->id ?>'>
-                            <td>
-                                <div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
-                            </td>
-                            <td><?php if ($data->serial != '') {
-                                    echo $data->serial;
-                                } else {
-                                    echo "SN template not found!";
-                                }  ?></td>
-                            <td class="mobile-hide"><?php echo $data->project ?></td>
-                            <td>
-                                <a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
-                                    <?php echo $data->progress ?>%</a></td>
-                            <td><?php echo $data->assembler ?></td>
-                            <td class="mobile-hide"><?php echo $data->qc ?></td>
                             <td class="mobile-hide"><?php echo $data->date ?></td>
+                            <td class="mobile-hide"><?php echo $data->number ?></td>
+                            <td class="mobile-hide"><?php echo $data->project ?></td>
+                            <td class="mobile-hide"><?php echo $data->serial ?></td>
+                            <td><?php echo $data->assembler ?></td>
                             <td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                             <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
                         </tr>
@@ -78,31 +67,15 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 <script>
     var client = '<?php echo $client[0]['name'] ?>';
 
-    function trashChecklist(id, project, serial) {
-        var r = confirm("Trash checklist " + serial + "?");
+    function trashRMA(id, project, serial) {
+        var r = confirm("Trash RMA Form " + serial + "?");
         if (r == true) {
-            $.post("/production/trashChecklist", {
+            $.post("/production/trashRMA", {
                 id: id,
                 project: project,
                 serial: serial
             }).done(function(o) {
                 //$('[id^=' + id + ']').remove();
-                location.reload();
-            });
-        }
-    }
-
-    function gen_checklists(project, count) {
-        var r = confirm("Add " + count + " checklist/s to " + project + "?");
-        if (r == true) {
-            $.post("/production/gen_checklists", {
-                client: client,
-                project: project,
-                count: count
-            }).done(function(o) {
-                if (o != 1) {
-                    alert(o);
-                }
                 location.reload();
             });
         }

@@ -126,7 +126,7 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start, $project)
+	public function get_current_checklists_records($limit, $start, $project,$table='checklists')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
@@ -135,7 +135,7 @@ class Production_model extends CI_Model
 			$this->db->where($condition);
 		}
 		$this->db->order_by('id', 'DESC');
-		$query = $this->db->get("checklists");
+		$query = $this->db->get($table);
 
 		if ($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
@@ -148,10 +148,10 @@ class Production_model extends CI_Model
 		return false;
 	}
 
-	public function get_total($project = '')
+	public function get_total($project = '',$table='checklists')
 	{
 		if ($project != '') {
-			$this->db->from('checklists');
+			$this->db->from($table);
 			$project = urldecode($project);
 			$this->db->where('project', $project);
 		}

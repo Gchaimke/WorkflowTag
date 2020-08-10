@@ -68,6 +68,13 @@ class Admin extends CI_Controller
 		} else {
 			$data['response'] .= "Table 'projects' exists!<br>" . PHP_EOL;
 		}
+		if (!$this->db->table_exists('rma_forms')) {
+			$this->Admin_model->createRMADb();
+			$data['response'] .= "Table 'rma_forms' created!<br>" . PHP_EOL;
+		} else {
+			$data['response'] .= "Table 'rma_forms' exists!<br>" . PHP_EOL;
+		}
+
 		if (!$this->db->table_exists('settings')) {
 			$this->Admin_model->createSettingsDb();
 			$data['settings'] = $this->Admin_model->getSettings();
@@ -76,6 +83,7 @@ class Admin extends CI_Controller
 			$data['response'] .= "Table 'settings' exists!<br>" . PHP_EOL;
 			$data['settings'] = $this->Admin_model->getSettings();
 		}
+	
 		echo $data['response'];
 	}
 

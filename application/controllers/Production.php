@@ -463,9 +463,9 @@ class Production extends CI_Controller
         $config = array();
         $limit_per_page = 20;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
-        $total_records = $this->Production_model->get_total($project);
+        $total_records = $this->Production_model->get_total($project,'rma_forms');
         if ($total_records > 0) {
-            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project,'rma_forms');
 
             $config['base_url'] = base_url() . 'production/rma/' . $project;
             $config['total_rows'] = $total_records;

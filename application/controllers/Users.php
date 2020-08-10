@@ -139,6 +139,7 @@ class Users extends CI_Controller
             $this->Admin_model->createSettingsDb();
             $this->Admin_model->createCompaniesDb();
             $this->Admin_model->createFormsDb();
+            $this->Admin_model->createRMADb();
             $data['response'] .= "All Tables created!<br> username:Admin <br> Password:Admin.";
         }
         $this->load->view('users/login', $data);
