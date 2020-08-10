@@ -23,19 +23,19 @@ if (validation_errors()) {
             <input type='hidden' name='assembler' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
-                        <div class="input-group mb-2 col-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA Number</div>
                               </div>
                               <input type='text' class="form-control" name='number' required>
                         </div>
-                        <div class="input-group mb-2 col-5">
+                        <div class="input-group mb-2 col-lg-5">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Serial Number</div>
                               </div>
                               <input type='text' class="form-control" name='serial' required>
                         </div>
-                        <div class="input-group mb-2 col-3">
+                        <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>

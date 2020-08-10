@@ -2,6 +2,9 @@
     body {
         margin-top: 0;
     }
+    .print-hide{
+        display: none;
+    }
     .navbar {
         position: relative;
         display: -ms-flexbox;
@@ -36,6 +39,7 @@
         max-width: 300px;
         max-height: 150px;
         display: block;
+        opacity: 0.5;
     }
 
     b#date {
