@@ -13,7 +13,30 @@ if (!isset($rma_form)) {
       $data = $rma_form[0];
 }
 ?>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?'.filemtime('assets/css/print.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
+<style>
+      @media print {
+            .jumbotron {
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  background-color: transparent;
+            }
+
+            form#ajax-form {
+                  margin-top: 100px;
+            }
+
+            .form-row {
+                  margin-bottom: 1em;
+            }
+
+            .input-group-text {
+                  font-weight: bold;
+            }
+      }
+</style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
 <div id="form-messages" class='alert hidden' data-url="/production/rma/<?php echo $data['project'] ?>" role='alert'></div>
 <main role="main">
@@ -95,3 +118,6 @@ if (!isset($rma_form)) {
             <?php echo form_close(); ?>
       </div>
 </main>
+<script>
+      document.title = 'RMA <?php echo $data['number'] ?>';  
+</script>
