@@ -332,7 +332,7 @@ class Admin_model extends CI_Model
         return $response;
     }
 
-    public function get_current_checklists_records($limit, $start, $project)
+    public function get_current_checklists_records($limit, $start, $project,$table='checklists')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
@@ -340,24 +340,22 @@ class Admin_model extends CI_Model
 			$condition = "project LIKE \"$project%\"";
 			$this->db->where($condition);
 		}
-		$this->db->order_by('id', 'DESC');
-		$query = $this->db->get("checklists");
+		$this->db->order_by('date', 'DESC');
+		$query = $this->db->get($table);
 
 		if ($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {
 				$data[] = $row;
 			}
-
 			return $data;
 		}
-
-		return false;
+		return  false;
 	}
 
-    public function get_total($project = '')
+    public function get_total($project = '',$table='checklists')
 	{
 		if ($project != '') {
-			$this->db->from('checklists');
+			$this->db->from($table);
             $project = urldecode($project);
             $condition = "project LIKE '$project%'";
 			$this->db->where($condition);
@@ -365,18 +363,18 @@ class Admin_model extends CI_Model
 		return $this->db->count_all_results();
     }
     
-    function deleteChecklist($id)
+    function deleteChecklist($id,$table='checklists')
 	{
-		$this->db->delete('wft_checklists', array('id' => $id));
+		$this->db->delete($table, array('id' => $id));
     }
     
-    function restore_from_trash($data)
+    function restore_from_trash($data,$table='checklists')
 	{
         $where = "id =" . $data['id'];
         $project = str_replace('Trash ','',$data['project']);
 		$data = array(
 			'project' => $project
 		);
-		return $this->db->update('checklists', $data, $where);
+		return $this->db->update($table, $data, $where);
 	}
 }

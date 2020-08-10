@@ -83,7 +83,7 @@ class Admin extends CI_Controller
 			$data['response'] .= "Table 'settings' exists!<br>" . PHP_EOL;
 			$data['settings'] = $this->Admin_model->getSettings();
 		}
-	
+
 		echo $data['response'];
 	}
 
@@ -94,11 +94,19 @@ class Admin extends CI_Controller
 		// init params
 		$params = array();
 		$config = array();
-		$limit_per_page = 10;
+		$limit_per_page = 30;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$total_records = $this->Admin_model->get_total($project);
+		$total_records = $this->Admin_model->get_total($project) + $this->Admin_model->get_total($project, 'rma_forms');
+		$trashed_checklists = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+		$trashed_rma = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
+		if ($trashed_checklists) {
+			$all_trash = ($trashed_rma) ? array_merge($trashed_checklists, $trashed_rma) : $trashed_checklists;
+		} else {
+			$all_trash = ($trashed_rma) ? $trashed_rma : null;
+		}
+
 		if ($total_records > 0) {
-			$params["results"] = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+			$params["results"] = $all_trash;
 
 			$config['base_url'] = base_url() . 'admin/manage_trash';
 			$config['total_rows'] = $total_records;
@@ -137,16 +145,20 @@ class Admin extends CI_Controller
 		$this->load->view('footer');
 	}
 
-	public function restoreChecklist()
+	public function restore_item()
 	{
 		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
 		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-
+		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$data = array(
 			'id' =>  $this->input->post('id'),
 			'project' => $this->input->post('project')
 		);
-		$this->Admin_model->restore_from_trash($data);
+		if ($this->input->post('kind') == 'Checklist') {
+			$this->Admin_model->restore_from_trash($data);
+		}else {
+			$this->Admin_model->restore_from_trash($data, 'rma_forms');
+		}
 	}
 
 	public function delete_from_trash()
@@ -154,10 +166,16 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
 		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
 		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
+		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$id = $this->input->post('id');
 		$project = $this->input->post('project');
 		$serial = $this->input->post('serial');
-		$this->Admin_model->deleteChecklist($id);
+		if ($this->input->post('kind') == 'Checklist') {
+			$this->Admin_model->deleteChecklist($id);
+		} else {
+			$this->Admin_model->deleteChecklist($id, 'rma_forms');
+		}
+
 		$this->log_data("deleted from '$project' checklist '$serial'", 3);
 	}
 
@@ -298,7 +316,7 @@ class Admin extends CI_Controller
 		$dir = explode('/', $dir);  //string to array
 		$last_dir = array_pop($dir);            //remove last element
 		$dir = implode('/', $dir);  //array to string
-		if($dir!=''){
+		if ($dir != '') {
 			$html_view .=  "<a href='?folder=$dir'>$dir/<a><b>" . $last_dir . "/</b><br>";
 		}
 		// output file list as HTML table
