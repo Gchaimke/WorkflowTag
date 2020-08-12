@@ -450,6 +450,7 @@ class Production extends CI_Controller
     {
         $data = array();
         if ($project != '') {
+            $project = urldecode($project);
             $data['client_name'] = $this->Clients_model->getClients('', $project)[0]['name'];
             $data['project'] = $project;
             $this->load->view('header');
