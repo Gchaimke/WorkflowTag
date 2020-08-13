@@ -543,7 +543,7 @@ class Production extends CI_Controller
             'project' => $project
         );
         $this->Production_model->move_to_trash($data, 'rma_forms');
-        $this->log_data("trashed '$project' RMA #'$number'", 2);
+        $this->log_data("trashed $project RMA #$number", 2);
     }
 
     public function search_rma()

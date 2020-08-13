@@ -188,7 +188,7 @@ class Admin extends CI_Controller
 		// init params
 		$params = array();
 		$config = array();
-		$limit_per_page = 10;
+		$limit_per_page = 50;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 		$total_records = count($dirlistR);
 		if ($total_records > 0) {

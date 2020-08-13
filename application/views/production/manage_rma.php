@@ -67,13 +67,13 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 <script>
     var client = '<?php echo $client[0]['name'] ?>';
 
-    function trash_rma(id, project, serial) {
-        var r = confirm("Trash RMA Form " + serial + "?");
+    function trash_rma(id, project, number) {
+        var r = confirm("Trash RMA Form " + number + "?");
         if (r == true) {
             $.post("/production/trash_rma", {
                 id: id,
                 project: project,
-                serial: serial
+                number: number
             }).done(function(o) {
                 //$('[id^=' + id + ']').remove();
                 location.reload();
