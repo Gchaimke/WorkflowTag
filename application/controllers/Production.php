@@ -29,7 +29,7 @@ class Production extends CI_Controller
         // init params
         $params = array();
         $config = array();
-        $limit_per_page = 20;
+        $limit_per_page = 50;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
         if ($total_records > 0) {
