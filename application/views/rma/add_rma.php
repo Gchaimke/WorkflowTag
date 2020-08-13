@@ -7,7 +7,7 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 ?>
-<div id="form-messages" class='alert hidden' data-url="/production/rma/<?php echo $project ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $project ?>" role='alert'></div>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -17,7 +17,7 @@ if (validation_errors()) {
             </div>
       </div>
       <div class="container">
-            <?php echo form_open("production/create_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("rma/create_rma/", "id=ajax-form"); ?>
             <input type='hidden' name='client' value='<?php echo $client_name ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <input type='hidden' name='assembler' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>

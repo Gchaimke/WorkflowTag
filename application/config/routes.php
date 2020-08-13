@@ -53,6 +53,7 @@ $route['default_controller'] = 'production';
 $route['users'] = 'users';
 $route['clients'] = 'clients';
 $route['templates'] = 'templates';
+$route['rma'] = 'rma';
 $route['(:any)'] = 'pages/view/$1';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

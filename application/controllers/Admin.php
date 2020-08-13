@@ -170,13 +170,14 @@ class Admin extends CI_Controller
 		$id = $this->input->post('id');
 		$project = $this->input->post('project');
 		$serial = $this->input->post('serial');
-		if ($this->input->post('kind') == 'Checklist') {
+		$kind = $this->input->post('kind');
+		if ($kind  == 'Checklist') {
 			$this->Admin_model->deleteChecklist($id);
 		} else {
 			$this->Admin_model->deleteChecklist($id, 'rma_forms');
 		}
 
-		$this->log_data("deleted from '$project' checklist '$serial'", 3);
+		$this->log_data("deleted from '$project' $kind '$serial'", 3);
 	}
 
 	public function view_log()
@@ -282,7 +283,7 @@ class Admin extends CI_Controller
 		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
 	}
 
-	public function log_data($msg, $level = 0)
+	function log_data($msg, $level = 0)
 	{
 		if (!file_exists('application/logs/admin')) {
 			mkdir('application/logs/admin', 0770, true);

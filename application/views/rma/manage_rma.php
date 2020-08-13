@@ -1,6 +1,3 @@
-<?php
-$project =  explode("/", $_SERVER['REQUEST_URI'])[3];
-?>
 <main role="main">
     <div class="jumbotron">
         <div class="container">
@@ -18,7 +15,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
         ?>
         <nav aria-label="rma navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="/production/add_rma/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -46,7 +43,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
                             <td><?php echo $data->project ?></td>
                             <td class="mobile-hide"><?php echo $data->serial ?></td>
                             <td class="mobile-hide"><?php echo $data->assembler ?></td>
-                            <td><a id='edit_rma' href='/production/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+                            <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                             <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                         </tr>
                     <?php } ?>
@@ -70,7 +67,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
     function trash_rma(id, project, number) {
         var r = confirm("Trash RMA Form " + number + "?");
         if (r == true) {
-            $.post("/production/trash_rma", {
+            $.post("/rma/trash_rma", {
                 id: id,
                 project: project,
                 number: number

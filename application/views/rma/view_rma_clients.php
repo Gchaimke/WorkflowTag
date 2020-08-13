@@ -31,7 +31,7 @@
 				if ($client['projects'] != "") {
 					$arr = explode(',', $client['projects']);
 					foreach ($arr as $project) {
-						echo  "<a href='/production/rma/$project' class='btn btn-primary  btn-block'>$project</a>";
+						echo  "<a href='/rma/view_project_rma/$project' class='btn btn-primary  btn-block'>$project</a>";
 					}
 				}
 				echo '</div></center></div>';
@@ -45,7 +45,7 @@
 	function search_rma() {
 		var search = document.getElementById("inputSearch").value;
 		if (search.length >= 3) {
-			$.post("/production/search_rma", {
+			$.post("/rma/search_rma", {
 				search: search
 			}).done(function(e) {
 				if (e.length > 0) {

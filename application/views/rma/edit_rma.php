@@ -8,7 +8,7 @@ if (validation_errors()) {
 }
 
 if (!isset($rma_form)) {
-      header("location: /production/rma/");
+      header("location: /rma/");
 } else {
       $data = $rma_form[0];
 }
@@ -38,7 +38,7 @@ if (!isset($rma_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/production/rma/<?php echo $data['project'] ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['project'] ?>" role='alert'></div>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -49,7 +49,7 @@ if (!isset($rma_form)) {
       </div>
       <div class="container">
 
-            <?php echo form_open("production/update_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("rma/update_rma/", "id=ajax-form"); ?>
             <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
             <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
             <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
