@@ -317,6 +317,11 @@ class Production extends CI_Controller
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
+                    } else if (end($col) == "I") {
+                        $tr .= "<tr class='input_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0];
+                        $tr .= "</td><td><input type='text' class='form-control input' id='" . ($id + count($rows)) . "'></td></tr>";
+                        $index++;
+                        $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";

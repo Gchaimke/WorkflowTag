@@ -3,6 +3,7 @@ var progress_status = "";
 var chArray = $('#input_data').val().split(",");
 var scansArray = [];
 var checkRows = $('.check_row');
+var inputRows = $('input.input');
 var selectRows = $('select.review');
 var scanRows = $('.scan_row');
 var AllCheckRows = $('.verify').length + $('.review').length;
@@ -20,10 +21,14 @@ $(document).ready(function () {
         }
     });
 
+    inputRows.each(function () {
+        $(this).val(chArray[this.id]);
+    });
+
     selectRows.each(function () {
         if (chArray[this.id]) {
             $(this).val(chArray[this.id]);
-        }else{
+        } else {
             $(this).val('Select');
         }
     });
@@ -43,8 +48,10 @@ $(document).ready(function () {
 });
 
 function updateProgress() {
-    AllCheckRows = $('.verify').length + $('.review').length;
-    AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
+    AllCheckRows = $('.verify').length + $('.review').length + $('.input_row').length;
+    AllChecked = $("input:checkbox:checked").length 
+    + $('.review option:selected[value!="Select"]').length 
+    + $('input.input').filter(function(){return $(this).val();}).length;
     progress_status = 100 / (AllCheckRows) * AllChecked
     setProgress(progress_status);
 }
@@ -151,6 +158,14 @@ $("select.review").change(function (e) {
         $('#input_data').val(chArray.toString());
     }
 
+});
+
+$('input.input').change(function (e) {
+    chArray[this.id] = $(this).val();
+    log += getDateTime() + assembler + " inserted " + $(this).val() + ";";
+    $('#input_log').val(log);
+    $('#input_data').val(chArray.toString());
+    updateProgress();
 });
 
 $(".scans").change(function (e) {
