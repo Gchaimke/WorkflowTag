@@ -73,7 +73,7 @@ if (isset($this->session->userdata['logged_in'])) {
                                     <div class="input-group-prepend">
                                           <div class="input-group-text">Email</div>
                                     </div>
-                                    <input type='text' class="form-control ltr" name='email' required>
+                                    <input type='text' class="form-control ltr" name='email'>
                               </div>
                         </div>
                         <input type='submit' class="btn btn-info" name='submit' value='Add User'>
