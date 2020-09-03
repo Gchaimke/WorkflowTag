@@ -12,6 +12,12 @@
             echo "<div class='alert alert-success' role='alert'>";
             echo $message_display . '</div>';
         }
+
+        if(isset($client[0]['name'])){
+            $current_client = $client[0]['name'];
+        }else{
+            $current_client ='Avdor';
+        }
         ?>
         <nav aria-label="rma navigation">
             <ul class="pagination left">
@@ -62,7 +68,7 @@
     </div>
 </main>
 <script>
-    var client = '<?php echo $client[0]['name'] ?>';
+    var client = '<?php echo $current_client?>';
 
     function trash_rma(id, project, number) {
         var r = confirm("Trash RMA Form " + number + "?");

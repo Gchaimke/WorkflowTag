@@ -21,11 +21,22 @@
 			</div>
 			<div id='searchResult'></div>
 		</form>
+		<div class="card-columns">
+			<div class="card">
+				<center>
+					<div class="card-body">
+						<h5 class="card-title">Avdor RMA</h5>
+						<p class="card-text">Open RMA for regular Avdor Production:</p>
+					</div>
+					<div class="card-footer">
+						<a href='/rma/view_project_rma/Production' class='btn btn-primary  btn-block'>View Avdor RMA</a>
+					</div>
+				</center>
+			</div>
 			<?php
-			echo '<div class="card-columns">';
 			foreach ($clients as $client) {
 				echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
-				echo $client['name'].' RMA';
+				echo $client['name'] . ' RMA';
 				echo '</h5><p class="card-text">Select Project:</p></div>';
 				echo '<div class="card-footer">';
 				if ($client['projects'] != "") {
@@ -36,10 +47,8 @@
 				}
 				echo '</div></center></div>';
 			}
-
 			?>
-	</div>
-	</div>
+		</div>
 </main>
 <script>
 	function search_rma() {
@@ -50,10 +59,10 @@
 			}).done(function(e) {
 				if (e.length > 0) {
 					$('#searchResult').empty();
-					$('#searchResult').append( e );
+					$('#searchResult').append(e);
 				} else {
 					$('#searchResult').empty();
-					$('#searchResult').append("<h2>RMA form with "+search+" not found!</h2>");
+					$('#searchResult').append("<h2>RMA form with " + search + " not found!</h2>");
 				}
 			});
 		} else {

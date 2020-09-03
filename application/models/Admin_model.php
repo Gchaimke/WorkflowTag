@@ -168,19 +168,23 @@ class Admin_model extends CI_Model
             ),
             'number' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 30,
+                'constraint' => 100,
             ),
             'serial' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 30,
+                'constraint' => 100,
+            ),
+            'product_num' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100
             ),
             'client' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 30
+                'constraint' => 100
             ),
             'project' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 60
+                'constraint' => 100
             ),
             'assembler' => array(
                 'type' => 'VARCHAR',

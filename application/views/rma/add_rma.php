@@ -6,6 +6,15 @@ if (isset($message_display)) {
 if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
+
+if ($project == 'Production') {
+      $fuild_type = 'text';
+      $client = '';
+} else {
+      $fuild_type = 'hidden';
+      $client = $client_name;
+}
+
 ?>
 <div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $project ?>" role='alert'></div>
 <main role="main">
@@ -18,7 +27,6 @@ if (validation_errors()) {
       </div>
       <div class="container">
             <?php echo form_open("rma/create_rma/", "id=ajax-form"); ?>
-            <input type='hidden' name='client' value='<?php echo $client_name ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <input type='hidden' name='assembler' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
@@ -40,6 +48,20 @@ if (validation_errors()) {
                                     <div class="input-group-text">Date</div>
                               </div>
                               <input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>">
+                        </div>
+                  </div>
+                  <div class="form-row">
+                        <div class="input-group mb-2 col-lg-6">
+                              <div class="input-group-prepend">
+                                    <div class="input-group-text">Client Name: <?php echo $client ?></div>
+                              </div>
+                              <input type='<?php echo $fuild_type ?>' class="form-control" name='client' value='<?php echo $client ?>'>
+                        </div>
+                        <div class="input-group mb-2 col-lg-6">
+                              <div class="input-group-prepend">
+                                    <div class="input-group-text">Product Number</div>
+                              </div>
+                              <input type='text' class="form-control" name='product_num' value=''>
                         </div>
                   </div>
                   <div class="form-row">
