@@ -29,6 +29,7 @@
                         <th scope="col">RMA Number</th>
                         <th scope="col">Project</th>
                         <th scope="col" class="mobile-hide">Serial Number</th>
+                        <th scope="col">Part Number</th>
                         <th scope="col" class="mobile-hide">Created by</th>
                         <th scope="col">Edit</th>
                         <th scope="col">Trash</th>
@@ -42,6 +43,7 @@
                             <td><?php echo $data->number ?></td>
                             <td><?php echo $data->project ?></td>
                             <td class="mobile-hide"><?php echo $data->serial ?></td>
+                            <td><?php echo $data->product_num ?></td>
                             <td class="mobile-hide"><?php echo $data->assembler ?></td>
                             <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                             <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
