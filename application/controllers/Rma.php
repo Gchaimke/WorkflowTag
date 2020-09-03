@@ -24,15 +24,12 @@ class RMA extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function add_rma($project = 'Flex2')
+    public function add_rma($client = '')
     {
         $data = array();
-        if ($project != 'Production')  {
-            $project = urldecode($project);
-            $data['client_name'] = $this->Clients_model->getClients('', $project)[0]['name'];
-            $data['project'] = $project;
-        }else{
-            $data['project'] = 'Production';
+        if ($client != '') {
+            $data['client_name'] = $client;
+            $data['project'] = urldecode($this->uri->segment(4));
         }
         $this->load->view('header');
         $this->load->view('main_menu');
@@ -148,21 +145,23 @@ class RMA extends CI_Controller
         echo "<h2>Found " . $count . " serials.</h2>" . $str;
     }
 
-    public function view_project_rma($project = '')
+    public function view_project_rma($client = '')
     {
         // init params
+        $project = $this->uri->segment(4);
         $params = array();
         $config = array();
         $limit_per_page = 20;
-        $start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-        $total_records = $this->Production_model->get_total($project, 'rma_forms');
+        $uri_segment = 5;
+        $start_index = ($this->uri->segment($uri_segment)) ? $this->uri->segment($uri_segment) : 0;
+        $total_records = $this->Production_model->get_total($project, 'rma_forms', $client);
         if ($total_records > 0) {
-            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms', $client);
 
             $config['base_url'] = base_url() . 'rma/' . $project;
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
-            $config["uri_segment"] = 3;
+            $config["uri_segment"] = $uri_segment;
 
             $config['full_tag_open'] = '<ul class="pagination right">';
             $config['full_tag_close'] = '</ul>';
@@ -191,7 +190,7 @@ class RMA extends CI_Controller
             $params["links"] = $this->pagination->create_links();
         }
         $params['project'] = urldecode($project);
-        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
+        $params['client'] = $client;
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('rma/manage_rma', $params);

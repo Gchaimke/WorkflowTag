@@ -2,7 +2,7 @@
     <div class="jumbotron">
         <div class="container">
             <center>
-                <h2 class="display-3"><?php echo urldecode($project); ?> RMA Froms</h2>
+                <h2 class="display-3"><?php echo $client." ".$project; ?> RMA Forms</h2>
             </center>
         </div>
     </div>
@@ -12,16 +12,10 @@
             echo "<div class='alert alert-success' role='alert'>";
             echo $message_display . '</div>';
         }
-
-        if(isset($client[0]['name'])){
-            $current_client = $client[0]['name'];
-        }else{
-            $current_client ='Avdor';
-        }
         ?>
         <nav aria-label="rma navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $client."/".$project; ?>"><i class="fa fa-file-text"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -68,7 +62,7 @@
     </div>
 </main>
 <script>
-    var client = '<?php echo $current_client?>';
+    var client = '<?php echo $client?>';
 
     function trash_rma(id, project, number) {
         var r = confirm("Trash RMA Form " + number + "?");

@@ -38,7 +38,7 @@ if (!isset($rma_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['project'] ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['client']."/".$data['project'] ?>" role='alert'></div>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

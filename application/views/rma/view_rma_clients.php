@@ -22,17 +22,6 @@
 			<div id='searchResult'></div>
 		</form>
 		<div class="card-columns">
-			<div class="card">
-				<center>
-					<div class="card-body">
-						<h5 class="card-title">Avdor RMA</h5>
-						<p class="card-text">Open RMA for regular Avdor Production:</p>
-					</div>
-					<div class="card-footer">
-						<a href='/rma/view_project_rma/Production' class='btn btn-primary  btn-block'>View Avdor RMA</a>
-					</div>
-				</center>
-			</div>
 			<?php
 			foreach ($clients as $client) {
 				echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
@@ -42,10 +31,12 @@
 				if ($client['projects'] != "") {
 					$arr = explode(',', $client['projects']);
 					foreach ($arr as $project) {
-						echo  "<a href='/rma/view_project_rma/$project' class='btn btn-primary  btn-block'>$project</a>";
+						echo  "<a href='/rma/view_project_rma/" . $client['name'] . "/$project' class='btn btn-primary  btn-block'>$project</a>";
 					}
 				}
+				echo '<a href="/rma/view_project_rma/' . $client['name'] . '/Other" class="btn btn-primary  btn-block">Other</a>';
 				echo '</div></center></div>';
+				
 			}
 			?>
 		</div>
