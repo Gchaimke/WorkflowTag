@@ -55,13 +55,13 @@ if (!isset($rma_form)) {
             <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
-                        <div class="input-group mb-2 col-md-2">
+                        <div class="input-group mb-2 col-lg-2">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA #</div>
                               </div>
                               <input type='text' class="form-control" name='number' value='<?php echo $data['number'] ?>' disabled>
                         </div>
-                        <div class="input-group mb-2 col-md-3">
+                        <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">SN</div>
                               </div>
@@ -73,7 +73,7 @@ if (!isset($rma_form)) {
                               </div>
                               <input type='text' class="form-control" name='product_num' value='<?php echo $data['product_num'] ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-3">
+                        <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
