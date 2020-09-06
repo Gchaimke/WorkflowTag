@@ -132,6 +132,9 @@ class Admin_model extends CI_Model
             ),
             'scans' => array(
                 'type' => 'TEXT'
+            ),
+            'pictures' => array(
+                'type' => 'TEXT'
             )
         );
         $this->dbforge->add_field($checklist);

@@ -10,6 +10,7 @@ var AllCheckRows = $('.verify').length + $('.review').length;
 var AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
 
 $(document).ready(function () {
+    $("#picrures_count").val(photoCount);
     scansArray = $('#input_scans').val().split(";").map(function (e) {
         return e.split(",");
     });

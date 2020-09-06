@@ -61,7 +61,8 @@ class Production_model extends CI_Model
 			'progress' => $data['progress'],
 			'assembler' => $data['assembler'],
 			'qc' => $data['qc'],
-			'scans' => $data['scans']
+			'scans' => $data['scans'],
+			'pictures' => $data['pictures']
 		);
 		return $this->db->update('checklists', $data, $where);
 	}
@@ -90,6 +91,16 @@ class Production_model extends CI_Model
 			echo 'OK: Moved to Trash!';
 		} else {
 			echo "ERROR: Not moved to Trash!";
+		}
+	}
+
+	function update_picture_count($data){
+		$where = "id =" . $data['id'];
+		$this->db->update('checklists', $data, $where);
+		if ($this->db->affected_rows() > 0) {
+			echo 'OK: Pictures count updated!';
+		} else {
+			echo "ERROR: Pictures count not updated!";
 		}
 	}
 

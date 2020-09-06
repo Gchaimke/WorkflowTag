@@ -11,6 +11,7 @@ $scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
 $logo = $client[0]['logo'];
 $client = $client[0]['name'];
+$pictures = 0;
 
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
@@ -18,10 +19,14 @@ if (isset($this->session->userdata['logged_in'])) {
 	if ($assembler != $username) {
 		$assembler = $username;
 	}
+
+	if ($checklist[0]['pictures'] != '') {
+		$pictures = $checklist[0]['pictures'];
+	}
 }
 ?>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?'.filemtime('assets/css/checklist_create.css')); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?'.filemtime('assets/css/print.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 	<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
@@ -29,14 +34,15 @@ if (isset($this->session->userdata['logged_in'])) {
 	<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 	<ul class="nav navbar-nav navbar-right">
 		<li class="nav-item">
-		<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
-			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form','class=saveData'); ?>
+			<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
+			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 			<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
+			<input id="picrures_count" type='hidden' name='pictures' value="<?php echo $pictures ?>">
 			<button id="save" type='submit' class="btn btn-success navbar-btn " value="Save"><i class="fa fa-save"></i></button>
 			</form>
 		</li>
@@ -60,12 +66,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div id="photo-messages" class='alert hidden' role='alert'></div>
 		<?php
 		$working_dir = '/Uploads/' . $client . '/' . $project . '/' . $serial . '/';
-		echo "<script>var photoCount=0; var id='$id'; var project='$project'; var serial='$serial';"; //pass PHP data to JS
+		echo "<script>var photoCount=0; var id='$id'; var project='$project'; var serial='$serial'; photoCount=$pictures;"; //pass PHP data to JS
 		echo "var log='$log'; var assembler =' $assembler'; var client='$client';</script>";  //pass PHP data to JS
 		if (file_exists(".$working_dir")) {
 			if ($handle = opendir(".$working_dir")) {
 				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME !='') {
+					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) . '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' . pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) . '" src="' . $working_dir . $entry . '" class="respondCanvas" >';
 						echo '<script>photoCount++</script>';
 					}

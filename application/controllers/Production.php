@@ -18,9 +18,14 @@ class Production extends CI_Controller
         $data = array();
         // get data from model
         $data['clients'] = $this->Clients_model->getClients();
+        $this->view_page('production/view_clients', $data);
+    }
+
+    function view_page($page_name = 'view_clients', $page_data = '', $menu_parameters = '')
+    {
         $this->load->view('header');
-        $this->load->view('main_menu');
-        $this->load->view('production/view_clients', $data);
+        $this->load->view('main_menu', $menu_parameters);
+        $this->load->view($page_name, $page_data);
         $this->load->view('footer');
     }
 
@@ -68,10 +73,7 @@ class Production extends CI_Controller
         }
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project));
-        $this->load->view('header');
-        $this->load->view('main_menu', $params);
-        $this->load->view('production/manage_checklists', $params);
-        $this->load->view('footer');
+        $this->view_page('production/manage_checklists', $params, $params);
     }
 
     public function serial_search()
@@ -111,10 +113,7 @@ class Production extends CI_Controller
             } else {
                 $data['template'] = " - not set!";
             }
-            $this->load->view('header');
-            $this->load->view('main_menu', $data);
-            $this->load->view('production/add_checklist', $data);
-            $this->load->view('footer');
+            $this->view_page('production/add_checklist', $data, $data);
         } else {
             $serial = trim($this->input->post('serial'));
             $data = array(
@@ -142,10 +141,7 @@ class Production extends CI_Controller
                 } else {
                     $data['template'] = " - not set!";
                 }
-                $this->load->view('header');
-                $this->load->view('main_menu', $data);
-                $this->load->view('production/add_checklist', $data);
-                $this->load->view('footer');
+                $this->view_page('production/add_checklist', $data, $data);
             }
         }
     }
@@ -239,13 +235,8 @@ class Production extends CI_Controller
             $data['checklist_rows'] = $this->build_checklist($data);
             $data['scans_rows'] = $this->build_scans($data);
             $data['client'] = $this->Clients_model->getClients('', $data['project']);
+            $this->view_page('production/edit_checklist', '', $data);
         }
-        $this->load->view('header');
-        $this->load->view('main_menu', $data);
-        if ($data['checklist']) {
-            $this->load->view('production/edit_checklist');
-        }
-        $this->load->view('footer');
     }
 
     public function edit_batch($ids = '0', $msg = '')
@@ -261,13 +252,8 @@ class Production extends CI_Controller
             $data['checklist'] = $data['checklists'];
             $data['project'] =  urldecode($data['checklists'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data);
+            $this->view_page('production/edit_batch', '', $data);
         }
-        $this->load->view('header');
-        $this->load->view('main_menu', $data);
-        if ($data['checklists']) {
-            $this->load->view('production/edit_batch');
-        }
-        $this->load->view('footer');
     }
 
     private function build_checklist($data)
@@ -391,6 +377,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
         $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
+        $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->edit_checklist($id);
         } else {
@@ -401,7 +388,8 @@ class Production extends CI_Controller
                 'progress' => $this->input->post('progress'),
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc'),
-                'scans' => $this->input->post('scans')
+                'scans' => $this->input->post('scans'),
+                'pictures' => $this->input->post('pictures')
             );
             $this->Production_model->editChecklist($data);
             echo 'Checklist saved successfully!';
@@ -512,17 +500,30 @@ class Production extends CI_Controller
         }
     }
 
-    function log_data($msg, $level = 0)
-	{
-		if (!file_exists('application/logs/admin')) {
-			mkdir('application/logs/admin', 0770, true);
-		}
-		$level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
-		$user = $this->session->userdata['logged_in']['name'];
-		$log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
-		$fp = fopen($log_file, 'a'); //opens file in append mode  
-		fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
-		fclose($fp);
-	}
+    function update_picture_count($id)
+    {
+        $this->form_validation->set_rules('picture_count', 'picture count', 'trim|xss_clean');
+        if ($this->form_validation->run() == TRUE) {
+            $data = array(
+                'id' =>  $id,
+                'pictures' =>  $this->input->post('count')
+            );
+            echo $this->Production_model->update_picture_count($data);
+        } else {
+            echo "Can't update pictures count!";
+        }
+    }
 
+    function log_data($msg, $level = 0)
+    {
+        if (!file_exists('application/logs/admin')) {
+            mkdir('application/logs/admin', 0770, true);
+        }
+        $level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
+        $user = $this->session->userdata['logged_in']['name'];
+        $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
+        $fp = fopen($log_file, 'a'); //opens file in append mode  
+        fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+        fclose($fp);
+    }
 }
