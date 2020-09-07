@@ -13,10 +13,6 @@ if (!isset($rma_form)) {
       $data = $rma_form[0];
 }
 
-$pictures = 0;
-if ($data['pictures'] != '') {
-      $pictures = $data['pictures'];
-}
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <style>
@@ -72,7 +68,7 @@ if ($data['pictures'] != '') {
             <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
             <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
             <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
-            <input id="picrures_count" type='hidden' name='pictures' value="<?php echo $pictures ?>">
+            <input id="picrures_count" type='hidden' name='pictures' value=''>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-2">
@@ -151,7 +147,7 @@ if ($data['pictures'] != '') {
             <?php
             $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/RMA/' . $data['number'] . '/';
             echo "<script>
-                  var photoCount='$pictures';
+                  var photoCount=0;
                   var id='" . $data['id'] . "';
                   var project='" . $data['project'] . "';
                   var serial='" . $data['number'] . "';

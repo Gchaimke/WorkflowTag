@@ -30,7 +30,7 @@
                         <th scope="col">Project</th>
                         <th scope="col" class="mobile-hide">Serial Number</th>
                         <th scope="col">Part Number</th>
-                        <th scope="col"><i class="fa fa-user"></i></th>
+                        <th scope="col" class="mobile-hide"><i class="fa fa-user"></i></th>
                         <th scope="col"><i class="fa fa-picture-o"></i></th>
                         <th scope="col">Edit</th>
                         <th scope="col">Trash</th>

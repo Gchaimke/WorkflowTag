@@ -219,6 +219,7 @@ function savePhotoToServer(file) {
         $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
             photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
         photoCount++;
+        $("#picrures_count").val(photoCount);
         $('#form-messages').addClass('alert-success');
         // Set the message text.
         $('#form-messages').text('photo uploaded : ' + o).fadeIn(1000).delay(3000).fadeOut(1000);
@@ -237,6 +238,7 @@ function delPhoto(id) {
             $('#form-messages').text(o).fadeIn(1000).delay(3000).fadeOut(1000);
             $('[id^=' + id + ']').remove();
             photoCount--;
+            $("#picrures_count").val(photoCount);
         });
     }
 }
