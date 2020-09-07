@@ -202,40 +202,6 @@ function getDateTime() {
     return `${da}/${mo}/${ye} ${H}:${M}`;
 }
 
-function savePhotoToServer(file) {
-    $.post("/production/save_photo", {
-        data: file,
-        client: client,
-        project: project,
-        serial: serial,
-        num: photoCount
-    }).done(function (o) {
-        var photo_id = o.split("/")[4].replace(".jpeg", ""); //get photo id
-        $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
-            photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
-        photoCount++;
-        $('#form-messages').addClass('alert-success');
-        // Set the message text.
-        $('#form-messages').text('photo uploaded : ' + o).fadeIn(1000).delay(3000).fadeOut(1000);
-    });
-}
-
-function delPhoto(id) {
-    var photo = $('img[id^=' + id + ']').attr('src');
-    var r = confirm("Delete " + photo + "?");
-    if (r == true) {
-        $.post("/production/delete_photo", {
-            photo: photo
-        }).done(function (o) {
-            $('#form-messages').addClass('alert-success');
-            // Set the message text.
-            $('#form-messages').text(o).fadeIn(1000).delay(3000).fadeOut(1000);
-            $('[id^=' + id + ']').remove();
-            photoCount--;
-        });
-    }
-}
-
 //KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {
     focusable: function (el, index, selector) {

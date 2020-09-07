@@ -12,9 +12,20 @@ if (!isset($rma_form)) {
 } else {
       $data = $rma_form[0];
 }
+
+$pictures = 0;
+if ($data['pictures'] != '') {
+      $pictures = $data['pictures'];
+}
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <style>
+      .control_btn_container {
+            position: fixed;
+            right: 0;
+            top: 100px;
+      }
+
       @media print {
             .jumbotron {
                   position: absolute;
@@ -35,10 +46,14 @@ if (!isset($rma_form)) {
             .input-group-text {
                   font-weight: bold;
             }
+
+            #save {
+                  display: none;
+            }
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['client']."/".$data['project'] ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['client'] . "/" . $data['project'] ?>" role='alert'></div>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -47,12 +62,17 @@ if (!isset($rma_form)) {
                   </center>
             </div>
       </div>
+      <div class="control_btn_container">
+            <button id="snap1" class="btn btn-info mx-3" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
+            <button id="save" type='submit' class="btn btn-success navbar-btn mx-3" value="Save" onclick="document.getElementById('update_btn').click();"><i class="fa fa-save"></i></button>
+      </div>
       <div class="container">
 
             <?php echo form_open("rma/update_rma/", "id=ajax-form"); ?>
             <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
             <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
             <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
+            <input id="picrures_count" type='hidden' name='pictures' value="<?php echo $pictures ?>">
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-2">
@@ -119,11 +139,49 @@ if (!isset($rma_form)) {
                         </div>
                   </div>
 
-                  <input type='submit' class="btn btn-info my-5 print-hide" name='submit' value='Update'>
+                  <input id="update_btn" type='submit' style="display:none;" class="btn btn-info my-5 print-hide" name='submit' value='Update'>
             </div>
             <?php echo form_close(); ?>
       </div>
+      <div id="photo-stock" class="container">
+            <center>
+                  <h2>System Photos</h2>
+            </center>
+            <div id="photo-messages" class='alert hidden' role='alert'></div>
+            <?php
+            $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/RMA/' . $data['number'] . '/';
+            echo "<script>
+                  var photoCount='$pictures';
+                  var id='" . $data['id'] . "';
+                  var project='" . $data['project'] . "';
+                  var serial='" . $data['number'] . "';
+                  var assembler ='" . $data['assembler'] . "';
+                  var client='" . $data['client'] . "';
+                  var working_dir='$working_dir';
+            </script>";  //pass PHP data to JS
+            if (file_exists("./$working_dir")) {
+                  if ($handle = opendir("./$working_dir")) {
+                        while (false !== ($entry = readdir($handle))) {
+                              if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
+                                    echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
+                                          '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
+                                          pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' .
+                                          pathinfo($entry, PATHINFO_FILENAME) . '" src="/' . $working_dir . $entry .
+                                          '" class="respondCanvas" >';
+                                    echo '<script>photoCount++</script>';
+                              }
+                        }
+                        closedir($handle);
+                  }
+            }
+            ?>
+      </div>
+      <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+      <div id="preview"></div>
 </main>
 <script>
-      document.title = 'RMA <?php echo $data['number'] ?>';  
+      $(document).ready(function() {
+            $("#picrures_count").val(photoCount);
+      });
+      document.title = 'RMA <?php echo $data['number'] ?>';
 </script>

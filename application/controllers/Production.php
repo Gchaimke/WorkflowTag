@@ -442,12 +442,10 @@ class Production extends CI_Controller
     public function save_photo()
     {
         // requires php5
-        define('UPLOAD_DIR', 'Uploads/');
-        $folder = $_POST['project'];
-        $client = $_POST['client'];
+        define('UPLOAD_DIR', $_POST['working_dir']);
         $serial = $_POST['serial'];
         $num = $_POST['num'];
-        $upload_folder = UPLOAD_DIR . $client . "/" . $folder . "/" . $serial;
+        $upload_folder = UPLOAD_DIR;
         $img = $_POST['data'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
             $img = substr($img, strpos($img, ',') + 1);
@@ -487,7 +485,6 @@ class Production extends CI_Controller
     public function delete_photo()
     {
         $this->form_validation->set_rules('photo', 'Photo', 'trim|xss_clean');
-
         if ($this->form_validation->run() == TRUE) {
             $photo = $this->input->post('photo');
             // Use unlink() function to delete a file  

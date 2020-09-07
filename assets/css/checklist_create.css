@@ -48,16 +48,6 @@ input[type=checkbox] {
     z-index: 9999;
 }
 
-.respondCanvas {
-    width: inherit;
-    object-fit: scale-down;
-}
-
-.delete-photo {
-    position: relative;
-    top: 2.4rem;
-}
-
 video#video {
     position: relative;
     max-width: 90%;

@@ -132,30 +132,6 @@ function saveLogoToServer(file) {
     });
 }
 
-function snapPhoto() {
-    //var preview = document.querySelector('#preview');
-    var files = document.querySelector('input[type=file]').files;
-    function readAndPreview(file) {
-        // Make sure `file.name` matches our extensions criteria
-        if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
-            var reader = new FileReader();
-            reader.addEventListener("load", function () {
-                savePhotoToServer(this.result);
-                //sleep(2000);
-                var image = new Image();
-                image.title = file.name;
-                image.src = this.result;
-                //preview.appendChild(image);
-            }, false);
-            reader.readAsDataURL(file);
-        }
-    }
-
-    if (files) {
-        [].forEach.call(files, readAndPreview);
-    }
-}
-
 function delFile(file) {
     var r = confirm("Delete File " + file + "?");
     if (r == true) {
@@ -209,4 +185,58 @@ function sleep(milliseconds) {
     do {
         currentDate = Date.now();
     } while (currentDate - date < milliseconds);
+}
+
+function snapPhoto() {
+    //var preview = document.querySelector('#preview');
+    var files = document.querySelector('input[type=file]').files;
+    function readAndPreview(file) {
+        // Make sure `file.name` matches our extensions criteria
+        if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+            var reader = new FileReader();
+            reader.addEventListener("load", function () {
+                savePhotoToServer(this.result);
+                var image = new Image();
+                image.title = file.name;
+                image.src = this.result;
+            }, false);
+            reader.readAsDataURL(file);
+        }
+    }
+    if (files) {
+        [].forEach.call(files, readAndPreview);
+    }
+}
+
+function savePhotoToServer(file) {
+    $.post("/production/save_photo", {
+        data: file,
+        serial: serial,
+        num: photoCount,
+        working_dir: working_dir
+    }).done(function (o) {
+        var photo_id = o.split("/")[4].replace(".jpeg", ""); //get photo id
+        $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
+            photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
+        photoCount++;
+        $('#form-messages').addClass('alert-success');
+        // Set the message text.
+        $('#form-messages').text('photo uploaded : ' + o).fadeIn(1000).delay(3000).fadeOut(1000);
+    });
+}
+
+function delPhoto(id) {
+    var photo = $('img[id^=' + id + ']').attr('src');
+    var r = confirm("Delete " + photo + "?");
+    if (r == true) {
+        $.post("/production/delete_photo", {
+            photo: photo
+        }).done(function (o) {
+            $('#form-messages').addClass('alert-success');
+            // Set the message text.
+            $('#form-messages').text(o).fadeIn(1000).delay(3000).fadeOut(1000);
+            $('[id^=' + id + ']').remove();
+            photoCount--;
+        });
+    }
 }

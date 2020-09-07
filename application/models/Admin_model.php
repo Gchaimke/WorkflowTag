@@ -201,6 +201,9 @@ class Admin_model extends CI_Model
             ),
             'parts' => array(
                 'type' => 'TEXT'
+            ),
+            'pictures' => array(
+                'type' => 'TEXT'
             )
         );
         $this->dbforge->add_field($rma);

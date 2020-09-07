@@ -94,6 +94,7 @@ class RMA extends CI_Controller
         $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
         $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
         $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
+        $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
         if ($this->form_validation->run() != FALSE) {
             $data = array(
                 "id" => $this->input->post('id'),
@@ -105,7 +106,8 @@ class RMA extends CI_Controller
                 "assembler" => $this->input->post('assembler'),
                 "problem" => $this->input->post('problem'),
                 "repair" => $this->input->post('repair'),
-                "parts" => $this->input->post('parts')
+                "parts" => $this->input->post('parts'),
+                'pictures' => $this->input->post('pictures')
             );
             echo $this->Rma_model->update_rma($data);
         }

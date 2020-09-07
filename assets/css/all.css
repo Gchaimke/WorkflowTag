@@ -162,6 +162,16 @@ div#form-messages {
     z-index: 1;
 }
 
+.respondCanvas {
+    width: inherit;
+    object-fit: scale-down;
+}
+
+.delete-photo {
+    position: relative;
+    top: 2.4rem;
+}
+
 @media (min-width: 320px){
     .jumbotron {
         padding: 2rem 2rem;

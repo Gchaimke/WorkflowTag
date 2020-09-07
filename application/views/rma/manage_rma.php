@@ -2,7 +2,7 @@
     <div class="jumbotron">
         <div class="container">
             <center>
-                <h2 class="display-3"><?php echo $client." ".$project; ?> RMA Forms</h2>
+                <h2 class="display-3"><?php echo $client . " " . $project; ?> RMA Forms</h2>
             </center>
         </div>
     </div>
@@ -15,7 +15,7 @@
         ?>
         <nav aria-label="rma navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $client."/".$project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $client . "/" . $project; ?>"><i class="fa fa-file-text"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -25,12 +25,13 @@
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
-                        <th scope="col" class="mobile-hide">Date</th>
+                        <th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
                         <th scope="col">RMA Number</th>
                         <th scope="col">Project</th>
                         <th scope="col" class="mobile-hide">Serial Number</th>
                         <th scope="col">Part Number</th>
-                        <th scope="col" class="mobile-hide">Created by</th>
+                        <th scope="col"><i class="fa fa-user"></i></th>
+                        <th scope="col"><i class="fa fa-picture-o"></i></th>
                         <th scope="col">Edit</th>
                         <th scope="col">Trash</th>
                     </tr>
@@ -45,6 +46,7 @@
                             <td class="mobile-hide"><?php echo $data->serial ?></td>
                             <td><?php echo $data->product_num ?></td>
                             <td class="mobile-hide"><?php echo $data->assembler ?></td>
+                            <td><?php echo $data->pictures ?></td>
                             <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                             <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                         </tr>
@@ -64,7 +66,7 @@
     </div>
 </main>
 <script>
-    var client = '<?php echo $client?>';
+    var client = '<?php echo $client ?>';
 
     function trash_rma(id, project, number) {
         var r = confirm("Trash RMA Form " + number + "?");
