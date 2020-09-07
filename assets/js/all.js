@@ -214,15 +214,15 @@ function savePhotoToServer(file) {
         serial: serial,
         num: photoCount,
         working_dir: working_dir
-    }).done(function (o) {
-        var photo_id = o.split("/")[4].replace(".jpeg", ""); //get photo id
+    }).done(function (out) {
+        var photo_id = out.split("/")[4].replace(".jpeg", ""); //get photo id
         $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
-            photo_id + '</span><img id="' + photo_id + '"src="/' + o + '" class="respondCanvas" >');
+            photo_id + '</span><img id="' + photo_id + '"src="/' + out + '" class="respondCanvas" >');
         photoCount++;
         $("#picrures_count").val(photoCount);
         $('#form-messages').addClass('alert-success');
         // Set the message text.
-        $('#form-messages').text('photo uploaded : ' + o).fadeIn(1000).delay(3000).fadeOut(1000);
+        $('#form-messages').text('photo uploaded : ' + photo_id).fadeIn(1000).delay(3000).fadeOut(1000);
     });
 }
 

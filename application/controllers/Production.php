@@ -467,12 +467,12 @@ class Production extends CI_Controller
         if (!file_exists($upload_folder)) {
             mkdir($upload_folder, 0770, true);
         }
-        $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
+        $file = $upload_folder  . $serial . "_" . $num . ".$type";
         if (!file_exists($file)) {
             $success = file_put_contents($file, $img);
         } else {
             $num++;
-            $file = $upload_folder . "/" . $serial . "_" . $num . ".$type";
+            $file = $upload_folder  . $serial . "_" . $num . ".$type";
             $success = file_put_contents($file, $img);
         }
         if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
