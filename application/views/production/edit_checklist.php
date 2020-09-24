@@ -15,11 +15,6 @@ $pictures = 0;
 
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
-	$role = ($this->session->userdata['logged_in']['role']);
-	if ($assembler != $username) {
-		$assembler = $username;
-	}
-
 	if ($checklist[0]['pictures'] != '') {
 		$pictures = $checklist[0]['pictures'];
 	}
@@ -36,9 +31,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		<li class="nav-item">
 			<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 			<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
-			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
-			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
-			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
+			<input id='input_data' type='hidden' name='data' value="<?php echo $checklist_data ?>">
+			<input id='input_progress' type='hidden' name='progress' value="<?php echo $progress ?>">
+			<input id='assembler' type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 			<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
@@ -67,12 +62,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php
 		$working_dir = 'Uploads/' . $client . '/' . $project . '/' . $serial . '/';
 		echo "<script>
-				  var photoCount='$pictures';
+				  var photoCount=0;
 				  var log ='$log';
                   var id='$id';
                   var project='$project';
                   var serial='$serial';
-                  var assembler ='$assembler';
+                  var assembler ='$username';
                   var client='$client';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS

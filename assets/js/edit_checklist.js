@@ -118,6 +118,7 @@ function selectOne(id, name) {
 
 $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
+    $('#assembler').val(assembler);
     $('#input_data').val(chArray.toString());
     if ($(event.target).is(":checked")) {
         log += getDateTime() + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
