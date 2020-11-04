@@ -454,9 +454,7 @@ class Production extends CI_Controller
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
                 throw new \Exception('invalid image type');
             }
-
             $img = base64_decode($img);
-
             if ($img === false) {
                 throw new \Exception('base64_decode failed');
             }

@@ -87,6 +87,25 @@ class Admin extends CI_Controller
 		echo $data['response'];
 	}
 
+	function backupDB()
+	{
+		$working_dir = 'Uploads/Backups/';
+		define('BACKUP_DIR', $working_dir);
+		if (!file_exists(BACKUP_DIR)) {
+            mkdir(BACKUP_DIR, 0770, true);
+        }
+		// Load the DB utility class
+		$this->load->dbutil();
+		// Backup your entire database and assign it to a variable
+		$backup = $this->dbutil->backup();
+		// Load the file helper and write the file to your server
+		$this->load->helper('file');
+		$file = BACKUP_DIR.'db-'.date("Y-m-d").'.zip';
+		$success = file_put_contents($file, $backup);
+		// Load the download helper and send the file to your desktop
+		echo $success ? $file : 'Unable to save the file: '.$file;
+	}
+
 	function manage_trash()
 	{
 		$project = 'Trash';
@@ -156,7 +175,7 @@ class Admin extends CI_Controller
 		);
 		if ($this->input->post('kind') == 'Checklist') {
 			$this->Admin_model->restore_from_trash($data);
-		}else {
+		} else {
 			$this->Admin_model->restore_from_trash($data, 'rma_forms');
 		}
 	}
