@@ -32,6 +32,7 @@ if (isset($this->session->userdata['logged_in'])) {
             $rma_forms_count = $rma_forms;
         }
         ?>
+        <h3>System Status</h3>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 Users
@@ -53,7 +54,7 @@ if (isset($this->session->userdata['logged_in'])) {
         <div id="form-messages" class='alert hidden' role='alert'></div>
         <?php
         echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create');
-        echo '<div class="form-group"><label>User Roles</label><textarea name="roles" class="form-control" rows="2" cols="30">';
+        echo '<div class="form-group"><label><h3>User Roles</h3></label><textarea name="roles" class="form-control" rows="2" cols="30">';
         if (isset($settings) && $settings != "") {
             echo $settings[0]['roles'];
         }
