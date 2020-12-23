@@ -206,15 +206,16 @@ class Admin extends CI_Controller
 		if (!file_exists('application/logs/admin')) {
 			mkdir('application/logs/admin', 0770, true);
 		}
-		$dirlistR = $this->getFileList('application/logs/admin');
+		$filesList = $this->getFileList('application/logs/admin');
+		$reversedList = array_reverse($filesList);
 		// init params
 		$params = array();
 		$config = array();
 		$limit_per_page = 50;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$total_records = count($dirlistR);
+		$total_records = count($filesList);
 		if ($total_records > 0) {
-			$params["results"] = array_slice($dirlistR, $start_index, $limit_per_page);
+			$params["results"] = array_slice($reversedList, $start_index, $limit_per_page);
 
 			$config['base_url'] = base_url() . 'admin/view_log';
 			$config['total_rows'] = $total_records;
