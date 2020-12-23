@@ -156,13 +156,16 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('date', 'date', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
         $serial_project = $this->Templates_model->getTemplate('', $this->input->post('project'));
+        $month = date('m',strtotime($this->input->post('date')));
+        $year = date('y',strtotime($this->input->post('date')));
         if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
             $serial = $serial_project[0]['template']; //Get serial template
-            $serial = str_replace("yy", date("y"), $serial); //add year
-            $serial = str_replace("mm", date("m"), $serial); //add month with zero
-            $serial = str_replace("dm", $dfend_month[date("m")], $serial); //add month from dfend array
+            $serial = str_replace("yy", $year, $serial); //add year
+            $serial = str_replace("mm", $month, $serial); //add month with zero
+            $serial = str_replace("dm", $dfend_month[$month], $serial); //add month from dfend array
             $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
             $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
             $arr = array("xxxx", "xxx", "xx");
@@ -177,7 +180,7 @@ class Production extends CI_Controller
                     'project' => $project,
                     'serial' => $current_serial,
                     'data' =>  $zero_str,
-                    'date' => date("Y-m-d")
+                    'date' => $this->input->post('date')
                 );
                 $result = $this->Production_model->addChecklist($data);
                 if ($result != 1) {
@@ -378,6 +381,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
+        $this->form_validation->set_rules('note', 'Note', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->edit_checklist($id);
         } else {
@@ -389,7 +393,8 @@ class Production extends CI_Controller
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc'),
                 'scans' => $this->input->post('scans'),
-                'pictures' => $this->input->post('pictures')
+                'pictures' => $this->input->post('pictures'),
+                'note' => $this->input->post('note')
             );
             $this->Production_model->editChecklist($data);
             echo 'Checklist saved successfully!';

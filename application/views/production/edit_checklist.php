@@ -9,6 +9,7 @@ $assembler = $checklist[0]['assembler'];
 $qc = $checklist[0]['qc'];
 $scans = $checklist[0]['scans'];
 $date = $checklist[0]['date'];
+$note = $checklist[0]['note'];
 $logo = $client[0]['logo'];
 $client = $client[0]['name'];
 $pictures = 0;
@@ -37,6 +38,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 			<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
+			<input id="input_note" type='hidden' name='note' value="<?php echo $note ?>">
 			<input id="picrures_count" type='hidden' name='pictures' value="<?php echo $pictures ?>">
 			<button id="save" type='submit' class="btn btn-success navbar-btn " value="Save"><i class="fa fa-save"></i></button>
 			</form>
@@ -54,6 +56,15 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="scansTable">
 		<?php echo $scans_rows ?>
 	</div>
+	<div class="form-row">
+		<div class="input-group mb-2 col-12">
+			<div class="input-group-prepend">
+				<div class="input-group-text">Note</div>
+			</div>
+			<textarea id="note" type='text' rows="2" class="form-control" name='note'><?php echo $note ?></textarea>
+		</div>
+	</div>
+
 	<div id="photo-stock" class="container">
 		<center>
 			<h2>System Photos</h2>
@@ -76,9 +87,9 @@ if (isset($this->session->userdata['logged_in'])) {
 				while (false !== ($entry = readdir($handle))) {
 					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
-						 '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
-						  pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) .
-						   '" src="/' . $working_dir . $entry . '" class="respondCanvas" >';
+							'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
+							pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) .
+							'" src="/' . $working_dir . $entry . '" class="respondCanvas" >';
 						echo '<script>photoCount++</script>';
 					}
 				}

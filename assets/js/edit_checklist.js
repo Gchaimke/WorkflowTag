@@ -127,7 +127,7 @@ $("input:checkbox.verify").click(function (e) {
 });
 
 $("select.review").change(function (e) {
-    event.preventDefault();
+    e.preventDefault();
     id = this.id;
     curent_th = $(this).closest("tr").find('th').text();
     var option = $(this).children("option:selected");
@@ -161,7 +161,9 @@ $("select.review").change(function (e) {
     }
 
 });
-
+$('textarea#note').change(function () {
+    $('#input_note').val($(this).val());
+});
 $('input.input').change(function (e) {
     chArray[this.id] = $(this).val();
     log += getDateTime() + assembler + " inserted " + $(this).val() + ";";

@@ -10,24 +10,37 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		</div>
 	</div>
 	<div class="container">
-		<?php
-		if (isset($message_display)) {
-			echo "<div class='alert alert-success' role='alert'>";
-			echo $message_display . '</div>';
-		}
-		?>
-		<nav aria-label="Checklist navigation">
-			<ul class="pagination left">
-				<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><i class="fa fa-file-text"></i></a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',1)">+1</a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',5)">+5</a>
-				<a class="btn btn-info" onclick="gen_checklists('<?php echo urldecode($project); ?>',10)">+10</a>
-				<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
-			</ul>
-			<?php if (isset($links)) {
-				echo $links;
-			} ?>
-		</nav>
+		<div style="height: 70px;">
+			<?php
+			if (isset($message_display)) {
+				echo "<div class='alert alert-success' role='alert'>";
+				echo $message_display . '</div>';
+			}
+			?>
+			<nav aria-label="Checklist navigation">
+				<ul class="pagination left">
+					<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>">New <i class="fa fa-file-text"></i></a>
+					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()">Batch Add</a>
+					<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
+				</ul>
+
+				<?php if (isset($links)) {
+					echo $links;
+				} ?>
+			</nav>
+		</div>
+		<div id="batch_add_form" style="display: none;">
+			<center>
+				<h3>Add checklists</h3>
+				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
+					<input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
+					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
+					<input class="form-control " type='number' name='count' placeholder="Quantity"></br>
+					<input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+					<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'></br>
+				</form>
+			</center>
+		</div>
 		<?php if (isset($results)) { ?>
 			<table class="table">
 				<thead class="thead-dark">
@@ -35,7 +48,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 						<th scope="col">*</th>
 						<th scope="col">Serial Number</th>
 						<th scope="col" class="mobile-hide">Project</th>
-						<th scope="col" ><i class="fa fa-tasks"></i></th>
+						<th scope="col"><i class="fa fa-tasks"></i></th>
 						<th scope="col"><i class="fa fa-user"></i></th>
 						<th scope="col" class="mobile-hide">QC</th>
 						<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
@@ -85,13 +98,13 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 <script>
 	var client = '<?php echo $client[0]['name'] ?>';
 
-	function trashChecklist(id,project,serial) {
+	function trashChecklist(id, project, serial) {
 		var r = confirm("Trash checklist " + serial + "?");
 		if (r == true) {
 			$.post("/production/trashChecklist", {
 				id: id,
-				project : project,
-				serial : serial
+				project: project,
+				serial: serial
 			}).done(function(o) {
 				//$('[id^=' + id + ']').remove();
 				location.reload();
@@ -99,13 +112,16 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		}
 	}
 
-	function gen_checklists(project, count) {
-		var r = confirm("Add " + count + " checklist/s to " + project + "?");
+	$('#add_checklists').submit(function(event) {
+		// Stop the browser from submitting the form.
+		event.preventDefault();
+		var formData = $('#add_checklists').serialize();
+		var r = confirm("Add " + $('input[name=count]').val() + " checklist/s to " + $('input[name=project]').val() + "?");
 		if (r == true) {
-			$.post("/production/gen_checklists", {
-				client: client,
-				project: project,
-				count: count
+			$.ajax("/production/gen_checklists", {
+				type: 'POST',
+				url: $('#ajax-form').attr('action'),
+				data: formData
 			}).done(function(o) {
 				if (o != 1) {
 					alert(o);
@@ -113,5 +129,5 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				location.reload();
 			});
 		}
-	}
+	});
 </script>
