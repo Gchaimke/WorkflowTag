@@ -64,7 +64,7 @@ class Admin_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 500
             ),
-            'logo' =>array(
+            'logo' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 500
             )
@@ -79,7 +79,7 @@ class Admin_model extends CI_Model
         $cl = array(
             "name" => 'Avdor-HLT',
             "projects" => 'Project1,Project 2',
-            "logo"=> '/assets/img/logo.png'
+            "logo" => '/assets/img/logo.png'
         );
         $this->db->insert('clients', $cl);
     }
@@ -296,7 +296,7 @@ class Admin_model extends CI_Model
 
         $st = array(
             'roles' => 'Admin,Assembler,QC',
-            'log' =>'Database "settings created."'
+            'log' => 'Database "settings created."'
         );
         $this->db->insert('settings', $st);
     }
@@ -313,13 +313,13 @@ class Admin_model extends CI_Model
     }
 
     public function save_settings($data)
-	{
-		$where = "id =1";
-		$data = array(
-			'roles' => $data['roles']
-		);
-		return $this->db->update('settings', $data, $where);
-	}
+    {
+        $where = "id =1";
+        $data = array(
+            'roles' => $data['roles']
+        );
+        return $this->db->update('settings', $data, $where);
+    }
 
     function getStatistic()
     {
@@ -342,49 +342,60 @@ class Admin_model extends CI_Model
         return $response;
     }
 
-    public function get_current_checklists_records($limit, $start, $project,$table='checklists')
-	{
-		$this->db->limit($limit, $start);
-		if ($project != '') {
-			$project = urldecode($project);
-			$condition = "project LIKE \"$project%\"";
-			$this->db->where($condition);
-		}
-		$this->db->order_by('date', 'DESC');
-		$query = $this->db->get($table);
+    public function get_current_checklists_records($limit, $start, $project, $table = 'checklists')
+    {
+        $this->db->limit($limit, $start);
+        if ($project != '') {
+            $project = urldecode($project);
+            $condition = "project LIKE \"$project%\"";
+            $this->db->where($condition);
+        }
+        $this->db->order_by('date', 'DESC');
+        $query = $this->db->get($table);
 
-		if ($query->num_rows() > 0) {
-			foreach ($query->result() as $row) {
-				$data[] = $row;
-			}
-			return $data;
-		}
-		return  false;
-	}
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+        return  false;
+    }
 
-    public function get_total($project = '',$table='checklists')
-	{
-		if ($project != '') {
-			$this->db->from($table);
+    public function get_total($project = '', $table = 'checklists')
+    {
+        if ($project != '') {
+            $this->db->from($table);
             $project = urldecode($project);
             $condition = "project LIKE '$project%'";
-			$this->db->where($condition);
-		}
-		return $this->db->count_all_results();
+            $this->db->where($condition);
+        }
+        return $this->db->count_all_results();
     }
-    
-    function deleteChecklist($id,$table='checklists')
-	{
-		$this->db->delete($table, array('id' => $id));
+
+    function deleteChecklist($id, $table = 'checklists')
+    {
+        $this->db->delete($table, array('id' => $id));
     }
-    
-    function restore_from_trash($data,$table='checklists')
-	{
-        $where = "id =" . $data['id'];
-        $project = str_replace('Trash ','',$data['project']);
-		$data = array(
-			'project' => $project
-		);
-		return $this->db->update($table, $data, $where);
-	}
+
+    function restore_from_trash($data, $table = 'checklists')
+    {
+        $condition = "serial ='" . $data['serial'] . "' and project NOT LIKE 'Trash%'";
+        $this->db->select('*');
+        $this->db->from('Checklists');
+        $this->db->where($condition);
+        $this->db->limit(1);
+        $query = $this->db->get();
+        if ($query->num_rows() == 0) {
+            $where = "id =" . $data['id'];
+            $project = str_replace('Trash ', '', $data['project']);
+            $sqldata = array(
+                'project' => $project
+            );
+            $this->db->update($table, $sqldata, $where);
+            printf("Checklist %s restored to project %s!",$data['serial'],str_replace('Trash ', '', $data['project'])) ;
+        }else{
+            printf("Serial number %s exists in project %s!",$data['serial'],str_replace('Trash ', '', $data['project'])) ;
+        }
+    }
 }

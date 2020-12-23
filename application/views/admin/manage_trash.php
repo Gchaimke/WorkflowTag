@@ -41,8 +41,11 @@ $project =  'Trash';
 							<td><?php $kind = (isset($data->number)) ? 'RMA #'.$data->number : "Checklist"; echo $kind; ?>
 							</td>
 							<td><?php echo ($data->serial != '')? $data->serial:"SN template not found!";?></td>
-							<td class="mobile-hide"><?php echo $data->project ?></td>
-							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restore_item(this.id,"<?php echo $data->project ?>","<?php echo $kind ?>")'><i class="fa fa-undo"></i></button></td>
+							<?php 
+							$project = str_replace('Trash ', '', $data->project);
+							echo '<td class="mobile-hide"><a class="nav-item btn btn-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">' . $project . '</a></td>';
+							?>
+							<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restore_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $kind ?>")'><i class="fa fa-undo"></i></button></td>
 							<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delete_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $kind ?>")'><i class="fa fa-trash"></i></button></td>
 						</tr>
 					<?php } ?>
@@ -76,15 +79,17 @@ $project =  'Trash';
 		}
 	}
 
-	function restore_item(id, project,kind) {
+	function restore_item(id, project, serial, kind) {
 		var r = confirm("Restore checklist with id: " + id + "?");
 		if (r == true) {
 			$.post("/admin/restore_item", {
 				id: id,
 				project: project,
+				serial: serial,
 				kind: kind
 			}).done(function(o) {
 				//$('[id^=' + id + ']').remove();
+				alert(o);
 				location.reload();
 			});
 		}

@@ -167,10 +167,12 @@ class Admin extends CI_Controller
 	public function restore_item()
 	{
 		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
+		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
 		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
 		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$data = array(
 			'id' =>  $this->input->post('id'),
+			'serial' => $this->input->post('serial'),
 			'project' => $this->input->post('project')
 		);
 		if ($this->input->post('kind') == 'Checklist') {
