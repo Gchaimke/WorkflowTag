@@ -17,7 +17,7 @@ foreach ($checklists as $checklist) {
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
 	$role = ($this->session->userdata['logged_in']['role']);
-	if ($assembler != $username) {
+	if ($assembler == '') {
 		$assembler = $username;
 	}
 }
@@ -27,8 +27,8 @@ if (isset($this->session->userdata['logged_in'])) {
 		margin-top: 150px;
 	}
 </style>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?'.filemtime('assets/css/checklist_create.css')); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?'.filemtime('assets/css/print.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
+<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <nav class="navbar checklist navbar-light fixed-top bg-light">
 	<button id="snap" class="btn btn-info" disabled><i class="fa fa-camera"></i></button>
 	<b id="project" class="navbar-text mobile-hide">Project: <?php echo $project ?></b>
@@ -39,7 +39,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<?php echo form_open('production/save_batch_checklists/' . $ids, 'id=ajax-form', 'class=saveData'); ?>
 			<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 			<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
-			<input type='hidden' name='assembler' value="<?php echo $assembler ?>">
+			<input id="assembler" type='hidden' name='assembler' value="<?php echo $assembler ?>">
 			<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 			<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 			<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
@@ -52,12 +52,17 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </nav>
 <main role="main" class="container">
-<div id="form-messages" class='alert hidden' role='alert'></div>
+	<div id="form-messages" class='alert hidden' role='alert'></div>
 	<div id="workTable">
 		<?php echo $checklist_rows ?>
 	</div>
 </main>
 <?php
 echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var sn='$serials'; var ci_session='$session';"; //pass PHP data to JS
-echo "var log='$log'; var assembler =' $assembler'; var qc_name='$qc'</script>";  //pass PHP data to JS
+echo "var log='$log'; var assembler ='$username'; var qc_name='$qc'</script>";  //pass PHP data to JS
 ?>
+<script>
+	$("input:checkbox.verify").click(function(e) {
+		$('#assembler').val(assembler);
+	});
+</script>
