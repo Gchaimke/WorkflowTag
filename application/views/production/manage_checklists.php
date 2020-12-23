@@ -32,8 +32,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<div id="batch_add_form" style="display: none;">
 			<center>
 				<h3>Add checklists</h3>
-				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
 				<h5 style="color: red;">Befor adding new serial here, add new serial to "Production" folder in "<?php echo $project ?>" folder in drive G:\</h5>
+				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
 					<input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
 					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
 					<input class="form-control " type='number' name='count' placeholder="Quantity"></br>
