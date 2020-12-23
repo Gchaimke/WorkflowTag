@@ -20,7 +20,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 			<nav aria-label="Checklist navigation">
 				<ul class="pagination left">
 					<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>">New <i class="fa fa-file-text"></i></a>
-					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()">Batch Add</a>
+					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()">Add Batch</a>
 					<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
 				</ul>
 
