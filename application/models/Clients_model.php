@@ -39,6 +39,7 @@ class Clients_model extends CI_Model
                 $this->db->limit(1);
             }
             if ($project != '') {
+                $project = urldecode($project);
                 $condition = "projects LIKE '%$project%'";
                 $this->db->where($condition);
                 $this->db->limit(1);
@@ -55,7 +56,7 @@ class Clients_model extends CI_Model
         $data = array(
             'projects' => $data['projects'],
             'logo' => $data['logo']
-		);
+        );
         return $this->db->update('clients', $data, $where);
     }
 
