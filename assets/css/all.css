@@ -135,14 +135,19 @@ div#show-log {
   color: #fff;
 }
 
+#serial-header {
+    font-weight: 700;
+    font-size: larger;
+}
+
 div#show-log ul{
     overflow-y: auto;
     max-height: 400px;
 }
 
 button.close {
-    margin-top: -15px;
-    margin-left: -20px;
+    margin-top: -36px;
+    margin-left: -40px;
     background: white;
     padding: 10px;
 }

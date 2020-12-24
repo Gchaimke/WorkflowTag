@@ -32,7 +32,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 		<div id="batch_add_form" style="display: none;">
 			<center>
 				<h3>Add checklists</h3>
-				<h5 style="color: red;">Befor adding new serial here, add new serial to "Production" folder in "<?php echo $project ?>" folder in drive G:\</h5>
+				<h5 style="color: red;">Befor adding new serial here, add new serial to "<?php echo $project ?>\PRODUCTION\" folder inside Clients of drive G:</h5>
 				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
 					<input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
 					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
@@ -90,7 +90,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 	</div>
 	<div id='show-log' style='display:none;'>
 		<div id="show-log-header">
-			<div id="serial-header"></div>Click here to move<button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
+			<div id="serial-header"></div><button type="button" class="close" aria-label="Close"> <span aria-hidden="true">&times;</span></button>
 		</div>
 		<ul class="list-group list-group-flush">
 		</ul>
