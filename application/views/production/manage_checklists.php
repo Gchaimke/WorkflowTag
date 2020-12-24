@@ -72,8 +72,8 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 								}  ?></td>
 							<td class="mobile-hide"><?php echo $data->project ?></td>
 							<td>
-								<a href='#' id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
-									<?php echo $data->progress ?>%</a></td>
+								<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
+									<?php echo $data->progress ?>%</div></td>
 							<td><?php echo $data->assembler ?></td>
 							<td class="mobile-hide"><?php echo $data->qc ?></td>
 							<td class="mobile-hide"><?php echo $data->date ?></td>

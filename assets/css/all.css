@@ -73,6 +73,17 @@ ul.pagination.left {
     border: 1px solid #dee2e6;
 }
 
+.div_link {
+    color: #1891f0;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.div_link:hover {
+    text-decoration: underline;
+    color: black;
+}
+
 .inline {
     display: -webkit-box;
 }
@@ -105,9 +116,10 @@ footer.container {
 }
 
 
+
 div#show-log {
     max-width: max-content;
-    position: absolute;
+    position: fixed;
     left: 45%;
     top: 30%;
     background: #e6e6e6;
