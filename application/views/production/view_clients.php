@@ -28,11 +28,13 @@
 				echo $client['name'];
 				echo '</h5><p class="card-text">Select Project:</p></div>';
 				echo '<div class="card-footer">';
-				if ($client['projects'] != "") {
+				if ($client['projects'] != "" && $client['status']==1) {
 					$arr = explode(',', $client['projects']);
 					foreach ($arr as $project) {
 						echo  "<a href='/production/checklists/$project' class='btn btn-primary  btn-block'>$project</a>";
 					}
+				}else{
+					echo '<h3>OLD</h3>';
 				}
 				echo '</div></center></div>';
 			}

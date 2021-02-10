@@ -2,7 +2,7 @@
 
 class Clients_model extends CI_Model
 {
-
+    //id,name,projects,status,logo
     public function addClient($data)
     {
         if ($this->db->table_exists('clients')) {
@@ -53,10 +53,6 @@ class Clients_model extends CI_Model
     public function editClient($data)
     {
         $where = "id ='" . $data['id'] . "'";
-        $data = array(
-            'projects' => $data['projects'],
-            'logo' => $data['logo']
-        );
         return $this->db->update('clients', $data, $where);
     }
 

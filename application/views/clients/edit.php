@@ -32,11 +32,12 @@ if (isset($this->session->userdata['logged_in'])) {
 				$client = $clients[0]['name'];
 				$projects = $clients[0]['projects'];
 				$logo = $clients[0]['logo'];
+				$status = $clients[0]['status'];
 			}
 			?>
 			<?php echo form_open("clients/edit/$id", 'class=user-create'); ?>
 			<input type='hidden' name='id' value="<?php echo $id ?>">
-			<label>Client</label><input id='client_name' type='text' class="form-control" name='name' value="<?php echo $client ?>" disabled></hr>
+			<label>Client</label><input id='client_name' type='text' class="form-control" name='name' value="<?php echo $client ?>"></hr>
 			<label>Logo</label>
 			<div class="input-group mb-3">
 				<input id="logo_path" type='text' class="form-control" name='logo' value="<?php echo $logo ?>">
@@ -45,10 +46,33 @@ if (isset($this->session->userdata['logged_in'])) {
 				</div>
 			</div>
 			<img id="logo_img" class="img-thumbnail" src="<?php echo $logo ?>" onclick="document.getElementById('browse').click();">
-			<input id="browse" style="display:none;" type="file" onchange="snapLogo()" ></hr>
+			<input id="browse" style="display:none;" type="file" onchange="snapLogo()"></hr>
 
 			<div class="form-group"><label>Client Projects</label>
 				<textarea name="projects" class="form-control" cols="40" rows="5"><?php echo $projects ?></textarea>
+			</div>
+			<div class="form-row">
+				<div class="input-group mb-2">
+					<div class="input-group-prepend">
+						<div class="input-group-text">Status</div>
+					</div>
+					<select class="form-control" name='status'>
+						<?php
+						$arr = array(
+							'0' => 'Old',
+							'1' => 'Active',
+						);
+						print_r($arr);
+						foreach ($arr as $value => $cstatus) {
+							if ($value == $status) {
+								echo '<option value="' . $value . '" selected>' . $cstatus . '</option>';
+							} else {
+								echo '<option value="' . $value . '">' . $cstatus . '</option>';
+							}
+						}
+						?>
+					</select>
+				</div>
 			</div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Update'>
 			<?php echo form_close(); ?>

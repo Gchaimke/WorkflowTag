@@ -2,6 +2,7 @@
 
 class Templates_model extends CI_Model
 {
+	//id,client,project,data,template,scans
 	function getTemplates($client_name = '')
 	{
 		$response = array();
@@ -21,10 +22,10 @@ class Templates_model extends CI_Model
 	public function addTemplate($data)
 	{
 		// Query to check whether username already exist or not
-		$condition = "project ='" . $data['project'] . "'";
 		$this->db->select('*');
 		$this->db->from('projects');
-		$this->db->where($condition);
+		$this->db->where("project ='" . urldecode($data['project']) . "'");
+		$this->db->where("client ='" . urldecode($data['client']) . "'");
 		$this->db->limit(1);
 		$query = $this->db->get();
 		if ($query->num_rows() == 0) {
@@ -64,7 +65,6 @@ class Templates_model extends CI_Model
 	public function editTemplate($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array('data' => $data['data'], 'template' => $data['template'], 'scans' => $data['scans']);
 		return $this->db->update('projects', $data, $where);
 	}
 

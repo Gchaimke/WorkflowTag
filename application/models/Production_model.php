@@ -43,8 +43,7 @@ class Production_model extends CI_Model
 			}
 			if ($project != '') {
 				$project = urldecode($project);
-				$condition = "project =\"$project\"";
-				$this->db->where($condition);
+				$this->db->where("project =$project");
 			}
 			$q = $this->db->get();
 			$response = $q->result_array();
@@ -143,22 +142,20 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start, $project, $table = 'checklists', $client = '')
+	public function get_current_checklists_records($limit, $start, $project, $client = '')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
 			$project = urldecode($project);
-			$condition = "project ='$project'";
+			$this->db->where("project ='$project'");
 		}
 
 		if ($client != '') {
 			$client = urldecode($client);
-			$condition .= " AND client ='$client'";
+			$this->db->where("client ='$client'");
 		}
-
-		$this->db->where($condition);
 		$this->db->order_by('id', 'DESC');
-		$query = $this->db->get($table);
+		$query = $this->db->get('checklists');
 
 		if ($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {

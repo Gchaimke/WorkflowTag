@@ -37,6 +37,8 @@ class Production extends CI_Controller
         $limit_per_page = 50;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
+        $params['project'] = urldecode($project);
+        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
 
@@ -71,8 +73,7 @@ class Production extends CI_Controller
             // build paging links
             $params["links"] = $this->pagination->create_links();
         }
-        $params['project'] = urldecode($project);
-        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
+        
         $this->view_page('production/manage_checklists', $params, $params);
     }
 

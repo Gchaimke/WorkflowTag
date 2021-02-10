@@ -43,7 +43,8 @@ class Clients extends CI_Controller
             $data = array(
                 'name' => $this->input->post('name'),
                 'logo' => $this->input->post('logo'),
-                'projects' => $this->input->post('projects')
+                'projects' => $this->input->post('projects'),
+                'status' => $this->input->post('status')
             );
             $result = $this->Clients_model->addClient($data);
             if ($result == TRUE) {
@@ -75,7 +76,8 @@ class Clients extends CI_Controller
                 'id' => $this->input->post('id'),
                 'logo' => $this->input->post('logo'),
                 'name' => $this->input->post('name'),
-                'projects' => $this->input->post('projects')
+                'projects' => $this->input->post('projects'),
+                'status' => $this->input->post('status')
             );
             $this->Clients_model->editClient($sql);
             $data['message_display'] = ' Client updated Successfully !';
