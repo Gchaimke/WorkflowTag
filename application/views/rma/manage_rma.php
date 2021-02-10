@@ -38,19 +38,22 @@
                 </thead>
                 <tbody>
 
-                    <?php foreach ($results as $data) { ?>
-                        <tr id='<?php echo $data->id ?>'>
-                            <td class="mobile-hide"><?php echo $data->date ?></td>
-                            <td><?php echo $data->number ?></td>
-                            <td><?php echo $data->project ?></td>
-                            <td class="mobile-hide"><?php echo $data->serial ?></td>
-                            <td><?php echo $data->product_num ?></td>
-                            <td class="mobile-hide"><?php echo $data->assembler ?></td>
-                            <td><?php echo $data->pictures ?></td>
-                            <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-                            <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
-                        </tr>
-                    <?php } ?>
+                    <?php
+                    if (is_array($results)) {
+                        foreach ($results as $data) { ?>
+                            <tr id='<?php echo $data->id ?>'>
+                                <td class="mobile-hide"><?php echo $data->date ?></td>
+                                <td><?php echo $data->number ?></td>
+                                <td><?php echo $data->project ?></td>
+                                <td class="mobile-hide"><?php echo $data->serial ?></td>
+                                <td><?php echo $data->product_num ?></td>
+                                <td class="mobile-hide"><?php echo $data->assembler ?></td>
+                                <td><?php echo $data->pictures ?></td>
+                                <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+                                <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                    <?php }
+                    } ?>
                 </tbody>
             </table>
         <?php } else { ?>

@@ -142,7 +142,7 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start, $project, $client = '')
+	public function get_current_checklists_records($limit, $start, $project,$table = 'checklists', $client = '')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {
@@ -155,7 +155,7 @@ class Production_model extends CI_Model
 			$this->db->where("client ='$client'");
 		}
 		$this->db->order_by('id', 'DESC');
-		$query = $this->db->get('checklists');
+		$query = $this->db->get($table);
 
 		if ($query->num_rows() > 0) {
 			foreach ($query->result() as $row) {

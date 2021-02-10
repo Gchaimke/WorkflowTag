@@ -26,6 +26,7 @@ if (isset($this->session->userdata['logged_in'])) {
                   ?>
 
                   <?php echo form_open('clients/create', 'class=client-create'); ?>
+                  <input type="hidden" name="status" value="1">
                   <label>Client Name</label><input id='client_name' type='text' class="form-control" name='name' value="" onchange="updateClient(this.value)"><hr>
                   <label>Logo</label>
 			<div class="input-group mb-3">

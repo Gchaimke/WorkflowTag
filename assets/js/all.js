@@ -221,8 +221,8 @@ function savePhotoToServer(file) {
         photoCount++;
         $("#picrures_count").val(photoCount);
         $('#form-messages').addClass('alert-success');
-        // Set the message text.
-        $('#form-messages').text('photo uploaded : ' + photo_id).fadeIn(1000).delay(3000).fadeOut(1000);
+        $( "#save" ).trigger( "click" );
+        console.log(out+" Uploaded");
     });
 }
 
@@ -232,13 +232,14 @@ function delPhoto(id) {
     if (r == true) {
         $.post("/production/delete_photo", {
             photo: photo
-        }).done(function (o) {
+        }).done(function (out) {
             $('#form-messages').addClass('alert-success');
-            // Set the message text.
-            $('#form-messages').text(o).fadeIn(1000).delay(3000).fadeOut(1000);
             $('[id^=' + id + ']').remove();
             photoCount--;
             $("#picrures_count").val(photoCount);
+            $( "#save" ).trigger( "click" );
+            console.log(out);
         });
+        
     }
 }

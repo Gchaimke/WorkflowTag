@@ -17,6 +17,16 @@ class Admin_model extends CI_Model
                 'constraint' => 30,
                 'unique' => TRUE
             ),
+            'view_name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 150,
+                'unique' => TRUE
+            ),
+            'email' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30,
+                'unique' => TRUE
+            ),
             'role' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 60
@@ -24,9 +34,6 @@ class Admin_model extends CI_Model
             'password' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 500
-            ),
-            'log' => array(
-                'type' => 'TEXT'
             )
         );
 
@@ -38,9 +45,10 @@ class Admin_model extends CI_Model
 
         $admin = array(
             "name" => 'Admin',
+            "view_name" => 'Admin',
             "role" => 'Admin',
-            "password" => password_hash('Admin', PASSWORD_DEFAULT),
-            'log' => 'New User created! username:Admin, Password:Admin.'
+            "password" => password_hash('Admin', PASSWORD_DEFAULT)
+            
         );
         $this->db->insert('users', $admin);
     }
@@ -65,6 +73,10 @@ class Admin_model extends CI_Model
                 'constraint' => 500
             ),
             'logo' => array(
+                'type' => 'int',
+                'constraint' => 2
+            ),
+            'status' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 500
             )
@@ -78,8 +90,9 @@ class Admin_model extends CI_Model
 
         $cl = array(
             "name" => 'Avdor-HLT',
-            "projects" => 'Project1,Project 2',
-            "logo" => '/assets/img/logo.png'
+            "projects" => 'Project 1,Project 2',
+            "logo" => '/assets/img/logo.png',
+            'status' => 1
         );
         $this->db->insert('clients', $cl);
     }
@@ -127,9 +140,6 @@ class Admin_model extends CI_Model
                 'type' => 'DATE',
                 'null' => FALSE
             ),
-            'log' => array(
-                'type' => 'TEXT'
-            ),
             'scans' => array(
                 'type' => 'TEXT'
             ),
@@ -137,6 +147,9 @@ class Admin_model extends CI_Model
                 'type' => 'TEXT'
             ),
             'note' => array(
+                'type' => 'TEXT'
+            ),
+            'log' => array(
                 'type' => 'TEXT'
             )
         );
@@ -147,13 +160,13 @@ class Admin_model extends CI_Model
         $demoChecklist = array(
             "serial" => 'P001-07-20',
             "client" => 'Avdor-HLT',
-            "project" => 'Project1',
+            "project" => 'Project 1',
             "data" => '',
             "progress" => '0',
             "assembler" => 'User',
             "qc" => 'Admin',
             "date" => '2020-04-30',
-            "log" => 'New checklist creatin in project Project1 for client Avdor-HLT',
+            'log' => 'Checklist created'
         );
         $this->db->insert('checklists', $demoChecklist);
     }
@@ -218,7 +231,7 @@ class Admin_model extends CI_Model
             "number" => '5001',
             "serial" => 'P001-07-20',
             "client" => 'Avdor-HLT',
-            "project" => 'Project1',
+            "project" => 'Project 1',
             "assembler" => 'User',
             "problem" => 'client problem',
             "repair" => 'repair comment',
@@ -266,9 +279,9 @@ class Admin_model extends CI_Model
 
         $tp = array(
             "client" => 'Avdor-HLT',
-            "project" => 'Project1',
+            "project" => 'Project 1',
             "data" => 'header;HD',
-            "template" => 'Pxxx,mm,yy,-'
+            "template" => 'Pxxx-mm-yy'
         );
         $this->db->insert('projects', $tp);
     }
@@ -285,9 +298,6 @@ class Admin_model extends CI_Model
             ),
             'roles' => array(
                 'type' => 'TEXT'
-            ),
-            'log' => array(
-                'type' => 'LONGTEXT'
             )
         );
 
@@ -298,8 +308,7 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            'roles' => 'Admin,Assembler,QC',
-            'log' => 'Database "settings created."'
+            'roles' => 'Admin,Assembler,QC'
         );
         $this->db->insert('settings', $st);
     }

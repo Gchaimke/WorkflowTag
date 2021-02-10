@@ -1,6 +1,7 @@
 <?php
 $id = $checklist[0]['id'];
 $project = $checklist[0]['project'];
+$checklist_client = $checklist[0]['client'];
 $serial = $checklist[0]['serial'];
 $checklist_data = $checklist[0]['data'];
 $log = $checklist[0]['log'];
@@ -71,7 +72,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		</center>
 		<div id="photo-messages" class='alert hidden' role='alert'></div>
 		<?php
-		$working_dir = 'Uploads/' . $client . '/' . $project . '/' . $serial . '/';
+		$working_dir = 'Uploads/' . $checklist_client . '/' . $project . '/' . $serial . '/';
 		echo "<script>
 				  var photoCount=0;
 				  var log ='$log';
