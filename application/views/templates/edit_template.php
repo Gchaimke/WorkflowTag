@@ -48,7 +48,8 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input type="text" name="template" value="<?php echo $tp ?>" class="form-control">
 			</div>
 			<div class="form-group"><label>Checklist Data</label><br>
-				<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | </label>
+				<label>Last column is function mark, columns separated by ';'. 
+				<br> Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | I = data input</label>
 				<textarea class="form-control" name='data' rows="10" cols="170"><?php echo $dt ?></textarea></br></div>
 			<div class="form-group"><label>Scan Data</label><br>
                   <label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header  </label>

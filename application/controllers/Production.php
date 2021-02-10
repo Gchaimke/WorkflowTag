@@ -302,14 +302,14 @@ class Production extends CI_Controller
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
-                        $tr .= "<tr class='qc_row'><th scope='row'>$prefix$index</th><td class='description' colspan='2'>" . $col[0];
+                        $tr .= "<tr class='qc_row'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
                         $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $options . "</select></td></tr>";
                         $index++;
                         $id++;
                     } else if (end($col) == "I") {
                         $tr .= "<tr class='input_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0];
-                        $tr .= "</td><td><input type='text' class='form-control input' id='" . ($id + count($rows)) . "'></td></tr>";
+                        $tr .= "</td><td style=\"width: 20%;\"><input type='text' class='form-control input' id='" . ($id + count($rows)) . "'></td></tr>";
                         $index++;
                         $id++;
                     } else if (end($col) == "N") {

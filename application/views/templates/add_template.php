@@ -51,7 +51,8 @@ if (isset($clients)) {
                   <input type="text" name="template" value="AVxxx-mm-yy" class="form-control">
                   </div>
                   <div class="form-group"><label>Checklist Data</label><br>
-                  <label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | </label>
+                  <label>Last column is function mark, columns separated by ';'.<br>
+                   Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | I = data input </label>
                   <textarea class="form-control" name='data' rows="10" cols="100">Assembly;Verify;HD&#13;&#10;checkbox 1;V&#13;&#10;checkbox 2;V&#13;&#10;Qc select;QC
                   </textarea></br></div>
                   <div class="form-group"><label>Scan Data</label><br>
