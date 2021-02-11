@@ -49,7 +49,7 @@ if (!isset($rma_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $data['client'] . "/" . $data['project'] ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $data['id'] ?>" role='alert'></div>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -81,7 +81,7 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">SN</div>
                               </div>
-                              <input type='text' class="form-control" name='serial' value='<?php echo $data['serial'] ?>' required>
+                              <input type='text' class="form-control" name='serial' value='<?php echo $data['serial'] ?>'>
                         </div>
                         <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">

@@ -41,7 +41,7 @@ if ($project == 'Production') {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Serial Number</div>
                               </div>
-                              <input type='text' class="form-control" name='serial' required>
+                              <input type='text' class="form-control" name='serial'>
                         </div>
                         <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">

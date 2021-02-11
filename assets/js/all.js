@@ -162,7 +162,7 @@ $('#ajax-form').submit(function (event) {
             // Set the message text.
             $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
             if(typeof new_location !== 'undefined'){
-                setTimeout(function(){ window.location.replace(new_location);; }, 3000);
+                setTimeout(function(){ window.location.replace(new_location);}, 3000);
             }
         }else{
             $('#form-messages').addClass('alert-danger');

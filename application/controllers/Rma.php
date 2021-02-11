@@ -39,30 +39,8 @@ class RMA extends CI_Controller
 
     public function create_rma()
     {
-        // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('date', 'date', 'trim|xss_clean');
-        $this->form_validation->set_rules('number', 'number', 'trim|xss_clean');
-        $this->form_validation->set_rules('product_num', 'product_num', 'trim|xss_clean');
-        $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
-        $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
-        $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
-        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
-        $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
-        $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
-        $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
-        if ($this->form_validation->run() != FALSE) {
-            $data = array(
-                "date" => $this->input->post('date'),
-                "number" => $this->input->post('number'),
-                "product_num" => $this->input->post('product_num'),
-                "serial" => $this->input->post('serial'),
-                "client" => $this->input->post('client'),
-                "project" => $this->input->post('project'),
-                "assembler" => $this->input->post('assembler'),
-                "problem" => $this->input->post('problem'),
-                "repair" => $this->input->post('repair'),
-                "parts" => $this->input->post('parts')
-            );
+        if ($this->input->post()) {
+            $data = $this->input->post();
             echo $this->Rma_model->create_rma($data);
         }
     }

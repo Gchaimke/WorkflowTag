@@ -16,7 +16,7 @@ class Rma_model extends CI_Model
 			// Query to insert data in database
 			$out = $this->db->insert('rma_forms', $data);
 			if ($this->db->affected_rows() > 0) {
-				echo 'OK: New RMA Created!';
+				echo ' OK: New RMA Created!';
 			} else {
 				echo $out;
 			}
