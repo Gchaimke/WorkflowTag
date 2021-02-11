@@ -37,7 +37,7 @@ if (isset($this->session->userdata['logged_in'])) {
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/admin/mange_uploads">Uploads</a>
-            <a class="dropdown-item" href="/admin/manage_trash">Trash</a>
+            <a class="dropdown-item" href="/admin/manage_trash?kind=checklist">Trash</a>
             <a class="dropdown-item" href="/admin/view_log">System Log</a>
             <a class="dropdown-item" href="/admin/settings">Settings</a>
           </div>

@@ -10,6 +10,14 @@ class Admin extends CI_Controller
 		$this->load->library('pagination');
 	}
 
+	function view_page($page_name = 'admin', $page_data = '', $menu_parameters = '')
+	{
+		$this->load->view('header');
+		$this->load->view('main_menu', $menu_parameters);
+		$this->load->view($page_name, $page_data);
+		$this->load->view('footer');
+	}
+
 	function settings()
 	{
 		$data = array();
@@ -92,22 +100,23 @@ class Admin extends CI_Controller
 		$working_dir = 'Uploads/Backups/';
 		define('BACKUP_DIR', $working_dir);
 		if (!file_exists(BACKUP_DIR)) {
-            mkdir(BACKUP_DIR, 0770, true);
-        }
+			mkdir(BACKUP_DIR, 0770, true);
+		}
 		// Load the DB utility class
 		$this->load->dbutil();
 		// Backup your entire database and assign it to a variable
 		$backup = $this->dbutil->backup();
 		// Load the file helper and write the file to your server
 		$this->load->helper('file');
-		$file = BACKUP_DIR.'db-'.date("Y-m-d").'.zip';
+		$file = BACKUP_DIR . 'db-' . date("Y-m-d") . '.zip';
 		$success = file_put_contents($file, $backup);
 		// Load the download helper and send the file to your desktop
-		echo $success ? $file : 'Unable to save the file: '.$file;
+		echo $success ? $file : 'Unable to save the file: ' . $file;
 	}
 
 	function manage_trash()
 	{
+		$kind = $this->input->post_get('kind');
 		$project = 'Trash';
 		$this->load->database();
 		// init params
@@ -115,18 +124,16 @@ class Admin extends CI_Controller
 		$config = array();
 		$limit_per_page = 30;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		$total_records = $this->Admin_model->get_total($project) + $this->Admin_model->get_total($project, 'rma_forms');
-		$trashed_checklists = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
-		$trashed_rma = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
-		if ($trashed_checklists) {
-			$all_trash = ($trashed_rma) ? array_merge($trashed_checklists, $trashed_rma) : $trashed_checklists;
+		if ($kind == 'checklist') {
+			$total_records = $this->Admin_model->get_total($project);
+			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
 		} else {
-			$all_trash = ($trashed_rma) ? $trashed_rma : null;
+			$total_records = $this->Admin_model->get_total($project, 'rma_forms');
+			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
 		}
-
 		if ($total_records > 0) {
-			$params["results"] = $all_trash;
-
+			$params["results"] = $in_trash;
+			$params["kind"] = $kind;
 			$config['base_url'] = base_url() . 'admin/manage_trash';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
@@ -189,16 +196,41 @@ class Admin extends CI_Controller
 		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
 		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$id = $this->input->post('id');
-		$project = $this->input->post('project');
 		$serial = $this->input->post('serial');
 		$kind = $this->input->post('kind');
-		if ($kind  == 'Checklist') {
-			$this->Admin_model->deleteChecklist($id);
-		} else {
-			$this->Admin_model->deleteChecklist($id, 'rma_forms');
-		}
+		$data = array(
+			'id' => $id,
+			'kind' => $kind,
+			'serial' => $serial
+		);
+		$this->detele($data);
+	}
 
-		$this->log_data("deleted from '$project' $kind '$serial'", 3);
+	public function delete_batch()
+	{
+		$data = array();
+		if ($this->input->post()) {
+			$ids = explode(",", $this->input->post('ids'));
+			$kind = $this->input->post('kind');
+			foreach ($ids as $cid) {
+				$data = array(
+					'id' => $cid,
+					'kind' => $kind,
+					'serial' => '0'
+				);
+				$this->detele($data);
+			}
+		}
+	}
+
+	private function detele($data)
+	{
+		if (ucfirst($data['kind']) == 'Checklist') {
+			$this->Admin_model->deleteChecklist($data['id']);
+		} else {
+			$this->Admin_model->deleteChecklist($data['id'], 'rma_forms');
+		}
+		$this->log_data("deleted " . $data['kind'] . " from trash : " . $data['serial'], 3);
 	}
 
 	public function view_log()

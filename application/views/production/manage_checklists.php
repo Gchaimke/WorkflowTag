@@ -43,52 +43,54 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 			</center>
 		</div>
 		<?php if (isset($results)) { ?>
-			<table class="table">
-				<thead class="thead-dark">
-					<tr>
-						<th scope="col">*</th>
-						<th scope="col">Serial Number</th>
-						<th scope="col" class="mobile-hide">Project</th>
-						<th scope="col"><i class="fa fa-tasks"></i></th>
-						<th scope="col"><i class="fa fa-user"></i></th>
-						<th scope="col" class="mobile-hide">QC</th>
-						<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
-						<th scope="col"><i class="fa fa-picture-o"></i></th>
-						<th scope="col">Edit</th>
-						<th scope="col">Trash</th>
-					</tr>
-				</thead>
-				<tbody>
+			<div class="table-responsive">
+				<table class="table">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">*</th>
+							<th scope="col">Serial Number</th>
+							<th scope="col" class="mobile-hide">Project</th>
+							<th scope="col"><i class="fa fa-tasks"></i></th>
+							<th scope="col"><i class="fa fa-user"></i></th>
+							<th scope="col" class="mobile-hide">QC</th>
+							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
+							<th scope="col"><i class="fa fa-picture-o"></i></th>
+							<th scope="col">Edit</th>
+							<th scope="col">Trash</th>
+						</tr>
+					</thead>
+					<tbody>
 
-					<?php
-					if (is_array($results)) {
+						<?php
+						if (is_array($results)) {
 
-						foreach ($results as $data) { ?>
-							<tr id='<?php echo $data->id ?>'>
-								<td>
-									<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
-								</td>
-								<td><?php if ($data->serial != '') {
-										echo $data->serial;
-									} else {
-										echo "SN template not found!";
-									}  ?></td>
-								<td class="mobile-hide"><?php echo $data->project ?></td>
-								<td>
-									<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
-										<?php echo $data->progress ?>%</div>
-								</td>
-								<td><?php echo $data->assembler ?></td>
-								<td class="mobile-hide"><?php echo $data->qc ?></td>
-								<td class="mobile-hide"><?php echo $data->date ?></td>
-								<td><?php echo $data->pictures ?></td>
-								<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-								<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
-							</tr>
-					<?php }
-					} ?>
-				</tbody>
-			</table>
+							foreach ($results as $data) { ?>
+								<tr id='<?php echo $data->id ?>'>
+									<td>
+										<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
+									</td>
+									<td><?php if ($data->serial != '') {
+											echo $data->serial;
+										} else {
+											echo "SN template not found!";
+										}  ?></td>
+									<td class="mobile-hide"><?php echo $data->project ?></td>
+									<td>
+										<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
+											<?php echo $data->progress ?>%</div>
+									</td>
+									<td><?php echo $data->assembler ?></td>
+									<td class="mobile-hide"><?php echo $data->qc ?></td>
+									<td class="mobile-hide"><?php echo $data->date ?></td>
+									<td><?php echo $data->pictures ?></td>
+									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+								</tr>
+						<?php }
+						} ?>
+					</tbody>
+				</table>
+			</div>
 		<?php } else { ?>
 			<div>No checklist(s) found.</div>
 		<?php } ?>
