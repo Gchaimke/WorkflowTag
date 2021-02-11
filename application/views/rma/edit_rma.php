@@ -19,7 +19,40 @@ if (!isset($rma_form)) {
       .control_btn_container {
             position: fixed;
             right: 0;
-            top: 100px;
+            top: 50%;
+            display: grid;
+            z-index: 1;
+      }
+
+      button#save {
+            margin-top: 70px;
+      }
+
+      @media (max-width: 991.98px) {
+            .control_btn_container {
+                  position: fixed;
+                  top: auto;
+                  bottom: 0;
+                  display: block;
+                  z-index: 1;
+                  background: #ebebeb;
+                  width: 100%;
+                  text-align: center;
+            }
+
+            .control_btn_container>button {
+                  width: 100px;
+            }
+
+            button#save {
+                  margin-top: 0;
+
+            }
+
+            .jumbotron {
+                  padding: 5rem 0rem;
+                  padding-bottom: 1rem;
+            }
       }
 
       @media print {
