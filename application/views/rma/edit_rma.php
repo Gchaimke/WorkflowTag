@@ -50,6 +50,7 @@ if (!isset($rma_form)) {
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
 <div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $data['id'] ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $data['client'] . "/" . $data['project'] ?>" data-url-name="All <?= $data['project'] ?> RMA " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

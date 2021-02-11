@@ -172,15 +172,13 @@ class Production_model extends CI_Model
 		$this->db->from($table);
 		if ($project != '') {
 			$project = urldecode($project);
-			$condition = "project ='$project'";
+			$this->db->where("project ='$project'");
 		}
 
 		if ($client != '') {
 			$client = urldecode($client);
-			$condition .= " AND client ='$client'";
+			$this->db->where("client ='$client'");
 		}
-
-		$this->db->where($condition);
 		return $this->db->count_all_results();
 	}
 }

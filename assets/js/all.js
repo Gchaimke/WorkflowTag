@@ -243,3 +243,9 @@ function delPhoto(id) {
         
     }
 }
+
+if($('#nav_main_category_data').length){
+    var nav_to = $('#nav_main_category_data').attr('data-url');
+    var nav_name = $('#nav_main_category_data').attr('data-url-name');
+    $('#nav_main_category').attr('href',nav_to).text(nav_name).removeAttr('hidden');
+}

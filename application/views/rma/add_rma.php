@@ -16,7 +16,8 @@ if ($project == 'Production') {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $client."/".$project ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" data-url-name="<?=$client." ".$project?> RMA" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
