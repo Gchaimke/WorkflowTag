@@ -6,7 +6,7 @@ class Rma_model extends CI_Model
 	public function create_rma($data)
 	{
 		// Query to check whether serial already exist or not
-		$condition = "number ='" . $data['number'] . "' AND project='" . $data['project'] . "'";
+		$condition = "number LIKE '%" . $data['number'] . "%' AND project='" . $data['project'] . "'";
 		$this->db->select('*');
 		$this->db->from('rma_forms');
 		$this->db->where($condition);
