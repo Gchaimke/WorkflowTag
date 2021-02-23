@@ -10,18 +10,15 @@ class Rma_model extends CI_Model
 		$this->db->select('*');
 		$this->db->from('rma_forms');
 		$this->db->where($condition);
-		$this->db->limit(1);
 		$query = $this->db->get();
-		if ($query->num_rows() == 0) {
-			// Query to insert data in database
-			$out = $this->db->insert('rma_forms', $data);
-			if ($this->db->affected_rows() > 0) {
-				echo ' OK: New RMA Created!';
-			} else {
-				echo $out;
-			}
+		if ($query->num_rows() != 0) {
+			$data['number'] = $data['number'] . '_' . $query->num_rows();
+		}
+		$out = $this->db->insert('rma_forms', $data);
+		if ($this->db->affected_rows() > 0) {
+			echo ' OK: New RMA Created!';
 		} else {
-			echo "ERROR: RMA number exists!";
+			echo $out;
 		}
 	}
 
@@ -66,5 +63,4 @@ class Rma_model extends CI_Model
 			return $response;
 		}
 	}
-
 }

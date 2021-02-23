@@ -36,7 +36,7 @@ if ($project == 'Production') {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA Number</div>
                               </div>
-                              <input type='text' class="form-control" name='number' required>
+                              <input type='number' class="form-control" name='number' required>
                         </div>
                         <div class="input-group mb-2 col-lg-5">
                               <div class="input-group-prepend">
