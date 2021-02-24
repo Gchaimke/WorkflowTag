@@ -131,7 +131,7 @@ class RMA extends CI_Controller
         $project = $this->uri->segment(4);
         $params = array();
         $config = array();
-        $limit_per_page = 20;
+        $limit_per_page = 50;
         $uri_segment = 5;
         $start_index = ($this->uri->segment($uri_segment)) ? $this->uri->segment($uri_segment) : 0;
         $total_records = $this->Production_model->get_total($project, 'rma_forms', $client);
