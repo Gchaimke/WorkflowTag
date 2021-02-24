@@ -189,4 +189,19 @@ class RMA extends CI_Controller
         fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
         fclose($fp);
     }
+
+    function update_status()
+    {
+        $id = $this->input->post('id');
+        $status =  $this->Rma_model->get_rma($id)[0]['status'];
+        $status++;
+        if ($status > 2) {
+            $status = 0;
+        }
+        $sql = array(
+            'id' => $id,
+            'status' => $status,
+        );
+        echo $this->Rma_model->update_rma($sql);
+    }
 }

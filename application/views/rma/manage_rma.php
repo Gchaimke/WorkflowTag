@@ -1,3 +1,7 @@
+<?php 
+$status = ['new','on check','done'];
+$colors = ['success','warning','info'];
+?>
 <main role="main">
     <div class="jumbotron">
         <div class="container">
@@ -33,6 +37,7 @@
                             <th scope="col">Part Number</th>
                             <th scope="col" class="mobile-hide"><i class="fa fa-user"></i></th>
                             <th scope="col"><i class="fa fa-picture-o"></i></th>
+                            <th scope="col"><i class="fa fa-check"></i></th>
                             <th scope="col">Edit</th>
                             <th scope="col">Trash</th>
                         </tr>
@@ -50,6 +55,7 @@
                                     <td><?php echo $data->product_num ?></td>
                                     <td class="mobile-hide"><?php echo $data->assembler ?></td>
                                     <td><?php echo $data->pictures ?></td>
+                                    <td><span class="status btn btn-<?=$colors[$data->status]?>" data-id="<?=$data->id?>"><?=$status[$data->status] ?></span></td>
                                     <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                                     <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                                 </tr>
@@ -86,4 +92,14 @@
             });
         }
     }
+    $('.status').on('click',function(){
+        var id = $(this).attr('data-id')
+        $.post("/rma/update_status", {
+                id: id
+            }).done(function(o) {
+                //$('[id^=' + id + ']').remove();
+                //console.log(o);
+                location.reload();
+            });
+    })
 </script>
