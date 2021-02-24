@@ -2,6 +2,72 @@
 
 class Rma_model extends CI_Model
 {
+	function createDb()
+    {
+        $this->load->dbforge();
+        $project = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+			'number' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+			'product_num' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+			'serial' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+			'client' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+			'project' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+			'assembler' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+            'problem' => array(
+                'type' => 'TEXT'
+            ),
+            'repair' => array(
+                'type' => 'TEXT'
+            ),
+            'parts' => array(
+                'type' => 'TEXT'
+            ),
+			'pictures' => array(
+                'type' => 'INT',
+                'constraint' => 2,
+                'unsigned' => TRUE,
+            ),
+			'status' => array(
+                'type' => 'INT',
+                'constraint' => 1,
+                'unsigned' => TRUE,
+            ),
+        );
+
+        $this->dbforge->add_field($project);
+        // define primary key
+        $this->dbforge->add_key('id', TRUE);
+        // create table
+        $this->dbforge->create_table('settings');
+
+        $st = array(
+            'roles' => 'Admin,Assembler,QC'
+        );
+        $this->db->insert('settings', $st);
+    }
 
 	public function create_rma($data)
 	{
