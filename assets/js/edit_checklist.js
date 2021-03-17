@@ -50,9 +50,9 @@ $(document).ready(function () {
 
 function updateProgress() {
     AllCheckRows = $('.verify').length + $('.review').length + $('.input_row').length;
-    AllChecked = $("input:checkbox:checked").length 
-    + $('.review option:selected[value!="Select"]').length 
-    + $('input.input').filter(function(){return $(this).val();}).length;
+    AllChecked = $("input:checkbox:checked").length
+        + $('.review option:selected[value!="Select"]').length
+        + $('input.input').filter(function () { return $(this).val(); }).length;
     progress_status = 100 / (AllCheckRows) * AllChecked
     setProgress(progress_status);
 }
@@ -133,7 +133,10 @@ $("select.review").change(function (e) {
     var option = $(this).children("option:selected");
     var name = option.val();
     if (option.val() != "0") {
-        var password = prompt(name + "- please enter your Password.", "");
+        var password = '';
+        if (name != assembler) {
+            password = prompt(name + "- please enter your Password.", "");
+        }
         $.post("/users/get_verify",
             {
                 name: name,

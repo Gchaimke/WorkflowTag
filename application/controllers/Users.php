@@ -208,8 +208,14 @@ class Users extends CI_Controller
 
     public function get_verify()
     {
-        $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
+        $current_user = ($this->session->userdata['logged_in']['name']);
+        $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
+        $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
+
+        if($current_user == $this->input->post('name')){
+            echo true;
+            return;
+        }
         $data = array(
             'name' => $this->input->post('name'),
             'password' => $this->input->post('password')
