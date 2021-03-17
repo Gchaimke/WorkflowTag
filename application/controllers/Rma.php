@@ -68,7 +68,7 @@ class RMA extends CI_Controller
         $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
-        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('user', 'user', 'trim|xss_clean');
         $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
         $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
         $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
@@ -81,7 +81,7 @@ class RMA extends CI_Controller
                 "serial" => $this->input->post('serial'),
                 "client" => $this->input->post('client'),
                 "project" => $this->input->post('project'),
-                "assembler" => $this->input->post('assembler'),
+                "user" => $this->input->post('user'),
                 "problem" => $this->input->post('problem'),
                 "repair" => $this->input->post('repair'),
                 "parts" => $this->input->post('parts'),

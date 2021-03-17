@@ -2,39 +2,43 @@
 
 class Rma_model extends CI_Model
 {
-	function createDb()
+	function createRMADb()
     {
         $this->load->dbforge();
-        $project = array(
+        $rma = array(
             'id' => array(
                 'type' => 'INT',
                 'constraint' => 9,
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
-			'number' => array(
+            'date' => array(
+                'type' => 'DATE',
+                'null' => FALSE
+            ),
+            'number' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
             ),
-			'product_num' => array(
+            'serial' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
             ),
-			'serial' => array(
+            'product_num' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 100
             ),
-			'client' => array(
+            'client' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 100
             ),
-			'project' => array(
+            'project' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 100
             ),
-			'assembler' => array(
+            'user' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 100,
+                'constraint' => 50
             ),
             'problem' => array(
                 'type' => 'TEXT'
@@ -45,28 +49,31 @@ class Rma_model extends CI_Model
             'parts' => array(
                 'type' => 'TEXT'
             ),
-			'pictures' => array(
-                'type' => 'INT',
-                'constraint' => 2,
-                'unsigned' => TRUE,
+            'pictures' => array(
+                'type' => 'TEXT'
             ),
-			'status' => array(
+            'status' => array(
                 'type' => 'INT',
                 'constraint' => 1,
                 'unsigned' => TRUE,
             ),
         );
-
-        $this->dbforge->add_field($project);
-        // define primary key
+        $this->dbforge->add_field($rma);
         $this->dbforge->add_key('id', TRUE);
-        // create table
-        $this->dbforge->create_table('settings');
+        $this->dbforge->create_table('rma_forms');
 
-        $st = array(
-            'roles' => 'Admin,Assembler,QC'
+        $demoRMA = array(
+            "date" => '2020-04-30',
+            "number" => '5001',
+            "serial" => 'P001-07-20',
+            "client" => 'Avdor-HLT',
+            "project" => 'Project 1',
+            "user" => 'User',
+            "problem" => 'client problem',
+            "repair" => 'repair comment',
+            "parts" => 'CPU:i7;RAM:8gb'
         );
-        $this->db->insert('settings', $st);
+        $this->db->insert('rma_forms', $demoRMA);
     }
 
 	public function create_rma($data)

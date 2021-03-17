@@ -29,7 +29,7 @@ if ($project == 'Production') {
       <div class="container">
             <?php echo form_open("rma/create_rma/", "id=ajax-form"); ?>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
-            <input type='hidden' name='assembler' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
+            <input type='hidden' name='user' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-4">

@@ -6,7 +6,7 @@ $colors = ['success', 'warning', 'info'];
     <div class="jumbotron">
         <div class="container">
             <center>
-                <h2 class="display-3"><?php echo $client . " " . $project; ?> RMA Forms</h2>
+                <h2 class="display-3"><?php echo $client . " " . $project; ?> QC Forms</h2>
             </center>
         </div>
     </div>
@@ -17,9 +17,9 @@ $colors = ['success', 'warning', 'info'];
             echo $message_display . '</div>';
         }
         ?>
-        <nav aria-label="rma navigation">
+        <nav aria-label="qc navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="/rma/add_rma/<?php echo $client . "/" . $project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="/qc/add_qc/<?php echo $client . "/" . $project; ?>"><i class="fa fa-file-text"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -31,7 +31,7 @@ $colors = ['success', 'warning', 'info'];
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
-                            <th scope="col">RMA Number</th>
+                            <th scope="col">qc Number</th>
                             <th scope="col">Project</th>
                             <th scope="col" class="mobile-hide">Serial Number</th>
                             <th scope="col">Part Number</th>
@@ -53,11 +53,11 @@ $colors = ['success', 'warning', 'info'];
                                     <td><?php echo $data->project ?></td>
                                     <td class="mobile-hide"><?php echo $data->serial ?></td>
                                     <td><?php echo $data->product_num ?></td>
-                                    <td class="mobile-hide"><?php echo $data->assembler ?></td>
+                                    <td class="mobile-hide"><?php echo $data->user ?></td>
                                     <td><?php echo $data->pictures ?></td>
-                                    <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+                                    <td><a id='edit_qc' href='/qc/edit_qc/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                                     <td><span class="status btn btn-<?= $colors[$data->status] ?>" data-id="<?= $data->id ?>"><?= $status[$data->status] ?></span></td>
-                                    <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_rma(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
+                                    <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash_qc(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                                 </tr>
                         <?php }
                         } ?>
@@ -65,7 +65,7 @@ $colors = ['success', 'warning', 'info'];
                 </table>
             </div>
         <?php } else { ?>
-            <div>No RMA Form(s) found.</div>
+            <div>No qc Form(s) found.</div>
         <?php } ?>
     </div>
     <div id='show-log' style='display:none;'>
@@ -79,10 +79,10 @@ $colors = ['success', 'warning', 'info'];
 <script>
     var client = '<?php echo $client ?>';
 
-    function trash_rma(id, project, number) {
-        var r = confirm("Trash RMA Form " + number + "?");
+    function trash_qc(id, project, number) {
+        var r = confirm("Trash qc Form " + number + "?");
         if (r == true) {
-            $.post("/rma/trash_rma", {
+            $.post("/qc/trash_qc", {
                 id: id,
                 project: project,
                 number: number
@@ -94,7 +94,7 @@ $colors = ['success', 'warning', 'info'];
     }
     $('.status').on('click', function() {
         var id = $(this).attr('data-id')
-        $.post("/rma/update_status", {
+        $.post("/qc/update_status", {
             id: id
         }).done(function(o) {
             //$('[id^=' + id + ']').remove();

@@ -2,6 +2,52 @@
 
 class Templates_model extends CI_Model
 {
+	function createDb()
+    {
+        $this->load->dbforge();
+        $project = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'client' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 60
+            ),
+            'project' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+                'unique' => TRUE
+            ),
+            'data' => array(
+                'type' => 'TEXT'
+            ),
+            'template' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
+            'scans' => array(
+                'type' => 'TEXT'
+            )
+        );
+
+        $this->dbforge->add_field($project);
+        // define primary key
+        $this->dbforge->add_key('id', TRUE);
+        // create table
+        $this->dbforge->create_table('projects');
+
+        $tp = array(
+            "client" => 'Avdor-HLT',
+            "project" => 'Project 1',
+            "data" => 'header;HD',
+            "template" => 'Pxxx-mm-yy'
+        );
+        $this->db->insert('projects', $tp);
+    }
+	
 	//id,client,project,data,template,scans
 	function getTemplates($client_name = '')
 	{

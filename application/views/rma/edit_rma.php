@@ -159,13 +159,13 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Rma From</div>
                               </div>
-                              <input type='text' class="form-control" name='assembler' value='<?php echo $data['client'] ?>'>
+                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>'>
                         </div>
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Checked by</div>
                               </div>
-                              <input type='text' class="form-control" name='assembler' value='<?php echo $data['assembler'] ?>'>
+                              <input type='text' class="form-control" name='user' value='<?php echo $data['user'] ?>'>
                         </div>
                   </div>
 
@@ -185,7 +185,7 @@ if (!isset($rma_form)) {
                   var id='" . $data['id'] . "';
                   var project='" . $data['project'] . "';
                   var serial='" . $data['number'] . "';
-                  var assembler ='" . $data['assembler'] . "';
+                  var user ='" . $data['user'] . "';
                   var client='" . $data['client'] . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS

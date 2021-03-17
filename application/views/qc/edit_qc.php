@@ -7,10 +7,10 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 
-if (!isset($rma_form)) {
-      header("location: /rma/");
+if (!isset($qc_form)) {
+      header("location: /qc/");
 } else {
-      $data = $rma_form[0];
+      $data = $qc_form[0];
 }
 
 ?>
@@ -82,13 +82,13 @@ if (!isset($rma_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $data['id'] ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $data['client'] . "/" . $data['project'] ?>" data-url-name="All <?= $data['project'] ?> RMA " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/qc/edit_qc/<?php echo $data['id'] ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/qc/view_project_qc/<?php echo $data['client'] . "/" . $data['project'] ?>" data-url-name="All <?= $data['project'] ?> qc " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3"><?php echo $data['project'] ?> RMA #<?php echo $data['number'] ?></h2>
+                        <h2 class="display-3"><?php echo $data['project'] ?> qc #<?php echo $data['number'] ?></h2>
                   </center>
             </div>
       </div>
@@ -98,7 +98,7 @@ if (!isset($rma_form)) {
       </div>
       <div class="container">
 
-            <?php echo form_open("rma/update_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("qc/update_qc/", "id=ajax-form"); ?>
             <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
             <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
             <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
@@ -107,7 +107,7 @@ if (!isset($rma_form)) {
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-2">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">RMA #</div>
+                                    <div class="input-group-text">qc #</div>
                               </div>
                               <input type='text' class="form-control" name='number' value='<?php echo $data['number'] ?>' disabled>
                         </div>
@@ -157,15 +157,15 @@ if (!isset($rma_form)) {
                   <div class="form-row">
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">Rma From</div>
+                                    <div class="input-group-text">qc From</div>
                               </div>
-                              <input type='text' class="form-control" name='assembler' value='<?php echo $data['client'] ?>'>
+                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>'>
                         </div>
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Checked by</div>
                               </div>
-                              <input type='text' class="form-control" name='assembler' value='<?php echo $data['assembler'] ?>'>
+                              <input type='text' class="form-control" name='user' value='<?php echo $data['user'] ?>'>
                         </div>
                   </div>
 
@@ -179,13 +179,13 @@ if (!isset($rma_form)) {
             </center>
             <div id="photo-messages" class='alert hidden' role='alert'></div>
             <?php
-            $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/RMA/' . $data['number'] . '/';
+            $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/qc/' . $data['number'] . '/';
             echo "<script>
                   var photoCount=0;
                   var id='" . $data['id'] . "';
                   var project='" . $data['project'] . "';
                   var serial='" . $data['number'] . "';
-                  var assembler ='" . $data['assembler'] . "';
+                  var user ='" . $data['user'] . "';
                   var client='" . $data['client'] . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS
@@ -213,5 +213,5 @@ if (!isset($rma_form)) {
       $(document).ready(function() {
             $("#picrures_count").val(photoCount);
       });
-      document.title = 'RMA <?php echo $data['number'] ?>';
+      document.title = 'qc <?php echo $data['number'] ?>';
 </script>

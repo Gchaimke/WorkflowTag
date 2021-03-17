@@ -53,7 +53,7 @@ $colors = ['success', 'warning', 'info'];
                                     <td><?php echo $data->project ?></td>
                                     <td class="mobile-hide"><?php echo $data->serial ?></td>
                                     <td><?php echo $data->product_num ?></td>
-                                    <td class="mobile-hide"><?php echo $data->assembler ?></td>
+                                    <td class="mobile-hide"><?php echo $data->user ?></td>
                                     <td><?php echo $data->pictures ?></td>
                                     <td><a id='edit_rma' href='/rma/edit_rma/<?php echo $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                                     <td><span class="status btn btn-<?= $colors[$data->status] ?>" data-id="<?= $data->id ?>"><?= $status[$data->status] ?></span></td>

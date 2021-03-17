@@ -1,12 +1,22 @@
 <?php
 class Admin extends CI_Controller
 {
+	private $system_models = array(
+		'Admin' => 'settings',
+		'Clients' => 'clients',
+		'Production' => 'checklists',
+		'Qc' => 'qc_forms',
+		'Rma' => 'rma_forms',
+		'Templates' => 'projects',
+		'Users' => 'users',
+	);
 	public function __construct()
 	{
 		parent::__construct();
-		// Load model
-		$this->load->model('Users_model');
-		$this->load->model('Admin_model');
+		// Load models
+		foreach ($this->system_models as $model => $table) {
+			$this->load->model($model . '_model');
+		}
 		$this->load->library('pagination');
 	}
 
@@ -52,46 +62,16 @@ class Admin extends CI_Controller
 	{
 		$data = array();
 		$data['response'] = '';
-		if (!$this->db->table_exists('users')) {
-			$this->Admin_model->createUsersDb();
-			$data['response'] .= "Table 'users' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'users' exists!<br>" . PHP_EOL;
+		foreach ($this->system_models as $model => $table) {
+			$model_name = $model . '_model';
+			if (!$this->db->table_exists($table)) {
+				$this->$model_name->createDb();
+				$data['response'] .= "$model_name Table: $table created!<br>" . PHP_EOL;
+			} else {
+				$data['response'] .= "$model_name Table: $table exists!<br>" . PHP_EOL;
+			}
 		}
-		if (!$this->db->table_exists('clients')) {
-			$this->Admin_model->createClientsDb();
-			$data['response'] .= "Table 'clients' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'clients' exists!<br>" . PHP_EOL;
-		}
-		if (!$this->db->table_exists('checklists')) {
-			$this->Admin_model->createChecklistDb();
-			$data['response'] .= "Table 'checklists' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'checklists' exists!<br>" . PHP_EOL;
-		}
-		if (!$this->db->table_exists('projects')) {
-			$this->Admin_model->createProjectsDb();
-			$data['response'] .= "Table 'projects' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'projects' exists!<br>" . PHP_EOL;
-		}
-		if (!$this->db->table_exists('rma_forms')) {
-			$this->Admin_model->createRMADb();
-			$data['response'] .= "Table 'rma_forms' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'rma_forms' exists!<br>" . PHP_EOL;
-		}
-
-		if (!$this->db->table_exists('settings')) {
-			$this->Admin_model->createSettingsDb();
-			$data['settings'] = $this->Admin_model->getSettings();
-			$data['response'] .= "Table 'settings' created!<br>" . PHP_EOL;
-		} else {
-			$data['response'] .= "Table 'settings' exists!<br>" . PHP_EOL;
-			$data['settings'] = $this->Admin_model->getSettings();
-		}
-
+		$data['settings'] = $this->Admin_model->getSettings();
 		echo $data['response'];
 	}
 

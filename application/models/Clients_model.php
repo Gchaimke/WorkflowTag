@@ -2,6 +2,49 @@
 
 class Clients_model extends CI_Model
 {
+    function createDb()
+    {
+        $this->load->dbforge();
+        $client = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'name' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 60,
+                'unique' => TRUE
+            ),
+            'projects' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 500
+            ),
+            'logo' => array(
+                'type' => 'int',
+                'constraint' => 2
+            ),
+            'status' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 500
+            )
+        );
+
+        $this->dbforge->add_field($client);
+        // define primary key
+        $this->dbforge->add_key('id', TRUE);
+        // create table
+        $this->dbforge->create_table('clients');
+
+        $cl = array(
+            "name" => 'Avdor-HLT',
+            "projects" => 'Project 1,Project 2',
+            "logo" => '/assets/img/logo.png',
+            'status' => 1
+        );
+        $this->db->insert('clients', $cl);
+    }
     //id,name,projects,status,logo
     public function addClient($data)
     {

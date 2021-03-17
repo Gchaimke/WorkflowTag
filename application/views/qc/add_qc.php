@@ -16,25 +16,25 @@ if ($project == 'Production') {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" data-url-name="<?=$client." ".$project?> RMA" hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/qc/view_project_qc/<?php echo $client . "/" . $project ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/qc/view_project_qc/<?php echo $client . "/" . $project ?>" data-url-name="<?=$client." ".$project?> QC" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3">New <?php echo $project ?> RMA</h2>
+                        <h2 class="display-3">New <?php echo $project ?> qc</h2>
                   </center>
             </div>
       </div>
       <div class="container">
-            <?php echo form_open("rma/create_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("qc/create_qc/", "id=ajax-form"); ?>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
-            <input type='hidden' name='assembler' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
+            <input type='hidden' name='user' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">RMA Number</div>
+                                    <div class="input-group-text">qc Number</div>
                               </div>
                               <input type='number' class="form-control" name='number' required>
                         </div>

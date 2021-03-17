@@ -2,6 +2,79 @@
 
 class Production_model extends CI_Model
 {
+	function createDb()
+    {
+        $this->load->dbforge();
+        $checklist = array(
+            'id' => array(
+                'type' => 'INT',
+                'constraint' => 9,
+                'unsigned' => TRUE,
+                'auto_increment' => TRUE
+            ),
+            'serial' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30,
+            ),
+            'client' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 30
+            ),
+            'project' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 60
+            ),
+            'data' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 500
+            ),
+            'progress' => array(
+                'type' => 'INT',
+                'constraint' => 5,
+                'unsigned' => TRUE
+            ),
+            'assembler' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
+            ),
+            'qc' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
+            ),
+            'date' => array(
+                'type' => 'DATE',
+                'null' => FALSE
+            ),
+            'scans' => array(
+                'type' => 'TEXT'
+            ),
+            'pictures' => array(
+                'type' => 'TEXT'
+            ),
+            'note' => array(
+                'type' => 'TEXT'
+            ),
+            'log' => array(
+                'type' => 'TEXT'
+            )
+        );
+        $this->dbforge->add_field($checklist);
+        $this->dbforge->add_key('id', TRUE);
+        $this->dbforge->create_table('checklists');
+
+        $demoChecklist = array(
+            "serial" => 'P001-07-20',
+            "client" => 'Avdor-HLT',
+            "project" => 'Project 1',
+            "data" => '',
+            "progress" => '0',
+            "assembler" => 'User',
+            "qc" => 'Admin',
+            "date" => '2020-04-30',
+            'log' => 'Checklist created'
+        );
+        $this->db->insert('checklists', $demoChecklist);
+    }
 
 	public function addChecklist($data)
 	{
