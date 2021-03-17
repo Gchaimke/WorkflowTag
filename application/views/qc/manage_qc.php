@@ -31,7 +31,7 @@ $colors = ['success', 'warning', 'info'];
                     <thead class="thead-dark">
                         <tr>
                             <th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
-                            <th scope="col">qc Number</th>
+                            <th scope="col">QC Number</th>
                             <th scope="col">Project</th>
                             <th scope="col" class="mobile-hide">Serial Number</th>
                             <th scope="col">Part Number</th>

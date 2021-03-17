@@ -25,7 +25,7 @@
 			<?php
 			foreach ($clients as $client) {
 				echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
-				echo $client['name'] . ' qc';
+				echo $client['name'] . ' QC';
 				echo '</h5><p class="card-text">Select Project:</p></div>';
 				echo '<div class="card-footer">';
 				if ($client['projects'] != "") {
@@ -53,7 +53,7 @@
 					$('#searchResult').append(e);
 				} else {
 					$('#searchResult').empty();
-					$('#searchResult').append("<h2>qc form with " + search + " not found!</h2>");
+					$('#searchResult').append("<h2>QC form with " + search + " not found!</h2>");
 				}
 			});
 		} else {
