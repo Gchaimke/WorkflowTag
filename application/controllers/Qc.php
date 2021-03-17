@@ -7,7 +7,7 @@ class Qc extends CI_Controller
     {
         parent::__construct();
         // Load model
-        $this->load->model('qc_model');
+        $this->load->model('Qc_model');
         $this->load->model('Production_model');
         $this->load->model('Clients_model');
         $this->load->library('pagination');
@@ -41,7 +41,7 @@ class Qc extends CI_Controller
     {
         if ($this->input->post()) {
             $data = $this->input->post();
-            echo $this->qc_model->create_qc($data);
+            echo $this->Qc_model->create_qc($data);
         }
     }
 
@@ -49,7 +49,7 @@ class Qc extends CI_Controller
     {
         $data = array();
         if ($id != '') {
-            $data['qc_form'] = $this->qc_model->get_qc($id);
+            $data['qc_form'] = $this->Qc_model->get_qc($id);
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('qc/edit_qc', $data);
@@ -68,10 +68,8 @@ class Qc extends CI_Controller
         $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
-        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
+        $this->form_validation->set_rules('user', 'user', 'trim|xss_clean');
         $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
-        $this->form_validation->set_rules('repair', 'repair', 'trim|xss_clean');
-        $this->form_validation->set_rules('parts', 'parts', 'trim|xss_clean');
         $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
         if ($this->form_validation->run() != FALSE) {
             $data = array(
@@ -81,13 +79,11 @@ class Qc extends CI_Controller
                 "serial" => $this->input->post('serial'),
                 "client" => $this->input->post('client'),
                 "project" => $this->input->post('project'),
-                "assembler" => $this->input->post('assembler'),
+                "user" => $this->input->post('user'),
                 "problem" => $this->input->post('problem'),
-                "repair" => $this->input->post('repair'),
-                "parts" => $this->input->post('parts'),
                 'pictures' => $this->input->post('pictures')
             );
-            echo $this->qc_model->update_qc($data);
+            echo $this->Qc_model->update_qc($data);
         }
     }
 
@@ -110,7 +106,7 @@ class Qc extends CI_Controller
     public function search_qc()
     {
         $this->form_validation->set_rules('search', 'search', 'trim|xss_clean');
-        $data = $this->qc_model->search_qc($this->input->post('search'));
+        $data = $this->Qc_model->search_qc($this->input->post('search'));
         $str = '';
         $count = 0;
         foreach ($data as $result) {
@@ -193,7 +189,7 @@ class Qc extends CI_Controller
     function update_status()
     {
         $id = $this->input->post('id');
-        $status =  $this->qc_model->get_qc($id)[0]['status'];
+        $status =  $this->Qc_model->get_qc($id)[0]['status'];
         $status++;
         if ($status > 2) {
             $status = 0;
@@ -202,6 +198,6 @@ class Qc extends CI_Controller
             'id' => $id,
             'status' => $status,
         );
-        echo $this->qc_model->update_qc($sql);
+        echo $this->Qc_model->update_qc($sql);
     }
 }

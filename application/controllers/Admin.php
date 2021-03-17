@@ -107,7 +107,10 @@ class Admin extends CI_Controller
 		if ($kind == 'checklist') {
 			$total_records = $this->Admin_model->get_total($project);
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
-		} else {
+		} else if($kind == 'qc') {
+			$total_records = $this->Admin_model->get_total($project, 'qc_forms');
+			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'qc_forms');
+		}else {
 			$total_records = $this->Admin_model->get_total($project, 'rma_forms');
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
 		}

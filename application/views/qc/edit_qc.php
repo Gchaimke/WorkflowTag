@@ -107,7 +107,7 @@ if (!isset($qc_form)) {
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-2">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">qc #</div>
+                                    <div class="input-group-text">QC #</div>
                               </div>
                               <input type='text' class="form-control" name='number' value='<?php echo $data['number'] ?>' disabled>
                         </div>
@@ -139,25 +139,9 @@ if (!isset($qc_form)) {
                         </div>
                   </div>
                   <div class="form-row">
-                        <div class="input-group mb-2 col-12">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">Repair Description</div>
-                              </div>
-                              <textarea type='text' rows="5" class="form-control" name='repair'><?php echo $data['repair'] ?></textarea>
-                        </div>
-                  </div>
-                  <div class="form-row">
-                        <div class="input-group mb-2 col-12">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">Required Parts for Repair</div>
-                              </div>
-                              <textarea type='text' rows="5" class="form-control" name='parts'><?php echo $data['parts'] ?></textarea>
-                        </div>
-                  </div>
-                  <div class="form-row">
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">qc From</div>
+                                    <div class="input-group-text">QC From</div>
                               </div>
                               <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>'>
                         </div>

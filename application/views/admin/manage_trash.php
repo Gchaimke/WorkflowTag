@@ -28,7 +28,8 @@ if (!isset($kind)) {
 
 			<div class='d-flex flex-row-reverse'>
 				<a id='kind_checklist' class="btn btn-success mb-3" href="/admin/manage_trash?kind=checklist"> Checklists </a>
-				<a id='kind_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?kind=RMA"> RMA </a>
+				<a id='kind_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?kind=rma"> RMA </a>
+				<a id='kind_qc' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?kind=qc"> QC </a>
 				<button id='batchLink' class="btn btn-danger fa fa-trash disabled mr-5 mb-3" onclick='delete_selected()'> Delete selected</button>
 			</div>
 		</nav>
