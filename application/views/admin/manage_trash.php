@@ -105,7 +105,6 @@ if (!isset($kind)) {
 				serial: serial,
 				kind: kind
 			}).done(function(o) {
-				//$('[id^=' + id + ']').remove();
 				location.reload();
 			});
 		}
@@ -134,7 +133,6 @@ if (!isset($kind)) {
 				serial: serial,
 				kind: kind
 			}).done(function(o) {
-				//$('[id^=' + id + ']').remove();
 				alert(o);
 				location.reload();
 			});

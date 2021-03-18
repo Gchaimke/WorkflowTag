@@ -198,23 +198,6 @@ class Production_model extends CI_Model
 		}
 	}
 
-	function searchChecklist($sn = '')
-	{
-		if ($this->db->table_exists('checklists')) {
-			if ($sn != "") {
-				$sn = urldecode($sn);
-				$condition = "serial LIKE '%$sn%'";
-				$this->db->select('*');
-				$this->db->from('checklists');
-				$this->db->where($condition);
-				$this->db->order_by('project');
-				$q = $this->db->get();
-				$response = $q->result_array();
-				return $response;
-			}
-		}
-	}
-
 	public function get_current_checklists_records($limit, $start, $project,$table = 'checklists', $client = '')
 	{
 		$this->db->limit($limit, $start);

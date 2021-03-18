@@ -65,49 +65,54 @@ if (isset($client) && !is_string($client)) {
     </ul>
   </div>
 </nav>
-<?php
-if (isset($project)) { ?>
-  <div class="search_form" style="display: none;">
-    <form id="form">
-      <div class="input-group mb-3 col-md-4 m-auto">
-        <input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
-        <div class="input-group-append">
-          <button class="btn btn-secondary" type="button" onclick="serialSearch()">Search</button>
-        </div>
+
+<div class="search_form bg-dark" style="display: none; ">
+  <form id="form">
+    <div class="input-group mb-3 col-md-4 m-auto">
+      <input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
+      <div class="input-group-append">
+        <button class="btn btn-secondary" type="button" onclick="serialSearch()">Search</button>
       </div>
-      <div id='searchResult' class="text-white"></div>
-    </form>
-  </div>
-<?php } ?>
+    </div>
+    <div id='searchResult' class="text-white">
+      <div class='col-md-8 m-auto overflow-auto pt-3' style='height:85vh'>
+        <table class="table" id='serach_rows'>
+        </table>
+      </div>
+    </div>
+  </form>
+</div>
 <script>
   $('.search').on('click', function() {
     $('.search_form').toggle(400);
-    if($('.search').hasClass('fa-search')){
+    if ($('.search').hasClass('fa-search')) {
       $('.search').removeClass('fa-search btn-outline-success');
       $('.search').addClass('fa-times btn-outline-danger');
-    }else{
+    } else {
       $('.search').removeClass('fa-times btn-outline-danger');
       $('.search').addClass('fa-search btn-outline-success');
     }
   })
 
   function serialSearch() {
-    var sn = document.getElementById("inputSearch").value;
-    if (sn.length >= 3) {
-      $.post("/production/serial_search", {
-        sn: sn
+    var search = document.getElementById("inputSearch").value;
+    if (search.length >= 3) {
+      $.post("/search", {
+        search: search
       }).done(function(e) {
-        if (e.length > 0) {
-          $('#searchResult').empty();
-          $('#searchResult').append(e);
+        $('#serach_rows').empty();
+        var head = '<thead class="thead-dark"> <tr><th>Serial Number</th><th>Project</th><th>Action</th></tr></thead>';
+        if (e != '') {
+          $('#serach_rows').append(head);
+          $('#serach_rows').append(e);
         } else {
-          $('#searchResult').empty();
-          $('#searchResult').append("<h2>Serial: " + sn + " not found!</h2>");
+          var html = "<h2 class='text-white' colspan='3'>Not found</h2>";
+          $('#serach_rows').append(html);
         }
       });
     } else {
-      $('#searchResult').empty();
-      $('#searchResult').append("<h2>Search must be munimum 3 simbols</h2>")
+      $('#serach_rows').empty();
+      $('#serach_rows').append("<h2>Search must be munimum 3 simbols</h2>")
     }
   }
 

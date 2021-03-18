@@ -193,9 +193,8 @@ div#form-messages {
     position: fixed;
     margin: auto;
     width: 100%;
-    z-index: 9999;
+    z-index: 1;
     top: 67px;
-    background: #000000c7;
     bottom: 0;
 }
 
