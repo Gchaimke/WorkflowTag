@@ -12,7 +12,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <div class="jumbotron">
         <div class="container">
             <center>
-                <h5>Users</h5>
+            <h2 class="display-4">Users</h2>
             </center>
         </div>
     </div>
