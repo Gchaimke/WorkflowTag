@@ -172,7 +172,7 @@ class RMA extends CI_Controller
         $params['project'] = urldecode($project);
         $params['client'] = $client;
         $this->load->view('header');
-        $this->load->view('main_menu');
+        $this->load->view('main_menu',$params);
         $this->load->view('rma/manage_rma', $params);
         $this->load->view('footer');
     }

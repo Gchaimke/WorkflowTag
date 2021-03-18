@@ -5,17 +5,22 @@ if (isset($this->session->userdata['logged_in'])) {
   $user_view_name = ($this->session->userdata['logged_in']['view_name']);
   $role = ($this->session->userdata['logged_in']['role']);
 }
+if(isset($client) && !is_string($client)){
+  $client = $client[0]['name'];
+}
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <a class="navbar-brand" href="/">Workflow Tag</a>
   <div class="navbar-nav mr-auto">
-    <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/">Checklists</a>
+    <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/">Projects</a>
   </div>
   <?php
   if (isset($project)) {
-    echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">' . $project . '</a>';
-  }
-  ?>
+    echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">'.$client.' '.$project . '</a>';
+    ?>
+    <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-white" href="/rma/view_project_rma/<?=$client."/".$project?>">RMA</a>
+    <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-white" href="/qc/view_project_qc/<?=$client."/".$project?>">QC</a>
+  <?php } ?>
   <a id="nav_main_category" class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/" hidden></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -24,8 +29,6 @@ if (isset($this->session->userdata['logged_in'])) {
     <div class="navbar-nav mr-auto">
     </div>
     <ul class="navbar-nav">
-      <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-white" href="/rma">RMA</a>
-      <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-white" href="/qc">QC</a>
       <?php if ($role == 'Admin') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
           <a class="nav-item dropdown-toggle btn btn-outline-info text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
