@@ -189,6 +189,16 @@ div#form-messages {
     top: 2.4rem;
 }
 
+.search_form {
+    position: fixed;
+    margin: auto;
+    width: 100%;
+    z-index: 9999;
+    top: 67px;
+    background: #000000c7;
+    bottom: 0;
+}
+
 @media (min-width: 320px){
     .jumbotron {
         padding: 2rem 2rem;

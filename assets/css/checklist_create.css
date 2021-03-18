@@ -8,6 +8,10 @@ body {
     top: 50px;
 }
 
+nav#navbar.sticky-top {
+    top: 65px;
+}
+
 .table td, .table th {
     padding: 0.3rem 0.3rem;
     border: 1px solid #dee2e6;
@@ -54,11 +58,6 @@ video#video {
 }
 select#select {
     max-width: 90%;
-}
-
-nav.navbar.checklist {
-    top: 55px;
-    z-index: 1;
 }
 
 .name_badges {
