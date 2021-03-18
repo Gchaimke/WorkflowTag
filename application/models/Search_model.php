@@ -13,6 +13,7 @@ class Search_model extends CI_Model
                 }
                 if ($table == 'rma_forms' || $table == 'qc_forms') {
                     $this->db->like("number",$search);
+                    $this->db->or_like("serial",$search);
                 }
 				$this->db->order_by('project');
 				$q = $this->db->get();

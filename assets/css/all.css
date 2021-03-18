@@ -1,5 +1,5 @@
 main {
-    margin-top: 35px;
+    margin-top: 65px;
     min-height: calc(100vh - 100px);
 }
 
@@ -193,7 +193,7 @@ div#form-messages {
     position: fixed;
     margin: auto;
     width: 100%;
-    z-index: 1;
+    z-index: 2;
     top: 67px;
     bottom: 0;
 }
