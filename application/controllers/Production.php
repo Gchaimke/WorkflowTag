@@ -73,11 +73,10 @@ class Production extends CI_Controller
             // build paging links
             $params["links"] = $this->pagination->create_links();
         }
-        
+
         $this->view_page('production/manage_checklists', $params, $params);
     }
 
-    // Validate and store checklist data in database
     public function add_checklist($project = '', $data = '')
     {
         $data = array();
@@ -101,7 +100,7 @@ class Production extends CI_Controller
             $data = array(
                 'client' => $this->input->post('client'),
                 'project' => $this->input->post('project'),
-                'serial' => trim($this->input->post('serial')),
+                'serial' => $serial,
                 'data' =>  $zero_str,
                 'date' => $this->input->post('date')
             );
@@ -118,11 +117,6 @@ class Production extends CI_Controller
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
                 $data['client'] = $this->Clients_model->getClients('', $project);
                 $data['project'] = urldecode($this->input->post('project'));
-                if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
-                    $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
-                } else {
-                    $data['template'] = " - not set!";
-                }
                 $this->view_page('production/add_checklist', $data, $data);
             }
         }
@@ -141,8 +135,8 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('date', 'date', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
         $serial_project = $this->Templates_model->getTemplate('', $this->input->post('project'));
-        $month = date('m',strtotime($this->input->post('date')));
-        $year = date('y',strtotime($this->input->post('date')));
+        $month = date('m', strtotime($this->input->post('date')));
+        $year = date('y', strtotime($this->input->post('date')));
         if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
             $serial = $serial_project[0]['template']; //Get serial template
             $serial = str_replace("yy", $year, $serial); //add year
@@ -217,7 +211,7 @@ class Production extends CI_Controller
         $data['checklist'] =  $this->Production_model->getChecklists($id);
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);
-            $data['checklist_rows'] = $this->build_checklist($data);
+            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
             $data['scans_rows'] = $this->build_scans($data);
             $data['client'] = $this->Clients_model->getClients('', $data['project']);
             $this->view_page('production/edit_checklist', '', $data);
@@ -236,13 +230,13 @@ class Production extends CI_Controller
         if ($data['checklists']) {
             $data['checklist'] = $data['checklists'];
             $data['project'] =  urldecode($data['checklists'][0]['project']);
-            $data['checklist_rows'] = $this->build_checklist($data);
+            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
             $data['client'] = $this->Clients_model->getClients('', $data['project']);
             $this->view_page('production/edit_batch', '', $data);
         }
     }
 
-    private function build_checklist($data)
+    private function build_checklist($project, $checklist_data)
     {
         $this->load->model('Users_model');
         $users = $this->Users_model->getUsers();
@@ -250,13 +244,10 @@ class Production extends CI_Controller
         $checked = "";
         $table = '';
         $options = '';
-        $project = $data['checklist'][0]['project'];
-        $checklist_data = $data['checklist'][0]['data'];
         if (count($this->Templates_model->getTemplate('', $project)) > 0) {
             $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
-            //$table .= $checklist_data;
             $index = 0;
             $id = 0;
             foreach ($users as $user) {
@@ -380,6 +371,13 @@ class Production extends CI_Controller
                 'note' => $this->input->post('note')
             );
             $this->Production_model->editChecklist($data);
+            if($this->input->post('progress') == 100){
+                $data['serial'] =$this->input->post('serial');
+                $data['client'] =$this->input->post('client');
+                $data['project'] =$this->input->post('project');
+                $data['date'] =$this->input->post('date');
+                $this->generate_offline_files($data);
+            }
             echo 'Checklist saved successfully!';
         }
     }
@@ -507,6 +505,41 @@ class Production extends CI_Controller
         $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
         $fp = fopen($log_file, 'a'); //opens file in append mode  
         fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
+        fclose($fp);
+    }
+
+    function generate_offline_files(array $data)
+    {
+        $folder_path = "Uploads" .
+            DIRECTORY_SEPARATOR . $data['client'] .
+            DIRECTORY_SEPARATOR . $data['project'] .
+            DIRECTORY_SEPARATOR . $data['serial'];
+        if (!file_exists($folder_path)) {
+            mkdir($folder_path, 0770, true);
+        }
+        copy('assets/css/offline.css', $folder_path . DIRECTORY_SEPARATOR . "offline.css");
+        $html_file = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $folder_path . DIRECTORY_SEPARATOR . "index.html";
+        $html_table = $this->build_checklist($data['project'], $data['data']);
+        $fp = fopen($html_file, 'w');
+        fwrite($fp, "<!DOCTYPE html><html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>" . PHP_EOL);
+        fwrite($fp, "<head><title>" . $data['project'] . "-" . $data['serial'] . "</title>" . PHP_EOL);
+        fwrite($fp, "<link href='offline.css' rel='stylesheet'" . PHP_EOL);
+        fwrite($fp, "</head><body>" . PHP_EOL);
+        fwrite($fp, "<div class='header'>" . PHP_EOL);
+        fwrite($fp, "<span>".$data['client']."</span>" . PHP_EOL);
+        fwrite($fp, "<span>".$data['project']."</span>" . PHP_EOL);
+        fwrite($fp, "<span>".$data['serial']."</span>" . PHP_EOL);
+        fwrite($fp, "<span>".$data['date']."</span>" . PHP_EOL);
+        fwrite($fp, "</div>" . PHP_EOL);
+        fwrite($fp, "<div class='content'>" . $html_table . "</div>" . PHP_EOL);
+        fwrite($fp, "<script>" . PHP_EOL);
+        fwrite($fp, "var client='" . $data['client'] . "';" . PHP_EOL);
+        fwrite($fp, "var project='" . $data['project'] . "';" . PHP_EOL);
+        fwrite($fp, "var serial='" . $data['serial'] . "';" . PHP_EOL);
+        fwrite($fp, "var serial='" . $data['assembler'] . "';" . PHP_EOL);
+        fwrite($fp, "var data=`" . $data['data'] . "`;" . PHP_EOL);
+        fwrite($fp, "</script>" . PHP_EOL);
+        fwrite($fp, "</body></html>" . PHP_EOL);
         fclose($fp);
     }
 }

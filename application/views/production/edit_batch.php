@@ -35,6 +35,10 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 				<input id="assembler" type='hidden' name='assembler' value="<?php echo $assembler ?>">
+				<input type='hidden' name='serials' value="<?php echo $serials ?>">
+				<input type='hidden' name='client' value="<?php echo $client[0]['name'] ?>">
+				<input type='hidden' name='project' value="<?php echo $project ?>">
+				<input type='hidden' name='date' value="<?php echo $date ?>">
 				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 				<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 				<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
