@@ -42,6 +42,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input type='hidden' name='serial' value="<?php echo $serial ?>">
 				<input type='hidden' name='client' value="<?php echo $client ?>">
 				<input type='hidden' name='project' value="<?php echo $project ?>">
+				<input type='hidden' name='logo' value="<?php echo $logo ?>">
 				<input type='hidden' name='date' value="<?php echo $date ?>">
 				<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
 				<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">

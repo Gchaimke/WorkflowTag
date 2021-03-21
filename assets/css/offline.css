@@ -1,60 +1,102 @@
-   body {
-       width: 90%;
-       margin: 5% auto;
-   }
+body {
+    width: 90%;
+    margin: 5% auto;
+}
 
-   main {
-       min-height: inherit;
-   }
+.header {
+    text-align: center;
+    font-size: 1.3em;
+    display: flex;
+}
 
-   .print-hide {
-       display: none;
-   }
+img#logo {
+    width: 150px;
+}
 
-   .navbar {
-       position: relative;
-       display: -ms-flexbox;
-       display: flex;
-       -ms-flex-wrap: wrap;
-       flex-wrap: wrap;
-       -ms-flex-align: center;
-       align-items: center;
-       -ms-flex-pack: justify;
-       justify-content: space-between;
-       padding: .9rem 1rem;
-       margin-top: -120px;
-       margin-bottom: 100px;
-   }
+#project, #serial, #date {
+    padding: 30px 10px;
+}
 
-   .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer {
-       display: none;
-   }
+table {
+    margin: auto;
+    width: 100%;
+}
 
-   div#photo-stock img {
-       padding-bottom: 20px;
-   }
+.scans {
+    width: 99%;
+}
 
-   .badge {
-       border: none;
-   }
+.gallery img {
+    width: 100%;
+    display: block;
+    max-height: 1500px;
+  }
 
-   .mobile-hide {
-       display: block;
-   }
+thead.thead-dark {
+    background: #686767;
+    color: white;
+}
 
-   img.img-thumbnail.checklist-logo {
-       max-width: 300px;
-       max-height: 150px;
-       display: block;
-       opacity: 0.5;
-   }
+.checkbox {
+    text-align: center;
+    display: flex;
+}
 
-   b#date {
-       margin-right: 50px;
-   }
+select.review {
+    float: right;
+}
 
-   img.respondCanvas {
-       display: block;
-       break-inside: avoid;
-       max-height: 1500px;
-   }
+select:disabled {
+    opacity: 1;
+    border-color: black;
+    color: black;
+}
+
+@media print {
+    main {
+        min-height: inherit;
+    }
+    .print-hide {
+        display: none;
+    }
+    .navbar {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -ms-flex-align: center;
+        align-items: center;
+        -ms-flex-pack: justify;
+        justify-content: space-between;
+        padding: .9rem 1rem;
+        margin-top: -120px;
+        margin-bottom: 100px;
+    }
+    .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer {
+        display: none;
+    }
+    div#photo-stock img {
+        padding-bottom: 20px;
+    }
+    .badge {
+        border: none;
+    }
+    .mobile-hide {
+        display: block;
+    }
+    img.img-thumbnail.checklist-logo {
+        max-width: 300px;
+        max-height: 150px;
+        display: block;
+        opacity: 0.5;
+    }
+    b#date {
+        margin-right: 50px;
+    }
+    img.respondCanvas {
+        display: block;
+        break-inside: avoid;
+        max-height: 1500px;
+    }
+}

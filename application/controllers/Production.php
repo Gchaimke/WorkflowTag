@@ -212,7 +212,7 @@ class Production extends CI_Controller
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
-            $data['scans_rows'] = $this->build_scans($data);
+            $data['scans_rows'] = $this->build_scans($data['project']);
             $data['client'] = $this->Clients_model->getClients('', $data['project']);
             $this->view_page('production/edit_checklist', '', $data);
         }
@@ -277,24 +277,24 @@ class Production extends CI_Controller
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
                         $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
-                        $tr .= $options . "</select></td></tr>";
+                        $tr .= $options . "</select></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else if (end($col) == "I") {
                         $tr .= "<tr class='input_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0];
-                        $tr .= "</td><td style=\"width: 20%;\"><input type='text' class='form-control input' id='" . ($id + count($rows)) . "'></td></tr>";
+                        $tr .= "</td><td style=\"width: 20%;\"><input type='text' class='form-control input' id='" . ($id + count($rows)) . "'></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
-                        $tr .= $options . "</select></td></tr>";
+                        $tr .= $options . "</select></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>";
+                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     }
@@ -307,13 +307,12 @@ class Production extends CI_Controller
         return $table;
     }
 
-    private function build_scans($data)
+    private function build_scans($project)
     {
         $table = '';
         $tr = '';
         $columns = 0;
         $id = 0;
-        $project = $data['checklist'][0]['project'];
         if (count($this->Templates_model->getTemplate('', $project)) > 0) {
             $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
             $rows = explode(PHP_EOL, $project_scans);
@@ -371,11 +370,12 @@ class Production extends CI_Controller
                 'note' => $this->input->post('note')
             );
             $this->Production_model->editChecklist($data);
-            if($this->input->post('progress') == 100){
-                $data['serial'] =$this->input->post('serial');
-                $data['client'] =$this->input->post('client');
-                $data['project'] =$this->input->post('project');
-                $data['date'] =$this->input->post('date');
+            if ($this->input->post('progress') == 100) {
+                $data['serial'] = $this->input->post('serial');
+                $data['client'] = $this->input->post('client');
+                $data['project'] = $this->input->post('project');
+                $data['date'] = $this->input->post('date');
+                $data['logo'] = $this->input->post('logo');
                 $this->generate_offline_files($data);
             }
             echo 'Checklist saved successfully!';
@@ -518,28 +518,86 @@ class Production extends CI_Controller
             mkdir($folder_path, 0770, true);
         }
         copy('assets/css/offline.css', $folder_path . DIRECTORY_SEPARATOR . "offline.css");
+        copy("." . $data['logo'], $folder_path . DIRECTORY_SEPARATOR . "logo.png");
+        $js = "
+        var checkRows = $('.check_row');
+        var inputRows = $('input.input');
+        var selectRows = $('select.review');
+        var scanRows = $('.scan_row');
+        var chArray = data.split(',');
+        var scansArray = [];
+        scansArray = scans.split(\";\").map(function (e) {
+            return e.split(\",\");
+        });
+        checkRows.each(function () {
+            if ($(this).find('input').prop('checked')) {
+                $(this).find('input').after(\"<div class='badge badge-secondary check-lable'>\" + chArray[$(this).find('input').attr('id')] + '</div>');
+            }
+        });
+        inputRows.each(function () {
+            $(this).val(chArray[this.id]).prop( 'disabled', true );
+        });
+    
+        selectRows.each(function () {
+            if (chArray[this.id]) {
+                $(this).val(chArray[this.id]).prop( 'disabled', true );
+            } else {
+                $(this).val('Select');
+            }
+        });
+        scanRows.each(function () {
+            var id = $(this).closest('tr').attr('id');
+            if (scansArray[id]) {
+                $(this).find(\"input:eq(0)\").val(scansArray[id][0]);
+                $(this).find(\"input:eq(1)\").val(scansArray[id][1]);
+            } else {
+                scansArray.splice(id, 0, [\"\", \"\"]);;
+            }
+        });";
         $html_file = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $folder_path . DIRECTORY_SEPARATOR . "index.html";
-        $html_table = $this->build_checklist($data['project'], $data['data']);
+        $checklist_table = $this->build_checklist($data['project'], $data['data']);
+        $scans_table = $this->build_scans($data['project']);
         $fp = fopen($html_file, 'w');
         fwrite($fp, "<!DOCTYPE html><html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>" . PHP_EOL);
-        fwrite($fp, "<head><title>" . $data['project'] . "-" . $data['serial'] . "</title>" . PHP_EOL);
-        fwrite($fp, "<link href='offline.css' rel='stylesheet'" . PHP_EOL);
+        fwrite($fp, "<head><title>SN:" . $data['serial'] . " - " . $data['project'] . "</title>" . PHP_EOL);
+        fwrite($fp, "<link href='offline.css' rel='stylesheet'>" . PHP_EOL);
+        fwrite($fp, "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>" . PHP_EOL);
         fwrite($fp, "</head><body>" . PHP_EOL);
         fwrite($fp, "<div class='header'>" . PHP_EOL);
-        fwrite($fp, "<span>".$data['client']."</span>" . PHP_EOL);
-        fwrite($fp, "<span>".$data['project']."</span>" . PHP_EOL);
-        fwrite($fp, "<span>".$data['serial']."</span>" . PHP_EOL);
-        fwrite($fp, "<span>".$data['date']."</span>" . PHP_EOL);
+        fwrite($fp, "<img id='logo' src='logo.png'>" . PHP_EOL);
+        fwrite($fp, "<span id='project'>Project: " . $data['client'] . " - " . $data['project'] . "</span>" . PHP_EOL);
+        fwrite($fp, "<span id='serial'>SN: " . $data['serial'] . "</span>" . PHP_EOL);
+        fwrite($fp, "<span id='date'>DATE: " . $data['date'] . "</span>" . PHP_EOL);
         fwrite($fp, "</div>" . PHP_EOL);
-        fwrite($fp, "<div class='content'>" . $html_table . "</div>" . PHP_EOL);
+        fwrite($fp, "<div class='content'>" . $checklist_table . "</div>" . PHP_EOL);
+        fwrite($fp, "<div class='content'>" . $scans_table . "</div>" . PHP_EOL);
+        fwrite($fp, "<h2>Pictures</h2>" . PHP_EOL);
+        fwrite($fp, "<div class='gallery'>" . $this->get_photos_as_html($folder_path) . "</div>" . PHP_EOL);
         fwrite($fp, "<script>" . PHP_EOL);
         fwrite($fp, "var client='" . $data['client'] . "';" . PHP_EOL);
         fwrite($fp, "var project='" . $data['project'] . "';" . PHP_EOL);
         fwrite($fp, "var serial='" . $data['serial'] . "';" . PHP_EOL);
         fwrite($fp, "var serial='" . $data['assembler'] . "';" . PHP_EOL);
         fwrite($fp, "var data=`" . $data['data'] . "`;" . PHP_EOL);
+        fwrite($fp, "var scans=`" . $data['scans'] . "`;" . PHP_EOL);
+        fwrite($fp, $js . PHP_EOL);
         fwrite($fp, "</script>" . PHP_EOL);
         fwrite($fp, "</body></html>" . PHP_EOL);
         fclose($fp);
+    }
+
+    function get_photos_as_html($dir)
+    {
+        $files = array_diff(scandir($dir), array('..', '.','index.html','offline.css','logo.png'));;
+        $html = '';
+        if ($files) {
+            foreach ($files as $file) {
+                $html .= "<img src='$file'/>". PHP_EOL;
+            }
+        } else {
+            return 'No photos in directory ' . $dir;
+        }
+
+        return $html;
     }
 }
