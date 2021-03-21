@@ -41,7 +41,12 @@ class Qc extends CI_Controller
     {
         if ($this->input->post()) {
             $data = $this->input->post();
-            echo $this->Qc_model->create_qc($data);
+            $inserted_id = $this->Qc_model->create_qc($data);
+            if ($inserted_id != false) {
+                echo "New QC Form created";
+            } else {
+                echo $inserted_id;
+            }
         }
     }
 
@@ -66,8 +71,6 @@ class Qc extends CI_Controller
         $this->form_validation->set_rules('date', 'date', 'trim|xss_clean');
         $this->form_validation->set_rules('product_num', 'product_num', 'trim|xss_clean');
         $this->form_validation->set_rules('serial', 'serial', 'trim|xss_clean');
-        $this->form_validation->set_rules('client', 'client', 'trim|xss_clean');
-        $this->form_validation->set_rules('project', 'project', 'trim|xss_clean');
         $this->form_validation->set_rules('user', 'user', 'trim|xss_clean');
         $this->form_validation->set_rules('problem', 'problem', 'trim|xss_clean');
         $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
@@ -77,8 +80,6 @@ class Qc extends CI_Controller
                 "date" => $this->input->post('date'),
                 "product_num" => $this->input->post('product_num'),
                 "serial" => $this->input->post('serial'),
-                "client" => $this->input->post('client'),
-                "project" => $this->input->post('project'),
                 "user" => $this->input->post('user'),
                 "problem" => $this->input->post('problem'),
                 'pictures' => $this->input->post('pictures')
@@ -168,7 +169,7 @@ class Qc extends CI_Controller
         $params['project'] = urldecode($project);
         $params['client'] = $client;
         $this->load->view('header');
-        $this->load->view('main_menu',$params);
+        $this->load->view('main_menu', $params);
         $this->load->view('qc/manage_qc', $params);
         $this->load->view('footer');
     }

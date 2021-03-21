@@ -143,7 +143,7 @@ if (!isset($qc_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">QC From</div>
                               </div>
-                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>'>
+                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>' disabled>
                         </div>
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">

@@ -84,9 +84,9 @@ class Qc_model extends CI_Model
 		}
 		$out = $this->db->insert('qc_forms', $data);
 		if ($this->db->affected_rows() > 0) {
-			echo ' OK: New qc Created!';
+			return $this->db->insert_id();
 		} else {
-			echo $out;
+			echo false;
 		}
 	}
 
