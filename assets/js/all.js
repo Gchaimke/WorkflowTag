@@ -159,10 +159,10 @@ $('#ajax-form').submit(function (event) {
             $('#form-messages').removeClass('alert-danger');
             $('#form-messages').addClass('alert-success');
             $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
-            if(typeof new_location !== 'undefined'){
-                setTimeout(function(){ window.location.replace(new_location);}, 3000);
+            if (typeof new_location !== 'undefined') {
+                setTimeout(function () { window.location.replace(new_location); }, 3000);
             }
-        }else{
+        } else {
             $('#form-messages').addClass('alert-danger');
             $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
         }
@@ -216,8 +216,8 @@ function savePhotoToServer(file) {
         photoCount++;
         $("#picrures_count").val(photoCount);
         $('#form-messages').addClass('alert-success');
-        $( "#save" ).trigger( "click" );
-        console.log(out+" Uploaded");
+        $("#save").trigger("click");
+        console.log(out + " Uploaded");
     });
 }
 
@@ -232,15 +232,15 @@ function delPhoto(id) {
             $('[id^=' + id + ']').remove();
             photoCount--;
             $("#picrures_count").val(photoCount);
-            $( "#save" ).trigger( "click" );
+            $("#save").trigger("click");
             console.log(out);
         });
-        
+
     }
 }
 
-if($('#nav_main_category_data').length){
+if ($('#nav_main_category_data').length) {
     var nav_to = $('#nav_main_category_data').attr('data-url');
     var nav_name = $('#nav_main_category_data').attr('data-url-name');
-    $('#nav_main_category').attr('href',nav_to).text(nav_name).removeAttr('hidden');
+    $('#nav_main_category').attr('href', nav_to).text(nav_name).removeAttr('hidden');
 }

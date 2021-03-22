@@ -116,11 +116,10 @@ if (isset($client) && !is_string($client)) {
     }
   }
 
-  document.onkeydown = function(e) {
-    var pathname = window.location.pathname.split("/");
-    if (e.which == 13) { //enter
-      e.preventDefault();
+  $(window).keydown(function(event) {
+    if (event.which == 13 && $('#inputSearch').is(':focus')) { //enter
+      event.preventDefault();
       serialSearch();
     }
-  };
+  });
 </script>
