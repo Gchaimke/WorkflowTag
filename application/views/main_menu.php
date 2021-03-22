@@ -88,6 +88,7 @@ if (isset($client) && !is_string($client)) {
     if ($('.search').hasClass('fa-search')) {
       $('.search').removeClass('fa-search btn-outline-success');
       $('.search').addClass('fa-times btn-outline-danger');
+      $('#inputSearch').focus();
     } else {
       $('.search').removeClass('fa-times btn-outline-danger');
       $('.search').addClass('fa-search btn-outline-success');
@@ -106,13 +107,13 @@ if (isset($client) && !is_string($client)) {
           $('#serach_rows').append(head);
           $('#serach_rows').append(e);
         } else {
-          var html = "<h2 class='text-white' colspan='3'>Not found</h2>";
+          var html = "<h2 class='text-white'>Not found</h2>";
           $('#serach_rows').append(html);
         }
       });
     } else {
       $('#serach_rows').empty();
-      $('#serach_rows').append("<h2>Search must be munimum 3 simbols</h2>")
+      $('#serach_rows').append("<h2 class='text-white'>Search must be munimum 3 simbols</h2>")
     }
   }
 
