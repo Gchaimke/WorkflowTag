@@ -9,6 +9,7 @@ class Production extends CI_Controller
         // Load model
         $this->load->model('Production_model');
         $this->load->model('Clients_model');
+        $this->load->model('Users_model');
         $this->load->model('Templates_model');
         $this->load->library('pagination');
     }
@@ -29,14 +30,14 @@ class Production extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function checklists($project = '')
+    public function checklists($project = '', $limit_per_page = 50)
     {
         // init params
         $params = array();
         $config = array();
-        $limit_per_page = 50;
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
+        $params['users'] = array_column($this->Users_model->getUsers(), 'name');
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project));
         if ($total_records > 0) {
@@ -75,6 +76,11 @@ class Production extends CI_Controller
         }
 
         $this->view_page('production/manage_checklists', $params, $params);
+    }
+
+    public function all_checklists($limit = 1000)
+    {
+        $this->checklists('', $limit);
     }
 
     public function add_checklist($project = '', $data = '')
@@ -238,7 +244,6 @@ class Production extends CI_Controller
 
     private function build_checklist($project, $checklist_data)
     {
-        $this->load->model('Users_model');
         $users = $this->Users_model->getUsers();
         $prefix_count = 0;
         $checked = "";

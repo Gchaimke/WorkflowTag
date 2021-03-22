@@ -10,7 +10,9 @@ class Users extends CI_Controller
         // Load model
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
-        $this->role = $this->session->userdata['logged_in']['role'];
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->role = $this->session->userdata['logged_in']['role'];
+        }
     }
 
     public function index()

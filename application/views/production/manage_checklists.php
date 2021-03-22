@@ -62,11 +62,15 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 
 						<?php
 						if (is_array($results)) {
-
 							foreach ($results as $data) {
-								$users = array_unique(array_filter(explode(",", str_replace(' ','',$data->data))));
-								$users = implode(', ', $users);
-
+								$editors_array = array_unique(array_filter(explode(",", str_replace(' ', '', $data->data))));
+								$editors = array();
+								foreach ($editors_array as $editor) {
+									if (in_array($editor, $users)) {
+										array_push($editors, $editor);
+									}
+								}
+								$editors = implode(', ', $editors);
 						?>
 								<tr id='<?php echo $data->id ?>'>
 									<td>
@@ -82,7 +86,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 										<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
 											<?php echo $data->progress ?>%</div>
 									</td>
-									<td><?= $users ?></td>
+									<td><?= $editors ?></td>
 									<td class="mobile-hide"><?php echo $data->date ?></td>
 									<td><?php echo $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>

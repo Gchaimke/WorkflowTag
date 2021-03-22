@@ -38,7 +38,7 @@ if (!isset($kind)) {
 				<table class="table">
 					<thead class="thead-dark">
 						<tr>
-							<th scope="col">*</th>
+							<th scope="col"><input type='checkbox' id="select_all"></th>
 							<th scope="col" class="mobile-hide">Date</th>
 							<th scope="col">Kind</th>
 							<th scope="col">Serial Number</th>
@@ -82,6 +82,15 @@ if (!isset($kind)) {
 	</div>
 </main>
 <script>
+	$('#select_all').on('click', function name(params) {
+		var ids = [];
+		$('input:checkbox').not(this).prop('checked', this.checked);
+		$('.check[type=checkbox]:checked').each(function() {
+			ids.push($(this).val());
+		});
+		$('#ids_values').val(ids);
+		$('#batchLink').removeClass('disabled');
+	});
 	$(".check").change(function() {
 		var ids = [];
 		$('.check[type=checkbox]:checked').each(function() {
