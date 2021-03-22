@@ -3,23 +3,24 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Users extends CI_Controller
 {
+    private $role;
     public function __construct()
     {
         parent::__construct();
         // Load model
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
+        $this->role = $this->session->userdata['logged_in']['role'];
     }
 
     public function index()
     {
         $data = array();
         // get data from model
-        $role = ($this->session->userdata['logged_in']['role']);
         $data['users'] = $this->Users_model->getUsers();
         $this->load->view('header');
         $this->load->view('main_menu');
-        if ($role != "Admin") {
+        if ($this->role != "Admin") {
             header("location: /");
         } else {
             $this->load->view('users/manage', $data);
@@ -31,8 +32,7 @@ class Users extends CI_Controller
     public function create()
     {
         $data = array();
-        $role = ($this->session->userdata['logged_in']['role']);
-        if ($role == "Admin") {
+        if ($this->role == "Admin") {
             // Check validation for user input in SignUp form
             $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
@@ -77,8 +77,7 @@ class Users extends CI_Controller
 
     public function delete()
     {
-        $role = ($this->session->userdata['logged_in']['role']);
-        if ($role == "Admin") {
+        if ($this->role == "Admin") {
             $id = $_POST['id'];
             $this->Users_model->deleteUser($id);
         }
@@ -86,9 +85,6 @@ class Users extends CI_Controller
 
     public function edit($id = '')
     {
-        //$data = array();
-        $role = $this->session->userdata['logged_in']['role'];
-        // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('view_name', 'Name', 'trim|xss_clean');
@@ -103,7 +99,7 @@ class Users extends CI_Controller
             $this->load->view('users/edit', $data);
             $this->load->view('footer');
         } else {
-            if ($role == "Admin") {
+            if ($this->role == "Admin") {
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
@@ -141,8 +137,8 @@ class Users extends CI_Controller
             $this->Admin_model->createChecklistDb();
             $this->Admin_model->createRMADb();
             $this->Admin_model->createSettingsDb();
-            
-            
+
+
             $data['response'] .= "All Tables created!<br> username:Admin <br> Password:Admin.";
         }
         $this->load->view('users/login', $data);
@@ -211,8 +207,11 @@ class Users extends CI_Controller
         $current_user = ($this->session->userdata['logged_in']['name']);
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
-
-        if($current_user == $this->input->post('name')){
+        if ($this->role == 'Admin') {
+            echo true;
+            return;
+        }
+        if ($current_user == $this->input->post('name')) {
             echo true;
             return;
         }

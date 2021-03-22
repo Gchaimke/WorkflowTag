@@ -1,5 +1,5 @@
 <?php
-$serials = '';
+$serials_links = '';
 $checklist_data = $checklists[0]['data'];
 $log = $checklists[0]['log'];
 $progress = $checklists[0]['progress'];
@@ -12,7 +12,7 @@ $this->load->helper('cookie');
 $session = get_cookie('ci_session');
 
 foreach ($checklists as $checklist) {
-	$serials .= '<a target="_blank" class="badge badge-light" href="/production/edit_checklist/' . $checklist['id'] . '?sn=' . $checklist['serial'] . '">' . $checklist['serial'] . '</a> | ';
+	$serials_links .= '<a target="_blank" class="badge badge-light" href="/production/edit_checklist/' . $checklist['id'] . '?sn=' . $checklist['serial'] . '">' . $checklist['serial'] . '</a> | ';
 }
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
@@ -27,7 +27,7 @@ if (isset($this->session->userdata['logged_in'])) {
 <main role="main" class="container">
 	<nav id="navbar" class="navbar checklist navbar-light bg-light">
 		<b id="project" class="navbar-text mobile-hide">Project: <?php echo $project ?></b>
-		<b id="sn" class="navbar-text" href="#">SN: <?php echo $serials ?></b>
+		<b id="sn" class="navbar-text" href="#">SN: <?php echo $serials_links ?></b>
 		<b id="date" class="navbar-text mobile-hide">Date: <?php echo $date ?></b>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
@@ -35,7 +35,6 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
 				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 				<input id="assembler" type='hidden' name='assembler' value="<?php echo $assembler ?>">
-				<input type='hidden' name='serials' value="<?php echo $serials ?>">
 				<input type='hidden' name='client' value="<?php echo $client[0]['name'] ?>">
 				<input type='hidden' name='project' value="<?php echo $project ?>">
 				<input type='hidden' name='date' value="<?php echo $date ?>">
@@ -56,7 +55,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <?php
-echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var sn='$serials'; var ci_session='$session';"; //pass PHP data to JS
+echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var ci_session='$session';"; //pass PHP data to JS
 echo "var log='$log'; var assembler ='$username'; var qc_name='$qc'</script>";  //pass PHP data to JS
 ?>
 <script>

@@ -588,16 +588,36 @@ class Production extends CI_Controller
 
     function get_photos_as_html($dir)
     {
-        $files = array_diff(scandir($dir), array('..', '.','index.html','offline.css','logo.png'));;
+        $files = array_diff(scandir($dir), array('..', '.', 'index.html', 'offline.css', 'logo.png'));;
         $html = '';
         if ($files) {
             foreach ($files as $file) {
-                $html .= "<img src='$file'/>". PHP_EOL;
+                $html .= "<img src='$file'/>" . PHP_EOL;
             }
         } else {
             return 'No photos in directory ' . $dir;
         }
 
         return $html;
+    }
+
+    public function generate_all_offline_files()
+    {
+        $all_checklists = $this->Production_model->getChecklists();
+        $clients = $this->Clients_model->getClients();
+        $logos = array();
+        foreach ($clients as $client) {
+            $logos[$client['name']] = $client['logo'];
+        }
+        echo "<h2>Total checklists: " . count($all_checklists) . "</h2><br/>";
+        $count_progress_100 = 0;
+        foreach ($all_checklists as $checklist) {
+            if ($checklist['progress'] == 100) {
+                $checklist['logo'] = $logos[$checklist['client']];
+                $this->generate_offline_files($checklist);
+                $count_progress_100++;
+            }
+        }
+        echo "<h2>Generated files for checklists with progress 100%: " . $count_progress_100 . "</h2><br/>";
     }
 }

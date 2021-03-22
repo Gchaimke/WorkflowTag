@@ -73,6 +73,8 @@ if (isset($this->session->userdata['logged_in'])) {
         <div class="container">
             <h3>File system Utils</h3>
             <button class="btn btn-info mt-3" onclick="RemoveEmptySubFolders()">Remove empty folders from uploads</button>
+            <a class="btn btn-info mt-3" href="/production/generate_all_offline_files">Generate offline files</a>
+
         </div>
         <hr>
     </div>

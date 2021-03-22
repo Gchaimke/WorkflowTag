@@ -52,7 +52,6 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 							<th scope="col" class="mobile-hide">Project</th>
 							<th scope="col"><i class="fa fa-tasks"></i></th>
 							<th scope="col"><i class="fa fa-user"></i></th>
-							<th scope="col" class="mobile-hide">QC</th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
 							<th scope="col"><i class="fa fa-picture-o"></i></th>
 							<th scope="col">Edit</th>
@@ -64,7 +63,11 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 						<?php
 						if (is_array($results)) {
 
-							foreach ($results as $data) { ?>
+							foreach ($results as $data) {
+								$users = array_unique(array_filter(explode(",", str_replace(' ','',$data->data))));
+								$users = implode(', ', $users);
+
+						?>
 								<tr id='<?php echo $data->id ?>'>
 									<td>
 										<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
@@ -79,8 +82,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 										<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
 											<?php echo $data->progress ?>%</div>
 									</td>
-									<td><?php echo $data->assembler ?></td>
-									<td class="mobile-hide"><?php echo $data->qc ?></td>
+									<td><?= $users ?></td>
 									<td class="mobile-hide"><?php echo $data->date ?></td>
 									<td><?php echo $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
