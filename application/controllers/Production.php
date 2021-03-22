@@ -568,8 +568,8 @@ class Production extends CI_Controller
         fwrite($fp, "<link href='offline.css' rel='stylesheet'>" . PHP_EOL);
         fwrite($fp, "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>" . PHP_EOL);
         fwrite($fp, "</head><body>" . PHP_EOL);
-        fwrite($fp, "<div class='header'>" . PHP_EOL);
         fwrite($fp, "<img id='logo' src='logo.png'>" . PHP_EOL);
+        fwrite($fp, "<div class='header'>" . PHP_EOL);
         fwrite($fp, "<span id='project'>Project: " . $data['client'] . " - " . $data['project'] . "</span>" . PHP_EOL);
         fwrite($fp, "<span id='serial'>SN: " . $data['serial'] . "</span>" . PHP_EOL);
         fwrite($fp, "<span id='date'>DATE: " . $data['date'] . "</span>" . PHP_EOL);
@@ -599,10 +599,7 @@ class Production extends CI_Controller
             foreach ($files as $file) {
                 $html .= "<img src='$file'/>" . PHP_EOL;
             }
-        } else {
-            return 'No photos in directory ' . $dir;
-        }
-
+        } 
         return $html;
     }
 

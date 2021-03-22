@@ -88,6 +88,7 @@ if (isset($this->session->userdata['logged_in'])) {
                   var assembler ='$username';
                   var client='$client';
                   var working_dir='$working_dir';
+                  var progress='$progress';
             </script>";  //pass PHP data to JS
 		if (file_exists("./$working_dir")) {
 			if ($handle = opendir("./$working_dir")) {
@@ -123,4 +124,9 @@ if (isset($this->session->userdata['logged_in'])) {
 			navbar.classList.remove("sticky-top");
 		}
 	}
+	$('#sn').on('click', function() {
+		if (progress == 100) {
+			window.location.assign('/Uploads/' + client + '/' + project + '/' + serial)
+		}
+	})
 </script>

@@ -155,25 +155,20 @@ $('#ajax-form').submit(function (event) {
         url: $('#ajax-form').attr('action'),
         data: formData
     }).done(function (response) {
-        // Make sure that the formMessages div has the 'success' class.
         if (!response.startsWith('ERROR')) {
             $('#form-messages').removeClass('alert-danger');
             $('#form-messages').addClass('alert-success');
-            // Set the message text.
             $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
             if(typeof new_location !== 'undefined'){
                 setTimeout(function(){ window.location.replace(new_location);}, 3000);
             }
         }else{
             $('#form-messages').addClass('alert-danger');
-            // Set the message text.
             $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
         }
 
     }).fail(function () {
-        // Make sure that the formMessages div has the 'error' class.
         $('#form-messages').addClass('alert-danger');
-        // Set the message text.
         $('#form-messages').text('Oops! An error occured and your message could not be sent.').fadeIn(1000).delay(3000).fadeOut(1000);
     });
 
