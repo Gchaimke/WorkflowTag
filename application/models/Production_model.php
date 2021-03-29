@@ -127,16 +127,6 @@ class Production_model extends CI_Model
 	public function editChecklist($data)
 	{
 		$where = "id =" . $data['id'];
-		$data = array(
-			'data' => $data['data'],
-			'log' => $data['log'],
-			'progress' => $data['progress'],
-			'assembler' => $data['assembler'],
-			'qc' => $data['qc'],
-			'scans' => $data['scans'],
-			'pictures' => $data['pictures'],
-			'note' => $data['note']
-		);
 		return $this->db->update('checklists', $data, $where);
 	}
 

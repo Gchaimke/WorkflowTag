@@ -63,7 +63,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="scansTable">
 		<?php echo $scans_rows ?>
 	</div>
-	<div class="form-row">
+	<div class="form-row" id="note_row">
 		<div class="input-group mb-2 col-12">
 			<div class="input-group-prepend">
 				<div class="input-group-text">Note</div>

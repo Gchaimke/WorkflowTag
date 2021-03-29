@@ -23,7 +23,7 @@
         margin-top: -120px;
         margin-bottom: 100px;
     }
-    .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer {
+    .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer, #note_row {
         display: none;
     }
     

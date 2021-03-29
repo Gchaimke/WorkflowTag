@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Production extends CI_Controller
 {
+    private $role;
     public function __construct()
     {
         parent::__construct();
@@ -12,6 +13,9 @@ class Production extends CI_Controller
         $this->load->model('Users_model');
         $this->load->model('Templates_model');
         $this->load->library('pagination');
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->role = $this->session->userdata['logged_in']['role'];
+        }
     }
 
     public function index()
@@ -372,8 +376,10 @@ class Production extends CI_Controller
                 'qc' => $this->input->post('qc'),
                 'scans' => $this->input->post('scans'),
                 'pictures' => $this->input->post('pictures'),
-                'note' => $this->input->post('note')
             );
+            if($this->role != 'Assembler'){
+                $data['note'] = $this->input->post('note');
+            }
             $this->Production_model->editChecklist($data);
             if ($this->input->post('progress') == 100) {
                 $data['serial'] = $this->input->post('serial');
