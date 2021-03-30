@@ -1,6 +1,7 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
+	$role = ($this->session->userdata['logged_in']['role']);
 	if ($checklist[0]['pictures'] != '') {
 		$pictures = $checklist[0]['pictures'];
 	}
@@ -33,6 +34,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
+				<?php if ($role != 'Assembler') { ?>
+					<button class="btn btn-warning mr-3 qc_note_btn"><i class="fa fa-sticky-note-o"></i></button>
+				<?php } ?>
 				<a class="btn btn-info mr-3" href="#scansTable"><i class="fa fa-list"></i></a>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 				<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
@@ -109,16 +113,31 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
 	<div id="preview"></div>
+	<div id="qc-checklist-note" style="display:none;">
+		<?php echo form_open('production/save_qc_note/' . $id . '?sn=' . $serial, 'id=ajax-form-qc'); ?>
+		<input type="text" name="assembler" placeholder="assembler" value="<?=$username?>" />
+		<input type="hidden" name="client" placeholder="client" value="<?=$checklist_client?>" />
+		<input type="hidden" name="project" placeholder="project" value="<?=$project?>" />
+		<input type="text" name="checklist_row" placeholder="checklist row" value="" />
+		<input type="text" name="note" placeholder="note" value="" />
+		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save"></i></button>
+		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fa fa-close"></i></div>
+		<?php echo form_close() ?>
+	</div>
 </main>
 <script>
 	window.onscroll = function() {
-		myFunction()
+		stickHeader()
 	};
+
+	$('.qc_note_btn').on('click', function() {
+		$('#qc-checklist-note').toggle(300);
+	})
 
 	var navbar = document.getElementById("navbar");
 	var sticky = navbar.offsetTop;
 
-	function myFunction() {
+	function stickHeader() {
 		if (window.pageYOffset >= sticky) {
 			navbar.classList.add("sticky-top")
 		} else {

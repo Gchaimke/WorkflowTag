@@ -156,23 +156,50 @@ $('#ajax-form').submit(function (event) {
         data: formData
     }).done(function (response) {
         if (!response.startsWith('ERROR')) {
-            $('#form-messages').removeClass('alert-danger');
-            $('#form-messages').addClass('alert-success');
-            $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
+            show_message_success(response)
             if (typeof new_location !== 'undefined') {
                 setTimeout(function () { window.location.replace(new_location); }, 3000);
             }
         } else {
-            $('#form-messages').addClass('alert-danger');
-            $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
+            show_message_error(response)
         }
-
     }).fail(function () {
-        $('#form-messages').addClass('alert-danger');
-        $('#form-messages').text('Oops! An error occured and your message could not be sent.').fadeIn(1000).delay(3000).fadeOut(1000);
+        show_message_error('Oops! An error occured and your message could not be sent.')
     });
 
 });
+
+$('#ajax-form-qc').submit(function (event) {
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+    var formData = $('#ajax-form-qc').serialize();
+    $.ajax({
+        type: 'POST',
+        url: $('#ajax-form-qc').attr('action'),
+        data: formData
+    }).done(function (response) {
+        if (!response.startsWith('ERROR')) {
+            show_message_success(response)
+        } else {
+            show_message_error(response)
+        }
+    }).fail(function () {
+        show_message_error('Oops! An error occured and your message could not be sent.')
+    });
+    $('#qc-checklist-note').toggle(300);
+});
+
+function show_message_success(response) {
+    $('#form-messages').removeClass('alert-danger');
+    $('#form-messages').addClass('alert-success');
+    $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
+}
+
+function show_message_error(response) {
+    $('#form-messages').removeClass('alert-success');
+    $('#form-messages').addClass('alert-danger');
+    $('#form-messages').text(response).fadeIn(1000).delay(3000).fadeOut(1000); //show message
+}
 
 function sleep(milliseconds) {
     const date = Date.now();

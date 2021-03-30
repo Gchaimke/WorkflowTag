@@ -357,13 +357,6 @@ class Production extends CI_Controller
     {
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
-        $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
-        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
-        $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
-        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
-        $this->form_validation->set_rules('pictures', 'pictures', 'trim|xss_clean');
-        $this->form_validation->set_rules('note', 'Note', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->edit_checklist($id);
         } else {
@@ -393,14 +386,18 @@ class Production extends CI_Controller
         }
     }
 
+    public function save_qc_note($id=''){
+        $tmp = '';
+        foreach($this->input->post() as $key => $data){
+            $tmp .= $key .' = '. $data.PHP_EOL;
+        }
+        echo $tmp ;
+    }
+
     public function save_batch_checklists($ids = '')
     {
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        $this->form_validation->set_rules('log', 'Log', 'trim|xss_clean');
-        $this->form_validation->set_rules('progress', 'Progress', 'trim|xss_clean');
-        $this->form_validation->set_rules('assembler', 'assembler', 'trim|xss_clean');
-        $this->form_validation->set_rules('qc', 'Qc', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $this->edit_batch($ids);
         } else {
