@@ -475,7 +475,7 @@ class Production extends CI_Controller
         }
 
         if($success){
-            $this->compressImage($file,$file,60);
+           $this->compressImage($file,$file,60);
         }
         print $success ? $file : 'Unable to save the file.';
     }
