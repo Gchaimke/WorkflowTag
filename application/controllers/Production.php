@@ -377,7 +377,7 @@ class Production extends CI_Controller
                 'scans' => $this->input->post('scans'),
                 'pictures' => $this->input->post('pictures'),
             );
-            if($this->role != 'Assembler'){
+            if ($this->role != 'Assembler') {
                 $data['note'] = $this->input->post('note');
             }
             $this->Production_model->editChecklist($data);
@@ -470,9 +470,7 @@ class Production extends CI_Controller
             $file = $upload_folder  . $serial . "_" . $num . ".$type";
             $success = file_put_contents($file, $img);
         }
-        if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
-            //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
-        }
+        shell_exec('"C:\laragon\www\nuc-gchaim\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
         print $success ? $file : 'Unable to save the file.';
     }
 
@@ -605,7 +603,7 @@ class Production extends CI_Controller
             foreach ($files as $file) {
                 $html .= "<img src='$file'/>" . PHP_EOL;
             }
-        } 
+        }
         return $html;
     }
 
