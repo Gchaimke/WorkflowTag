@@ -449,13 +449,16 @@ class Production extends CI_Controller
             $type = strtolower($type[1]); // jpg, png, gif
 
             if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                print 'invalid image type';
                 throw new \Exception('invalid image type');
             }
             $img = base64_decode($img);
             if ($img === false) {
+                print 'base64_decode failed';
                 throw new \Exception('base64_decode failed');
             }
         } else {
+            print 'did not match data URI with image data';
             throw new \Exception('did not match data URI with image data');
         }
 
@@ -470,8 +473,29 @@ class Production extends CI_Controller
             $file = $upload_folder  . $serial . "_" . $num . ".$type";
             $success = file_put_contents($file, $img);
         }
-        shell_exec('"C:\laragon\www\nuc-gchaim\assets\exec\pngquanti.exe" --ext .jpeg --speed 5 --nofs --force ' . escapeshellarg($file));
+
+        if($success){
+            $this->compressImage($file,$file,60);
+        }
         print $success ? $file : 'Unable to save the file.';
+    }
+
+    // Compress image
+    function compressImage($source, $destination, $quality)
+    {
+
+        $info = getimagesize($source);
+
+        if ($info['mime'] == 'image/jpeg')
+            $image = imagecreatefromjpeg($source);
+
+        elseif ($info['mime'] == 'image/gif')
+            $image = imagecreatefromgif($source);
+
+        elseif ($info['mime'] == 'image/png')
+            $image = imagecreatefrompng($source);
+
+        imagejpeg($image, $destination, $quality);
     }
 
 
