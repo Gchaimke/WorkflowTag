@@ -1,10 +1,14 @@
 <?php
 if (isset($this->session->userdata['logged_in']) && isset($user)) {
+	$current_role = ($this->session->userdata['logged_in']['role']);
 	if ($this->session->userdata['logged_in']['id'] != $user[0]['id']) {
 		if ($this->session->userdata['logged_in']['role'] != "Admin") {
 			header("location: /");
 		}
 	}
+	$user = $user[0]; 
+}else{
+	exit();
 }
 ?>
 <div id="form-messages" class='alert hidden' role='alert'></div>
@@ -24,7 +28,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				if (validation_errors()) {
 					echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 				}
-				$user = $user[0]; ?>
+				?>
 				<?php
 				$attributes = ['class' => '', 'id' => 'ajax-form'];
 				echo form_open('users/edit', $attributes); ?>
@@ -32,7 +36,6 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<?php
-						$current_role = ($this->session->userdata['logged_in']['role']);
 						if ($current_role == "Admin") {
 							echo '<div class="input-group-prepend"><div class="input-group-text">Role</div></div>';
 							echo "<select class='form-control' name='role'>";

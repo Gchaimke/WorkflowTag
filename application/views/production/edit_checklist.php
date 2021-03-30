@@ -1,25 +1,26 @@
 <?php
-$id = $checklist[0]['id'];
-$project = $checklist[0]['project'];
-$checklist_client = $checklist[0]['client'];
-$serial = $checklist[0]['serial'];
-$checklist_data = $checklist[0]['data'];
-$log = $checklist[0]['log'];
-$progress = $checklist[0]['progress'];
-$assembler = $checklist[0]['assembler'];
-$qc = $checklist[0]['qc'];
-$scans = $checklist[0]['scans'];
-$date = $checklist[0]['date'];
-$note = $checklist[0]['note'];
-$logo = $client[0]['logo'];
-$client = $client[0]['name'];
-$pictures = 0;
-
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
 	if ($checklist[0]['pictures'] != '') {
 		$pictures = $checklist[0]['pictures'];
 	}
+	$id = $checklist[0]['id'];
+	$project = $checklist[0]['project'];
+	$checklist_client = $checklist[0]['client'];
+	$serial = $checklist[0]['serial'];
+	$checklist_data = $checklist[0]['data'];
+	$log = $checklist[0]['log'];
+	$progress = $checklist[0]['progress'];
+	$assembler = $checklist[0]['assembler'];
+	$qc = $checklist[0]['qc'];
+	$scans = $checklist[0]['scans'];
+	$date = $checklist[0]['date'];
+	$note = $checklist[0]['note'];
+	$logo = $client[0]['logo'];
+	$client = $client[0]['name'];
+	$pictures = 0;
+} else {
+	exit();
 }
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">

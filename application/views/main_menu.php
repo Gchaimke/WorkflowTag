@@ -5,8 +5,9 @@ if (isset($this->session->userdata['logged_in'])) {
   $user_view_name = ($this->session->userdata['logged_in']['view_name']);
   $role = ($this->session->userdata['logged_in']['role']);
 } else {
-  $role = $user_view_name = $username = $id = '';
+  exit();
 }
+
 if (isset($client) && !is_string($client)) {
   $client = $client[0]['name'];
 }
