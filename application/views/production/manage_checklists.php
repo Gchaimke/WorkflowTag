@@ -34,7 +34,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 				<h3>Add checklists</h3>
 				<h5 style="color: red;">Befor adding new serial here, add new serial to "<?php echo $project ?>\PRODUCTION\" folder inside Clients of drive G:</h5>
 				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
-					<input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
+					<input type='hidden' name='client' value='<?php echo $client['name'] ?>'>
 					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
 					<input class="form-control " type='number' name='count' placeholder="Quantity"></br>
 					<input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
@@ -110,7 +110,7 @@ $project =  explode("/", $_SERVER['REQUEST_URI'])[3];
 	</div>
 </main>
 <script>
-	var client = '<?php echo $client[0]['name'] ?>';
+	var client = '<?php echo $client['name'] ?>';
 
 	function trashChecklist(id, project, serial) {
 		var r = confirm("Trash checklist " + serial + "?");

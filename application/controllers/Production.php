@@ -4,25 +4,43 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Production extends CI_Controller
 {
     private $role;
+    private $system_models = array(
+        'Admin' => 'settings',
+        'Clients' => 'clients',
+        'Checklists_notes' => 'checklists_notes',
+        'Production' => 'checklists',
+        'Qc' => 'qc_forms',
+        'Rma' => 'rma_forms',
+        'Templates' => 'projects',
+        'Users' => 'users',
+    );
+
+    public $clients, $users;
+
     public function __construct()
     {
         parent::__construct();
-        // Load model
-        $this->load->model('Production_model');
-        $this->load->model('Clients_model');
-        $this->load->model('Users_model');
-        $this->load->model('Templates_model');
-        $this->load->library('pagination');
         if (isset($this->session->userdata['logged_in'])) {
             $this->role = $this->session->userdata['logged_in']['role'];
+        } else {
+            exit('User not logedin');
         }
+
+        // Load model
+        foreach ($this->system_models as $model => $table) {
+            $this->load->model($model . '_model');
+        }
+        $this->load->library('pagination');
+
+        $this->clients = $this->Clients_model->getClients();
+        $this->users = $this->Users_model->getUsers();
     }
 
     public function index()
     {
         $data = array();
         // get data from model
-        $data['clients'] = $this->Clients_model->getClients();
+        $data['clients'] = $this->clients;
         $this->view_page('production/view_clients', $data);
     }
 
@@ -41,9 +59,9 @@ class Production extends CI_Controller
         $config = array();
         $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
         $total_records = $this->Production_model->get_total($project);
-        $params['users'] = array_column($this->Users_model->getUsers(), 'name');
+        $params['users'] = array_column($this->users, 'name');
         $params['project'] = urldecode($project);
-        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
+        $params['client'] = $this->Clients_model->getClients('', urldecode($project))[0];
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
 
@@ -218,12 +236,13 @@ class Production extends CI_Controller
     {
         $data = array();
         $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
-        $data['checklist'] =  $this->Production_model->getChecklists($id);
+        $data['checklist'] =  $this->Production_model->getChecklists($id)[0];
         if ($data['checklist']) {
-            $data['project'] =  urldecode($data['checklist'][0]['project']);
-            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
+            $data['project'] =  urldecode($data['checklist']['project']);
+            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist']['data']);
             $data['scans_rows'] = $this->build_scans($data['project']);
-            $data['client'] = $this->Clients_model->getClients('', $data['project']);
+            $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
+            $data['users'] = $this->users;
             $this->view_page('production/edit_checklist', '', $data);
         }
     }
@@ -248,19 +267,20 @@ class Production extends CI_Controller
 
     private function build_checklist($project, $checklist_data)
     {
-        $users = $this->Users_model->getUsers();
         $prefix_count = 0;
         $checked = "";
         $table = '';
-        $options = '';
+        $select_users = '';
         if (count($this->Templates_model->getTemplate('', $project)) > 0) {
             $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
             $index = 0;
             $id = 0;
-            foreach ($users as $user) {
-                $options .= "<option value=" . $user['name'] . ">" . $user['name'] . "</option>";
+            foreach ($this->users as $user) {
+                if ($user['role'] != 'Wearhouse') {
+                    $select_users .= "<option value=" . $user['name'] . ">" . $user['name'] . "</option>";
+                }
             }
             for ($i = 0; $i < count($rows); $i++) {
                 $tr = '';
@@ -286,7 +306,7 @@ class Production extends CI_Controller
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
                         $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
-                        $tr .= $options . "</select></td></tr>" . PHP_EOL;
+                        $tr .= $select_users . "</select></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else if (end($col) == "I") {
@@ -298,7 +318,7 @@ class Production extends CI_Controller
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
                         $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
-                        $tr .= $options . "</select></td></tr>" . PHP_EOL;
+                        $tr .= $select_users . "</select></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else {
@@ -386,12 +406,15 @@ class Production extends CI_Controller
         }
     }
 
-    public function save_qc_note($id=''){
-        $tmp = '';
-        foreach($this->input->post() as $key => $data){
-            $tmp .= $key .' = '. $data.PHP_EOL;
+    public function save_qc_note()
+    {
+        $result = $this->Checklists_notes_model->insert($this->input->post());
+        if ($result) {
+            $tmp = "New note inserted with id: $result";
+        } else {
+            $tmp = "Error: can't insert new data!";
         }
-        echo $tmp ;
+        echo $tmp;
     }
 
     public function save_batch_checklists($ids = '')
@@ -471,8 +494,8 @@ class Production extends CI_Controller
             $success = file_put_contents($file, $img);
         }
 
-        if($success){
-           $this->compressImage($file,$file,60);
+        if ($success) {
+            $this->compressImage($file, $file, 60);
         }
         print $success ? $file : 'Unable to save the file.';
     }
@@ -480,18 +503,13 @@ class Production extends CI_Controller
     // Compress image
     function compressImage($source, $destination, $quality)
     {
-
         $info = getimagesize($source);
-
         if ($info['mime'] == 'image/jpeg')
             $image = imagecreatefromjpeg($source);
-
         elseif ($info['mime'] == 'image/gif')
             $image = imagecreatefromgif($source);
-
         elseif ($info['mime'] == 'image/png')
             $image = imagecreatefrompng($source);
-
         imagejpeg($image, $destination, $quality);
     }
 
@@ -631,7 +649,7 @@ class Production extends CI_Controller
     public function generate_all_offline_files()
     {
         $all_checklists = $this->Production_model->getChecklists();
-        $clients = $this->Clients_model->getClients();
+        $clients = $this->clients;
         $logos = array();
         foreach ($clients as $client) {
             $logos[$client['name']] = $client['logo'];

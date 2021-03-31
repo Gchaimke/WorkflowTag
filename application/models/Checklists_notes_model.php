@@ -12,6 +12,10 @@ class Checklists_notes_model extends CI_Model
                 'unsigned' => TRUE,
                 'auto_increment' => TRUE
             ),
+            'checklist_id' => array(
+                'type' => 'INT',
+                'constraint' => 5,
+            ),
             'assembler_id' => array(
                 'type' => 'INT',
                 'constraint' => 3,
@@ -24,9 +28,9 @@ class Checklists_notes_model extends CI_Model
                 'type' => 'INT',
                 'constraint' => 3
             ),
-            'project_id' => array(
-                'type' => 'INT',
-                'constraint' => 3
+            'project' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
             ),
             'row' => array(
                 'type' => 'VARCHAR',
@@ -45,10 +49,11 @@ class Checklists_notes_model extends CI_Model
         $this->dbforge->create_table('checklists_notes');
 
         $demoData = array(
+            "checklist_id" => 1,
             "assembler_id" => 1,
             "qc_id" => 1,
             "client_id" => 1,
-            "project_id" => 1,
+            "project" => "test",
             "row" => '1.03',
             "note" => 'Test note',
         );

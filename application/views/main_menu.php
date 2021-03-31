@@ -9,7 +9,7 @@ if (isset($this->session->userdata['logged_in'])) {
 }
 
 if (isset($client) && !is_string($client)) {
-  $client = $client[0]['name'];
+  $client = $client['name'];
 }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">

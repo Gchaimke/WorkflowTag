@@ -1,24 +1,25 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
+	$user_id = ($this->session->userdata['logged_in']['id']);
 	$role = ($this->session->userdata['logged_in']['role']);
-	if ($checklist[0]['pictures'] != '') {
-		$pictures = $checklist[0]['pictures'];
+	if ($checklist['pictures'] != '') {
+		$pictures = $checklist['pictures'];
 	}
-	$id = $checklist[0]['id'];
-	$project = $checklist[0]['project'];
-	$checklist_client = $checklist[0]['client'];
-	$serial = $checklist[0]['serial'];
-	$checklist_data = $checklist[0]['data'];
-	$log = $checklist[0]['log'];
-	$progress = $checklist[0]['progress'];
-	$assembler = $checklist[0]['assembler'];
-	$qc = $checklist[0]['qc'];
-	$scans = $checklist[0]['scans'];
-	$date = $checklist[0]['date'];
-	$note = $checklist[0]['note'];
-	$logo = $client[0]['logo'];
-	$client = $client[0]['name'];
+	$id = $checklist['id'];
+	$project = $checklist['project'];
+	$checklist_client = $checklist['client'];
+	$serial = $checklist['serial'];
+	$checklist_data = $checklist['data'];
+	$log = $checklist['log'];
+	$progress = $checklist['progress'];
+	$assembler = $checklist['assembler'];
+	$qc = $checklist['qc'];
+	$scans = $checklist['scans'];
+	$date = $checklist['date'];
+	$note = $checklist['note'];
+	$logo = $client['logo'];
+	$client_name = $client['name'];
 	$pictures = 0;
 } else {
 	exit();
@@ -45,7 +46,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input id='assembler' type='hidden' name='assembler' value="<?php echo $assembler ?>">
 				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 				<input type='hidden' name='serial' value="<?php echo $serial ?>">
-				<input type='hidden' name='client' value="<?php echo $client ?>">
+				<input type='hidden' name='client' value="<?php echo $client_name ?>">
 				<input type='hidden' name='project' value="<?php echo $project ?>">
 				<input type='hidden' name='logo' value="<?php echo $logo ?>">
 				<input type='hidden' name='date' value="<?php echo $date ?>">
@@ -91,7 +92,7 @@ if (isset($this->session->userdata['logged_in'])) {
                   var project='$project';
                   var serial='$serial';
                   var assembler ='$username';
-                  var client='$client';
+                  var client='$client_name';
                   var working_dir='$working_dir';
                   var progress='$progress';
             </script>";  //pass PHP data to JS
@@ -113,15 +114,29 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
 	<div id="preview"></div>
-	<div id="qc-checklist-note" style="display:none;">
-		<?php echo form_open('production/save_qc_note/' . $id . '?sn=' . $serial, 'id=ajax-form-qc'); ?>
-		<input type="text" name="assembler" placeholder="assembler" value="<?=$username?>" />
-		<input type="hidden" name="client" placeholder="client" value="<?=$checklist_client?>" />
-		<input type="hidden" name="project" placeholder="project" value="<?=$project?>" />
-		<input type="text" name="checklist_row" placeholder="checklist row" value="" />
-		<input type="text" name="note" placeholder="note" value="" />
-		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save"></i></button>
-		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fa fa-close"></i></div>
+	<div id="qc-checklist-note" style="display:none;" class="form-row">
+		<?php echo form_open('production/save_qc_note/', 'id=ajax-form-qc'); ?>
+		<input type="hidden" name="checklist_id" value="<?= $id ?>" />
+		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
+		<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
+		<input type="hidden" name="project" value="<?= $project ?>" />
+		<div class="form-row mb-3">
+			<div class="col-md-6 mb-2">
+				<select class='form-control' name="assembler_id">
+					<option value='0'>Select</option>
+					<?php foreach ($users as $user) {
+						if (strpos($checklist_data, $user['name']) !== false)
+							echo "<option value=" . $user['id'] . ">" . $user['name'] . "</option>";
+					}
+					?>
+				</select>
+			</div>
+			<input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" />
+			<textarea name="note" placeholder="note" class="form-control col-md-12"></textarea>
+		</div>
+		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save mr-1"></i>Save</button>
+		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fa fa-close mr-1"></i>Close</div>
+
 		<?php echo form_close() ?>
 	</div>
 </main>
