@@ -54,4 +54,28 @@ class Checklists_notes_model extends CI_Model
         );
         $this->db->insert('checklists_notes', $demoData);
     }
+
+    public function get_all()
+    {
+        $query = $this->db->get('checklists_notes');
+        return $query->result();
+    }
+
+    public function get_by_id($id)
+    {
+        $query = $this->db->get_where('checklists_notes', array('id' => $id));
+        return $query->result();
+    }
+
+    public function insert($data)
+    {
+        $this->db->insert('checklists_notes', $data);
+        return $this->db->insert_id() > 0 ? $this->db->insert_id() : false;
+    }
+
+    public function update($data)
+    {
+        $this->db->update('checklists_notes', $data, array('id' => $data['id']));
+        return $this->db->affected_rows() > 0 ? true : false;
+    }
 }
