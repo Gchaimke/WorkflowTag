@@ -4,6 +4,7 @@ class Admin extends CI_Controller
 	private $system_models = array(
 		'Admin' => 'settings',
 		'Clients' => 'clients',
+		'Checklists_notes' => 'checklists_notes',
 		'Production' => 'checklists',
 		'Qc' => 'qc_forms',
 		'Rma' => 'rma_forms',
