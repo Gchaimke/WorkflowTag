@@ -74,6 +74,7 @@ class Checklists_notes_model extends CI_Model
 
     public function insert($data)
     {
+        $data['date'] = date('Y-m-d H:i:s');
         $this->db->insert('checklists_notes', $data);
         return $this->db->insert_id() > 0 ? $this->db->insert_id() : false;
     }
