@@ -38,7 +38,7 @@ class Search extends CI_Controller
                     $html .= "<td><a href='/qc/edit_qc/" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
                 } else if (isset($result['row'])) {
                     $html .= "<td>Note " . $result['checklist_sn'] . "</td>";
-                    $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
+                    $html .= "<td>". urldecode($result["project"]) . "</td>";
                     $html .= "<td><a href='/production/edit_note/" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
                 } else {
                     $html .= "<td>" . $result['serial'] . "</td>";

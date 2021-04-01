@@ -114,7 +114,7 @@ if (isset($client) && !is_string($client)) {
   })
 
   function serialSearch() {
-    var search = document.getElementById("inputSearch").value;
+    var search = $("#inputSearch").val();
     if (search.length >= 3) {
       $.post("/search", {
         search: search
@@ -135,10 +135,13 @@ if (isset($client) && !is_string($client)) {
     }
   }
 
-  $(window).keydown(function(event) {
+  $(window).keyup(function(event) {
     if (event.which == 13 && $('#inputSearch').is(':focus')) { //enter
       event.preventDefault();
-      serialSearch();
+      setTimeout(serialSearch(),1000);
+    }
+    if ($('#inputSearch').is(':focus')) { //enter
+      setTimeout(serialSearch(),1000);
     }
   });
 </script>
