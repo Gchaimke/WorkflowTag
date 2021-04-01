@@ -15,7 +15,7 @@ class Production extends CI_Controller
         'Users' => 'users',
     );
 
-    public $clients, $users;
+    public $clients, $users, $users_names, $clients_names;
 
     public function __construct()
     {
@@ -35,6 +35,12 @@ class Production extends CI_Controller
 
         $this->clients = $this->Clients_model->getClients();
         $this->users = $this->Users_model->getUsers();
+        foreach ($this->clients as $client) {
+            $this->clients_names[$client['id']] = $client['name'];
+        }
+        foreach ($this->users as $user) {
+            $this->users_names[$user['id']] = $user['name'];
+        }
     }
 
     public function index()
@@ -407,17 +413,6 @@ class Production extends CI_Controller
         }
     }
 
-    public function save_qc_note()
-    {
-        $result = $this->Checklists_notes_model->insert($this->input->post());
-        if ($result) {
-            $tmp = "New note inserted with id: $result";
-        } else {
-            $tmp = "Error: can't insert new data!";
-        }
-        echo $tmp;
-    }
-
     public function save_batch_checklists($ids = '')
     {
         // Check validation for user input in SignUp form
@@ -556,7 +551,7 @@ class Production extends CI_Controller
         fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
         fclose($fp);
     }
-
+    //** OFFLINE FILES */
     function generate_offline_files(array $data)
     {
         $folder_path = "Uploads" .
@@ -665,5 +660,53 @@ class Production extends CI_Controller
             }
         }
         echo "<h2>Generated files for checklists with progress 100%: " . $count_progress_100 . "</h2><br/>";
+    }
+    //** QC NOTES */
+    public function notes()
+    {
+        $data = array();
+        $data['notes'] = $this->Checklists_notes_model->get_all();
+        $data['users'] = $this->users_names;
+        $data['clients'] = $this->clients_names;
+        $this->view_page('production/notes', $data);
+    }
+
+    public function edit_note($id = 0)
+    {
+        if ($id > 0) {
+            $data = array();
+            $data['note'] = $this->Checklists_notes_model->get($id);
+            $data['users'] = $this->users_names;
+            $this->view_page('production/edit_note', $data);
+        } else {
+            redirect('/production/notes');
+        }
+    }
+
+    public function add_qc_note()
+    {
+        $result = $this->Checklists_notes_model->insert($this->input->post());
+        if ($result) {
+            $tmp = "New note inserted with id: $result";
+        } else {
+            $tmp = "Error: can't insert new data!";
+        }
+        echo $tmp;
+    }
+
+    public function edit_qc_note()
+    {
+        $result = $this->Checklists_notes_model->update($this->input->post());
+        if ($result) {
+            $tmp = "Note updated!";
+        } else {
+            $tmp = "No new data!";
+        }
+        echo $tmp;
+    }
+
+    public function trash_qc_note()
+    {
+        return $this->Checklists_notes_model->delete($this->input->post('id'));
     }
 }

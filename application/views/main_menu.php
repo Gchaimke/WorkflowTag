@@ -18,7 +18,7 @@ if (isset($client) && !is_string($client)) {
     <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/">Projects</a>
   </div>
   <?php
-  if (isset($project)) {
+  if (isset($project) && $project != '') {
     echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">' . $client . ' ' . $project . '</a>';
   } ?>
   <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white fa fa-search"></button>
@@ -31,10 +31,25 @@ if (isset($client) && !is_string($client)) {
     <div class="navbar-nav mr-auto">
     </div>
     <ul class="navbar-nav">
-      <?php
-      if (isset($project)) { ?>
-        <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-white" href="/rma/view_project_rma/<?= $client . "/" . $project ?>">RMA</a>
-        <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-white" href="/qc/view_project_qc/<?= $client . "/" . $project ?>">QC</a>
+
+      <?php if ($role != 'Assembler') { ?>
+        <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
+          <a class="nav-item dropdown-toggle btn btn-outline-warning text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            QC
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <?php if (isset($project) && $project != '') { ?>
+              <b class="ml-2"><?= $project ?></b><br>
+              <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/rma/view_project_rma/<?= $client . "/" . $project ?>">RMA</a>
+              <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/qc/view_project_qc/<?= $client . "/" . $project ?>">QC</a>
+            <?php } ?>
+            <hr>
+            <b class="ml-2">All</b><br>
+            <a class="dropdown-item" href="/rma/view_project_rma">RMA</a>
+            <a class="dropdown-item" href="/qc/view_project_qc">QC</a>
+            <a class="dropdown-item" href="/production/notes">Notes</a>
+          </div>
+        </li>
       <?php } ?>
       <?php if ($role == 'Admin') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">

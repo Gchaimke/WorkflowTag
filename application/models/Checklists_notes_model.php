@@ -66,10 +66,10 @@ class Checklists_notes_model extends CI_Model
         return $query->result();
     }
 
-    public function get_by_id($id)
+    public function get($id)
     {
         $query = $this->db->get_where('checklists_notes', array('id' => $id));
-        return $query->result();
+        return $query->result()[0];
     }
 
     public function insert($data)
@@ -83,5 +83,10 @@ class Checklists_notes_model extends CI_Model
     {
         $this->db->update('checklists_notes', $data, array('id' => $data['id']));
         return $this->db->affected_rows() > 0 ? true : false;
+    }
+
+    function delete($id)
+    {
+        $this->db->delete('checklists_notes', array('id' => $id));
     }
 }

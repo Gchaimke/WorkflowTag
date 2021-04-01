@@ -115,7 +115,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
 	<div id="preview"></div>
 	<div id="qc-checklist-note" style="display:none;" class="form-row">
-		<?php echo form_open('production/save_qc_note/', 'id=ajax-form-qc'); ?>
+		<?php echo form_open('production/add_qc_note/', 'id=ajax-form-qc'); ?>
 		<input type="hidden" name="checklist_id" value="<?= $id ?>" />
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
 		<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
