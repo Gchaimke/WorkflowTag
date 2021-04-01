@@ -23,6 +23,7 @@ class Production extends CI_Controller
         if (isset($this->session->userdata['logged_in'])) {
             $this->role = $this->session->userdata['logged_in']['role'];
         } else {
+            header("location: /users/login");
             exit('User not logedin');
         }
 
