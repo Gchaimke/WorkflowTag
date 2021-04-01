@@ -267,7 +267,7 @@ class Production extends CI_Controller
             $data['checklist'] = $data['checklists'];
             $data['project'] =  urldecode($data['checklists'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
-            $data['client'] = $this->Clients_model->getClients('', $data['project']);
+            $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
             $this->view_page('production/edit_batch', '', $data);
         }
     }
