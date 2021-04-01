@@ -1,12 +1,11 @@
 <?php
 if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	$current_role = ($this->session->userdata['logged_in']['role']);
-	if ($this->session->userdata['logged_in']['id'] != $user[0]['id']) {
+	if ($this->session->userdata['logged_in']['id'] != $user['id']) {
 		if ($this->session->userdata['logged_in']['role'] != "Admin") {
 			header("location: /");
 		}
 	}
-	$user = $user[0]; 
 }else{
 	exit();
 }
@@ -16,7 +15,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h5>User Update</h5>
+				<h5>Edit User: <?php echo $user['name'] ?></h5>
 				
 			</center>
 		</div>

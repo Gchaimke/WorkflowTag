@@ -661,6 +661,8 @@ class Production extends CI_Controller
         }
         echo "<h2>Generated files for checklists with progress 100%: " . $count_progress_100 . "</h2><br/>";
     }
+
+    
     //** QC NOTES */
     public function notes()
     {

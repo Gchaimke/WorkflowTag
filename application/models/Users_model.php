@@ -35,6 +35,10 @@ class Users_model extends CI_Model
 				'type' => 'VARCHAR',
 				'constraint' => 500
 			),
+			'projects' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 60
+			),
 			'log' => array(
 				'type' => 'TEXT'
 			),
@@ -50,8 +54,8 @@ class Users_model extends CI_Model
 			"name" => 'Admin',
 			"view_name" => 'Admin',
 			"role" => 'Admin',
-			"password" => password_hash('Admin', PASSWORD_DEFAULT)
-
+			"password" => password_hash('Admin', PASSWORD_DEFAULT),
+			"projects" => '1,2,3',
 		);
 		$this->db->insert('users', $admin);
 	}
@@ -156,7 +160,7 @@ class Users_model extends CI_Model
 		$this->db->limit(1);
 		$query = $this->db->get();
 		if ($query->num_rows() == 1) {
-			return $query->result_array();
+			return $query->row_array();
 		} else {
 			return false;
 		}

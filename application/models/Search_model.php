@@ -15,6 +15,10 @@ class Search_model extends CI_Model
                     $this->db->like("number",$search);
                     $this->db->or_like("serial",$search);
                 }
+				if ($table == 'checklists_notes') {
+                    $this->db->like("checklist_sn",$search);
+                    $this->db->or_like("note",$search);
+                }
 				$this->db->order_by('project');
 				$q = $this->db->get();
 				$response = $q->result_array();

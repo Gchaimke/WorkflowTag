@@ -16,6 +16,10 @@ class Checklists_notes_model extends CI_Model
                 'type' => 'INT',
                 'constraint' => 5,
             ),
+            'checklist_sn' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 100,
+            ),
             'assembler_id' => array(
                 'type' => 'INT',
                 'constraint' => 3,
