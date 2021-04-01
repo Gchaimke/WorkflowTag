@@ -6,6 +6,7 @@ class Search_model extends CI_Model
 	{
 		if ($search != "") {
 				$search = urldecode($search);
+				$search = trim($search);
 				$this->db->select('*');
 				$this->db->from($table);
                 if ($table == 'checklists') {
