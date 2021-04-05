@@ -122,7 +122,7 @@ class Production extends CI_Controller
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
         $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['client'] = $this->Clients_model->getClients('', $project);
+            $data['client'] = $this->Clients_model->getClients('', $project)[0];
             $data['project'] = urldecode($project);
             if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
                 $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];

@@ -20,7 +20,7 @@
                   
                   <?php echo form_open("production/add_checklist/$project", 'class=user-create'); ?>
                   <h5 style="color: red;">Befor adding new serial here, add new serial to "<?php echo $project ?>\PRODUCTION\" folder inside Clients of drive G:</h5>
-                  <input type='hidden' name='client' value='<?php echo $client[0]['name'] ?>'>
+                  <input type='hidden' name='client' value='<?php echo $client['name'] ?>'>
                   <input type='hidden' name='project' value='<?php echo $project ?>'>
                   <div class="form-group"><label>Serial template <?php echo $template ?></label>
                         <input class="form-control " type='text' name='serial' placeholder="Serial Number">
