@@ -193,7 +193,7 @@ $('#ajax-form-qc').submit(function (event) {
     }).fail(function () {
         show_message_error('Oops! An error occured and your message could not be sent.')
     });
-    $('#qc-checklist-note').toggle(300);
+    location.reload();
 });
 
 $('#ajax-form-scans').submit(function (event) {

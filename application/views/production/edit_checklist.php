@@ -119,18 +119,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="preview"></div>
 
 	<div id="qc-checklist-note" style="display:none">
-		<?php
-		echo form_open('production/add_qc_note/', 'id=ajax-form-qc');
-		echo "<div style='height:250px' class='overflow-auto mb-5'>";
-		foreach ($notes as $note) {
-			echo "<div class='col-12 border p-1 bg-light text-dark row'>";
-			echo "<p class='col-11 col-md-4'><a target='_blank' class='btn btn-success float-left mr-2' href='/production/edit_note/$note->id'>Edit</a> ROW: $note->row </p>";
-			echo "<p class='col-11 col-md-8'>$note->note</p>";
-			echo "";
-			echo "</div>";
-		}
-		echo "</div>";
-		?>
+		<?php echo form_open('production/add_qc_note/', 'id=ajax-form-qc'); ?>
 		<input type="hidden" name="checklist_id" value="<?= $id ?>" />
 		<input type="hidden" name="checklist_sn" value="<?= $serial ?>" />
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
@@ -152,8 +141,34 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save mr-1"></i>Save</button>
 		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fa fa-close mr-1"></i>Close</div>
-
-		<?php echo form_close() ?>
+		<?php echo form_close(); ?>
+		<?php
+		echo "<div style='height:250px' class='overflow-auto mb-3 mt-3'>";
+		if (is_array($notes)) {
+			foreach ($notes as $note) {
+				echo "<div class='col-md-5 border p-1 bg-light text-dark m-auto'>";
+				echo "<p class='col-full col-md-4'>
+					<button id='$note->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button>
+					<a target='_blank' class='btn btn-success mr-2 fa fa-edit' href='/production/edit_note/$note->id'></a> 
+					</p>";
+				echo "<b class='col-full'>ROW: $note->row </b>";
+				echo "<p class='col-full col-md-8 m-2'>$note->note</p>";
+				echo "";
+				echo "</div>";
+			}
+		} else {
+			echo "<div class='col-md-5 border p-1 bg-light text-dark m-auto'>";
+			echo "<p class='col-full col-md-4'>
+				<button id='$notes->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button>
+				<a target='_blank' class='btn btn-success mr-2 fa fa-edit' href='/production/edit_note/$notes->id'></a> 
+				</p>";
+			echo "<b class='col-full'>ROW: $notes->row </b>";
+			echo "<p class='col-full col-md-8 m-2'>$notes->note</p>";
+			echo "";
+			echo "</div>";
+		}
+		echo "</div>";
+		?>
 	</div>
 </main>
 <script>
@@ -180,4 +195,15 @@ if (isset($this->session->userdata['logged_in'])) {
 			window.location.assign('/Uploads/' + client + '/' + project + '/' + serial)
 		}
 	})
+
+	function trashNote(id) {
+		var r = confirm("Trash note " + id + "?");
+		if (r == true) {
+			$.post("/production/trash_qc_note", {
+				id: id,
+			}).done(function(o) {
+				location.reload();
+			});
+		}
+	}
 </script>

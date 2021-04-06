@@ -74,7 +74,7 @@ class Checklists_notes_model extends CI_Model
     {
         $query = $this->db->get_where('checklists_notes', $where);
         if (count($query->result()) == 1) {
-            return $query->row();
+            return $query->row_object();
         } else {
             return $query->result();
         }
@@ -97,4 +97,5 @@ class Checklists_notes_model extends CI_Model
     {
         $this->db->delete('checklists_notes', array('id' => $id));
     }
+    
 }
