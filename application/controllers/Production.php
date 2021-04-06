@@ -250,6 +250,7 @@ class Production extends CI_Controller
             $data['scans_rows'] = $this->build_scans($data['project'], $data['checklist']['scans']);
             $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
             $data['users'] = $this->users;
+            $data['notes'] = $this->get_qc_notes($id);
             $this->view_page('production/edit_checklist', '', $data);
         }
     }
@@ -637,7 +638,7 @@ class Production extends CI_Controller
     {
         if ($id > 0) {
             $data = array();
-            $data['note'] = $this->Checklists_notes_model->get($id);
+            $data['note'] = $this->Checklists_notes_model->get(array('id' => $id));
             $data['users'] = $this->users_names;
             $this->view_page('production/edit_note', $data);
         } else {
@@ -649,22 +650,27 @@ class Production extends CI_Controller
     {
         $result = $this->Checklists_notes_model->insert($this->input->post());
         if ($result) {
-            $tmp = "New note inserted with id: $result";
+            $msg = "New note inserted with id: $result";
         } else {
-            $tmp = "Error: can't insert new data!";
+            $msg = "Error: can't insert new data!";
         }
-        echo $tmp;
+        echo $msg;
+    }
+
+    public function get_qc_notes($checklist_id)
+    {
+        return $this->Checklists_notes_model->get(array('checklist_id' => $checklist_id));
     }
 
     public function edit_qc_note()
     {
         $result = $this->Checklists_notes_model->update($this->input->post());
         if ($result) {
-            $tmp = "Note updated!";
+            $msg = "Note updated!";
         } else {
-            $tmp = "No new data!";
+            $msg = "No new data!";
         }
-        echo $tmp;
+        echo $msg;
     }
 
     public function trash_qc_note()
@@ -700,8 +706,8 @@ class Production extends CI_Controller
                     } else {
                         $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
                         for ($j = 2; $j < $columns; $j++) {
-                            if (isset($scans_arr[$i-1])) {
-                                $tr .= "<td><input type='text' class='form-control scans' name='scans[]' value='" . $scans_arr[$i-1] . "'></td>";
+                            if (isset($scans_arr[$i - 1])) {
+                                $tr .= "<td><input type='text' class='form-control scans' name='scans[]' value='" . $scans_arr[$i - 1] . "'></td>";
                             } else {
                                 $tr .= "<td><input type='text' class='form-control scans' name='scans[]'></td>";
                             }

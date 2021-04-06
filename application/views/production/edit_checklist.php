@@ -67,7 +67,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php echo $checklist_rows ?>
 	</div>
 	<div id="scansTable">
-		<form action="/production/save_scans/<?=$id?>" id="ajax-form-scans" method="post" accept-charset="utf-8">
+		<form action="/production/save_scans/<?= $id ?>" id="ajax-form-scans" method="post" accept-charset="utf-8">
 			<?php echo $scans_rows ?>
 			<button type='submit' class="btn btn-info navbar-btn float-right mb-4" value="Save"><i class="fa fa-save mr-2"></i>Save Scans</button>
 		</form>
@@ -117,8 +117,20 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
 	<div id="preview"></div>
-	<div id="qc-checklist-note" style="display:none;" class="form-row">
-		<?php echo form_open('production/add_qc_note/', 'id=ajax-form-qc'); ?>
+
+	<div id="qc-checklist-note" style="display:none">
+		<?php
+		echo form_open('production/add_qc_note/', 'id=ajax-form-qc');
+		echo "<div style='height:250px' class='overflow-auto mb-5'>";
+		foreach ($notes as $note) {
+			echo "<div class='col-12 border p-1 bg-light text-dark row'>";
+			echo "<p class='col-11 col-md-4'><a target='_blank' class='btn btn-success float-left mr-2' href='/production/edit_note/$note->id'>Edit</a> ROW: $note->row </p>";
+			echo "<p class='col-11 col-md-8'>$note->note</p>";
+			echo "";
+			echo "</div>";
+		}
+		echo "</div>";
+		?>
 		<input type="hidden" name="checklist_id" value="<?= $id ?>" />
 		<input type="hidden" name="checklist_sn" value="<?= $serial ?>" />
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />

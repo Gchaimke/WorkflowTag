@@ -70,10 +70,14 @@ class Checklists_notes_model extends CI_Model
         return $query->result();
     }
 
-    public function get($id)
+    public function get(array $where)
     {
-        $query = $this->db->get_where('checklists_notes', array('id' => $id));
-        return $query->row();
+        $query = $this->db->get_where('checklists_notes', $where);
+        if (count($query->result()) == 1) {
+            return $query->row();
+        } else {
+            return $query->result();
+        }
     }
 
     public function insert($data)
