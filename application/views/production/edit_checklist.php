@@ -67,9 +67,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php echo $checklist_rows ?>
 	</div>
 	<div id="scansTable">
-		<?php echo $scans_rows ?>
+		<form action="/production/save_scans/<?=$id?>" id="ajax-form-scans" method="post" accept-charset="utf-8">
+			<?php echo $scans_rows ?>
+			<button type='submit' class="btn btn-info navbar-btn float-right mb-4" value="Save"><i class="fa fa-save mr-2"></i>Save Scans</button>
+		</form>
 	</div>
-	<div class="form-row" id="note_row">
+	<div class="mt-2" id="note_row">
 		<div class="input-group mb-2 col-12">
 			<div class="input-group-prepend">
 				<div class="input-group-text">Note</div>

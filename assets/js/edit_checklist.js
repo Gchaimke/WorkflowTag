@@ -1,19 +1,14 @@
 var toggle = true;
 var progress_status = "";
 var chArray = $('#input_data').val().split(",");
-var scansArray = [];
 var checkRows = $('.check_row');
 var inputRows = $('input.input');
 var selectRows = $('select.review');
-var scanRows = $('.scan_row');
 var AllCheckRows = $('.verify').length + $('.review').length;
 var AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
 
 $(document).ready(function () {
     $("#picrures_count").val(photoCount);
-    scansArray = $('#input_scans').val().split(";").map(function (e) {
-        return e.split(",");
-    });
 
     //Get checked rows and add Name after
     checkRows.each(function () {
@@ -31,16 +26,6 @@ $(document).ready(function () {
             $(this).val(chArray[this.id]);
         } else {
             $(this).val('Select');
-        }
-    });
-
-    scanRows.each(function () {
-        var id = $(this).closest('tr').attr('id');
-        if (scansArray[id]) {
-            $(this).find("input:eq(0)").val(scansArray[id][0]);
-            $(this).find("input:eq(1)").val(scansArray[id][1]);
-        } else {
-            scansArray.splice(id, 0, ["", ""]);;
         }
     });
 
@@ -177,25 +162,6 @@ $('input.input').change(function (e) {
     updateProgress();
 });
 
-$(".scans").change(function (e) {
-    var id = $(this).closest('tr').attr('id');
-    var sn = $(this).closest('tr').find("input:eq(0)").val();
-    var rev = $(this).closest('tr').find("input:eq(1)").val();
-    scansArray[id][0] = sn;
-    scansArray[id][1] = rev;
-    $('#input_scans').val(toString2d(scansArray));
-});
-
-
-function toString2d(arr) {
-    var str = '';
-    for (var row = 0; row < arr.length; row++) {
-        str += arr[row].toString();
-        str += ";";
-    }
-    return str
-}
-
 $('#result').click(function () {
     //alert(getDateTime());
 });
@@ -209,6 +175,45 @@ function getDateTime() {
     const M = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
     return `${da}/${mo}/${ye} ${H}:${M}`;
 }
+
+$('#ajax-form-qc').submit(function (event) {
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+    var formData = $('#ajax-form-qc').serialize();
+    $.ajax({
+        type: 'POST',
+        url: $('#ajax-form-qc').attr('action'),
+        data: formData
+    }).done(function (response) {
+        if (!response.startsWith('ERROR')) {
+            show_message_success(response)
+        } else {
+            show_message_error(response)
+        }
+    }).fail(function () {
+        show_message_error('Oops! An error occured and your message could not be sent.')
+    });
+    $('#qc-checklist-note').toggle(300);
+});
+
+$('#ajax-form-scans').submit(function (event) {
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+    var formData = $('#ajax-form-scans').serialize();
+    $.ajax({
+        type: 'POST',
+        url: $('#ajax-form-scans').attr('action'),
+        data: formData
+    }).done(function (response) {
+        if (!response.startsWith('ERROR')) {
+            show_message_success(response)
+        } else {
+            show_message_error(response)
+        }
+    }).fail(function () {
+        show_message_error('Oops! An error occured and your message could not be sent.')
+    });
+});
 
 //KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {

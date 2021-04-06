@@ -247,7 +247,7 @@ class Production extends CI_Controller
         if ($data['checklist']) {
             $data['project'] =  urldecode($data['checklist']['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist']['data']);
-            $data['scans_rows'] = $this->build_scans($data['project']);
+            $data['scans_rows'] = $this->build_scans($data['project'], $data['checklist']['scans']);
             $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
             $data['users'] = $this->users;
             $this->view_page('production/edit_checklist', '', $data);
@@ -343,43 +343,6 @@ class Production extends CI_Controller
         return $table;
     }
 
-    private function build_scans($project)
-    {
-        $table = '';
-        $tr = '';
-        $columns = 0;
-        $id = 0;
-        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
-            $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
-            $rows = explode(PHP_EOL, $project_scans);
-            if (count($rows) > 1) {
-                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
-                for ($i = 0; $i < count($rows); $i++) {
-                    $col = explode(";", $rows[$i]);
-                    if (end($col) == "HD") {
-                        $columns = count($col);
-                        $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
-                        for ($j = 1; $j < count($col) - 1; $j++) {
-                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
-                        }
-                        $tr .= '</tr></thead>';
-                        $table .= $tr;
-                    } else {
-                        $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
-                        for ($j = 2; $j < $columns; $j++) {
-                            $tr .= "<td><input type='text' class='form-control scans'></td>";
-                        }
-                        $tr .=  "</tr>";
-                        $table .= $tr;
-                        $id++;
-                    }
-                }
-            }
-        }
-        $table .= '</tbody></table>';
-        return $table;
-    }
-
     public function save_checklist($id = '')
     {
         // Check validation for user input in SignUp form
@@ -394,12 +357,9 @@ class Production extends CI_Controller
                 'progress' => $this->input->post('progress'),
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc'),
-                'scans' => $this->input->post('scans'),
+                'note' => $this->input->post('note'),
                 'pictures' => $this->input->post('pictures'),
             );
-            if ($this->role != 'Assembler') {
-                $data['note'] = $this->input->post('note');
-            }
             $this->Production_model->editChecklist($data);
             if ($this->input->post('progress') == 100) {
                 $data['serial'] = $this->input->post('serial');
@@ -600,7 +560,7 @@ class Production extends CI_Controller
         });";
         $html_file = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $folder_path . DIRECTORY_SEPARATOR . "index.html";
         $checklist_table = $this->build_checklist($data['project'], $data['data']);
-        $scans_table = $this->build_scans($data['project']);
+        $scans_table = $this->build_scans($data['project'], $data['scans']);
         $fp = fopen($html_file, 'w');
         fwrite($fp, "<!DOCTYPE html><html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>" . PHP_EOL);
         fwrite($fp, "<head><title>SN:" . $data['serial'] . " - " . $data['project'] . "</title>" . PHP_EOL);
@@ -662,7 +622,7 @@ class Production extends CI_Controller
         echo "<h2>Generated files for checklists with progress 100%: " . $count_progress_100 . "</h2><br/>";
     }
 
-    
+
     //** QC NOTES */
     public function notes()
     {
@@ -710,5 +670,66 @@ class Production extends CI_Controller
     public function trash_qc_note()
     {
         return $this->Checklists_notes_model->delete($this->input->post('id'));
+    }
+
+
+    //** Checklist scans */
+
+    private function build_scans($project, $data)
+    {
+        $table = '';
+        $tr = '';
+        $columns = 0;
+        $id = 0;
+        $scans_arr = explode(',', $data);
+        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
+            $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
+            $rows = explode(PHP_EOL, $project_scans);
+            if (count($rows) > 1) {
+                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
+                for ($i = 0; $i < count($rows); $i++) {
+                    $col = explode(";", $rows[$i]);
+                    if (end($col) == "HD") {
+                        $columns = count($col);
+                        $tr = '<tr><th scope="col">#</th><th scope="col">' . $col[0] . '</th>';
+                        for ($j = 1; $j < count($col) - 1; $j++) {
+                            $tr .= '<th scope="col">' . $col[$j] . '</th>';
+                        }
+                        $tr .= '</tr></thead>';
+                        $table .= $tr;
+                    } else {
+                        $tr = "<tr id='$id' class='scan_row'><th scope='row'>$i</th><td class='description'>" . $col[0] . "</td>";
+                        for ($j = 2; $j < $columns; $j++) {
+                            if (isset($scans_arr[$i-1])) {
+                                $tr .= "<td><input type='text' class='form-control scans' name='scans[]' value='" . $scans_arr[$i-1] . "'></td>";
+                            } else {
+                                $tr .= "<td><input type='text' class='form-control scans' name='scans[]'></td>";
+                            }
+                        }
+                        $tr .=  "</tr>";
+                        $table .= $tr;
+                        $id++;
+                    }
+                }
+            }
+        }
+        $table .= '</tbody></table>';
+        return $table;
+    }
+
+    public function save_scans($id = 0)
+    {
+        if ($id != 0) {
+            $scans_str = implode(',', $this->input->post('scans'));
+            $data = array(
+                'id' =>  $id,
+                'scans' => $scans_str,
+            );
+            $this->Production_model->editChecklist($data);
+            echo 'Scans saved successfully!';
+        } else {
+            echo 'ERROR: checklist id 0';
+        }
+        # code...
     }
 }
