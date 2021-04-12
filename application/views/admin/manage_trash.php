@@ -54,8 +54,8 @@ if (!isset($kind)) {
 									<input type='checkbox' class='check' value='<?php echo $data->id ?>'>
 								</td>
 								<td class="mobile-hide"><?php echo $data->date ?></td>
-								<td><?php $kind = (isset($data->number)) ? 'RMA #' . $data->number : "Checklist";
-									echo $kind; ?>
+								<td>
+								<?= $kind ?>
 								</td>
 								<td><?php echo ($data->serial != '') ? $data->serial : "SN template not found!"; ?></td>
 								<?php

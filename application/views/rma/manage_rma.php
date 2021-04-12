@@ -46,7 +46,10 @@ $colors = ['success', 'warning', 'info'];
 
                         <?php
                         if (is_array($results)) {
-                            foreach ($results as $data) { ?>
+                            foreach ($results as $data) {
+                                if (strpos($data->project, 'Trash') !== false) {
+                                    continue;
+                                } ?>
                                 <tr id='<?php echo $data->id ?>'>
                                     <td class="mobile-hide"><?php echo $data->date ?></td>
                                     <td><?php echo $data->number ?></td>

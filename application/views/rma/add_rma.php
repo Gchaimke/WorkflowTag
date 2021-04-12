@@ -7,17 +7,18 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 
-if ($project == 'Production') {
+if (!isset($project)) {
       $fuild_type = 'text';
       $client = '';
+      $project = 'Other';
 } else {
       $fuild_type = 'hidden';
-      $client = $client_name;
+      $client = $client_name ;
 }
 
 ?>
 <div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" data-url-name="<?=$client." ".$project?> RMA" hidden></nav>
+<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" data-url-name="<?= $client . " " . $project ?> RMA" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

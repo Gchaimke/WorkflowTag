@@ -169,7 +169,7 @@ class Admin extends CI_Controller
 		if ($this->input->post('kind') == 'Checklist') {
 			$this->Admin_model->restore_from_trash($data);
 		} else {
-			$this->Admin_model->restore_from_trash($data, 'rma_forms');
+			$this->Admin_model->restore_from_trash($data, $this->input->post('kind').'_forms');
 		}
 	}
 
@@ -187,7 +187,7 @@ class Admin extends CI_Controller
 			'kind' => $kind,
 			'serial' => $serial
 		);
-		$this->detele($data);
+		$this->delete($data);
 	}
 
 	public function delete_batch()
@@ -202,17 +202,17 @@ class Admin extends CI_Controller
 					'kind' => $kind,
 					'serial' => '0'
 				);
-				$this->detele($data);
+				$this->delete($data);
 			}
 		}
 	}
 
-	private function detele($data)
+	private function delete($data)
 	{
 		if (ucfirst($data['kind']) == 'Checklist') {
 			$this->Admin_model->deleteChecklist($data['id']);
 		} else {
-			$this->Admin_model->deleteChecklist($data['id'], 'rma_forms');
+			$this->Admin_model->deleteChecklist($data['id'], $data['kind'].'_forms');
 		}
 		$this->log_data("deleted " . $data['kind'] . " from trash : " . $data['serial'], 3);
 	}

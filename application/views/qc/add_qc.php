@@ -7,6 +7,14 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 
+if (!isset($project)) {
+      $fuild_type = 'text';
+      $client_name = '';
+      $project = 'Other';
+} else {
+      $fuild_type = 'hidden';
+}
+
 ?>
 <div id="form-messages" class='alert hidden' data-url="/qc/view_project_qc/<?php echo $client_name . "/" . $project ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/qc/view_project_qc/<?php echo $client_name . "/" . $project ?>" data-url-name="<?=$client_name." ".$project?> QC" hidden></nav>
