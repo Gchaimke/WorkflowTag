@@ -1,7 +1,7 @@
 <?php
 $project =  explode("/", $_SERVER['REQUEST_URI']);
 if(count($project)>3){
-	$project = $project[3];
+	$project = explode("?",$project[3])[0];
 }else{
 	$project = '';
 }
