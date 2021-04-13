@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Production extends CI_Controller
 {
-    private $role;
+    private $role, $user_name;
     private $system_models = array(
         'Admin' => 'settings',
         'Clients' => 'clients',
@@ -20,14 +20,17 @@ class Production extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('admin');
+
         if (isset($this->session->userdata['logged_in'])) {
             $this->role = $this->session->userdata['logged_in']['role'];
+            $this->user_name = $this->session->userdata['logged_in']['name'];
         } else {
             header("location: /users/login");
             exit('User not logedin');
         }
 
-        // Load model
+        // Load models
         foreach ($this->system_models as $model => $table) {
             $this->load->model($model . '_model');
         }
@@ -46,7 +49,6 @@ class Production extends CI_Controller
     public function index()
     {
         $data = array();
-        // get data from model
         $data['clients'] = $this->clients;
         $this->view_page('production/view_clients', $data);
     }
@@ -118,10 +120,7 @@ class Production extends CI_Controller
         $data = array();
         // Check validation for user input in SignUp form
         $zero_str = implode(",", array_fill(0, 400, ""));
-        $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
         $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('date', 'Date', 'trim|required|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['client'] = $this->Clients_model->getClients('', $project)[0];
             $data['project'] = urldecode($project);
@@ -142,7 +141,7 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
-                $this->log_data("created '$project' checklist with serial '$serial'", 1);
+                admin_log("created '$project' checklist with serial '$serial'", 1, $this->user_name);
                 header("location: /production/checklists/" . $project);
             } else {
                 if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
@@ -164,11 +163,6 @@ class Production extends CI_Controller
         $result = 'Serial template not set!';
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $zero_str = implode(",", array_fill(0, 400, ""));
-        // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('count', 'Count', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('date', 'date', 'trim|required|xss_clean');
         $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
         $serial_project = $this->Templates_model->getTemplate('', $this->input->post('project'));
         $month = date('m', strtotime($this->input->post('date')));
@@ -200,7 +194,7 @@ class Production extends CI_Controller
                     return;
                 }
                 if ($result == TRUE) {
-                    $this->log_data("created '$project' checklist with serial '$current_serial'", 1);
+                    admin_log("created '$project' checklist with serial '$current_serial'", 1, $this->user_name);
                 }
             }
         }
@@ -402,9 +396,6 @@ class Production extends CI_Controller
 
     public function trashChecklist()
     {
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-        $this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
         $project = $this->input->post('project');
         $serial = $this->input->post('serial');
         $data = array(
@@ -412,7 +403,7 @@ class Production extends CI_Controller
             'project' => $project
         );
         $this->Production_model->move_to_trash($data);
-        $this->log_data("trashed '$project' checklist with serial '$serial'", 2);
+        admin_log("trashed '$project' checklist with serial '$serial'", 2, $this->user_name);
     }
 
     public function save_photo()
@@ -483,7 +474,7 @@ class Production extends CI_Controller
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " cannot be deleted due to an error");
             } else {
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " has been deleted");
-                $this->log_data('deleted ' . $photo, 3);
+                admin_log('deleted ' . $photo, 3, $this->user_name);
             }
         }
     }
@@ -502,18 +493,6 @@ class Production extends CI_Controller
         }
     }
 
-    function log_data($msg, $level = 0)
-    {
-        if (!file_exists('application/logs/admin')) {
-            mkdir('application/logs/admin', 0770, true);
-        }
-        $level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
-        $user = $this->session->userdata['logged_in']['name'];
-        $log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
-        $fp = fopen($log_file, 'a'); //opens file in append mode  
-        fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
-        fclose($fp);
-    }
     //** OFFLINE FILES */
     function generate_offline_files(array $data)
     {

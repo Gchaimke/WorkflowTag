@@ -1,6 +1,7 @@
 <?php
 class Admin extends CI_Controller
 {
+	private $role, $user_name;
 	private $system_models = array(
 		'Admin' => 'settings',
 		'Clients' => 'clients',
@@ -14,9 +15,18 @@ class Admin extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
+		
+        $this->load->helper('admin');
 		// Load models
 		foreach ($this->system_models as $model => $table) {
 			$this->load->model($model . '_model');
+		}
+		if (isset($this->session->userdata['logged_in'])) {
+			$this->role = $this->session->userdata['logged_in']['role'];
+			$this->user_name = $this->session->userdata['logged_in']['name'];
+		} else {
+			header("location: /users/login");
+			exit('User not logedin');
 		}
 		$this->load->library('pagination');
 	}
@@ -206,7 +216,7 @@ class Admin extends CI_Controller
 		} else {
 			$this->Admin_model->deleteChecklist($data['id'], $data['type'] . '_forms');
 		}
-		$this->log_data("deleted " . $data['type'] . " from trash : " . $data['serial'], 3);
+		admin_log("deleted " . $data['type'] . " from trash : " . $data['serial'], 3, $this->user_name);
 	}
 
 	public function view_log()
@@ -314,19 +324,6 @@ class Admin extends CI_Controller
 		$sz = 'BKMGTP';
 		$factor = floor((strlen($bytes) - 1) / 3);
 		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-	}
-
-	function log_data($msg, $level = 0)
-	{
-		if (!file_exists('application/logs/admin')) {
-			mkdir('application/logs/admin', 0770, true);
-		}
-		$level_arr = array('INFO', 'CREATE', 'TRASH', 'DELETE');
-		$user = $this->session->userdata['logged_in']['name'];
-		$log_file = APPPATH . "logs/admin/" . date("m-d-Y") . ".log";
-		$fp = fopen($log_file, 'a'); //opens file in append mode  
-		fwrite($fp, $level_arr[$level] . " - " . date("H:i:s") . " --> " . $user . " - " . $msg . PHP_EOL);
-		fclose($fp);
 	}
 
 	function mange_uploads()
