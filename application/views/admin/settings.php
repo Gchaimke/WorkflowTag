@@ -82,7 +82,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
 <script>
     function createDB() {
-        $.post("/admin/create", {}).done(function(o) {
+        $.post("/admin/create_tables", {}).done(function(o) {
             // Make sure that the formMessages div has the 'success' class.
             $('#form-messages').addClass('alert-success');
             // Set the message text.

@@ -59,7 +59,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	function create()
+	function create_tables()
 	{
 		$data = array();
 		$data['response'] = '';
