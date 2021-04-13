@@ -15,8 +15,18 @@ class Forms extends CI_Controller
 
     public function index()
     {
+        $limit = 20;
         $type = isset($_GET['type']) ? $_GET['type'] : 'rma';
-        $data['forms'] = $this->Forms_model->get($type);
+        $data["forms"] = $this->Forms_model->get($type);
+        $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
+        if (count($data['forms']) > 0) {
+            $config['base_url'] = base_url() . 'forms';
+            $config['total_rows'] = count($data['forms']);
+            $config['per_page'] = $limit;
+            $this->pagination->initialize($config);
+            $data["forms"] = $this->Forms_model->paginate($type, $start, $limit);
+            $data["links"] = $this->pagination->create_links();
+        }
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('forms/manage', $data);

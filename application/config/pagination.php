@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-//$config['page_query_string'] = true;
+$config['page_query_string'] = true;
 $config['reuse_query_string'] = true;
 $config['enable_query_strings'] = true;
 

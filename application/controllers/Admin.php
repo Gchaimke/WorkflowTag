@@ -207,16 +207,15 @@ class Admin extends CI_Controller
 		// init params
 		$params = array();
 		$config = array();
-		$limit_per_page = 50;
-		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
+		$limit_per_page = 10;
+        $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
 		$total_records = count($filesList);
 		if ($total_records > 0) {
-			$params["results"] = array_slice($reversedList, $start_index, $limit_per_page);
+			$params["results"] = array_slice($reversedList, $start, $limit_per_page);
 
 			$config['base_url'] = base_url() . 'admin/view_log';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
-			
 			$this->pagination->initialize($config);
 			// build paging links
 			$params["links"] = $this->pagination->create_links();

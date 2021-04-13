@@ -61,19 +61,19 @@ class Production extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function checklists($project = '', $limit_per_page = 5)
+    public function checklists($project = '', $limit_per_page = 20)
     {
         // init params
         $params = array();
         $config = array();
-        $start_index = ($this->uri->segment(4)) ? $this->uri->segment(4) : 0;
+        $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
         $total_records = $this->Production_model->get_total($project);
         $params['users'] = array_column($this->users, 'name');
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project))[0];
 
         if ($total_records > 0) {
-            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
+            $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start, $project);
             $config['base_url'] = base_url() . 'production/checklists/' . $project;
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
