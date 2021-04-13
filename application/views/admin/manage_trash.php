@@ -142,7 +142,6 @@ if (!isset($type)) {
 				serial: serial,
 				type: type
 			}).done(function(o) {
-				alert(o);
 				location.reload();
 			});
 		}
