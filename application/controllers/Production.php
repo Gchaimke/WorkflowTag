@@ -69,6 +69,7 @@ class Production extends CI_Controller
         $params['users'] = array_column($this->users, 'name');
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project))[0];
+
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start_index, $project);
 

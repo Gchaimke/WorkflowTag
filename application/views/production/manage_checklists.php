@@ -1,5 +1,10 @@
 <?php
-$project =  explode("/", $_SERVER['REQUEST_URI'])[3];
+$project =  explode("/", $_SERVER['REQUEST_URI']);
+if(count($project)>3){
+	$project = $project[3];
+}else{
+	$project = '';
+}
 ?>
 <main role="main">
 	<div class="jumbotron">

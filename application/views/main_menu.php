@@ -11,6 +11,14 @@ if (isset($this->session->userdata['logged_in'])) {
 if (isset($client) && !is_string($client)) {
   $client = $client['name'];
 }
+
+if(isset($_GET['project'])){
+  $project = isset($_GET['project'])?$_GET['project']:$project;
+}
+if(isset($_GET['client'])){
+  $client = isset($_GET['client'])?$_GET['client']:$client;
+}
+
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px"></a>

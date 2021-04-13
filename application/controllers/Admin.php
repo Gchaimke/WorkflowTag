@@ -162,7 +162,7 @@ class Admin extends CI_Controller
 			'serial' => $this->input->post('serial'),
 			'project' => $this->input->post('project')
 		);
-		if ($this->input->post('type') == 'Checklist') {
+		if ($this->input->post('type') == 'checklist') {
 			$this->Admin_model->restore_from_trash($data);
 		} else {
 			$this->Admin_model->restore_from_trash($data, $this->input->post('type').'_forms');
