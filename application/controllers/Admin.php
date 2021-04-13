@@ -15,7 +15,7 @@ class Admin extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		
+
         $this->load->helper('admin');
 		// Load models
 		foreach ($this->system_models as $model => $table) {
@@ -113,7 +113,7 @@ class Admin extends CI_Controller
 		// init params
 		$params = array();
 		$config = array();
-		$limit_per_page = 30;
+		$limit_per_page = 50;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
 		if ($type == 'checklist') {
 			$total_records = $this->Admin_model->get_total($project);
@@ -131,29 +131,7 @@ class Admin extends CI_Controller
 			$config['base_url'] = base_url() . 'admin/manage_trash';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
-			$config["uri_segment"] = 3;
-
-			$config['full_tag_open'] = '<ul class="pagination right">';
-			$config['full_tag_close'] = '</ul>';
-
-			$config['cur_tag_open'] = '<li class="page-item active "><a class="page-link">';
-			$config['cur_tag_close'] = '</a></li>';
-
-			$config['num_tag_open'] = '<li class="page-item num-link">';
-			$config['num_tag_close'] = '</li>';
-
-			$config['first_tag_open'] = '<li class="page-item num-link">';
-			$config['first_tag_close'] = '</li>';
-
-			$config['last_tag_open'] = '<li class="page-item num-link">';
-			$config['last_tag_close'] = '</li>';
-
-			$config['next_tag_open'] = '<li class="page-item num-link">';
-			$config['next_tag_close'] = '</li>';
-
-			$config['prev_tag_open'] = '<li class="page-item num-link">';
-			$config['prev_tag_close'] = '</li>';
-
+	
 			$this->pagination->initialize($config);
 
 			// build paging links
@@ -238,29 +216,7 @@ class Admin extends CI_Controller
 			$config['base_url'] = base_url() . 'admin/view_log';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
-			$config["uri_segment"] = 3;
-
-			$config['full_tag_open'] = '<ul class="pagination right">';
-			$config['full_tag_close'] = '</ul>';
-
-			$config['cur_tag_open'] = '<li class="page-item active "><a class="page-link">';
-			$config['cur_tag_close'] = '</a></li>';
-
-			$config['num_tag_open'] = '<li class="page-item num-link">';
-			$config['num_tag_close'] = '</li>';
-
-			$config['first_tag_open'] = '<li class="page-item num-link">';
-			$config['first_tag_close'] = '</li>';
-
-			$config['last_tag_open'] = '<li class="page-item num-link">';
-			$config['last_tag_close'] = '</li>';
-
-			$config['next_tag_open'] = '<li class="page-item num-link">';
-			$config['next_tag_close'] = '</li>';
-
-			$config['prev_tag_open'] = '<li class="page-item num-link">';
-			$config['prev_tag_close'] = '</li>';
-
+			
 			$this->pagination->initialize($config);
 			// build paging links
 			$params["links"] = $this->pagination->create_links();
