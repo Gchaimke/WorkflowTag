@@ -108,10 +108,10 @@ class Admin extends CI_Controller
 		if ($type == 'checklist') {
 			$total_records = $this->Admin_model->get_total($project);
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
-		} else if($type == 'qc') {
+		} else if ($type == 'qc') {
 			$total_records = $this->Admin_model->get_total($project, 'qc_forms');
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'qc_forms');
-		}else {
+		} else {
 			$total_records = $this->Admin_model->get_total($project, 'rma_forms');
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'rma_forms');
 		}
@@ -165,7 +165,7 @@ class Admin extends CI_Controller
 		if ($this->input->post('type') == 'checklist') {
 			$this->Admin_model->restore_from_trash($data);
 		} else {
-			$this->Admin_model->restore_from_trash($data, $this->input->post('type').'_forms');
+			$this->Admin_model->restore_from_trash($data, $this->input->post('type') . '_forms');
 		}
 	}
 
@@ -204,7 +204,7 @@ class Admin extends CI_Controller
 		if (ucfirst($data['type']) == 'Checklist') {
 			$this->Admin_model->deleteChecklist($data['id']);
 		} else {
-			$this->Admin_model->deleteChecklist($data['id'], $data['type'].'_forms');
+			$this->Admin_model->deleteChecklist($data['id'], $data['type'] . '_forms');
 		}
 		$this->log_data("deleted " . $data['type'] . " from trash : " . $data['serial'], 3);
 	}
@@ -269,7 +269,7 @@ class Admin extends CI_Controller
 
 	function getFileList($dir, $recurse = FALSE)
 	{
-		$retval = [];
+		$files = [];
 		$patterns[0] = '/\:/';
 		$patterns[1] = '/\./';
 		$dir = preg_replace($patterns, '',  $dir);
@@ -283,17 +283,17 @@ class Admin extends CI_Controller
 			// skip hidden files
 			if ($entry[0] == ".") continue;
 			if (is_dir("{$dir}{$entry}")) {
-				$retval[] = [
+				$files[] = [
 					'name' => "{$dir}{$entry}",
 					'type' => filetype("{$dir}{$entry}"),
 					'size' => 0,
 					'lastmod' => filemtime("{$dir}{$entry}")
 				];
 				if ($recurse && is_readable("{$dir}{$entry}/")) {
-					$retval = array_merge($retval, getFileList("{$dir}{$entry}/", TRUE));
+					$files = array_merge($files, getFileList("{$dir}{$entry}/", TRUE));
 				}
 			} elseif (is_readable("{$dir}{$entry}")) {
-				$retval[] = [
+				$files[] = [
 					'name' => "{$dir}{$entry}",
 					'type' => mime_content_type("{$dir}{$entry}"),
 					'size' => filesize("{$dir}{$entry}"),
@@ -303,7 +303,10 @@ class Admin extends CI_Controller
 		}
 		$d->close();
 
-		return $retval;
+		$lastmod = array_column($files, 'lastmod');
+
+		array_multisort($lastmod, SORT_ASC, $files);
+		return $files;
 	}
 
 	function human_filesize($bytes, $decimals = 2)
