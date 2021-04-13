@@ -16,8 +16,8 @@ if (!isset($project)) {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/qc/view_project_qc/<?php echo $client_name . "/" . $project ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/qc/view_project_qc/<?php echo $client_name . "/" . $project ?>" data-url-name="<?=$client_name." ".$project?> QC" hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms?type=qc&client=<?php echo $client_name . "&project=" . $project ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $client_name . "&project=" . $project ?>" data-url-name="<?=$client_name." ".$project?> QC" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

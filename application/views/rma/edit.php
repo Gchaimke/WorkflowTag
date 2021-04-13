@@ -7,12 +7,9 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 
-if (!isset($rma_form)) {
-      header("location: /rma/");
-} else {
-      $data = $rma_form[0];
+if (!isset($form)) {
+      header("location: /forms/");
 }
-
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <style>
@@ -82,13 +79,13 @@ if (!isset($rma_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $data['id'] ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $data['client'] . "/" . $data['project'] ?>" data-url-name="All <?= $data['project'] ?> RMA " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $form->client . "/" . $form->project ?>" data-url-name="All <?= $form->project ?> RMA " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3"><?php echo $data['project'] ?> RMA #<?php echo $data['number'] ?></h2>
+                        <h2 class="display-3"><?php echo $form->project ?> RMA #<?php echo $form->number ?></h2>
                   </center>
             </div>
       </div>
@@ -99,9 +96,9 @@ if (!isset($rma_form)) {
       <div class="container">
 
             <?php echo form_open("rma/update_rma/", "id=ajax-form"); ?>
-            <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
-            <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
-            <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
+            <input type='hidden' name='client' value='<?php echo $form->client ?>'>
+            <input type='hidden' name='project' value='<?php echo $form->project ?>'>
+            <input type='hidden' name='id' value='<?php echo $form->id ?>'>
             <input id="picrures_count" type='hidden' name='pictures' value=''>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
@@ -109,25 +106,25 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA #</div>
                               </div>
-                              <input type='text' class="form-control" name='number' value='<?php echo $data['number'] ?>' disabled>
+                              <input type='text' class="form-control" name='number' value='<?php echo $form->number ?>' disabled>
                         </div>
                         <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">SN</div>
                               </div>
-                              <input type='text' class="form-control" name='serial' value='<?php echo $data['serial'] ?>'>
+                              <input type='text' class="form-control" name='serial' value='<?php echo $form->serial ?>'>
                         </div>
                         <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Product Number</div>
                               </div>
-                              <input type='text' class="form-control" name='product_num' value='<?php echo $data['product_num'] ?>'>
+                              <input type='text' class="form-control" name='product_num' value='<?php echo $form->product_num ?>'>
                         </div>
                         <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
-                              <input type='date' class="form-control" name='date' value="<?php echo $data['date'] ?>">
+                              <input type='date' class="form-control" name='date' value="<?php echo $form->date ?>">
                         </div>
                   </div>
                   <div class="form-row">
@@ -135,7 +132,7 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Client Problem Description</div>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='problem'><?php echo $data['problem'] ?></textarea>
+                              <textarea type='text' rows="5" class="form-control" name='problem'><?php echo $form->problem ?></textarea>
                         </div>
                   </div>
                   <div class="form-row">
@@ -143,7 +140,7 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Repair Description</div>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='repair'><?php echo $data['repair'] ?></textarea>
+                              <textarea type='text' rows="5" class="form-control" name='repair'><?php echo $form->repair ?></textarea>
                         </div>
                   </div>
                   <div class="form-row">
@@ -151,7 +148,7 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Required Parts for Repair</div>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='parts'><?php echo $data['parts'] ?></textarea>
+                              <textarea type='text' rows="5" class="form-control" name='parts'><?php echo $form->parts ?></textarea>
                         </div>
                   </div>
                   <div class="form-row">
@@ -159,13 +156,13 @@ if (!isset($rma_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Rma From</div>
                               </div>
-                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>'>
+                              <input type='text' class="form-control" name='client' value='<?php echo $form->client ?>'>
                         </div>
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Checked by</div>
                               </div>
-                              <input type='text' class="form-control" name='user' value='<?php echo $data['user'] ?>'>
+                              <input type='text' class="form-control" name='user' value='<?php echo $form->user ?>'>
                         </div>
                   </div>
 
@@ -179,14 +176,14 @@ if (!isset($rma_form)) {
             </center>
             <div id="photo-messages" class='alert hidden' role='alert'></div>
             <?php
-            $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/RMA/' . $data['number'] . '/';
+            $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $form->number . '/';
             echo "<script>
                   var photoCount=0;
-                  var id='" . $data['id'] . "';
-                  var project='" . $data['project'] . "';
-                  var serial='" . $data['number'] . "';
-                  var user ='" . $data['user'] . "';
-                  var client='" . $data['client'] . "';
+                  var id='" . $form->id . "';
+                  var project='" . $form->project . "';
+                  var serial='" . $form->number . "';
+                  var user ='" . $form->user . "';
+                  var client='" . $form->client . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS
             if (file_exists("./$working_dir")) {
@@ -213,5 +210,5 @@ if (!isset($rma_form)) {
       $(document).ready(function() {
             $("#picrures_count").val(photoCount);
       });
-      document.title = 'RMA <?php echo $data['number'] ?>';
+      document.title = 'RMA <?php echo $form->number ?>';
 </script>

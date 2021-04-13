@@ -7,10 +7,8 @@ if (validation_errors()) {
       echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 }
 
-if (!isset($qc_form)) {
-      header("location: /qc/");
-} else {
-      $data = $qc_form[0];
+if (!isset($form)) {
+      header("location: /forms/");
 }
 
 ?>
@@ -82,13 +80,13 @@ if (!isset($qc_form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/qc/edit_qc/<?php echo $data['id'] ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/qc/view_project_qc/<?php echo $data['client'] . "/" . $data['project'] ?>" data-url-name="All <?= $data['project'] ?> qc " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/qc/edit_qc/<?php echo $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> qc " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3"><?php echo $data['project'] ?> qc #<?php echo $data['number'] ?></h2>
+                        <h2 class="display-3"><?php echo $form->project ?> qc #<?php echo $form->number ?></h2>
                   </center>
             </div>
       </div>
@@ -99,9 +97,9 @@ if (!isset($qc_form)) {
       <div class="container">
 
             <?php echo form_open("qc/update_qc/", "id=ajax-form"); ?>
-            <input type='hidden' name='client' value='<?php echo $data['client'] ?>'>
-            <input type='hidden' name='project' value='<?php echo $data['project'] ?>'>
-            <input type='hidden' name='id' value='<?php echo $data['id'] ?>'>
+            <input type='hidden' name='client' value='<?php echo $form->client ?>'>
+            <input type='hidden' name='project' value='<?php echo $form->project ?>'>
+            <input type='hidden' name='id' value='<?php echo $form->id ?>'>
             <input id="picrures_count" type='hidden' name='pictures' value=''>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
@@ -109,25 +107,25 @@ if (!isset($qc_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">QC #</div>
                               </div>
-                              <input type='text' class="form-control" name='number' value='<?php echo $data['number'] ?>' disabled>
+                              <input type='text' class="form-control" name='number' value='<?php echo $form->number ?>' disabled>
                         </div>
                         <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">SN</div>
                               </div>
-                              <input type='text' class="form-control" name='serial' value='<?php echo $data['serial'] ?>'>
+                              <input type='text' class="form-control" name='serial' value='<?php echo $form->serial ?>'>
                         </div>
                         <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Product Number</div>
                               </div>
-                              <input type='text' class="form-control" name='product_num' value='<?php echo $data['product_num'] ?>'>
+                              <input type='text' class="form-control" name='product_num' value='<?php echo $form->product_num ?>'>
                         </div>
                         <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
-                              <input type='date' class="form-control" name='date' value="<?php echo $data['date'] ?>">
+                              <input type='date' class="form-control" name='date' value="<?php echo $form->date ?>">
                         </div>
                   </div>
                   <div class="form-row">
@@ -135,7 +133,7 @@ if (!isset($qc_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Client Problem Description</div>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='problem'><?php echo $data['problem'] ?></textarea>
+                              <textarea type='text' rows="5" class="form-control" name='problem'><?php echo $form->problem ?></textarea>
                         </div>
                   </div>
                   <div class="form-row">
@@ -143,13 +141,13 @@ if (!isset($qc_form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">QC From</div>
                               </div>
-                              <input type='text' class="form-control" name='client' value='<?php echo $data['client'] ?>' disabled>
+                              <input type='text' class="form-control" name='client' value='<?php echo $form->client ?>' disabled>
                         </div>
                         <div class="input-group mb-2 col-md-6">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Checked by</div>
                               </div>
-                              <input type='text' class="form-control" name='user' value='<?php echo $data['user'] ?>'>
+                              <input type='text' class="form-control" name='user' value='<?php echo $form->user ?>'>
                         </div>
                   </div>
 
@@ -163,14 +161,14 @@ if (!isset($qc_form)) {
             </center>
             <div id="photo-messages" class='alert hidden' role='alert'></div>
             <?php
-            $working_dir = 'Uploads/' . $data['client'] . '/' . $data['project'] . '/qc/' . $data['number'] . '/';
+            $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/qc/' . $form->number . '/';
             echo "<script>
                   var photoCount=0;
-                  var id='" . $data['id'] . "';
-                  var project='" . $data['project'] . "';
-                  var serial='" . $data['number'] . "';
-                  var user ='" . $data['user'] . "';
-                  var client='" . $data['client'] . "';
+                  var id='" . $form->id . "';
+                  var project='" . $form->project . "';
+                  var serial='" . $form->number . "';
+                  var user ='" . $form->user . "';
+                  var client='" . $form->client . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS
             if (file_exists("./$working_dir")) {
@@ -197,5 +195,5 @@ if (!isset($qc_form)) {
       $(document).ready(function() {
             $("#picrures_count").val(photoCount);
       });
-      document.title = 'qc <?php echo $data['number'] ?>';
+      document.title = 'qc <?php echo $form->number ?>';
 </script>

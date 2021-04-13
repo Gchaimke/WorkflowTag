@@ -40,13 +40,13 @@ if (isset($client) && !is_string($client)) {
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php if (isset($project) && $project != '') { ?>
               <b class="ml-2"><?= $project ?></b><br>
-              <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/rma/view_project_rma/<?= $client . "/" . $project ?>">RMA</a>
-              <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/qc/view_project_qc/<?= $client . "/" . $project ?>">QC</a>
+              <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/forms?type=rma&client=<?= $client . "&project=" . $project ?>">RMA</a>
+              <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/forms?type=qc&client=<?= $client . "&project=" . $project ?>">QC</a>
             <?php } ?>
             <hr>
             <b class="ml-2">All</b><br>
-            <a class="dropdown-item" href="/rma/view_project_rma">RMA</a>
-            <a class="dropdown-item" href="/qc/view_project_qc">QC</a>
+            <a class="dropdown-item" href="/forms?type=rma">RMA</a>
+            <a class="dropdown-item" href="/forms?type=qc">QC</a>
             <a class="dropdown-item" href="/production/notes">Notes</a>
           </div>
         </li>
