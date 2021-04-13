@@ -80,7 +80,7 @@ if (!isset($form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/qc/edit_qc/<?php echo $form->id ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&id=<?php echo $form->id ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> qc " hidden></nav>
 <main role="main">
       <div class="jumbotron">
@@ -96,7 +96,8 @@ if (!isset($form)) {
       </div>
       <div class="container">
 
-            <?php echo form_open("qc/update_qc/", "id=ajax-form"); ?>
+            <?php echo form_open("forms/update/", "id=ajax-form"); ?>
+            <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='client' value='<?php echo $form->client ?>'>
             <input type='hidden' name='project' value='<?php echo $form->project ?>'>
             <input type='hidden' name='id' value='<?php echo $form->id ?>'>

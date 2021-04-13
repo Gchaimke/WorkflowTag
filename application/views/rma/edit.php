@@ -79,8 +79,8 @@ if (!isset($form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/edit_rma/<?php echo $form->id ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $form->client . "/" . $form->project ?>" data-url-name="All <?= $form->project ?> RMA " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&id=<?php echo $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?php echo $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> RMA " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -95,7 +95,8 @@ if (!isset($form)) {
       </div>
       <div class="container">
 
-            <?php echo form_open("rma/update_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("forms/update/", "id=ajax-form"); ?>
+            <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='client' value='<?php echo $form->client ?>'>
             <input type='hidden' name='project' value='<?php echo $form->project ?>'>
             <input type='hidden' name='id' value='<?php echo $form->id ?>'>

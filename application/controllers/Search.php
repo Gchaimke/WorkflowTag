@@ -27,15 +27,18 @@ class Search extends CI_Controller
         $html = "";
         if ($results) {
             foreach ($results as $result) {
+                if(strpos($result["project"], 'Trash') !== false ){
+                    continue;
+                }
                 $html .= "<tr class='text-white'>";
                 if (isset($result['number']) && isset($result['parts'])) {
                     $html .= "<td>RMA " . $result['number'] . "</td>";
                     $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
-                    $html .= "<td><a href='/rma/edit_rma/" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
+                    $html .= "<td><a href='/forms/edit?type=rma&id=" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
                 } else if (isset($result['number']) && !isset($result['parts'])) {
                     $html .= "<td>QC " . $result['number'] . "</td>";
                     $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
-                    $html .= "<td><a href='/qc/edit_qc/" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
+                    $html .= "<td><a href='/forms/edit?type=qc&id=" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
                 } else if (isset($result['row'])) {
                     $html .= "<td>Note " . $result['checklist_sn'] . "</td>";
                     $html .= "<td>". urldecode($result["project"]) . "</td>";

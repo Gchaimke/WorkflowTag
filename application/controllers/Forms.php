@@ -67,25 +67,15 @@ class Forms extends CI_Controller
         }
     }
 
-    public function update($type = 'rma')
+    public function update()
     {
-        $data = array(
-            "id" => $this->input->post('id'),
-            "date" => $this->input->post('date'),
-            "product_num" => $this->input->post('product_num'),
-            "serial" => $this->input->post('serial'),
-            "user" => $this->input->post('user'),
-            "problem" => $this->input->post('problem'),
-            'pictures' => $this->input->post('pictures'),
-            'type' => $type,
-        );
-        echo $this->Forms_model->update($data);
+        echo $this->Forms_model->update($this->input->post());
     }
 
     public function trash()
     {
         $data = $this->input->post();
-        $this->forms_model->trash($data);
+        $this->Forms_model->trash($data);
         $this->log("form " . $this->input->post('id') . " trashed ", 2);
     }
 
@@ -161,7 +151,8 @@ class Forms extends CI_Controller
     function update_status()
     {
         $id = $this->input->post('id');
-        $status =  $this->Qc_model->get_qc($id)[0]['status'];
+        $type = $this->input->post('type');
+        $status =  $this->Forms_model->get($type,$id)[0]->status;
         $status++;
         if ($status > 2) {
             $status = 0;
@@ -169,7 +160,8 @@ class Forms extends CI_Controller
         $sql = array(
             'id' => $id,
             'status' => $status,
+            'type' => $type,
         );
-        echo $this->Qc_model->update_qc($sql);
+        echo $this->Forms_model->update($sql);
     }
 }

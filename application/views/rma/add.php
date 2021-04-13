@@ -17,8 +17,8 @@ if (!isset($project)) {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/rma/view_project_rma/<?php echo $client . "/" . $project ?>" data-url-name="<?= $client . " " . $project ?> RMA" hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms?type=rma&client=<?php echo $client . "&project=" . $project ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?php echo $client . "&project=" . $project ?>" data-url-name="<?= $client . " " . $project ?> RMA" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -28,7 +28,8 @@ if (!isset($project)) {
             </div>
       </div>
       <div class="container">
-            <?php echo form_open("rma/create_rma/", "id=ajax-form"); ?>
+            <?php echo form_open("forms/new/", "id=ajax-form"); ?>
+            <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <input type='hidden' name='user' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">

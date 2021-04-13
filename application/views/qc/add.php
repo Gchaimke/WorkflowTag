@@ -27,7 +27,8 @@ if (!isset($project)) {
             </div>
       </div>
       <div class="container">
-            <?php echo form_open("qc/create_qc/", "id=ajax-form"); ?>
+            <?php echo form_open("forms/new/", "id=ajax-form"); ?>
+            <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <input type='hidden' name='user' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
             <div class="mx-auto text-center p-4 col-12 ">

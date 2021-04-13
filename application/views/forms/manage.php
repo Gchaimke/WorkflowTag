@@ -92,10 +92,11 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
     function trash(id, project, number) {
         var r = confirm("Trash Form " + number + "?");
         if (r == true) {
-            $.post("/<?= $type ?>/trash_<?= $type ?>", {
+            $.post("/forms/trash", {
                 id: id,
                 project: project,
-                number: number
+                number: number,
+                type: '<?= $type ?>'
             }).done(function(o) {
                 location.reload();
             });
@@ -103,8 +104,9 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
     }
     $('.status').on('click', function() {
         var id = $(this).attr('data-id')
-        $.post("/<?= $type ?>/update_status", {
-            id: id
+        $.post("/forms/update_status", {
+            id: id,
+            type: '<?= $type ?>'
         }).done(function(o) {
             location.reload();
         });
