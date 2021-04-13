@@ -55,6 +55,6 @@ $route['clients'] = 'clients';
 $route['templates'] = 'templates';
 $route['forms'] = 'forms';
 $route['search'] = 'search';
-$route['(:any)'] = 'pages/view/$1';
+$route['(:any)'] = 'production';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
