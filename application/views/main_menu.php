@@ -64,7 +64,7 @@ if (isset($client) && !is_string($client)) {
             <hr>
             <b class="ml-2">Manage</b>
             <a class="dropdown-item" href="/admin/mange_uploads">Uploads</a>
-            <a class="dropdown-item" href="/admin/manage_trash?kind=checklist">Trash</a>
+            <a class="dropdown-item" href="/admin/manage_trash?type=checklist">Trash</a>
             <a class="dropdown-item" href="/admin/view_log">System Log</a>
             <a class="dropdown-item" href="/admin/settings">Settings</a>
           </div>

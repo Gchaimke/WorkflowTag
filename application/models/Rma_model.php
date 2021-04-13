@@ -2,7 +2,7 @@
 
 class Rma_model extends CI_Model
 {
-	function create()
+	function createDb()
     {
         $this->load->dbforge();
         $rma = array(

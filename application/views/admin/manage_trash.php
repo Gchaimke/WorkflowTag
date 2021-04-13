@@ -1,7 +1,7 @@
 <?php
 $project =  'Trash';
-if (!isset($kind)) {
-	$kind = '';
+if (!isset($type)) {
+	$type = '';
 }
 ?>
 <main role="main">
@@ -24,12 +24,12 @@ if (!isset($kind)) {
 				echo $links;
 			} ?>
 			<input id="ids_values" type="hidden" value="">
-			<input id="kind" type="hidden" value="<?= $kind ?>">
+			<input id="type" type="hidden" value="<?= $type ?>">
 
 			<div class='d-flex flex-row-reverse'>
-				<a id='kind_checklist' class="btn btn-success mb-3" href="/admin/manage_trash?kind=checklist"> Checklists </a>
-				<a id='kind_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?kind=rma"> RMA </a>
-				<a id='kind_qc' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?kind=qc"> QC </a>
+				<a id='type_checklist' class="btn btn-success mb-3" href="/admin/manage_trash?type=checklist"> Checklists </a>
+				<a id='type_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=rma"> RMA </a>
+				<a id='type_qc' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=qc"> QC </a>
 				<button id='batchLink' class="btn btn-danger fa fa-trash disabled mr-5 mb-3" onclick='delete_selected()'> Delete selected</button>
 			</div>
 		</nav>
@@ -40,7 +40,7 @@ if (!isset($kind)) {
 						<tr>
 							<th scope="col"><input type='checkbox' id="select_all"></th>
 							<th scope="col" class="mobile-hide">Date</th>
-							<th scope="col">Kind</th>
+							<th scope="col">type</th>
 							<th scope="col">Serial Number</th>
 							<th scope="col" class="mobile-hide">Project</th>
 							<th scope="col">Restore</th>
@@ -55,15 +55,15 @@ if (!isset($kind)) {
 								</td>
 								<td class="mobile-hide"><?php echo $data->date ?></td>
 								<td>
-								<?= $kind ?>
+								<?= $type ?>
 								</td>
 								<td><?php echo ($data->serial != '') ? $data->serial : "SN template not found!"; ?></td>
 								<?php
 								$project = str_replace('Trash ', '', $data->project);
 								echo '<td class="mobile-hide"><a class="nav-item btn btn-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">' . $project . '</a></td>';
 								?>
-								<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restore_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $kind ?>")'><i class="fa fa-undo"></i></button></td>
-								<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delete_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $kind ?>")'><i class="fa fa-trash"></i></button></td>
+								<td><button id='<?php echo $data->id ?>' class='btn btn-info' onclick='restore_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $type ?>")'><i class="fa fa-undo"></i></button></td>
+								<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='delete_item(this.id,"<?php echo $data->project ?>","<?php echo $data->serial ?>","<?php echo $type ?>")'><i class="fa fa-trash"></i></button></td>
 							</tr>
 						<?php } ?>
 					</tbody>
@@ -105,14 +105,14 @@ if (!isset($kind)) {
 	});
 
 
-	function delete_item(id, project, serial, kind) {
+	function delete_item(id, project, serial, type) {
 		var r = confirm("Delete Item with id: " + id + "?");
 		if (r == true) {
 			$.post("/admin/delete_from_trash", {
 				id: id,
 				project: project,
 				serial: serial,
-				kind: kind
+				type: type
 			}).done(function(o) {
 				location.reload();
 			});
@@ -121,26 +121,26 @@ if (!isset($kind)) {
 
 	function delete_selected() {
 		var ids = $('#ids_values').val();
-		var kind = $('#kind').val();
+		var type = $('#type').val();
 		var r = confirm("Delete Items with id: " + ids + "?");
 		if (r == true) {
 			$.post("/admin/delete_batch", {
 				ids: ids,
-				kind: kind
+				type: type
 			}).done(function(o) {
 				location.reload();
 			});
 		}
 	}
 
-	function restore_item(id, project, serial, kind) {
+	function restore_item(id, project, serial, type) {
 		var r = confirm("Restore checklist with id: " + id + "?");
 		if (r == true) {
 			$.post("/admin/restore_item", {
 				id: id,
 				project: project,
 				serial: serial,
-				kind: kind
+				type: type
 			}).done(function(o) {
 				alert(o);
 				location.reload();

@@ -97,7 +97,7 @@ class Admin extends CI_Controller
 
 	function manage_trash()
 	{
-		$kind = $this->input->post_get('kind');
+		$type = $this->input->post_get('type');
 		$project = 'Trash';
 		$this->load->database();
 		// init params
@@ -105,10 +105,10 @@ class Admin extends CI_Controller
 		$config = array();
 		$limit_per_page = 30;
 		$start_index = ($this->uri->segment(3)) ? $this->uri->segment(3) : 0;
-		if ($kind == 'checklist') {
+		if ($type == 'checklist') {
 			$total_records = $this->Admin_model->get_total($project);
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project);
-		} else if($kind == 'qc') {
+		} else if($type == 'qc') {
 			$total_records = $this->Admin_model->get_total($project, 'qc_forms');
 			$in_trash = $this->Admin_model->get_current_checklists_records($limit_per_page, $start_index, $project, 'qc_forms');
 		}else {
@@ -117,7 +117,7 @@ class Admin extends CI_Controller
 		}
 		if ($total_records > 0) {
 			$params["results"] = $in_trash;
-			$params["kind"] = $kind;
+			$params["type"] = $type;
 			$config['base_url'] = base_url() . 'admin/manage_trash';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
@@ -157,34 +157,26 @@ class Admin extends CI_Controller
 
 	public function restore_item()
 	{
-		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
-		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$data = array(
 			'id' =>  $this->input->post('id'),
 			'serial' => $this->input->post('serial'),
 			'project' => $this->input->post('project')
 		);
-		if ($this->input->post('kind') == 'Checklist') {
+		if ($this->input->post('type') == 'Checklist') {
 			$this->Admin_model->restore_from_trash($data);
 		} else {
-			$this->Admin_model->restore_from_trash($data, $this->input->post('kind').'_forms');
+			$this->Admin_model->restore_from_trash($data, $this->input->post('type').'_forms');
 		}
 	}
 
 	public function delete_from_trash()
 	{
-		$this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-		$this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-		$this->form_validation->set_rules('serial', 'Serial', 'trim|xss_clean');
-		$this->form_validation->set_rules('kind', 'kind', 'trim|xss_clean');
 		$id = $this->input->post('id');
 		$serial = $this->input->post('serial');
-		$kind = $this->input->post('kind');
+		$type = $this->input->post('type');
 		$data = array(
 			'id' => $id,
-			'kind' => $kind,
+			'type' => $type,
 			'serial' => $serial
 		);
 		$this->delete($data);
@@ -195,11 +187,11 @@ class Admin extends CI_Controller
 		$data = array();
 		if ($this->input->post()) {
 			$ids = explode(",", $this->input->post('ids'));
-			$kind = $this->input->post('kind');
+			$type = $this->input->post('type');
 			foreach ($ids as $cid) {
 				$data = array(
 					'id' => $cid,
-					'kind' => $kind,
+					'type' => $type,
 					'serial' => '0'
 				);
 				$this->delete($data);
@@ -209,12 +201,12 @@ class Admin extends CI_Controller
 
 	private function delete($data)
 	{
-		if (ucfirst($data['kind']) == 'Checklist') {
+		if (ucfirst($data['type']) == 'Checklist') {
 			$this->Admin_model->deleteChecklist($data['id']);
 		} else {
-			$this->Admin_model->deleteChecklist($data['id'], $data['kind'].'_forms');
+			$this->Admin_model->deleteChecklist($data['id'], $data['type'].'_forms');
 		}
-		$this->log_data("deleted " . $data['kind'] . " from trash : " . $data['serial'], 3);
+		$this->log_data("deleted " . $data['type'] . " from trash : " . $data['serial'], 3);
 	}
 
 	public function view_log()
