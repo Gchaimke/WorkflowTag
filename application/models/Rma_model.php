@@ -56,6 +56,67 @@ class Rma_model extends CI_Model
                 'type' => 'INT',
                 'constraint' => 1,
                 'unsigned' => TRUE,
+            ),//new 
+            'recive_comments' => array(
+                'type' => 'TEXT',
+            ),
+            'accessories_list' => array(
+                'type' => 'TEXT',
+            ),
+            'package' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'accessories' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'recive_pictures' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'failure_veriffication' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'nff' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'other_failure' => array(
+                'type' => 'TEXT',
+            ),
+            'serial_updates' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'qa_pics' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'closing_the_unit' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'full_unit_test' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'pack_unit_pics' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'pack_accessories' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'pack_accessories_pics' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+            'final_user' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
             ),
         );
         $this->dbforge->add_field($rma);
@@ -74,6 +135,18 @@ class Rma_model extends CI_Model
             "parts" => 'CPU:i7;RAM:8gb'
         );
         $this->db->insert('rma_forms', $demoRMA);
+    }
+
+
+    public function add_new(){
+        $this->load->dbforge();
+        $fields = array(
+            'mrb' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
+    );
+    $this->dbforge->add_column('rma_forms', $fields);
     }
 
 }

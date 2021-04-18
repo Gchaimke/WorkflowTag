@@ -83,6 +83,7 @@ class Admin extends CI_Controller
 			}
 		}
 		$data['settings'] = $this->Admin_model->getSettings();
+		echo $this->Rma_model->add_new();
 		echo $data['response'];
 	}
 
