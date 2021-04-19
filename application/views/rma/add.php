@@ -245,10 +245,14 @@ if (!isset($project)) {
 </main>
 <script>
       var assembler = '<?= $assembler ?>';
+      var name= '';
       $("input:checkbox").click(function(e) {
+                  name = $(this).attr('name');
             if ($(event.target).is(":checked")) {
+                  $("[name="+name+"]").val(assembler);
                   $(this).val(assembler);
             } else {
+                  $("[name="+name+"]").val('');
                   $(this).val("");
             }
       });
