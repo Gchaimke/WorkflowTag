@@ -75,6 +75,10 @@ class Rma_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ),
+            'warranty' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
             'failure_veriffication' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,

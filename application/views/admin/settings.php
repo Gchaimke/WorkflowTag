@@ -65,7 +65,8 @@ if (isset($this->session->userdata['logged_in'])) {
         </br>
         <div class="container">
             <h3>Database Utils</h3>
-            <button class="btn btn-warning m-3" onclick="createDB(0)">Create New DB if not exists</button>
+            <button class="btn btn-warning m-3" onclick="createDB()">Create New DB if not exists</button>
+            <button class="btn btn-warning m-3" onclick="upgradeDB()">Upgrade DB</button>
             <button class="btn btn-success m-3" onclick="backupDB()">Backup DB</button>
             <a id="last-db" class="m-5" style="display: none;" href="">Download last DB</a>
         </div>
@@ -83,6 +84,15 @@ if (isset($this->session->userdata['logged_in'])) {
 <script>
     function createDB() {
         $.post("/admin/create_tables", {}).done(function(o) {
+            // Make sure that the formMessages div has the 'success' class.
+            $('#form-messages').addClass('alert-success');
+            // Set the message text.
+            $('#form-messages').html(o).fadeIn(1000).delay(3000).fadeOut(1000);
+        });
+    }
+
+    function upgradeDB() {
+        $.post("/admin/upgrade_db", {}).done(function(o) {
             // Make sure that the formMessages div has the 'success' class.
             $('#form-messages').addClass('alert-success');
             // Set the message text.

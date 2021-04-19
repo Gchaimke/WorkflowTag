@@ -167,6 +167,20 @@ if (!isset($form)) {
                         </div>
                   </div>
                   <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty1" value="2" <?= $form->warranty == 2 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="warranty1">With warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty2" value="1" <?= $form->warranty == 1 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="warranty2">No warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0" <?= $form->warranty == 0 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="warranty3">Warranty not defined</label>
+                        </div>
+                  </div>
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="<?= $form->receive_pictures ?>" id="receive_pictures" name="receive_pictures" <?= $form->receive_pictures != '' ? "checked" : "" ?>>
                               <input type="hidden" value="<?= $form->receive_pictures ?>" name="receive_pictures">
@@ -212,16 +226,6 @@ if (!isset($form)) {
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
-                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1" <?= $form->failure_veriffication == 1 ? "checked" : "" ?>>
-                              <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
-                        </div>
-                        <div class="form-check form-check-inline col-md-3">
-                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0" <?= $form->failure_veriffication == 0 ? "checked" : "" ?>>
-                              <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
-                        </div>
-                  </div>
-                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Other failure</div>
@@ -231,6 +235,16 @@ if (!isset($form)) {
                   </div>
                   <hr>
                   <h2>Repair</h2>
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1" <?= $form->failure_veriffication == 1 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0" <?= $form->failure_veriffication == 0 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
+                        </div>
+                  </div>
                   <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">

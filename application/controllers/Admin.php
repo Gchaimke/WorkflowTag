@@ -16,7 +16,7 @@ class Admin extends CI_Controller
 	{
 		parent::__construct();
 
-        $this->load->helper('admin');
+		$this->load->helper('admin');
 		// Load models
 		foreach ($this->system_models as $model => $table) {
 			$this->load->model($model . '_model');
@@ -86,9 +86,15 @@ class Admin extends CI_Controller
 		echo $data['response'];
 	}
 
-	function upgrade_db(){
-		$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$this->Admin_model->remove_column('rma_forms','recive_comments');
+	function upgrade_db()
+	{
+		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
+		$fields = array('warranty' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 50,
+		));
+		//$this->Admin_model->add_column('rma_forms', $fields);
+		echo 'Db upgraded!';
 	}
 
 	function backupDB()
@@ -136,7 +142,7 @@ class Admin extends CI_Controller
 			$config['base_url'] = base_url() . 'admin/manage_trash';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
-	
+
 			$this->pagination->initialize($config);
 
 			// build paging links
@@ -213,7 +219,7 @@ class Admin extends CI_Controller
 		$params = array();
 		$config = array();
 		$limit_per_page = 10;
-        $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
+		$start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
 		$total_records = count($filesList);
 		if ($total_records > 0) {
 			$params["results"] = array_slice($reversedList, $start, $limit_per_page);

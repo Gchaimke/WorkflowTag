@@ -34,19 +34,19 @@ if (!isset($project)) {
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
-                        <div class="input-group mb-2 col-lg-4">
+                        <div class="input-group mb-2 col-md-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received from: <?php echo $client ?></div>
                               </div>
                               <input type='<?php echo $fuild_type ?>' class="form-control" name='client' value='<?php echo $client ?>'>
                         </div>
-                        <div class="input-group mb-2 col-lg-4">
+                        <div class="input-group mb-2 col-md-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received by: <?= $assembler ?></div>
                               </div>
                               <input type='<?php echo $fuild_type ?>' class="form-control" name='user' value='<?= $assembler ?>'>
                         </div>
-                        <div class="input-group mb-2 col-lg-3">
+                        <div class="input-group mb-2 col-md-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
@@ -55,19 +55,19 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <div class="form-row">
-                        <div class="input-group mb-2 col-lg-4">
+                        <div class="input-group mb-2 col-md-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA Number</div>
                               </div>
                               <input type='number' class="form-control" name='number' required>
                         </div>
-                        <div class="input-group mb-2 col-lg-4">
+                        <div class="input-group mb-2 col-md-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Serial Number</div>
                               </div>
                               <input type='text' class="form-control" name='serial'>
                         </div>
-                        <div class="input-group mb-2 col-lg-4">
+                        <div class="input-group mb-2 col-md-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Product Number</div>
                               </div>
@@ -94,6 +94,20 @@ if (!isset($project)) {
                         <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0">
                               <label class="form-check-label" for="accessories2">No accessories</label>
+                        </div>
+                  </div>
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty1" value="2">
+                              <label class="form-check-label" for="warranty1">With warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty2" value="1">
+                              <label class="form-check-label" for="warranty2">No warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0">
+                              <label class="form-check-label" for="warranty3">Warranty not defined</label>
                         </div>
                   </div>
                   <div class="form-row mb-3">
@@ -141,17 +155,6 @@ if (!isset($project)) {
                               <label class="form-check-label" for="mrb2">No client MRB / RMA form</label>
                         </div>
                   </div>
-
-                  <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
-                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1">
-                              <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
-                        </div>
-                        <div class="form-check form-check-inline col-md-3">
-                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0">
-                              <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
-                        </div>
-                  </div>
                   <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
@@ -162,6 +165,16 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <h2>Repair</h2>
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1">
+                              <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0">
+                              <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
+                        </div>
+                  </div>
                   <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
@@ -245,14 +258,14 @@ if (!isset($project)) {
 </main>
 <script>
       var assembler = '<?= $assembler ?>';
-      var name= '';
+      var name = '';
       $("input:checkbox").click(function(e) {
-                  name = $(this).attr('name');
+            name = $(this).attr('name');
             if ($(event.target).is(":checked")) {
-                  $("[name="+name+"]").val(assembler);
+                  $("[name=" + name + "]").val(assembler);
                   $(this).val(assembler);
             } else {
-                  $("[name="+name+"]").val('');
+                  $("[name=" + name + "]").val('');
                   $(this).val("");
             }
       });
