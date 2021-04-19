@@ -12,11 +12,11 @@ if (isset($client) && !is_string($client)) {
   $client = $client['name'];
 }
 
-if(isset($_GET['project'])){
-  $project = isset($_GET['project'])?$_GET['project']:$project;
+if (isset($_GET['project'])) {
+  $project = isset($_GET['project']) ? $_GET['project'] : $project;
 }
-if(isset($_GET['client'])){
-  $client = isset($_GET['client'])?$_GET['client']:$client;
+if (isset($_GET['client'])) {
+  $client = isset($_GET['client']) ? $_GET['client'] : $client;
 }
 
 ?>
@@ -58,6 +58,14 @@ if(isset($_GET['client'])){
             <a class="dropdown-item" href="/production/notes">Notes</a>
           </div>
         </li>
+      <?php } ?>
+
+      <?php if ($role == 'Assembler') { ?>
+        <div class="navbar-nav mr-auto">
+          <?php if (isset($project) && $project != '') { ?>
+            <a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 text-white" href="/forms?type=rma&client=<?= $client . "&project=" . $project ?>">RMA</a>
+          <?php } ?>
+        </div>
       <?php } ?>
       <?php if ($role == 'Admin') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
@@ -146,10 +154,10 @@ if(isset($_GET['client'])){
   $(window).keyup(function(event) {
     if (event.which == 13 && $('#inputSearch').is(':focus')) { //enter
       event.preventDefault();
-      setTimeout(serialSearch(),1000);
+      setTimeout(serialSearch(), 1000);
     }
     if ($('#inputSearch').is(':focus')) { //enter
-      setTimeout(serialSearch(),1000);
+      setTimeout(serialSearch(), 1000);
     }
   });
 </script>
