@@ -83,8 +83,12 @@ class Admin extends CI_Controller
 			}
 		}
 		$data['settings'] = $this->Admin_model->getSettings();
-		echo $this->Rma_model->add_new();
 		echo $data['response'];
+	}
+
+	function upgrade_db(){
+		$this->Admin_model->remove_column('rma_forms','recive_pictures');
+		$this->Admin_model->remove_column('rma_forms','recive_comments');
 	}
 
 	function backupDB()

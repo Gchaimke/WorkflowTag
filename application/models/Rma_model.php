@@ -2,7 +2,7 @@
 
 class Rma_model extends CI_Model
 {
-	function createDb()
+    function createDb()
     {
         $this->load->dbforge();
         $rma = array(
@@ -56,8 +56,8 @@ class Rma_model extends CI_Model
                 'type' => 'INT',
                 'constraint' => 1,
                 'unsigned' => TRUE,
-            ),//new 
-            'recive_comments' => array(
+            ), //new 
+            'receive_comments' => array(
                 'type' => 'TEXT',
             ),
             'accessories_list' => array(
@@ -71,7 +71,7 @@ class Rma_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ),
-            'recive_pictures' => array(
+            'receive_pictures' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ),
@@ -79,16 +79,8 @@ class Rma_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ),
-            'nff' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50,
-            ),
             'other_failure' => array(
                 'type' => 'TEXT',
-            ),
-            'serial_updates' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50,
             ),
             'qa_pics' => array(
                 'type' => 'VARCHAR',
@@ -136,17 +128,4 @@ class Rma_model extends CI_Model
         );
         $this->db->insert('rma_forms', $demoRMA);
     }
-
-
-    public function add_new(){
-        $this->load->dbforge();
-        $fields = array(
-            'mrb' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50,
-            ),
-    );
-    $this->dbforge->add_column('rma_forms', $fields);
-    }
-
 }

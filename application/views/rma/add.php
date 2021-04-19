@@ -24,7 +24,7 @@ if (!isset($project)) {
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3">New <?php echo $project ?> RMA</h2>
+                        <h2 class="display-3"><?php echo $project ?> RMA receiving form</h2>
                   </center>
             </div>
       </div>
@@ -36,7 +36,7 @@ if (!isset($project)) {
                   <div class="form-row">
                         <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
-                                    <div class="input-group-text">Client Name: <?php echo $client ?></div>
+                                    <div class="input-group-text">Received from: <?php echo $client ?></div>
                               </div>
                               <input type='<?php echo $fuild_type ?>' class="form-control" name='client' value='<?php echo $client ?>'>
                         </div>
@@ -76,49 +76,49 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <h2>Receive</h2>
-                  <div class="form-row">
-                        <div class="form-check form-check-inline">
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="package" id="package1" value="1">
                               <label class="form-check-label" for="package1">Package picture</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="package" id="package2" value="0">
                               <label class="form-check-label" for="package2">No package</label>
                         </div>
                   </div>
-                  <div class="form-row">
-                        <div class="form-check form-check-inline">
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories1" value="1">
                               <label class="form-check-label" for="accessories1">Accessories pictures</label>
                         </div>
-                        <div class="form-check form-check-inline">
+                        <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0">
                               <label class="form-check-label" for="accessories2">No accessories</label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="recive_pictures" name="recive_pictures">
-                              <label class="form-check-label" for="recive_pictures">
+                              <input class="form-check-input" type="checkbox" value="" id="receive_pictures" name="receive_pictures">
+                              <label class="form-check-label" for="receive_pictures">
                                     Device pictures (serials, sides, top, bottom)
                               </label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Comments if damaged:</div>
                               </div>
-                              <textarea type='text' rows="1" class="form-control" name='recive_comments'></textarea>
+                              <textarea type='text' rows="1" class="form-control" name='receive_comments'></textarea>
                         </div>
                   </div>
 
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Accessories list:</div>
                               </div>
-                              <textarea type='text' rows="6" class="form-control" name='accessories_list'></textarea>
+                              <textarea type='text' rows="3" class="form-control" name='accessories_list'></textarea>
                         </div>
                   </div>
                   <hr>
@@ -131,31 +131,28 @@ if (!isset($project)) {
                               <textarea type='text' rows="2" class="form-control" name='problem'></textarea>
                         </div>
                   </div>
-                  <div class="form-row">
-                        <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="mrb" name="mrb">
-                              <label class="form-check-label" for="mrb">
-                                    Scan client MRB / RMA form
-                              </label>
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="mrb" id="mrb1" value="1">
+                              <label class="form-check-label" for="mrb1">Scan client MRB / RMA form</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="mrb" id="mrb2" value="0">
+                              <label class="form-check-label" for="mrb2">No client MRB / RMA form</label>
                         </div>
                   </div>
-                  <div class="form-row">
-                        <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="failure_veriffication" name="failure_veriffication">
-                              <label class="form-check-label" for="failure_veriffication">
-                                    Failure verification
-                              </label>
+
+                  <div class="form-row mb-3">
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1">
+                              <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
+                        </div>
+                        <div class="form-check form-check-inline col-md-3">
+                              <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0">
+                              <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
                         </div>
                   </div>
-                  <div class="form-row">
-                        <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="nff" name="nff">
-                              <label class="form-check-label" for="nff">
-                                    NFF
-                              </label>
-                        </div>
-                  </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Other failure</div>
@@ -165,7 +162,7 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <h2>Repair</h2>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Repair information:</div>
@@ -173,41 +170,33 @@ if (!isset($project)) {
                               <textarea type='text' rows="3" class="form-control" name='repair'></textarea>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="input-group mb-2 col-12">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Required Parts for Repair</div>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='parts'></textarea>
-                        </div>
-                  </div>
-                  <div class="form-row">
-                        <div class="form-check">
-                              <input class="form-check-input" type="checkbox" value="" id="serial_updates" name="serial_updates">
-                              <label class="form-check-label" for="serial_updates">
-                                    Serial updates
-                              </label>
+                              <textarea type='text' rows="3" class="form-control" name='parts'></textarea>
                         </div>
                   </div>
                   <hr>
                   <h2>QA</h2>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="qa_pics" name="qa_pics">
                               <label class="form-check-label" for="qa_pics">
-                                    Unit pics before closing
+                                    Get unit pictures before closing
                               </label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="closing_the_unit" name="closing_the_unit">
                               <label class="form-check-label" for="closing_the_unit">
-                                    Closing the unit
+                                    Close unit verify
                               </label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="full_unit_test" name="full_unit_test">
                               <label class="form-check-label" for="full_unit_test">
@@ -217,37 +206,39 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <h2>Packaging</h2>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="pack_unit_pics" name="pack_unit_pics">
                               <label class="form-check-label" for="pack_unit_pics">
-                                    Unit picture (serial, sides, top, bottom)
+                                    Get unit pictures (serial, sides, top, bottom)
                               </label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="pack_accessories" name="pack_accessories">
                               <label class="form-check-label" for="pack_accessories">
-                                    Unit and accessories packing (acording arriving list)
+                                    Check unit and accessories packing (acording arriving list)
                               </label>
                         </div>
                   </div>
-                  <div class="form-row">
+                  <div class="form-row mb-3">
                         <div class="form-check">
                               <input class="form-check-input" type="checkbox" value="" id="pack_accessories_pics" name="pack_accessories_pics">
                               <label class="form-check-label" for="pack_accessories_pics">
-                                    Packing picture
+                                    Get packing picture
                               </label>
                         </div>
                   </div>
-                  <div class="input-group mb-2 col-lg-4">
-                        <div class="input-group-prepend">
-                              <div class="input-group-text">Final Documentation Check:</div>
+                  <div class="form-row mb-3">
+                        <div class="input-group mb-2 col-md-5">
+                              <div class="input-group-prepend">
+                                    <div class="input-group-text">Final Documentation Check:</div>
+                              </div>
+                              <input type='text' class="form-control" name='final_user' value='<?= $assembler ?>'>
                         </div>
-                        <input type='text' class="form-control" name='final_user' value='<?= $assembler ?>'>
                   </div>
-                  <input type='submit' class="btn btn-info my-5" name='submit' value='Submit'>
+                  <input type='submit' class="btn btn-info my-5" name='submit' value='Save'>
             </div>
             <?php echo form_close(); ?>
       </div>
@@ -257,7 +248,7 @@ if (!isset($project)) {
       $("input:checkbox").click(function(e) {
             if ($(event.target).is(":checked")) {
                   $(this).val(assembler);
-            }else{
+            } else {
                   $(this).val("");
             }
       });
