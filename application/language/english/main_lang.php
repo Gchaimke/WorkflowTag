@@ -17,6 +17,10 @@ $lang['menu_contacts']        = 'Contacts';
 $lang['menu_hi']        = 'Hi %s';
 $lang['menu_update_my_data']        = 'Profile Settings';
 $lang['menu_logout']        = 'Logout';
+$lang['batch']        = 'batch';
+$lang['batch_msg']        = 'Before adding new serial here, add new serial to "%s\PRODUCTION\" folder inside Clients of drive G:';
+$lang['add_batch']        = 'Add Checklists';
+$lang['add_checklist']        = 'Add checklist';
 
 /**
  * Settings UI

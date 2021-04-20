@@ -17,6 +17,10 @@ $lang['menu_contacts']        = 'אנשי קשר';
 $lang['menu_hi']        = 'שלום %s';
 $lang['menu_update_my_data']        = 'עדכן פרטים שלי';
 $lang['menu_logout']        = 'צא ממערכת';
+$lang['batch']        = 'כמה';
+$lang['batch_msg']        = 'לפני הוספת מספר סידורי חדש כאן, הוסף מספר סידורי חדש לתיקייה %s\PRODUCTION\ בתוך כונן G';
+$lang['add_batch']        = 'הוסף כמות של דוחות';
+$lang['add_checklist']        = 'הוסף דוח';
 
 /**
  * Settings UI

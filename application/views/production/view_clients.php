@@ -2,7 +2,7 @@
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-4">Select Checklist Project</h2>
+				<h2 class="display-4"><?=lang('projects')?></h2>
 			</center>
 		</div>
 	</div>
@@ -17,7 +17,7 @@
 			foreach ($clients as $client) {
 				echo '<div id="' . $client['name'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
 				echo $client['name'];
-				echo '</h5><p class="card-text">Select Project:</p></div>';
+				echo '</h5></div>';
 				echo '<div class="card-footer">';
 				if ($client['projects'] != "" && $client['status']==1) {
 					$arr = explode(',', $client['projects']);

@@ -2,7 +2,7 @@
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3">Add checklist</h2>
+                        <h2 class="display-3"><?=lang('add_checklist')?></h2>
                   </center>
             </div>
       </div>
@@ -19,14 +19,14 @@
                   ?>
                   
                   <?php echo form_open("production/add_checklist/$project", 'class=user-create'); ?>
-                  <h5 style="color: red;">Befor adding new serial here, add new serial to "<?php echo $project ?>\PRODUCTION\" folder inside Clients of drive G:</h5>
+                  <h5 style="color: red;"><?=lang('batch_msg')?></h5>
                   <input type='hidden' name='client' value='<?php echo $client['name'] ?>'>
                   <input type='hidden' name='project' value='<?php echo $project ?>'>
                   <div class="form-group"><label>Serial template <?php echo $template ?></label>
-                        <input class="form-control " type='text' name='serial' placeholder="Serial Number">
+                        <input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
                   </div></br>
-                  <input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
-                  <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
+                  <input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+                  <input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?=lang('save')?>'>
                   <?php echo form_close(); ?>
             </center>
       </div>

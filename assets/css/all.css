@@ -218,6 +218,12 @@ div#form-messages {
     -ms-transform: translate(-50%, -50%);
 }
 
+select.review {
+    max-width: fit-content;
+    float: right;
+}
+
+
 @media (min-width: 320px) {
     .jumbotron {
         padding: 2rem 2rem;

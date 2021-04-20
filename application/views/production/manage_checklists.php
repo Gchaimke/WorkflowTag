@@ -10,7 +10,7 @@ if(count($project)>3){
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3"><?php echo urldecode($project); ?> Checklists</h2>
+				<h2 class="display-3"><?php echo urldecode($project); ?></h2>
 			</center>
 		</div>
 	</div>
@@ -24,8 +24,8 @@ if(count($project)>3){
 			?>
 			<nav aria-label="Checklist navigation">
 				<ul class="pagination left">
-					<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>">New <i class="fa fa-file-text"></i></a>
-					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()">Add Batch</a>
+					<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><?=lang('new')?> <i class="fa fa-file-text"></i></a>
+					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><?=lang('batch')?></a>
 					<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
 				</ul>
 
@@ -36,14 +36,14 @@ if(count($project)>3){
 		</div>
 		<div id="batch_add_form" style="display: none;">
 			<center>
-				<h3>Add checklists</h3>
-				<h5 style="color: red;">Befor adding new serial here, add new serial to "<?php echo $project ?>\PRODUCTION\" folder inside Clients of drive G:</h5>
+				<h3><?=lang('add_batch')?></h3>
+				<h5 style="color: red;"><?=sprintf(lang('batch_msg'), $project);?></h5>
 				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
 					<input type='hidden' name='client' value='<?php echo $client['name'] ?>'>
 					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
 					<input class="form-control " type='number' name='count' placeholder="Quantity"></br>
 					<input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
-					<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'></br>
+					<input type='submit' class="btn btn-info btn-block" name='submit' value='<?=lang('save')?>'></br>
 				</form>
 			</center>
 		</div>
