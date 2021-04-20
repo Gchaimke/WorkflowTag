@@ -667,14 +667,15 @@ class Production extends CI_Controller
                                 $tr .= "<td><input type='text' class='form-control scans' name='scans[]'></td>";
                             }
                         }
+
                         $tr .=  "</tr>";
                         $table .= $tr;
                         $id++;
                     }
                 }
+                $table .= "</tbody></table><button type='submit' class='btn btn-info navbar-btn float-right mb-4'><i class='fa fa-save mr-2'></i>Save Scans</button>";
             }
         }
-        $table .= '</tbody></table>';
         return $table;
     }
 

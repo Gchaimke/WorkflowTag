@@ -13,7 +13,8 @@ class Users extends CI_Controller
         $this->load->model('Admin_model');
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
-            $this->lang->load('main', $this->user['language']);
+            $lang = isset($this->user['language'])?$this->user['language']:'english';
+            $this->lang->load('main', $lang);
             $this->languages = array("english", "hebrew");
         }
     }
