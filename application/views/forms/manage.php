@@ -1,10 +1,10 @@
 <?php
-$status = ['new', 'on check', 'done'];
-$colors = ['success', 'warning', 'info'];
+$status = ['receive', 'verification', 'on check', 'done'];
+$colors = ['info', 'warning', 'danger', 'success'];
 $type = isset($_GET['type']) ? $_GET['type'] : 'rma';
 $client =  isset($_GET['client']) ? $_GET['client'] : 'avdor';
 $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
-
+$status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
 ?>
 <main role="main">
     <div class="jumbotron">
@@ -28,6 +28,22 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
             <?php if (isset($links)) {
                 echo $links;
             } ?>
+
+            <div class="input-group mb-2 col-6">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">Status Filter:</div>
+                </div>
+                <select class="form-control col-md-4 status-filter">
+                    <option>Select</option>
+                    <option value="-1" <?= $status_filter == -1 ? 'selected' : '' ?>>All</option>
+                    <?php
+                    foreach ($status as $key =>  $value) {
+                        $selected =  $status_filter == -1 ? 'selected' : '';
+                        echo "<option value='$key' class='text-" . $colors[$key] . " font-weight-bold'>$value</option>";
+                    }
+                    ?>
+                </select>
+            </div>
         </nav>
         <?php if (isset($forms)) { ?>
             <div class="table-responsive">
@@ -50,6 +66,9 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
                         <?php
                         if (is_array($forms)) {
                             foreach ($forms as $data) {
+                                if ($status_filter != '-1' && $data->status != $status_filter) {
+                                    continue;
+                                }
                                 if (strpos($data->project, 'Trash') !== false) {
                                     continue;
                                 }
@@ -102,6 +121,7 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
             });
         }
     }
+
     $('.status').on('click', function() {
         var id = $(this).attr('data-id')
         $.post("/forms/update_status", {
@@ -110,5 +130,20 @@ $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
         }).done(function(o) {
             location.reload();
         });
+    });
+
+    $('.status-filter').on('change', function() {
+        var url = updateQueryStringParameter(document.location.href, "status", $(this).val());
+        document.location = url;
     })
+
+    function updateQueryStringParameter(uri, key, value) {
+        var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+        var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+        if (uri.match(re)) {
+            return uri.replace(re, '$1' + key + "=" + value + '$2');
+        } else {
+            return uri + separator + key + "=" + value;
+        }
+    }
 </script>

@@ -108,7 +108,7 @@ class Forms extends CI_Controller
         $type = $this->input->post('type');
         $status =  $this->Forms_model->get($type, $id)[0]->status;
         $status++;
-        if ($status > 2) {
+        if ($status > 3) {
             $status = 0;
         }
         $sql = array(
