@@ -1,4 +1,5 @@
 <?php
+$user_language = $this->config->item('language');
 if (isset($this->session->userdata['logged_in'])) {
   $id = ($this->session->userdata['logged_in']['id']);
   $username = ($this->session->userdata['logged_in']['name']);
@@ -23,7 +24,7 @@ if (isset($_GET['client'])) {
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px"></a>
   <div class="navbar-nav mr-auto">
-    <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/">Projects</a>
+    <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/"><?= lang('projects') ?></a>
   </div>
   <?php
   if (isset($project) && $project != '') {
@@ -39,11 +40,10 @@ if (isset($_GET['client'])) {
     <div class="navbar-nav mr-auto">
     </div>
     <ul class="navbar-nav">
-
       <?php if ($role != 'Assembler') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
           <a class="nav-item dropdown-toggle btn btn-outline-warning text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            QC
+            <?= lang('forms') ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php if (isset($project) && $project != '') { ?>
@@ -55,7 +55,7 @@ if (isset($_GET['client'])) {
             <b class="ml-2">All</b><br>
             <a class="dropdown-item" href="/forms?type=rma">RMA</a>
             <a class="dropdown-item" href="/forms?type=qc">QC</a>
-            <a class="dropdown-item" href="/production/notes">Notes</a>
+            <a class="dropdown-item" href="/production/notes"><?= lang('notes') ?></a>
           </div>
         </li>
       <?php } ?>
@@ -70,30 +70,33 @@ if (isset($_GET['client'])) {
       <?php if ($role == 'Admin') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
           <a class="nav-item dropdown-toggle btn btn-outline-info text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Admin
+          <?= lang('Admin') ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <b class="ml-2">System</b>
-            <a class="dropdown-item" href="/clients">Clients</a>
-            <a class="dropdown-item" href="/templates">Templates</a>
-            <a class="dropdown-item" href="/users">Users</a>
+            <b class="ml-2"><?= lang('system') ?></b>
+            <a class="dropdown-item" href="/clients"><?= lang('companies') ?></a>
+            <a class="dropdown-item" href="/templates"><?= lang('projects') ?></a>
+            <a class="dropdown-item" href="/users"><?= lang('users') ?></a>
             <hr>
-            <b class="ml-2">Manage</b>
-            <a class="dropdown-item" href="/admin/mange_uploads">Uploads</a>
-            <a class="dropdown-item" href="/admin/manage_trash?type=checklist">Trash</a>
-            <a class="dropdown-item" href="/admin/view_log">System Log</a>
-            <a class="dropdown-item" href="/admin/settings">Settings</a>
+            <b class="ml-2"><?= lang('manage') ?></b>
+            <a class="dropdown-item" href="/admin/mange_uploads"><?= lang('uploads') ?></a>
+            <a class="dropdown-item" href="/admin/manage_trash?type=checklist"><?= lang('trash') ?></a>
+            <a class="dropdown-item" href="/admin/view_log"><?= lang('sys_log') ?></a>
+            <a class="dropdown-item" href="/admin/settings"><?= lang('settings') ?></a>
           </div>
         </li>
       <?php } ?>
 
       <li class="nav-item dropdown mx-1 mx-lg-5 mt-3 mt-lg-0">
         <a class="nav-item dropdown-toggle btn btn-outline-secondary text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Hi <?php echo $user_view_name; ?>
+          <?php
+          $name = isset($user_view_name) ? $user_view_name : "";
+          printf(lang('menu_hi'), $name)
+          ?>
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/users/edit/<?php echo $id ?>">Edit <?php echo $username ?> profile</a>
-          <a class="dropdown-item" href="/users/logout">Logout</a>
+          <a class="dropdown-item" href="/users/edit/<?php echo $id ?>"><?= lang('menu_update_my_data') ?></a>
+          <a class="dropdown-item" href="/users/logout"><?= lang('menu_logout')?></a>
         </div>
       </li>
     </ul>
@@ -103,9 +106,9 @@ if (isset($_GET['client'])) {
 <div class="search_form bg-dark" style="display: none; ">
   <form id="form">
     <div class="input-group mb-3 col-md-4 m-auto">
-      <input id='inputSearch' type="text" class="form-control" placeholder="Search for serial number" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
+      <input id='inputSearch' type="text" class="form-control" placeholder="<?=lang('search_placeholder')?>" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
       <div class="input-group-append">
-        <button class="btn btn-secondary" type="button" onclick="serialSearch()">Search</button>
+        <button class="btn btn-secondary" type="button" onclick="serialSearch()"><?=lang('search')?></button>
       </div>
     </div>
     <div id='searchResult' class="text-white">

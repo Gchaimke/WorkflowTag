@@ -9,6 +9,14 @@ class Clients extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Clients_model');
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->user = $this->session->userdata['logged_in'];
+            $this->lang->load('main', $this->user['language']);
+            $this->languages = array("english", "hebrew");
+        } else {
+            header("location: /users/login");
+            exit('User not logedin');
+        }
     }
 
     public function index($msg = '')
@@ -60,7 +68,7 @@ class Clients extends CI_Controller
         }
     }
 
-    public function edit($id = '',$msg='')
+    public function edit($id = '', $msg = '')
     {
         if ($msg != '') {
             $data['message_display'] = $msg;

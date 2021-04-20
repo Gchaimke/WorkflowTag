@@ -3,13 +3,21 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Templates extends CI_Controller
 {
-
+    private $user;
     public function __construct()
     {
         parent::__construct();
         // Load model
         $this->load->model('Templates_model');
         $this->load->model('Clients_model');
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->user = $this->session->userdata['logged_in'];
+            $this->lang->load('main', $this->user['language']);
+            $this->languages = array("english", "hebrew");
+        } else {
+            header("location: /users/login");
+            exit('User not logedin');
+        }
     }
 
     public function index($data = '')

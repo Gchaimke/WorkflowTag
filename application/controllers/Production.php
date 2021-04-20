@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Production extends CI_Controller
 {
-    private $role, $user_name;
+    private $user;
     private $system_models = array(
         'Admin' => 'settings',
         'Clients' => 'clients',
@@ -23,8 +23,9 @@ class Production extends CI_Controller
         $this->load->helper('admin');
 
         if (isset($this->session->userdata['logged_in'])) {
-            $this->role = $this->session->userdata['logged_in']['role'];
-            $this->user_name = $this->session->userdata['logged_in']['name'];
+            $this->user = $this->session->userdata['logged_in'];
+            $this->lang->load('main', $this->user['language']);
+            $this->languages = array("english", "hebrew");
         } else {
             header("location: /users/login");
             exit('User not logedin');
@@ -114,7 +115,7 @@ class Production extends CI_Controller
             );
             $result = $this->Production_model->addChecklist($data);
             if ($result == TRUE) {
-                admin_log("created '$project' checklist with serial '$serial'", 1, $this->user_name);
+                admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
                 header("location: /production/checklists/" . $project);
             } else {
                 if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
@@ -167,7 +168,7 @@ class Production extends CI_Controller
                     return;
                 }
                 if ($result == TRUE) {
-                    admin_log("created '$project' checklist with serial '$current_serial'", 1, $this->user_name);
+                    admin_log("created '$project' checklist with serial '$current_serial'", 1, $this->user['name']);
                 }
             }
         }
@@ -376,7 +377,7 @@ class Production extends CI_Controller
             'project' => $project
         );
         $this->Production_model->move_to_trash($data);
-        admin_log("trashed '$project' checklist with serial '$serial'", 2, $this->user_name);
+        admin_log("trashed '$project' checklist with serial '$serial'", 2, $this->user['name']);
     }
 
     public function save_photo()
@@ -447,7 +448,7 @@ class Production extends CI_Controller
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " cannot be deleted due to an error");
             } else {
                 echo ($_SERVER["DOCUMENT_ROOT"] . $photo . " has been deleted");
-                admin_log('deleted ' . $photo, 3, $this->user_name);
+                admin_log('deleted ' . $photo, 3, $this->user['name']);
             }
         }
     }

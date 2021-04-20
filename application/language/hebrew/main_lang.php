@@ -21,9 +21,15 @@ $lang['menu_logout']        = 'צא ממערכת';
 /**
  * Settings UI
  */
+$lang['notes']        = 'הערות';
+$lang['uploads']        = 'קבצים';
+$lang['projects']        = 'פרויקטים';
+$lang['trash']        = 'סל מחזור';
+$lang['system']        = 'מערכת';
 $lang['settings']        = 'הגדרות';
 $lang['roles']            = 'תפקידים';
 $lang['Admin']            = 'מנהל';
+$lang['manage']            = 'ניהול';
 $lang['Manager']            = 'אחראי';
 $lang['User']            = 'משתמש';
 $lang['users']        = 'משתמשים';
@@ -158,7 +164,7 @@ $lang['update_form']        = 'עדכון דוח';
 $lang['send_form']        = 'שלח דוח';
 $lang['show']        = 'הצג';
 $lang['search']        = 'חפש';
-$lang['search_placeholder']        = 'מספר תקלה,מספר לקוח,שם לקוח,יוצר';
+$lang['search_placeholder']        = 'חפש לפי מספר סריאלי';
 $lang['day']        = 'יום';
 $lang['month']        = 'חודש';
 $lang['year']        = 'שנה';

@@ -10,7 +10,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <div class="jumbotron">
         <div class="container">
             <center>
-                <h2 class="display-3">Settings</h2>
+                <h2 class="display-3"><?= lang('settings') ?></h2>
             </center>
         </div>
     </div>
@@ -31,23 +31,18 @@ if (isset($this->session->userdata['logged_in'])) {
             $checklists_count = $checklists;
             $rma_forms_count = $rma_forms;
         }
-
-        echo $this->config->item('language');
-        echo lang('new_form');
-        echo $this->session->userdata['logged_in']['language'];
         ?>
-        <h3>System Status</h3>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Users
+            <?= lang('users') ?>
                 <span class="badge badge-primary badge-pill"><?php echo $users_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Clients
+            <?= lang('companies') ?>
                 <span class="badge badge-primary badge-pill"><?php echo $clients_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                Checklists ( You saved minimum <?php echo $checklists_count ?> pages! )
+            <?= lang('forms') ?> ( You saved minimum <?php echo $checklists_count ?> pages! )
                 <span class="badge badge-primary badge-pill"><?php echo $checklists_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -58,7 +53,7 @@ if (isset($this->session->userdata['logged_in'])) {
         <div id="form-messages" class='alert hidden' role='alert'></div>
         <?php echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create'); ?>
         <div class="form-group"><label>
-                <h3>User Roles</h3>
+                <h3><?=lang('roles')?></h3>
             </label>
             <?php
             if (isset($settings) && $settings != "") {
@@ -73,7 +68,6 @@ if (isset($this->session->userdata['logged_in'])) {
                 </div>
                 <select class="form-control" name='language'>
                     <?php if (isset($languages)) {
-                        echo "<option value='system'>" . lang('default') . "</option>";
                         foreach ($languages as $lang) {
                             if ($settings[0]['language'] == $lang) {
                                 echo "<option selected>$lang</option>";
@@ -87,16 +81,16 @@ if (isset($this->session->userdata['logged_in'])) {
             </div>
         </div>
         <?php
-        echo "<input type='submit' class='btn btn-success' name='submit' value='Save'>";
+        echo "<input type='submit' class='btn btn-success' name='submit' value='".lang('save')."'>";
         echo form_close();
         ?>
         </br>
         <div class="container">
             <h3>Database Utils</h3>
-            <button class="btn btn-warning m-3" onclick="createDB()">Create New DB if not exists</button>
+            <button class="btn btn-warning m-3" onclick="createDB()"><?= lang('create_db') ?></button>
             <button class="btn btn-info m-3" onclick="upgradeDB()">Upgrade DB</button>
-            <button class="btn btn-success m-3" onclick="backupDB()">Backup DB</button>
-            <a id="last-db" class="m-5" style="display: none;" href="">Download last DB</a>
+            <button class="btn btn-success m-3" onclick="backupDB()"><?= lang('backup_db') ?></button>
+            <a id="last-db" class="m-5" style="display: none;" href=""><?= lang('download_db') ?></a>
         </div>
         <hr>
         <div class="container">

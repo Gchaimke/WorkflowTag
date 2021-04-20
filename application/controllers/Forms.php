@@ -11,6 +11,14 @@ class Forms extends CI_Controller
         $this->load->model('Production_model');
         $this->load->model('Clients_model');
         $this->load->library('pagination');
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->user = $this->session->userdata['logged_in'];
+            $this->lang->load('main', $this->user['language']);
+            $this->languages = array("english", "hebrew");
+        } else {
+            header("location: /users/login");
+            exit('User not logedin');
+        }
     }
 
     public function index()

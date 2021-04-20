@@ -21,9 +21,15 @@ $lang['menu_logout']        = 'Logout';
 /**
  * Settings UI
  */
+$lang['notes']        = 'notes';
+$lang['uploads']        = 'Uploads';
+$lang['projects']        = 'Projects';
+$lang['trash']        = 'Trash';
+$lang['system']        = 'System';
 $lang['settings']        = 'Settings';
 $lang['roles']            = 'Roles';
 $lang['Admin']            = 'Admin';
+$lang['manage']            = 'Manage';
 $lang['Manager']            = 'Manager';
 $lang['User']            = 'User';
 $lang['Assembler']            = 'Assembler';
@@ -156,7 +162,7 @@ $lang['update_form']        = 'Update Form';
 $lang['send_form']        = 'Send Form';
 $lang['show']        = 'Show';
 $lang['search']        = 'Search';
-$lang['search_placeholder']        = ' Issue Number, Client Number, Client Name, Technician';
+$lang['search_placeholder']        = ' Search for serial number ';
 $lang['day']        = 'Day';
 $lang['month']        = 'Month';
 $lang['year']        = 'Yaer';
