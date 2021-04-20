@@ -27,7 +27,7 @@ if (isset($this->session->userdata['logged_in'])) {
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
-<main role="main" class="container">
+<main role="main" class="container ltr">
 	<nav id="navbar" class="navbar checklist navbar-light bg-light">
 		<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 		<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
