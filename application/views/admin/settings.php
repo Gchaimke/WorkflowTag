@@ -31,6 +31,10 @@ if (isset($this->session->userdata['logged_in'])) {
             $checklists_count = $checklists;
             $rma_forms_count = $rma_forms;
         }
+
+        echo $this->config->item('language');
+        echo lang('new_form');
+        echo $this->session->userdata['logged_in']['language'];
         ?>
         <h3>System Status</h3>
         <ul class="list-group">
@@ -52,13 +56,37 @@ if (isset($this->session->userdata['logged_in'])) {
             </li>
         </ul><br>
         <div id="form-messages" class='alert hidden' role='alert'></div>
+        <?php echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create'); ?>
+        <div class="form-group"><label>
+                <h3>User Roles</h3>
+            </label>
+            <?php
+            if (isset($settings) && $settings != "") {
+                echo '<textarea name="roles" class="form-control" rows="1" cols="30">' . $settings[0]['roles'].'</textarea>';
+            }
+            ?>
+        </div>
+        <div class="form-row col-md-5">
+            <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                    <div class="input-group-text"><?= lang('language') ?></div>
+                </div>
+                <select class="form-control" name='language'>
+                    <?php if (isset($languages)) {
+                        echo "<option value='system'>" . lang('default') . "</option>";
+                        foreach ($languages as $lang) {
+                            if ($settings[0]['language'] == $lang) {
+                                echo "<option selected>$lang</option>";
+                            } else {
+                                echo "<option>$lang</option>";
+                            }
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+        </div>
         <?php
-        echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create');
-        echo '<div class="form-group"><label><h3>User Roles</h3></label><textarea name="roles" class="form-control" rows="2" cols="30">';
-        if (isset($settings) && $settings != "") {
-            echo $settings[0]['roles'];
-        }
-        echo "</textarea></div>";
         echo "<input type='submit' class='btn btn-success' name='submit' value='Save'>";
         echo form_close();
         ?>
@@ -66,7 +94,7 @@ if (isset($this->session->userdata['logged_in'])) {
         <div class="container">
             <h3>Database Utils</h3>
             <button class="btn btn-warning m-3" onclick="createDB()">Create New DB if not exists</button>
-            <button class="btn btn-warning m-3" onclick="upgradeDB()">Upgrade DB</button>
+            <button class="btn btn-info m-3" onclick="upgradeDB()">Upgrade DB</button>
             <button class="btn btn-success m-3" onclick="backupDB()">Backup DB</button>
             <a id="last-db" class="m-5" style="display: none;" href="">Download last DB</a>
         </div>

@@ -1,7 +1,8 @@
 <?php
 class Admin extends CI_Controller
 {
-	private $role, $user_name;
+	private $languages;
+	private $user;
 	private $system_models = array(
 		'Admin' => 'settings',
 		'Clients' => 'clients',
@@ -22,8 +23,9 @@ class Admin extends CI_Controller
 			$this->load->model($model . '_model');
 		}
 		if (isset($this->session->userdata['logged_in'])) {
-			$this->role = $this->session->userdata['logged_in']['role'];
-			$this->user_name = $this->session->userdata['logged_in']['name'];
+			$this->user = $this->session->userdata['logged_in'];
+			$this->lang->load('main', $this->user['language']);
+			$this->languages = array("english", "hebrew");
 		} else {
 			header("location: /users/login");
 			exit('User not logedin');
@@ -50,6 +52,7 @@ class Admin extends CI_Controller
 		if ($this->db->table_exists('settings')) {
 			$data['settings'] = $this->Admin_model->getSettings();
 		}
+		$data['languages'] = $this->languages;
 		$this->load->view('admin/settings', $data);
 		$this->load->view('footer');
 	}
@@ -62,7 +65,8 @@ class Admin extends CI_Controller
 			$this->settings();
 		} else {
 			$data = array(
-				'roles' => $this->input->post('roles')
+				'roles' => $this->input->post('roles'),
+				'language' => $this->input->post('language'),
 			);
 			$this->Admin_model->save_settings($data);
 			echo 'Settings saved successfully!';
@@ -89,11 +93,11 @@ class Admin extends CI_Controller
 	function upgrade_db()
 	{
 		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$fields = array('warranty' => array(
+		$fields = array('language' => array(
 			'type' => 'VARCHAR',
 			'constraint' => 50,
 		));
-		//$this->Admin_model->add_column('rma_forms', $fields);
+		//$this->Admin_model->add_column('users', $fields);
 		echo 'Db upgraded!';
 	}
 
@@ -205,7 +209,7 @@ class Admin extends CI_Controller
 		} else {
 			$this->Admin_model->deleteChecklist($data['id'], $data['type'] . '_forms');
 		}
-		admin_log("deleted " . $data['type'] . " from trash : " . $data['serial'], 3, $this->user_name);
+		admin_log("deleted " . $data['type'] . " from trash : " . $data['serial'], 3, $this->user['name']);
 	}
 
 	public function view_log()

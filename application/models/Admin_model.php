@@ -14,7 +14,11 @@ class Admin_model extends CI_Model
             ),
             'roles' => array(
                 'type' => 'TEXT'
-            )
+            ),
+            'language' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
         );
 
         $this->dbforge->add_field($project);
@@ -43,9 +47,6 @@ class Admin_model extends CI_Model
     public function save_settings($data)
     {
         $where = "id =1";
-        $data = array(
-            'roles' => $data['roles']
-        );
         return $this->db->update('settings', $data, $where);
     }
 

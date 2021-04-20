@@ -3,7 +3,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Users extends CI_Controller
 {
-    private $role;
+    private $languages;
+    private $user;
     public function __construct()
     {
         parent::__construct();
@@ -11,7 +12,9 @@ class Users extends CI_Controller
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
         if (isset($this->session->userdata['logged_in'])) {
-            $this->role = $this->session->userdata['logged_in']['role'];
+            $this->user = $this->session->userdata['logged_in'];
+            $this->lang->load('main', $this->user['language']);
+            $this->languages = array("english", "hebrew");
         }
     }
 
@@ -22,7 +25,7 @@ class Users extends CI_Controller
         $data['users'] = $this->Users_model->getUsers();
         $this->load->view('header');
         $this->load->view('main_menu');
-        if ($this->role != "Admin") {
+        if ($this->user['role'] != "Admin") {
             header("location: /");
         } else {
             $this->load->view('users/manage', $data);
@@ -34,7 +37,7 @@ class Users extends CI_Controller
     public function create()
     {
         $data = array();
-        if ($this->role == "Admin") {
+        if ($this->user['role'] == "Admin") {
             // Check validation for user input in SignUp form
             $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
             $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
@@ -43,6 +46,7 @@ class Users extends CI_Controller
             $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
             if ($this->form_validation->run() == FALSE) {
                 $data['settings'] = $this->Admin_model->getSettings();
+                $data['languages'] = $this->languages;
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/create', $data);
@@ -53,7 +57,8 @@ class Users extends CI_Controller
                     'view_name' => $this->input->post('view_name'),
                     'role' => $this->input->post('role'),
                     'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-                    'email' => $this->input->post('email')
+                    'language' => $this->input->post('language'),
+                    'email' => $this->input->post('email'),
                 );
                 $result = $this->Users_model->registration_insert($data);
                 if ($result == TRUE) {
@@ -79,7 +84,7 @@ class Users extends CI_Controller
 
     public function delete()
     {
-        if ($this->role == "Admin") {
+        if ($this->user['role'] == "Admin") {
             $id = $_POST['id'];
             $this->Users_model->deleteUser($id);
         }
@@ -95,19 +100,21 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
             $data['user'] =  $this->Users_model->getUser($id);
+            $data['languages'] = $this->languages;
             $data['settings'] = $this->Admin_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('users/edit', $data);
             $this->load->view('footer');
         } else {
-            if ($this->role == "Admin") {
+            if ($this->user['role'] == "Admin") {
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
                     'view_name' => $this->input->post('view_name'),
                     'role' => $this->input->post('role'),
-                    'email' => $this->input->post('email')
+                    'language' => $this->input->post('language'),
+                    'email' => $this->input->post('email'),
                 );
                 if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
@@ -117,7 +124,8 @@ class Users extends CI_Controller
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'view_name' => $this->input->post('view_name'),
-                    'email' => $this->input->post('email')
+                    'language' => $this->input->post('language'),
+                    'email' => $this->input->post('email'),
                 );
                 if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
@@ -125,6 +133,7 @@ class Users extends CI_Controller
                 print_r($this->Users_model->editUser($sql));
             }
         }
+        $this->set_session_data($this->user['name']);
     }
 
     public function login()
@@ -163,15 +172,7 @@ class Users extends CI_Controller
                 $name = $this->input->post('name');
                 $result = $this->Users_model->read_user_information($name);
                 if ($result != false) {
-                    $session_data = array(
-                        'id' => $result[0]->id,
-                        'name' => $result[0]->name,
-                        'view_name' => $result[0]->view_name,
-                        'role' => $result[0]->role,
-                        'email' => $result[0]->email
-                    );
-                    // Add user data in session
-                    $this->session->set_userdata('logged_in', $session_data);
+                    $this->set_session_data($this->input->post('name'));
                     header("location: /");
                 }
             } else {
@@ -181,6 +182,29 @@ class Users extends CI_Controller
                 $this->load->view('/users/login', $data);
                 $this->load->view('footer');
             }
+        }
+    }
+
+    function set_session_data($user_name = '')
+    {
+        if ($this->Admin_model->getSettings()[0]['language'] != '') {
+            $sys_lang = $this->Admin_model->getSettings()[0]['language'];
+        } else {
+            $sys_lang = $this->config->item('language');
+        }
+        $result = $this->Users_model->read_user_information($user_name);
+        if ($result != false) {
+            $language = ($result[0]->language == 'system') ? $sys_lang : $result[0]->language;
+            $session_data = array(
+                'id' => $result[0]->id,
+                'name' => $result[0]->name,
+                'view_name' => $result[0]->view_name,
+                'role' => $result[0]->role,
+                'email' => $result[0]->email,
+                'language' => $language
+            );
+            $this->session->set_userdata('logged_in', $session_data);
+            session_write_close();
         }
     }
 
@@ -203,7 +227,7 @@ class Users extends CI_Controller
         $current_user = ($this->session->userdata['logged_in']['name']);
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
-        if ($this->role == 'Admin') {
+        if ($this->user['role'] == 'Admin') {
             echo true;
             return;
         }

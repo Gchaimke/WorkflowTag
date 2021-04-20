@@ -6,7 +6,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 			header("location: /");
 		}
 	}
-}else{
+} else {
 	exit();
 }
 ?>
@@ -15,8 +15,8 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h5>Edit User: <?php echo $user['name'] ?></h5>
-				
+				<h5><?= lang('edit_details') ." ". $user['name'] ?></h5>
+
 			</center>
 		</div>
 	</div>
@@ -36,15 +36,15 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 					<div class="input-group mb-2">
 						<?php
 						if ($current_role == "Admin") {
-							echo '<div class="input-group-prepend"><div class="input-group-text">Role</div></div>';
+							echo '<div class="input-group-prepend"><div class="input-group-text">' . lang('role') . '</div></div>';
 							echo "<select class='form-control' name='role'>";
 							if (isset($settings)) {
 								$arr = explode(",", $settings[0]['roles']);
 								foreach ($arr as $crole) {
 									if ($crole == $user['role']) {
-										echo '<option selected>' . $crole . '</option>';
+										echo "<option selected value='$crole'>" . lang($crole) . '</option>';
 									} else {
-										echo '<option>' . $crole . '</option>';
+										echo "<option value='$crole'>" . lang($crole) . '</option>';
 									}
 								}
 							}
@@ -53,21 +53,41 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						?>
 					</div>
 				</div>
+				<div class="form-row">
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text"><?= lang('language') ?></div>
+						</div>
+						<select class="form-control" name='language'>
+							<?php if (isset($languages)) {
+								echo "<option value='system'>" . lang('default') . "</option>";
+								foreach ($languages as $lang) {
+									if ($user['language'] == $lang) {
+										echo "<option selected>$lang</option>";
+									} else {
+										echo "<option>$lang</option>";
+									}
+								}
+							}
+							?>
+						</select>
+					</div>
+				</div>
 
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
-							<div class="input-group-text">User Name</div>
+							<div class="input-group-text"><?= lang('username') ?></div>
 						</div>
 						<input type='text' class="form-control" name='name' value="<?php echo $user['name'] ?>" <?php if ($current_role != "Admin") {
-																																		echo 'disabled';
-																																	} ?>>
+																													echo 'disabled';
+																												} ?>>
 					</div>
 				</div>
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
-							<div class="input-group-text">Real Name</div>
+							<div class="input-group-text"><?= lang('view_name') ?></div>
 						</div>
 						<input type='text' class="form-control" name='view_name' value="<?php echo $user['view_name'] ?>" required>
 					</div>
@@ -76,7 +96,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
-							<div class="input-group-text">Password</div>
+							<div class="input-group-text"><?= lang('password') ?></div>
 						</div>
 						<input type='password' class="form-control" name='password'>
 					</div>
@@ -85,12 +105,12 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
-							<div class="input-group-text">Email</div>
+							<div class="input-group-text"><?= lang('email') ?></div>
 						</div>
 						<input type='text' class="form-control ltr" name='email' value="<?php echo $user['email'] ?>">
 					</div>
 				</div>
-				<input type='submit' class="btn btn-info" name='submit' value='Save'>
+				<input type='submit' class="btn btn-info" name='submit' value='<?= lang('update') ?>'>
 				<?php echo form_close(); ?>
 			</div>
 		</div>
