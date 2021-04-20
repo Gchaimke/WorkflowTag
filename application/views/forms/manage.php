@@ -34,12 +34,11 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
                     <div class="input-group-text">Status Filter:</div>
                 </div>
                 <select class="form-control col-md-4 status-filter">
-                    <option>Select</option>
-                    <option value="-1" <?= $status_filter == -1 ? 'selected' : '' ?>>All</option>
+                    <option value="-1" <?= $status_filter == -1 ? 'selected' : '' ?> class="font-weight-bolder">All</option>
                     <?php
                     foreach ($status as $key =>  $value) {
-                        $selected =  $status_filter == -1 ? 'selected' : '';
-                        echo "<option value='$key' class='text-" . $colors[$key] . " font-weight-bold'>$value</option>";
+                        $selected =  $status_filter == $key ? 'selected' : '';
+                        echo "<option value='$key' class='text-" . $colors[$key] . " font-weight-bold' $selected>$value</option>";
                     }
                     ?>
                 </select>
