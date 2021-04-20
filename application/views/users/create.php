@@ -1,6 +1,7 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-      if ($this->session->userdata['logged_in']['role'] != "Admin") {
+      $user = $this->session->userdata['logged_in'];
+      if ($user['role'] != "Admin") {
             header("location: /");
       }
 }

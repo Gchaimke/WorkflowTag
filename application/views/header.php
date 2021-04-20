@@ -1,13 +1,15 @@
 <!doctype html>
 <?php
+$user_language = $this->config->item('language');
 if (isset($this->session->userdata['logged_in'])) {
-  $username = ($this->session->userdata['logged_in']['name']);
-  $role = ($this->session->userdata['logged_in']['role']);
+  $user = ($this->session->userdata['logged_in']);
+  $user_language = $user['language'] != '' ? $user['language'] : $this->config->item('language');
 } else {
   header("location: /users/login");
 }
+$dir = $user_language == 'hebrew' ? 'rtl' : 'ltr';
 ?>
-<html lang="en" xml:lang="en" xmlns= "http://www.w3.org/1999/xhtml">
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
   <meta charset="UTF-8">
@@ -24,11 +26,11 @@ if (isset($this->session->userdata['logged_in'])) {
       echo "WorkflowTag - " . pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME);
     }
     ?></title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Bootstrap core CSS -->
   <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
-  <link href="<?php echo base_url('assets/css/all.css?'. filemtime('assets/css/all.css')); ?>" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/all.css?' . filemtime('assets/css/all.css')); ?>" rel="stylesheet">
   <!-- Custom styles for this template -->
   <?php
   if (isset($css_to_load)) {
@@ -40,7 +42,10 @@ if (isset($this->session->userdata['logged_in'])) {
       echo  "<link href=" . base_url("assets/css/$css_to_load") . " rel='stylesheet'>";
     }
   }
+  if ($dir == 'rtl') {
+    echo '<link href="' . base_url('assets/css/rtl.css?' . filemtime('assets/css/rtl.css')) . '" rel="stylesheet">';
+  }
   ?>
 </head>
 
-<body>
+<body class="<?= $dir ?>">
