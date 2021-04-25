@@ -105,19 +105,19 @@ if (!isset($form)) {
 
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received from: <?= $form->client ?></div>
                               </div>
                               <input type='hidden' class="form-control" name='client' value='<?= $form->client ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received by: <?= $form->user ?></div>
                               </div>
                               <input type='hidden' class="form-control" name='user' value='<?= $form->user ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-3">
+                        <div class="input-group mb-2 col-lg-3">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
@@ -125,19 +125,19 @@ if (!isset($form)) {
                         </div>
                   </div>
                   <div class="form-row">
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA Number</div>
                               </div>
                               <input type='text' class="form-control" name='number' value='<?= $form->number ?>' disabled>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Serial Number</div>
                               </div>
                               <input type='text' class="form-control" name='serial' value='<?= $form->serial ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg-4">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Product Number</div>
                               </div>
@@ -159,7 +159,7 @@ if (!isset($form)) {
                   <div class="form-row mb-3">
                         <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories1" value="1" <?= $form->accessories == 1 ? "checked" : "" ?>>
-                              <label class="form-check-label" for="accessories1">Accessories pictures</label>
+                              <label class="form-check-label text-nowrap" for="accessories1">Accessories pictures</label>
                         </div>
                         <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0" <?= $form->accessories == 0 ? "checked" : "" ?>>
@@ -177,7 +177,7 @@ if (!isset($form)) {
                         </div>
                         <div class="form-check form-check-inline col-md-3">
                               <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0" <?= $form->warranty == 0 ? "checked" : "" ?>>
-                              <label class="form-check-label" for="warranty3">Warranty not defined</label>
+                              <label class="form-check-label text-nowrap" for="warranty3">Warranty not defined</label>
                         </div>
                   </div>
                   <div class="form-row mb-3">
@@ -320,7 +320,7 @@ if (!isset($form)) {
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="input-group mb-2 col-md-5">
+                        <div class="input-group mb-2 col-lg-6">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Final Documentation Check:</div>
                               </div>
