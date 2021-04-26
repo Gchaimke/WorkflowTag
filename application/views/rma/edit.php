@@ -26,6 +26,10 @@ if (!isset($form)) {
             margin-top: 70px;
       }
 
+      .to-print {
+            display: none;
+      }
+
       @media (max-width: 991.98px) {
             .control_btn_container {
                   position: fixed;
@@ -77,6 +81,24 @@ if (!isset($form)) {
 
             #save {
                   display: none;
+            }
+
+            .form-row {
+                  break-inside: avoid-page;
+            }
+
+            .not-print {
+                  display: none;
+            }
+
+            .to-print {
+                  display: block;
+            }
+
+            pre {
+                  display: table-cell;
+                  padding: 10px 20px;
+                  text-align: left;
             }
       }
 </style>
@@ -194,7 +216,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Comments if damaged:</div>
                               </div>
-                              <textarea type='text' rows="1" class="form-control" name='receive_comments'><?= $form->receive_comments ?></textarea>
+                              <textarea type='text' rows="1" class="form-control not-print" name='receive_comments'><?= $form->receive_comments ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->receive_comments ?></pre>
+                              </div>
                         </div>
                   </div>
                   <div class="form-row mb-3">
@@ -202,7 +227,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Accessories list:</div>
                               </div>
-                              <textarea type='text' rows="3" class="form-control" name='accessories_list'><?= $form->accessories_list ?></textarea>
+                              <textarea type='text' rows="3" class="form-control not-print" name='accessories_list'><?= $form->accessories_list ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->accessories_list ?></pre>
+                              </div>
                         </div>
                   </div>
                   <hr>
@@ -212,7 +240,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Customer failure description:</div>
                               </div>
-                              <textarea type='text' rows="2" class="form-control" name='problem'><?= $form->problem ?></textarea>
+                              <textarea type='text' rows="2" class="form-control not-print" name='problem'><?= $form->problem ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->problem ?></pre>
+                              </div>
                         </div>
                   </div>
                   <div class="form-row mb-3">
@@ -230,7 +261,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Other failure</div>
                               </div>
-                              <textarea type='text' rows="1" class="form-control" name='other_failure'><?= $form->other_failure ?></textarea>
+                              <textarea type='text' rows="1" class="form-control not-print" name='other_failure'><?= $form->other_failure ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->other_failure ?></pre>
+                              </div>
                         </div>
                   </div>
                   <hr>
@@ -250,7 +284,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Repair information:</div>
                               </div>
-                              <textarea type='text' rows="3" class="form-control" name='repair'><?= $form->repair ?></textarea>
+                              <textarea type='text' rows="3" class="form-control not-print" name='repair'><?= $form->repair ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->repair ?></pre>
+                              </div>
                         </div>
                   </div>
                   <div class="form-row mb-3">
@@ -258,7 +295,10 @@ if (!isset($form)) {
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Required Parts for Repair</div>
                               </div>
-                              <textarea type='text' rows="3" class="form-control" name='parts'><?= $form->parts ?></textarea>
+                              <textarea type='text' rows="3" class="form-control not-print" name='parts'><?= $form->parts ?></textarea>
+                              <div class="to-print">
+                                    <pre><?= $form->parts ?></pre>
+                              </div>
                         </div>
                   </div>
                   <hr>
