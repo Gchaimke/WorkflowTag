@@ -13,95 +13,7 @@ if (!isset($form)) {
 }
 ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
-<style>
-      .control_btn_container {
-            position: fixed;
-            right: 0;
-            top: 50%;
-            display: grid;
-            z-index: 1;
-      }
-
-      button#save {
-            margin-top: 70px;
-      }
-
-      .to-print {
-            display: none;
-      }
-
-      @media (max-width: 991.98px) {
-            .control_btn_container {
-                  position: fixed;
-                  top: auto;
-                  bottom: 0;
-                  display: block;
-                  z-index: 1;
-                  background: #ebebeb;
-                  width: 100%;
-                  text-align: center;
-            }
-
-            .control_btn_container>button {
-                  width: 100px;
-            }
-
-            button#save {
-                  margin-top: 0;
-
-            }
-
-            .jumbotron {
-                  padding: 5rem 0rem;
-                  padding-bottom: 1rem;
-            }
-      }
-
-      @media print {
-            main {
-                  margin: 0;
-            }
-
-            .jumbotron {
-                  top: 0;
-                  left: 0;
-                  right: 0;
-                  background-color: transparent;
-                  padding: 0;
-                  margin-bottom: 0;
-            }
-
-            .form-row {
-                  margin-bottom: 1em;
-            }
-
-            .input-group-text {
-                  font-weight: bold;
-            }
-
-            #save {
-                  display: none;
-            }
-
-            .form-row {
-                  break-inside: avoid-page;
-            }
-
-            .not-print {
-                  display: none;
-            }
-
-            .to-print {
-                  display: block;
-            }
-
-            pre {
-                  display: table-cell;
-                  padding: 10px 20px;
-                  text-align: left;
-            }
-      }
-</style>
+<link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
 <?= "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
 <div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&id=<?= $form->id ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> RMA " hidden></nav>
@@ -367,8 +279,6 @@ if (!isset($form)) {
                               <input type='text' class="form-control" name='final_user' value='<?= $assembler ?>'>
                         </div>
                   </div>
-
-
                   <input id="update_btn" type='submit' style="display:none;" class="btn btn-info my-5 print-hide" name='submit' value='Update'>
             </div>
             <?= form_close(); ?>

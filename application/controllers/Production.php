@@ -380,13 +380,55 @@ class Production extends CI_Controller
         admin_log("trashed '$project' checklist with serial '$serial'", 2, $this->user['name']);
     }
 
+    public function save_file()
+    {
+        // requires php5
+        $serial = $_POST['serial'];
+        $num = $_POST['num'];
+        $upload_folder = $_POST['working_dir'];
+        $img = $_POST['data'];
+        if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
+            $img = substr($img, strpos($img, ',') + 1);
+            $type = strtolower($type[1]); // jpg, png, gif
+
+            if (!in_array($type, ['jpg', 'jpeg', 'gif', 'png'])) {
+                print 'invalid image type';
+                throw new \Exception('invalid image type');
+            }
+            $img = base64_decode($img);
+            if ($img === false) {
+                print 'base64_decode failed';
+                throw new \Exception('base64_decode failed');
+            }
+        } else {
+            print 'did not match data URI with image data';
+            throw new \Exception('did not match data URI with image data');
+        }
+
+        if (!file_exists($upload_folder)) {
+            mkdir($upload_folder, 0770, true);
+        }
+        $file = $upload_folder  . $serial . "_" . $num . ".$type";
+        if (!file_exists($file)) {
+            $success = file_put_contents($file, $img);
+        } else {
+            $num++;
+            $file = $upload_folder  . $serial . "_" . $num . ".$type";
+            $success = file_put_contents($file, $img);
+        }
+
+        if ($success) {
+            $this->compressImage($file, $file, 60);
+        }
+        print $success ? $file : 'Unable to save the file.';
+    }
+
     public function save_photo()
     {
         // requires php5
-        define('UPLOAD_DIR', $_POST['working_dir']);
         $serial = $_POST['serial'];
         $num = $_POST['num'];
-        $upload_folder = UPLOAD_DIR;
+        $upload_folder = $_POST['working_dir'];
         $img = $_POST['data'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
             $img = substr($img, strpos($img, ',') + 1);

@@ -18,7 +18,8 @@ if (!isset($project)) {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/forms?type=rma&client=<?php echo $client . "&project=" . $project ?>" role='alert'></div>
+<link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&id=" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?php echo $client . "&project=" . $project ?>" data-url-name="<?= $client . " " . $project ?> RMA" hidden></nav>
 <main role="main">
       <div class="jumbotron">
@@ -30,23 +31,26 @@ if (!isset($project)) {
       </div>
       <div class="container">
             <?php echo form_open("forms/new/", "id=ajax-form"); ?>
+            <div class="control_btn_container">
+                  <button id="save" type='submit' class="btn btn-success navbar-btn mx-3" value="Save"><i class="fa fa-save"></i></button>
+            </div>
             <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
-            <div class="mx-auto text-center p-4 col-12 ">
+            <div class="mx-auto text-center col">
                   <div class="form-row">
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-md">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received from: <?php echo $client ?></div>
                               </div>
                               <input type='<?php echo $fuild_type ?>' class="form-control" name='client' value='<?php echo $client ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-md">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Received by: <?= $assembler ?></div>
                               </div>
                               <input type='<?php echo $fuild_type ?>' class="form-control" name='user' value='<?= $assembler ?>'>
                         </div>
-                        <div class="input-group mb-2 col-md-3">
+                        <div class="input-group mb-2 col-md">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Date</div>
                               </div>
@@ -55,19 +59,19 @@ if (!isset($project)) {
                   </div>
                   <hr>
                   <div class="form-row">
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">RMA Number</div>
                               </div>
                               <input type='number' class="form-control" name='number' required>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Serial Number</div>
                               </div>
                               <input type='text' class="form-control" name='serial'>
                         </div>
-                        <div class="input-group mb-2 col-md-4">
+                        <div class="input-group mb-2 col-lg">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Product Number</div>
                               </div>
@@ -77,35 +81,35 @@ if (!isset($project)) {
                   <hr>
                   <h2>Receive</h2>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="package" id="package1" value="1">
                               <label class="form-check-label" for="package1">Package picture</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="package" id="package2" value="0">
                               <label class="form-check-label" for="package2">No package</label>
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories1" value="1">
                               <label class="form-check-label" for="accessories1">Accessories pictures</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0">
                               <label class="form-check-label" for="accessories2">No accessories</label>
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="warranty" id="warranty1" value="2">
                               <label class="form-check-label" for="warranty1">With warranty</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="warranty" id="warranty2" value="1">
                               <label class="form-check-label" for="warranty2">No warranty</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3 my-2">
                               <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0">
                               <label class="form-check-label" for="warranty3">Warranty not defined</label>
                         </div>
@@ -146,11 +150,11 @@ if (!isset($project)) {
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3">
                               <input class="form-check-input" type="radio" name="mrb" id="mrb1" value="1">
                               <label class="form-check-label" for="mrb1">Scan client MRB / RMA form</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3">
                               <input class="form-check-input" type="radio" name="mrb" id="mrb2" value="0">
                               <label class="form-check-label" for="mrb2">No client MRB / RMA form</label>
                         </div>
@@ -166,11 +170,11 @@ if (!isset($project)) {
                   <hr>
                   <h2>Repair</h2>
                   <div class="form-row mb-3">
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3">
                               <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication1" value="1">
                               <label class="form-check-label" for="failure_veriffication1">Failure verified</label>
                         </div>
-                        <div class="form-check form-check-inline col-md-3">
+                        <div class="form-check form-check-inline col-lg-3">
                               <input class="form-check-input" type="radio" name="failure_veriffication" id="failure_veriffication2" value="0">
                               <label class="form-check-label" for="failure_veriffication2">Failure not verified</label>
                         </div>
@@ -244,14 +248,13 @@ if (!isset($project)) {
                         </div>
                   </div>
                   <div class="form-row mb-3">
-                        <div class="input-group mb-2 col-md-5">
+                        <div class="input-group mb-2 col-lg">
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Final Documentation Check:</div>
                               </div>
                               <input type='text' class="form-control" name='final_user' value='<?= $assembler ?>'>
                         </div>
                   </div>
-                  <input type='submit' class="btn btn-info my-5" name='submit' value='Save'>
             </div>
             <?php echo form_close(); ?>
       </div>

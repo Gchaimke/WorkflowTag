@@ -62,10 +62,11 @@ class Forms extends CI_Controller
             $data = $this->input->post();
             $inserted_id = $this->Forms_model->create($data);
             if ($inserted_id != false) {
-                echo "New  " . $this->input->post('type') . " Form created";
-            } else {
-                echo $inserted_id;
+                echo "$inserted_id: New  " . $this->input->post('type') . " Form created";
+                exit;
             }
+
+            echo $inserted_id;
         }
     }
 

@@ -158,7 +158,8 @@ $('#ajax-form').submit(function (event) {
         if (!response.startsWith('ERROR')) {
             show_message_success(response)
             if (typeof new_location !== 'undefined') {
-                setTimeout(function () { window.location.replace(new_location); }, 3000);
+                var new_id = response.split(":")[0];
+                setTimeout(function () { window.location.replace(new_location + new_id); }, 2000);
             }
         } else {
             show_message_error(response)
@@ -204,10 +205,27 @@ function snapPhoto() {
             }, false);
             reader.readAsDataURL(file);
         }
+        if(/\.(conf|txt|log|pdf)$/i.test(file.name)){
+            alert("ok");
+        }
     }
     if (files) {
         [].forEach.call(files, readAndPreview);
     }
+}
+function saveFileToServer(file){
+    $.post("/production/save_file", {
+        data: file,
+        serial: serial,
+        working_dir: working_dir
+    }).done(function (out) {
+        var file_name = out.split("/")[4]; //get file name from path
+        $("#file-stock").append('<span onclick="delPhoto('+file_name+')" class="btn btn-danger delete-file fa fa-trash"> ' +
+        file_name + '</span><a href="/' + out + '" class="respondCanvas" >'+file_name+'</a>');
+        $('#form-messages').addClass('alert-success');
+        $("#save").trigger("click");
+        console.log(out + " Uploaded");
+    });
 }
 
 function savePhotoToServer(file) {
