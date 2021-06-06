@@ -29,7 +29,7 @@ class Forms_model extends CI_Model
             $where = "id =" . $data['id'];
             $this->db->update($type . '_forms', $data, $where);
             if ($this->db->affected_rows() > 0) {
-                echo 'OK: RMA Updated!';
+                echo ': RMA Updated!';
             } else {
                 echo "ERROR: No new data!";
             }
