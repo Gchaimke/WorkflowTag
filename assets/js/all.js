@@ -248,6 +248,22 @@ function delPhoto(id) {
     }
 }
 
+function delFile(id) {
+    var file = $("#"+id).attr('data-file');
+    var r = confirm("Delete file "+file+"?");
+    if (r == true) {
+        $.post("/forms/delete_file", {
+            file: file
+        }).done(function (out) {
+            $('#form-messages').addClass('alert-success');
+            $('[id^=' + id + ']').remove();
+            $("#save").trigger("click");
+            location.reload();
+        });
+
+    }
+}
+
 if ($('#nav_main_category_data').length) {
     var nav_to = $('#nav_main_category_data').attr('data-url');
     var nav_name = $('#nav_main_category_data').attr('data-url-name');

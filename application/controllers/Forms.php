@@ -149,4 +149,15 @@ class Forms extends CI_Controller
             echo $error;
         }
     }
+
+    public function delete_file()
+    {
+            $file = $this->input->post('file');
+            // Use unlink() function to delete a file  
+            if (!unlink($_SERVER["DOCUMENT_ROOT"] . $file)) {
+                echo ($_SERVER["DOCUMENT_ROOT"] . $file . " cannot be deleted due to an error");
+            } else {
+                echo ($_SERVER["DOCUMENT_ROOT"] . $file . " has been deleted");
+            }
+    }
 }

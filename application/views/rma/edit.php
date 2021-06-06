@@ -11,6 +11,8 @@ if (validation_errors()) {
 if (!isset($form)) {
       header("location: /forms/");
 }
+
+$working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $form->number . '/';
 ?>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
@@ -216,7 +218,25 @@ if (!isset($form)) {
                               </div>
                         </div>
                   </div>
-                  <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?=$form->client?>&project=<?=$form->project?>&type=<?= $_GET['type'] ?>" />
+                  <div class="form-row mb-3">
+                        <?PHP
+                        if (file_exists("./$working_dir")) {
+                              if ($handle = opendir("./$working_dir")) {
+                                    while (false !== ($entry = readdir($handle))) {
+                                          if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'txt' && PATHINFO_FILENAME != '') {
+                                                echo '<div class="m-3"><span id="' . str_replace(array('(', ')'), '', pathinfo($entry, PATHINFO_FILENAME)) . '" onclick="delFile(this.id)" data-file="/' . $working_dir . $entry . '" class="btn btn-danger delete-file fa fa-trash">
+                                                </span>
+                                                <a target="_blank" href="/' . $working_dir . $entry .
+                                                      '" class="mx-3" >' . pathinfo($entry, PATHINFO_FILENAME) .
+                                                      '</a></div>';
+                                          }
+                                    }
+                              }
+                              closedir($handle);
+                        }
+                        ?>
+                  </div>
+                  <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?= $form->client ?>&project=<?= $form->project ?>&type=<?= $_GET['type'] ?>" />
                   <hr>
                   <h2>QA</h2>
                   <div class="form-row mb-3">
@@ -293,7 +313,6 @@ if (!isset($form)) {
             </center>
             <div id="photo-messages" class='alert hidden' role='alert'></div>
             <?php
-            $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $form->number . '/';
             echo "<script>
                   var photoCount=0;
                   var id='" . $form->id . "';
@@ -342,31 +361,28 @@ if (!isset($form)) {
       document.title = 'RMA <?= $form->number ?>';
 
       //Uploader for scripts and tickets
-if ($("#upload").length) {
-    $("#upload").fileupload({
-        autoUpload: true,
-        add: function (e, data) {
-            data.submit();
-        },
-        progress: function () {
-            //$("#upload_spinner").css("display", "inherit");
-        },
-        done: function (e, data) {
-            if (data.result.includes("error")) {
-                if (data.result.includes("larger")) {
-                    alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
-                } else if (data.result.includes("filetype")) {
-                    alert("אין אפשרות להעלות קובץ מסוג הזה!");
-                } else {
-                    alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
-                }
-                data.context.addClass("error");
-            } else {
-                  alert('ok')
-                //location.reload();
-            }
-            $('#save_btn').click();
-        }
-    });
-}
+      if ($("#upload").length) {
+            $("#upload").fileupload({
+                  autoUpload: true,
+                  add: function(e, data) {
+                        data.submit();
+                  },
+                  progress: function() {
+                        //$("#upload_spinner").css("display", "inherit");
+                  },
+                  done: function(e, data) {
+                        if (data.result.includes("error")) {
+                              if (data.result.includes("larger")) {
+                                    alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
+                              } else if (data.result.includes("filetype")) {
+                                    alert("אין אפשרות להעלות קובץ מסוג הזה!");
+                              } else {
+                                    alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+                              }
+                        }
+                        $('#save').click();
+                        location.reload();
+                  }
+            });
+      }
 </script>
