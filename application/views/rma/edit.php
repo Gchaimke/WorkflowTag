@@ -12,6 +12,9 @@ if (!isset($form)) {
       header("location: /forms/");
 }
 ?>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.fileupload.js'); ?>"></script>
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
 <?= "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
@@ -213,6 +216,7 @@ if (!isset($form)) {
                               </div>
                         </div>
                   </div>
+                  <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?=$form->client?>&project=<?=$form->project?>&type=<?= $_GET['type'] ?>" />
                   <hr>
                   <h2>QA</h2>
                   <div class="form-row mb-3">
@@ -336,4 +340,33 @@ if (!isset($form)) {
             $("#picrures_count").val(photoCount);
       });
       document.title = 'RMA <?= $form->number ?>';
+
+      //Uploader for scripts and tickets
+if ($("#upload").length) {
+    $("#upload").fileupload({
+        autoUpload: true,
+        add: function (e, data) {
+            data.submit();
+        },
+        progress: function () {
+            //$("#upload_spinner").css("display", "inherit");
+        },
+        done: function (e, data) {
+            if (data.result.includes("error")) {
+                if (data.result.includes("larger")) {
+                    alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
+                } else if (data.result.includes("filetype")) {
+                    alert("אין אפשרות להעלות קובץ מסוג הזה!");
+                } else {
+                    alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+                }
+                data.context.addClass("error");
+            } else {
+                  alert('ok')
+                //location.reload();
+            }
+            $('#save_btn').click();
+        }
+    });
+}
 </script>

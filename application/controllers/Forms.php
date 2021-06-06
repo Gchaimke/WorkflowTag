@@ -127,4 +127,26 @@ class Forms extends CI_Controller
         );
         echo $this->Forms_model->update($sql);
     }
+
+    public function save_file($id = 0)
+    {
+        $upload_folder = 'Uploads/'.$_GET['client']."/".$_GET['project']."/".$_GET['type']."/".$id;
+        if (!file_exists($upload_folder)) {
+            mkdir($upload_folder, 0770, true);
+        }
+        $config = array(
+            'upload_path' => $upload_folder,
+            'overwrite' => TRUE,
+            'allowed_types' => '*',
+            'max_size' => "2048"
+        );
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload('files')) {
+            $data = array('upload_data' => $this->upload->data());
+            echo  $data['upload_data']["file_name"];
+        } else {
+            $error = "error " . $this->upload->display_errors();
+            echo $error;
+        }
+    }
 }
