@@ -191,7 +191,6 @@ function sleep(milliseconds) {
 }
 
 function snapPhoto() {
-
     var files = document.querySelector('input[name=photos]').files;
     console.log(files)
     function readAndPreview(file) {

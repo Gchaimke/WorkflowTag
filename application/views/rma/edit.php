@@ -178,7 +178,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                               <div class="input-group-prepend">
                                     <div class="input-group-text">Other failure</div>
                               </div>
-                              <textarea type='text' rows="1" class="form-control not-print" name='other_failure'><?= $form->other_failure ?></textarea>
+                              <textarea type='text' rows="3" class="form-control not-print" name='other_failure'><?= $form->other_failure ?></textarea>
                               <div class="to-print">
                                     <pre><?= $form->other_failure ?></pre>
                               </div>
