@@ -191,10 +191,10 @@ function sleep(milliseconds) {
 }
 
 function snapPhoto() {
-    //var preview = document.querySelector('#preview');
-    var files = document.querySelector('input[type=file]').files;
+
+    var files = document.querySelector('input[name=photos]').files;
+    console.log(files)
     function readAndPreview(file) {
-        // Make sure `file.name` matches our extensions criteria
         if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
             var reader = new FileReader();
             reader.addEventListener("load", function () {

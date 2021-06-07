@@ -222,9 +222,10 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                         <?PHP
                         if (file_exists("./$working_dir")) {
                               if ($handle = opendir("./$working_dir")) {
+                                    $count = 1;
                                     while (false !== ($entry = readdir($handle))) {
                                           if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'txt' && PATHINFO_FILENAME != '') {
-                                                echo '<div class="m-3"><span id="' . str_replace(array('(', ')'), '', pathinfo($entry, PATHINFO_FILENAME)) . '" onclick="delFile(this.id)" data-file="/' . $working_dir . $entry . '" class="btn btn-danger delete-file fa fa-trash">
+                                                echo '<div class="m-3"><span id="log_file_' .$count . '" onclick="delFile(this.id)" data-file="/' . $working_dir . $entry . '" class="btn btn-danger delete-file fa fa-trash">
                                                 </span>
                                                 <a target="_blank" href="/' . $working_dir . $entry .
                                                       '" class="mx-3" >' . pathinfo($entry, PATHINFO_FILENAME) .
@@ -339,7 +340,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
             }
             ?>
       </div>
-      <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+      <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>
       <div id="preview"></div>
 </main>
 <script>
