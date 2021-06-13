@@ -114,7 +114,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		}
 		?>
 	</div>
-	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>
 	<div id="preview"></div>
 
 	<div id="qc-checklist-note" style="display:none">
