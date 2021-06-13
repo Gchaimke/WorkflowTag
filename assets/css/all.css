@@ -169,15 +169,6 @@ a.btn.btn-primary.folder {
     margin-right: 5px;
 }
 
-div#form-messages {
-    width: 100%;
-    left: 0;
-    top: 120px;
-    position: fixed;
-    text-align: center;
-    z-index: 1;
-}
-
 .respondCanvas {
     width: inherit;
     object-fit: scale-down;
@@ -222,7 +213,11 @@ select.review {
     max-width: fit-content;
     float: right;
 }
-
+@media (max-width:360px){
+    .nav-item.project{
+        display: none;
+    }
+}
 
 @media (min-width: 320px) {
     .jumbotron {
@@ -243,6 +238,15 @@ select.review {
     .th_serial {
         min-width: min-content;
     }
+    div#form-messages {
+        width: 100%;
+        text-align: center;
+        left: 0;
+        top: initial;
+        bottom: 0;
+        position: fixed;
+        z-index: 99991;
+    }
 }
 
 @media (min-width: 991.98px) {
@@ -261,6 +265,7 @@ select.review {
     .card-columns .card {
         margin-bottom: 50px;
     }
+
 }
 
 @media (max-width: 1199.98px) {}

@@ -28,7 +28,7 @@ if (isset($_GET['client'])) {
   </div>
   <?php
   if (isset($project) && $project != '') {
-    echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/production/checklists/' . $project . '">' . $client . ' ' . $project . '</a>';
+    echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project" href="/production/checklists/' . $project . '">' . $client . ' ' . $project . '</a>';
   } ?>
   <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white fa fa-search"></button>
 
@@ -61,7 +61,7 @@ if (isset($_GET['client'])) {
       <?php } ?>
 
       <?php if ($role == 'Assembler') { ?>
-        <div class="navbar-nav mr-auto">
+        <div class="navbar-nav mr-md-auto">
           <?php if (isset($project) && $project != '') { ?>
             <a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 text-white" href="/forms?type=rma&client=<?= $client . "&project=" . $project ?>">RMA</a>
           <?php } ?>
