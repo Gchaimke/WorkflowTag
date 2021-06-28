@@ -101,7 +101,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		if (file_exists("./$working_dir")) {
 			if ($handle = opendir("./$working_dir")) {
 				while (false !== ($entry = readdir($handle))) {
-					if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
+					if (
+						$entry != "." && $entry != ".." &&
+						(pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' || pathinfo($entry, PATHINFO_EXTENSION) == 'png') &&
+						PATHINFO_FILENAME != '' &&
+						pathinfo($entry, PATHINFO_FILENAME) != 'logo'
+					) {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
 							'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
 							pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) .

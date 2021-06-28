@@ -194,7 +194,7 @@ function snapPhoto() {
     var files = document.querySelector('input[name=photos]').files;
     console.log(files)
     function readAndPreview(file) {
-        if (/\.(jpe?g|jpeg|gif)$/i.test(file.name)) {
+        if (/\.(jpe?g|jpeg|gif|png)$/i.test(file.name)) {
             var reader = new FileReader();
             reader.addEventListener("load", function () {
                 savePhotoToServer(this.result);
@@ -218,7 +218,7 @@ function savePhotoToServer(file) {
         num: photoCount,
         working_dir: working_dir
     }).done(function (out) {
-        var photo_id = out.split("/")[4].replace(".jpeg", ""); //get photo id
+        var photo_id = out.split("/")[4].replace(".jpeg", "").replace(".png", ""); //get photo id
         $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
             photo_id + '</span><img id="' + photo_id + '"src="/' + out + '" class="respondCanvas" >');
         photoCount++;
