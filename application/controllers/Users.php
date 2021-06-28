@@ -141,10 +141,9 @@ class Users extends CI_Controller
     {
         $data = array();
         $data['response'] = '';
-        $this->load->model('Admin_model');
         if (!$this->db->table_exists('users')) {
-            $this->Users_model->createUsersDb();
-            $this->Admin_model->createSettingsDb();
+            $this->Users_model->createDb();
+            $this->Admin_model->createDb();
             $data['response'] .= "All Tables created!<br> username:Admin <br> Password:Admin.";
         }
         $this->load->view('users/login', $data);
