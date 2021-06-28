@@ -22,8 +22,8 @@ class Clients_model extends CI_Model
                 'constraint' => 500
             ),
             'logo' => array(
-                'type' => 'int',
-                'constraint' => 2
+                'type' => 'VARCHAR',
+                'constraint' => 500
             ),
             'status' => array(
                 'type' => 'VARCHAR',

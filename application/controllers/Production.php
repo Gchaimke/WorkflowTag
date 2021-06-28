@@ -51,6 +51,11 @@ class Production extends CI_Controller
     {
         $data = array();
         $data['clients'] = $this->clients;
+        foreach ($data['clients'] as $key => $client) {
+            $data['clients_1'][$client["name"]]['projects'] = $this->Templates_model->getTemplates($client['name']);
+            $data['clients_1'][$client["name"]]['status'] = $client['status'];
+            $data['clients_1'][$client["name"]]['id'] = $client['id'];
+        }
         $this->view_page('production/view_clients', $data);
     }
 
