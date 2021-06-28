@@ -76,6 +76,8 @@ class Templates extends CI_Controller
     {
         $data = array();
         // Check validation for user input in form
+        $data['project'] =  $this->Templates_model->getTemplate($id)[0];
+
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
@@ -83,19 +85,25 @@ class Templates extends CI_Controller
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
+            $data['js_to_load'] = array("add_template.js");
             $data['clients'] = $this->Clients_model->getClients();
-            $data['project'] =  $this->Templates_model->getTemplate($id);
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('templates/edit_template', $data);
             $this->load->view('footer');
         } else {
+            
             $sql = array(
                 'id' => $this->input->post('id'),
+                'client' => $this->input->post('client'),
+                'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
                 'scans' => $this->input->post('scans')
             );
+            if($data['project']['project'] == $sql['project']){
+                unset($sql['project']);
+            }
             $data['message_display'] = $this->Templates_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
             $this->index($data);
