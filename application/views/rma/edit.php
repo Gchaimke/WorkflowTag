@@ -13,6 +13,7 @@ if (!isset($form)) {
 }
 
 $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $form->number . '/';
+
 ?>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>

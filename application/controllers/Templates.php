@@ -37,7 +37,7 @@ class Templates extends CI_Controller
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean');
+        $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean|is_unique[projects.project]');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');

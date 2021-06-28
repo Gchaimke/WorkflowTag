@@ -83,6 +83,10 @@ class Rma_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 50,
             ),
+            'mrb' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50,
+            ),
             'other_failure' => array(
                 'type' => 'TEXT',
             ),

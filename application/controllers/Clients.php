@@ -90,7 +90,16 @@ class Clients extends CI_Controller
             $this->Clients_model->editClient($sql);
             $data['message_display'] = ' Client updated Successfully !';
         }
-        $data['clients'] = $this->Clients_model->getClients($id);
+
+        if (isset($this->Clients_model->getClients($id)[0])) {
+            $client = $this->Clients_model->getClients($id)[0];
+            $data["id"] = $client['id'];
+            $data["name"] = $client['name'];
+            $data["projects"] = $client['projects'];
+            $data["logo"] = $client['logo'];
+            $data["status"] = $client['status'];
+        }
+
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/edit', $data);
@@ -125,9 +134,6 @@ class Clients extends CI_Controller
         }
         $file = UPLOAD_DIR . $file_name . ".$ext";
         $success = file_put_contents($file, $img);
-        if (!file_exists("C:\Program Files\Ampps\www\assets\exec\pngquanti.exe")) {
-            //shell_exec('"C:\Program Files\Ampps\www\assets\exec\pngquanti.exe" --ext .png --speed 5 --nofs --force ' . escapeshellarg($file));
-        }
         print $success ? $file : 'Unable to save the file.';
     }
 
