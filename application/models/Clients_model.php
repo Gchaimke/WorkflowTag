@@ -14,8 +14,7 @@ class Clients_model extends CI_Model
             ),
             'name' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 60,
-                'unique' => TRUE
+                'constraint' => 60
             ),
             'projects' => array(
                 'type' => 'VARCHAR',

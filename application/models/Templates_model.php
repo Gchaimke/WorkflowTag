@@ -18,8 +18,7 @@ class Templates_model extends CI_Model
             ),
             'project' => array(
                 'type' => 'VARCHAR',
-                'constraint' => 100,
-                'unique' => TRUE
+                'constraint' => 100
             ),
             'data' => array(
                 'type' => 'TEXT'

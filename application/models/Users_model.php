@@ -19,13 +19,11 @@ class Users_model extends CI_Model
 			),
 			'view_name' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 150,
-				'unique' => TRUE
+				'constraint' => 150
 			),
 			'email' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 30,
-				'unique' => TRUE
+				'constraint' => 30
 			),
 			'role' => array(
 				'type' => 'VARCHAR',

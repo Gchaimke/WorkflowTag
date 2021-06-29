@@ -25,14 +25,14 @@ if (isset($this->session->userdata['logged_in'])) {
 	exit();
 }
 ?>
-<link rel="stylesheet" href="<?php echo base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
-<link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
+<link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <main role="main" class="container ltr">
 	<nav id="navbar" class="navbar checklist navbar-light bg-light">
-		<?php echo "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
-		<b id="project" class="navbar-text mobile-hide" href="#">Project: <?php echo $project ?></b>
-		<b id="sn" class="navbar-text" href="#">SN: <?php echo $serial ?></b>
-		<b id="date" class="navbar-text mobile-hide" href="#">Date: <?php echo $date ?></b>
+		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
+		<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
+		<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
+		<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
 				<?php if ($role != 'Assembler') { ?>
@@ -40,22 +40,22 @@ if (isset($this->session->userdata['logged_in'])) {
 				<?php } ?>
 				<a class="btn btn-info mr-3" href="#scansTable"><i class="fa fa-list"></i></a>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
-				<?php echo form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
-				<input id='input_data' type='hidden' name='data' value="<?php echo $checklist_data ?>">
-				<input id='input_progress' type='hidden' name='progress' value="<?php echo $progress ?>">
-				<input id='assembler' type='hidden' name='assembler' value="<?php echo $assembler ?>">
-				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
-				<input type='hidden' name='serial' value="<?php echo $serial ?>">
-				<input type='hidden' name='client' value="<?php echo $client_name ?>">
-				<input type='hidden' name='project' value="<?php echo $project ?>">
-				<input type='hidden' name='logo' value="<?php echo $logo ?>">
-				<input type='hidden' name='date' value="<?php echo $date ?>">
-				<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">
-				<input id="input_scans" type='hidden' name='scans' value="<?php echo $scans ?>">
-				<input id="input_note" type='hidden' name='note' value="<?php echo $note ?>">
-				<input id="picrures_count" type='hidden' name='pictures' value="<?php echo $pictures ?>">
+				<?= form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
+				<input id='input_data' type='hidden' name='data' value="<?= $checklist_data ?>">
+				<input id='input_progress' type='hidden' name='progress' value="<?= $progress ?>">
+				<input id='assembler' type='hidden' name='assembler' value="<?= $assembler ?>">
+				<input id="input_qc" type='hidden' name='qc' value="<?= $qc ?>">
+				<input type='hidden' name='serial' value="<?= $serial ?>">
+				<input type='hidden' name='client' value="<?= $client_name ?>">
+				<input type='hidden' name='project' value="<?= $project ?>">
+				<input type='hidden' name='logo' value="<?= $logo ?>">
+				<input type='hidden' name='date' value="<?= $date ?>">
+				<input id="input_log" type='hidden' name='log' value="<?= $log ?>">
+				<input id="input_scans" type='hidden' name='scans' value="<?= $scans ?>">
+				<input id="input_note" type='hidden' name='note' value="<?= $note ?>">
+				<input id="picrures_count" type='hidden' name='pictures' value="<?= $pictures ?>">
 				<button id="save" type='submit' class="btn btn-success navbar-btn " value="Save"><i class="fa fa-save"></i></button>
-				</form>
+				<?= form_close(); ?>
 			</li>
 		</ul>
 		<div class="progress fixed-bottom">
@@ -64,11 +64,11 @@ if (isset($this->session->userdata['logged_in'])) {
 	</nav>
 	<div id="form-messages" class='alert hidden' role='alert'></div>
 	<div id="workTable">
-		<?php echo $checklist_rows ?>
+		<?= $checklist_rows ?>
 	</div>
 	<div id="scansTable">
 		<form action="/production/save_scans/<?= $id ?>" id="ajax-form-scans" method="post" accept-charset="utf-8">
-			<?php echo $scans_rows ?>
+			<?= $scans_rows ?>
 		</form>
 	</div>
 	<div class="mt-2" id="note_row">
@@ -76,7 +76,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<div class="input-group-prepend">
 				<div class="input-group-text">Note</div>
 			</div>
-			<textarea id="note" type='text' rows="2" class="form-control" name='note'><?php echo $note ?></textarea>
+			<textarea id="note" type='text' rows="2" class="form-control" name='note'><?= $note ?></textarea>
 		</div>
 	</div>
 
@@ -88,15 +88,15 @@ if (isset($this->session->userdata['logged_in'])) {
 		<?php
 		$working_dir = 'Uploads/' . $checklist_client . '/' . $project . '/' . $serial . '/';
 		echo "<script>
-				  var photoCount=0;
-				  var log ='$log';
-                  var id='$id';
-                  var project='$project';
-                  var serial='$serial';
-                  var assembler ='$username';
-                  var client='$client_name';
-                  var working_dir='$working_dir';
-                  var progress='$progress';
+				var photoCount=0;
+				var log ='$log';
+				var id='$id';
+				var project='$project';
+				var serial='$serial';
+				var assembler ='$username';
+				var client='$client_name';
+				var working_dir='$working_dir';
+				var progress='$progress';
             </script>";  //pass PHP data to JS
 		if (file_exists("./$working_dir")) {
 			if ($handle = opendir("./$working_dir")) {
@@ -123,7 +123,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="preview"></div>
 
 	<div id="qc-checklist-note" style="display:none">
-		<?php echo form_open('production/add_qc_note/', 'id=ajax-form-qc'); ?>
+		<?= form_open('production/add_qc_note/', 'id=ajax-form-qc'); ?>
 		<input type="hidden" name="checklist_id" value="<?= $id ?>" />
 		<input type="hidden" name="checklist_sn" value="<?= $serial ?>" />
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
@@ -145,7 +145,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save mr-1"></i>Save</button>
 		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fa fa-close mr-1"></i>Close</div>
-		<?php echo form_close(); ?>
+		<?= form_close(); ?>
 		<?php
 		echo "<div style='height:250px' class='overflow-auto mb-3 mt-3'>";
 		if (is_array($notes)) {
@@ -176,6 +176,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <script>
+	var checklist_data = "<?= $checklist_data ?>";
 	window.onscroll = function() {
 		stickHeader()
 	};
