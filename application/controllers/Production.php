@@ -129,7 +129,7 @@ class Production extends CI_Controller
                     $data['template'] = " - not set!";
                 }
                 $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
-                $data['client'] = $this->Clients_model->getClients('', $project);
+                $data['client'] = $this->Clients_model->getClients('', $project)[0];
                 $data['project'] = urldecode($this->input->post('project'));
                 $this->view_page('production/add_checklist', $data, $data);
             }
