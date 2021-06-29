@@ -7,6 +7,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
 if (isset($clients)) {
       echo '<script>var clients = {};' . PHP_EOL;
+	echo "var curent_project ='';". PHP_EOL;
       foreach ($clients as $client) {
             echo 'clients["' . $client['name'] . '"]="' . $client['projects'] . '";' . PHP_EOL;
       }
