@@ -1,11 +1,11 @@
 var toggle = true;
 var progress_status = "";
-var chArray = $('#input_data').val().split(",");
 var checkRows = $('.check_row');
 var inputRows = $('input.input');
 var selectRows = $('select.review');
 var AllCheckRows = $('.verify').length + $('.review').length;
 var AllChecked = $("input:checkbox:checked").length + $('.review option:selected[value!="Select"]').length;
+var chArray = checklist_data.split(",");
 
 $(document).ready(function () {
     $("#picrures_count").val(photoCount);
@@ -29,7 +29,7 @@ $(document).ready(function () {
         }
     });
 
-    chArray = chArray.slice(0, checkRows.length * 3);
+    //chArray = chArray.slice(0, checkRows.length * 3);
     updateProgress();
 });
 
@@ -155,7 +155,7 @@ $('textarea#note').change(function () {
 });
 
 $('input.input').change(function (e) {
-    chArray[this.id] = $(this).val();
+    chArray[this.id] = $(this).val().replace(",","|");
     log += getDateTime() + assembler + " inserted " + $(this).val() + ";";
     $('#input_log').val(log);
     $('#input_data').val(chArray.toString());

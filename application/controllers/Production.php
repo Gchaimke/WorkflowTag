@@ -298,9 +298,9 @@ class Production extends CI_Controller
                         $id++;
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
-                        $tr .= "<td><div class='checkbox'><input type='checkbox' class='verify'  id='$id' $checked></div></td>";
-                        $tr .= "<td><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
-                        $tr .= $select_users . "</select></td></tr>" . PHP_EOL;
+                        $tr .= "<td class='row m-0'><div class='checkbox col-md-6'><input type='checkbox' class='verify'  id='$id' $checked></div>";
+                        $tr .= "<div class='col-md-6'><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
+                        $tr .= $select_users . "</select></div></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     } else {
