@@ -59,6 +59,7 @@ echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var ci_session
 echo "var log='$log'; var assembler ='$username'; var qc_name='$qc'</script>";  //pass PHP data to JS
 ?>
 <script>
+	var checklist_data = "<?= $checklist_data ?>";
 	$("input:checkbox.verify").click(function(e) {
 		$('#assembler').val(assembler);
 	});
