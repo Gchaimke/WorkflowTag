@@ -140,44 +140,60 @@ class Production extends CI_Controller
     public function gen_checklists()
     {
         $result = 'Serial template not set!';
-        $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
-        $zero_str = implode(",", array_fill(0, 400, ""));
-        $last_serial = $this->Production_model->getLastChecklist($this->input->post('project'));
-        $serial_project = $this->Templates_model->getTemplate('', $this->input->post('project'));
-        $month = date('m', strtotime($this->input->post('date')));
-        $year = date('y', strtotime($this->input->post('date')));
-        if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
-            $serial = $serial_project[0]['template']; //Get serial template
-            $serial = str_replace("yy", $year, $serial); //add year
-            $serial = str_replace("mm", $month, $serial); //add month with zero
-            $serial = str_replace("dm", $dfend_month[$month], $serial); //add month from dfend array
-            $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0;
-            $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
-            $arr = array("xxxx", "xxx", "xx");
-            $count = $this->input->post('count');
-            for ($i = 1; $i <= $count; $i++) {
-                $serial_end++;
-                $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
-                $current_serial = str_replace($arr, $zero_count, $serial);
-                $project = $this->input->post('project');
+        $project = $this->input->post('project');
+        $client = $this->input->post('client');
+        $date = $this->input->post('date');
+        $serials = $this->build_serials($project, $date, $this->input->post('count'));
+        if ($serials) {
+            foreach ($serials as $serial) {
                 $data = array(
-                    'client' => $this->input->post('client'),
+                    'client' => $client,
                     'project' => $project,
-                    'serial' => $current_serial,
-                    'data' =>  $zero_str,
-                    'date' => $this->input->post('date')
+                    'serial' => $serial,
+                    'data' =>  implode(",", array_fill(0, 400, "")),
+                    'date' =>  $date
                 );
                 $result = $this->Production_model->addChecklist($data);
                 if ($result != 1) {
                     echo 'Checklist ' . $data['serial'] . ' exists!';
                     return;
                 }
-                if ($result == TRUE) {
-                    admin_log("created '$project' checklist with serial '$current_serial'", 1, $this->user['name']);
+                if ($result == true) {
+                    admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
                 }
             }
         }
         echo $result;
+    }
+
+    private function build_serials($project, $date, $count)
+    {
+        $serials = array();
+        $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
+        $xcount_arr = array("xxxx", "xxx", "xx");
+        $serial_project = $this->Templates_model->getTemplate('', $project);
+        $last_serial = $this->Production_model->getLastChecklist($project);
+        $month = date('m', strtotime($date));
+        $year = date('y', strtotime($date));
+        if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
+            $serial = $serial_project[0]['template']; //Get serial template
+            $prev_month = substr($last_serial, strpos($serial, 'm'), substr_count($serial, 'm'));
+            if ($serial_project[0]["restart_serial"] != null && $prev_month !=  $month) {
+                $last_serial = "00000000000000000";
+            }
+            $serial = str_replace("yy", $year, $serial); //add year
+            $serial = str_replace("mm", $month, $serial); //add month with zero
+            $serial = str_replace("dm", $dfend_month[$month], $serial); //add month from dfend array
+
+            $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0; // false = 00000000000000000
+            for ($i = 1; $i <= $count; $i++) {
+                $serial_end++;
+                $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
+                $serials[] = str_replace($xcount_arr, $zero_count, $serial);
+            }
+            return $serials;
+        }
+        return false;
     }
 
     private function zero_count($x, $num)

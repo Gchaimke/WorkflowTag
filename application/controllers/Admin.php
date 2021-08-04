@@ -93,12 +93,21 @@ class Admin extends CI_Controller
 	function upgrade_db()
 	{
 		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$fields = array('language' => array(
-			'type' => 'VARCHAR',
-			'constraint' => 50,
-		));
-		//$this->Admin_model->add_column('users', $fields);
-		echo 'Db upgraded!';
+		$field_name = 'restart_serial';
+		$table_name = 'projects';
+		$fields = array(
+			$field_name => array(
+				'type' => 'INT',
+				'constraint' => 1,
+				'unsigned' => TRUE,
+			)
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		}else{
+			echo "$field_name exists in $table_name.";
+		}
 	}
 
 	function backupDB()

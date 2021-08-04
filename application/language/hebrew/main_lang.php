@@ -173,3 +173,9 @@ $lang['day']        = 'יום';
 $lang['month']        = 'חודש';
 $lang['year']        = 'שנה';
 $lang['no_forms']        = 'אין עדיין דוחות';
+
+$lang['Select Project'] = 'בחר פרויקט';
+$lang['Select Client'] = 'בחר לקוח';
+$lang['Serial template'] = 'סגנון מספ סריאלי';
+$lang['Serial number restarts every month'] = 'מספר סריאלי מתחיל מחדש כל חודש';
+

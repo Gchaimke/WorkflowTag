@@ -29,6 +29,11 @@ class Templates_model extends CI_Model
             ),
             'scans' => array(
                 'type' => 'TEXT'
+            ),
+            'restart_serial' => array(
+                'type' => 'INT',
+				'constraint' => 1,
+				'unsigned' => TRUE,
             )
         );
 

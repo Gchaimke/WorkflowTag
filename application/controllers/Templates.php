@@ -54,6 +54,7 @@ class Templates extends CI_Controller
                 'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
+                'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
             $result = $this->Templates_model->addTemplate($data);
@@ -99,6 +100,7 @@ class Templates extends CI_Controller
                 'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
+                'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
             if($data['project']['project'] == $sql['project']){

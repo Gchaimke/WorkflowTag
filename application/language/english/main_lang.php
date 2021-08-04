@@ -171,3 +171,9 @@ $lang['day']        = 'Day';
 $lang['month']        = 'Month';
 $lang['year']        = 'Yaer';
 $lang['no_forms']        = 'No Forms';
+$lang['Select Project'] = 'Select Project';
+$lang['Select Client'] = 'Select Client';
+$lang['Serial template'] = 'Serial template';
+$lang['Serial number restarts every month'] = 'Serial number restarts every month';
+
+
