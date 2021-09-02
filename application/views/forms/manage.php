@@ -23,7 +23,7 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
         ?>
         <nav aria-label="qc navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="<?= "/forms/add?type=" . $type . "&client=" . $client . "&project=" . $project; ?>"><i class="fa fa-file-text"></i></a>
+                <a class="btn btn-warning" href="<?= "/forms/add?type=" . $type . "&client=" . $client . "&project=" . $project; ?>"><i class="fas fa-file-alt"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -55,7 +55,7 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
                             <th scope="col" class="mobile-hide">Serial Number</th>
                             <th scope="col">Part Number</th>
                             <th scope="col" class="mobile-hide"><i class="fa fa-user"></i></th>
-                            <th scope="col"><i class="fa fa-picture-o"></i></th>
+                            <th scope="col"><i class="fas fa-image"></i></th>
                             <th scope="col">Edit</th>
                             <th scope="col"><i class="fa fa-check"></i></th>
                             <th scope="col">Trash</th>

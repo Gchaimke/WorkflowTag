@@ -1,8 +1,8 @@
 <?php
 $project =  explode("/", $_SERVER['REQUEST_URI']);
-if(count($project)>3){
-	$project = explode("?",$project[3])[0];
-}else{
+if (count($project) > 3) {
+	$project = explode("?", $project[3])[0];
+} else {
 	$project = '';
 }
 ?>
@@ -11,6 +11,7 @@ if(count($project)>3){
 		<div class="container">
 			<center>
 				<h2 class="display-3"><?php echo urldecode($project); ?></h2>
+				<a class="btn btn-warning" target="_blank" href="\Uploads\<?=urldecode($client['name'])?>\<?=urldecode($project)?>\assembly.pdf"><?= lang('assembly') ?> <i class="fas fa-file-pdf"></i></a>
 			</center>
 		</div>
 	</div>
@@ -24,29 +25,45 @@ if(count($project)>3){
 			?>
 			<nav aria-label="Checklist navigation">
 				<ul class="pagination left">
-					<a class="btn btn-warning" href="/production/add_checklist/<?php echo $project; ?>"><?=lang('new')?> <i class="fa fa-file-text"></i></a>
-					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><?=lang('batch')?></a>
-					<a id='batchLink' class="btn btn-info fa fa-list-ol disabled" href="/production/edit_batch/" onclick="cleanUrl()"></a>
+					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><?= lang('new') ?> <i class="fas fa-file-alt"></i></a>
+					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><?= lang('new') ?><?= lang('batch') ?> <i class="fas fa-copy"></i></a>
+					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/" onclick="cleanUrl()"><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
-
 				<?php if (isset($links)) {
 					echo $links;
 				} ?>
 			</nav>
 		</div>
-		<div id="batch_add_form" style="display: none;">
+		<div id="add_form" style="display: none;">
 			<center>
-				<h3><?=lang('add_batch')?></h3>
-				<h5 style="color: red;"><?=sprintf(lang('batch_msg'), $project);?></h5>
-				<form id="add_checklists" action="/production/gen_checklists" class="user-create">
-					<input type='hidden' name='client' value='<?php echo $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?php echo urldecode($project) ?>'>
-					<input class="form-control " type='number' name='count' placeholder="Quantity"></br>
-					<input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
-					<input type='submit' class="btn btn-info btn-block" name='submit' value='<?=lang('save')?>'></br>
+				<form id="add_checklist" action="production/add_checklist" class="my-4">
+					<h3><?= lang('add_checklist') ?></h3>
+					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
+					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+					<input type='hidden' name='project' value='<?= urldecode($project) ?>'>
+					<div class="form-group"><label>Serial template <?php echo $template ?></label>
+						<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
+					</div></br>
+					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'>
 				</form>
 			</center>
 		</div>
+
+		<div id="batch_add_form" style="display: none;">
+			<center>
+				<form id="add_batch" action="/production/gen_checklists" class="my-4">
+					<h3><?= lang('add_batch') ?></h3>
+					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
+					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+					<input type='hidden' name='project' value='<?= urldecode($project) ?>'>
+					<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
+					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'></br>
+				</form>
+			</center>
+		</div>
+
 		<?php if (isset($results)) { ?>
 			<div class="table-responsive">
 				<table class="table">
@@ -58,7 +75,7 @@ if(count($project)>3){
 							<th scope="col"><i class="fa fa-tasks"></i></th>
 							<th scope="col"><i class="fa fa-user"></i></th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
-							<th scope="col"><i class="fa fa-picture-o"></i></th>
+							<th scope="col"><i class="fas fa-image"></i></th>
 							<th scope="col">Edit</th>
 							<th scope="col">Trash</th>
 						</tr>
@@ -131,10 +148,29 @@ if(count($project)>3){
 		}
 	}
 
-	$('#add_checklists').submit(function(event) {
+	$('#add_checklist').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
-		var formData = $('#add_checklists').serialize();
+		var formData = $('#add_checklist').serialize();
+		var r = confirm("Add " + $('input[name=count]').val() + " checklist to " + $('input[name=project]').val() + "?");
+		if (r == true) {
+			$.ajax("/production/add_checklist/", {
+				type: 'POST',
+				url: $('#ajax-form').attr('action'),
+				data: formData
+			}).done(function(o) {
+				if (o != 1) {
+					alert(o);
+				}
+				location.reload();
+			});
+		}
+	});
+
+	$('#add_batch').submit(function(event) {
+		// Stop the browser from submitting the form.
+		event.preventDefault();
+		var formData = $('#add_batch').serialize();
 		var r = confirm("Add " + $('input[name=count]').val() + " checklist/s to " + $('input[name=project]').val() + "?");
 		if (r == true) {
 			$.ajax("/production/gen_checklists", {

@@ -21,6 +21,8 @@ $lang['batch']        = 'כמה';
 $lang['batch_msg']        = 'לפני הוספת מספר סידורי חדש כאן, הוסף מספר סידורי חדש לתיקייה %s\PRODUCTION\ בתוך כונן G';
 $lang['add_batch']        = 'הוסף כמות של דוחות';
 $lang['add_checklist']        = 'הוסף דוח';
+$lang['add']        = 'הוסף';
+$lang['assembly'] = 'הוראות הרכבה';
 
 /**
  * Settings UI

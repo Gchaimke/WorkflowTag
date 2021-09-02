@@ -77,7 +77,11 @@ class Production extends CI_Controller
         $params['users'] = array_column($this->users, 'name');
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project))[0];
-
+        if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
+            $params['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
+        } else {
+            $params['template'] = " - not set!";
+        }
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start, $project);
             $config['base_url'] = base_url() . 'production/checklists/' . $project;
@@ -99,40 +103,20 @@ class Production extends CI_Controller
         $data = array();
         // Check validation for user input in SignUp form
         $zero_str = implode(",", array_fill(0, 400, ""));
-        $this->form_validation->set_rules('serial', 'Serial', 'trim|required|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['client'] = $this->Clients_model->getClients('', $project)[0];
-            $data['project'] = urldecode($project);
-            if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
-                $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
-            } else {
-                $data['template'] = " - not set!";
-            }
-            $this->view_page('production/add_checklist', $data, $data);
+
+        $serial = trim($this->input->post('serial'));
+        $data = array(
+            'client' => $this->input->post('client'),
+            'project' => $this->input->post('project'),
+            'serial' => $serial,
+            'data' =>  $zero_str,
+            'date' => $this->input->post('date')
+        );
+        $result = $this->Production_model->addChecklist($data);
+        if ($result == TRUE) {
+            admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
         } else {
-            $serial = trim($this->input->post('serial'));
-            $data = array(
-                'client' => $this->input->post('client'),
-                'project' => $this->input->post('project'),
-                'serial' => $serial,
-                'data' =>  $zero_str,
-                'date' => $this->input->post('date')
-            );
-            $result = $this->Production_model->addChecklist($data);
-            if ($result == TRUE) {
-                admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
-                header("location: /production/checklists/" . $project);
-            } else {
-                if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
-                    $data['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
-                } else {
-                    $data['template'] = " - not set!";
-                }
-                $data['message_display'] = 'Checklist ' . $this->input->post('serial') . ' already exist!';
-                $data['client'] = $this->Clients_model->getClients('', $project)[0];
-                $data['project'] = urldecode($this->input->post('project'));
-                $this->view_page('production/add_checklist', $data, $data);
-            }
+            echo 'Checklist ' . $data['serial'] . ' exists!';
         }
     }
 
@@ -320,6 +304,13 @@ class Production extends CI_Controller
                         $index++;
                         $id++;
                     } else {
+                        $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
+                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>" . PHP_EOL;
+                        $index++;
+                        $id++;
+                    }
+                } else {
+                    if ($col[0] != "") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
                             "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>" . PHP_EOL;
                         $index++;
@@ -726,7 +717,7 @@ class Production extends CI_Controller
                         $id++;
                     }
                 }
-                $table .= "</tbody></table><button type='submit' class='btn btn-info navbar-btn float-right mb-4'><i class='fa fa-save mr-2'></i>Save Scans</button>";
+                $table .= "</tbody></table><button type='submit' class='btn btn-info navbar-btn float-right mb-4 print-hide'><i class='fa fa-save mr-2'></i>Save Scans</button>";
             }
         }
         return $table;

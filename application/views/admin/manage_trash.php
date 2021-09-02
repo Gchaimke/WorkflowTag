@@ -30,7 +30,7 @@ if (!isset($type)) {
 				<a id='type_checklist' class="btn btn-success mb-3" href="/admin/manage_trash?type=checklist"> Checklists </a>
 				<a id='type_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=rma"> RMA </a>
 				<a id='type_qc' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=qc"> QC </a>
-				<button id='batchLink' class="btn btn-danger fa fa-trash disabled mr-5 mb-3" onclick='delete_selected()'> Delete selected</button>
+				<button id='batchLink' class="btn btn-danger disabled mr-5 mb-3" onclick='delete_selected()'><i class="fa fa-tasks"></i> Delete selected</button>
 			</div>
 		</nav>
 		<?php if (isset($results)) { ?>

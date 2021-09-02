@@ -30,7 +30,7 @@ if (isset($_GET['client'])) {
   if (isset($project) && $project != '') {
     echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project" href="/production/checklists/' . $project . '">' . $client . ' ' . $project . '</a>';
   } ?>
-  <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white fa fa-search"></button>
+  <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white"><i class="search_icon fas fa-search"></i></button>
 
   <a id="nav_main_category" class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0" href="/" hidden></a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDefault" aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,13 +122,13 @@ if (isset($_GET['client'])) {
 <script>
   $('.search').on('click', function() {
     $('.search_form').toggle(400);
-    if ($('.search').hasClass('fa-search')) {
-      $('.search').removeClass('fa-search btn-outline-success');
-      $('.search').addClass('fa-times btn-outline-danger');
+    if ($('.search_icon').hasClass('fa-search')) {
+      $('.search_icon').removeClass('fa-search');
+      $('.search_icon').addClass('fa-times');
       $('#inputSearch').focus();
     } else {
-      $('.search').removeClass('fa-times btn-outline-danger');
-      $('.search').addClass('fa-search btn-outline-success');
+      $('.search_icon').removeClass('fa-times');
+      $('.search_icon').addClass('fa-search');
     }
   })
 
