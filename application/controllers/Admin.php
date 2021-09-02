@@ -10,7 +10,7 @@ class Admin extends CI_Controller
 		'Production' => 'checklists',
 		'Qc' => 'qc_forms',
 		'Rma' => 'rma_forms',
-		'Templates' => 'projects',
+		'Projects' => 'projects',
 		'Users' => 'users',
 	);
 	public function __construct()

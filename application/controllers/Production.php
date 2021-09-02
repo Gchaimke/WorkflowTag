@@ -11,7 +11,7 @@ class Production extends CI_Controller
         'Production' => 'checklists',
         'Qc' => 'qc_forms',
         'Rma' => 'rma_forms',
-        'Templates' => 'projects',
+        'Projects' => 'projects',
         'Users' => 'users',
     );
 
@@ -52,7 +52,7 @@ class Production extends CI_Controller
         $data = array();
         $data['clients'] = $this->clients;
         foreach ($data['clients'] as $key => $client) {
-            $data['clients_1'][$client["name"]]['projects'] = $this->Templates_model->getTemplates($client['name']);
+            $data['clients_1'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
             $data['clients_1'][$client["name"]]['status'] = $client['status'];
             $data['clients_1'][$client["name"]]['id'] = $client['id'];
         }
@@ -78,8 +78,8 @@ class Production extends CI_Controller
         $params['project'] = urldecode($project);
         $params['client'] = $this->Clients_model->getClients('', urldecode($project));
         $params['client'] = $params['client'] ? $params['client'][0] : array("name"=>"error");
-        if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
-            $params['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
+        if (isset($this->Projects_model->getProject('', $project)[0]['template'])) {
+            $params['template'] = $this->Projects_model->getProject('', $project)[0]['template'];
         } else {
             $params['template'] = " - not set!";
         }
@@ -157,7 +157,7 @@ class Production extends CI_Controller
         $serials = array();
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $xcount_arr = array("xxxx", "xxx", "xx");
-        $serial_project = $this->Templates_model->getTemplate('', $project);
+        $serial_project = $this->Projects_model->getProject('', $project);
         $last_serial = $this->Production_model->getLastChecklist($project);
         $month = date('m', strtotime($date));
         $year = date('y', strtotime($date));
@@ -255,8 +255,8 @@ class Production extends CI_Controller
         $checked = "";
         $table = '';
         $select_users = '';
-        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
-            $project_data = $this->Templates_model->getTemplate('', $project)[0]['data'];
+        if (count($this->Projects_model->getProject('', $project)) > 0) {
+            $project_data = $this->Projects_model->getProject('', $project)[0]['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
             $index = 0;
@@ -689,8 +689,8 @@ class Production extends CI_Controller
         $columns = 0;
         $id = 0;
         $scans_arr = explode(',', $data);
-        if (count($this->Templates_model->getTemplate('', $project)) > 0) {
-            $project_scans = $this->Templates_model->getTemplate('', $project)[0]['scans'];
+        if (count($this->Projects_model->getProject('', $project)) > 0) {
+            $project_scans = $this->Projects_model->getProject('', $project)[0]['scans'];
             $rows = explode(PHP_EOL, $project_scans);
             if (count($rows) > 1) {
                 $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';

@@ -18,7 +18,7 @@ if (isset($clients)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3">Add Template</h2>
+				<h2 class="display-3">Add Project</h2>
 			</center>
 		</div>
 	</div>
@@ -34,7 +34,7 @@ if (isset($clients)) {
 			}
 			?>
 
-			<?php echo form_open('templates/add_template', 'class=user-create'); ?>
+			<?php echo form_open('projects/add_project', 'class=user-create'); ?>
 			<div class="input-group">
 				<div class="input-group-prepend">
 					<div class="input-group-text"><?= lang('Select Client') ?></div>

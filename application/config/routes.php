@@ -52,7 +52,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 $route['default_controller'] = 'production';
 $route['users'] = 'users';
 $route['clients'] = 'clients';
-$route['templates'] = 'templates';
+$route['projects'] = 'projects';
 $route['forms'] = 'forms';
 $route['search'] = 'search';
 $route['(:any)'] = 'production';

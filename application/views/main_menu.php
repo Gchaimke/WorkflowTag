@@ -75,7 +75,7 @@ if (isset($_GET['client'])) {
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <b class="ml-2"><?= lang('system') ?></b>
             <a class="dropdown-item" href="/clients"><?= lang('companies') ?></a>
-            <a class="dropdown-item" href="/templates"><?= lang('projects') ?></a>
+            <a class="dropdown-item" href="/projects"><?= lang('projects') ?></a>
             <a class="dropdown-item" href="/users"><?= lang('users') ?></a>
             <hr>
             <b class="ml-2"><?= lang('manage') ?></b>

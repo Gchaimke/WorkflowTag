@@ -1,14 +1,14 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Templates extends CI_Controller
+class Projects extends CI_Controller
 {
     private $user;
     public function __construct()
     {
         parent::__construct();
         // Load model
-        $this->load->model('Templates_model');
+        $this->load->model('Projects_model');
         $this->load->model('Clients_model');
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
@@ -24,15 +24,15 @@ class Templates extends CI_Controller
     {
         $data = array();
         // get data from model
-        $data['projects'] = $this->Templates_model->getTemplates();
+        $data['projects'] = $this->Projects_model->getProjects();
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('templates/manage_templates', $data);
+        $this->load->view('projects/manage_projects', $data);
         $this->load->view('footer');
     }
 
     // Validate and store checklist data in database
-    public function add_template()
+    public function add_project()
     {
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
@@ -42,11 +42,11 @@ class Templates extends CI_Controller
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run() == FALSE) {
-            $data['js_to_load'] = array("add_template.js");
+            $data['js_to_load'] = array("add_project.js");
             $data['clients'] = $this->Clients_model->getClients();
             $this->load->view('header');
             $this->load->view('main_menu');
-            $this->load->view('templates/add_template', $data);
+            $this->load->view('projects/add_project', $data);
             $this->load->view('footer');
         } else {
             $data = array(
@@ -57,43 +57,30 @@ class Templates extends CI_Controller
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
-            $result = $this->Templates_model->addTemplate($data);
+            $result = $this->Projects_model->addProjects($data);
             if ($result == TRUE) {
-                $data['message_display'] = 'Template added Successfully !';
+                $data['message_display'] = 'Project added Successfully !';
                 $this->index($data);
             } else {
-                $data['js_to_load'] = array("add_template.js");
-                $data['message_display'] = 'Template already exist!';
+                $data['js_to_load'] = array("add_project.js");
+                $data['message_display'] = 'Project already exist!';
                 $data['clients'] = $this->Clients_model->getClients();
                 $this->load->view('header');
                 $this->load->view('main_menu');
-                $this->load->view('templates/add_template', $data);
+                $this->load->view('projects/add_project', $data);
                 $this->load->view('footer');
             }
         }
     }
 
-    public function edit_template($id = '')
+    public function edit_project($id = '')
     {
         $data = array();
         // Check validation for user input in form
-        $data['project'] =  $this->Templates_model->getTemplate($id)[0];
+        $data['project'] =  $this->Projects_model->getProject($id)[0];
 
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('client', 'Client', 'trim|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
-        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['js_to_load'] = array("add_template.js");
-            $data['clients'] = $this->Clients_model->getClients();
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('templates/edit_template', $data);
-            $this->load->view('footer');
-        } else {
-            
+        if ($this->form_validation->run() != FALSE) {
             $sql = array(
                 'id' => $this->input->post('id'),
                 'client' => $this->input->post('client'),
@@ -103,21 +90,28 @@ class Templates extends CI_Controller
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
-            if($data['project']['project'] == $sql['project']){
+            if ($data['project']['project'] == $sql['project']) {
                 unset($sql['project']);
             }
-            $data['message_display'] = $this->Templates_model->editTemplate($sql);
+            $data['message_display'] = $this->Projects_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
-            $this->index($data);
         }
+
+        $data['js_to_load'] = array("add_project.js");
+        $data['clients'] = $this->Clients_model->getClients();
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('projects/edit_project', $data);
+        $this->load->view('footer');
+        //$this->index($data);
     }
 
-    public function delete_template()
+    public function delete_project()
     {
         $role = ($this->session->userdata['logged_in']['role']);
         if ($role == "Admin") {
             $id = $_POST['id'];
-            $this->Templates_model->deleteTemplate($id);
+            $this->Projects_model->deleteTemplate($id);
         }
     }
 }

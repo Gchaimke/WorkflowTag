@@ -9,7 +9,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3">Templates</h2>
+				<h2 class="display-3">Projects</h2>
 			</center>
 		</div>
 	</div>
@@ -20,25 +20,25 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 		?>
-		<a class="btn btn-success" href="/templates/add_template"><i class="fas fa-file-alt"></i></a>
+		<a class="btn btn-success" href="/projects/add_project"><i class="fas fa-file-alt"></i></a>
 		<table class="table">
 			<thead class="thead-dark">
 				<tr>
 					<th scope="col">Client</th>
-					<th scope="col">Template</th>
+					<th scope="col">Project</th>
 					<th scope="col">Edit</th>
 					<th scope="col">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
 				<?php if (isset($projects)) {
-					foreach ($projects as $template) {
-						echo '<tr id="' . $template['id'] . '">';
-						echo  '<td>' . $template['client'] . '</td>';
-						echo  '<td>' . $template['project'] . '</td>';
-						echo "<td><a href='/templates/edit_template/" . $template['id'] .
+					foreach ($projects as $project) {
+						echo '<tr id="' . $project['id'] . '">';
+						echo  '<td>' . $project['client'] . '</td>';
+						echo  '<td>' . $project['project'] . '</td>';
+						echo "<td><a href='/projects/edit_project/" . $project['id'] .
 							"' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
-						echo "<td><button id='" . $template['id'] .
+						echo "<td><button id='" . $project['id'] .
 							"' class='btn btn-danger' onclick='deleteTemplate(this.id)'><i class='fa fa-trash'></i></button></td>";
 						echo '</tr>';
 					}
@@ -49,12 +49,12 @@ if (isset($this->session->userdata['logged_in'])) {
 </main>
 <script>
 	function deleteTemplate(id) {
-		var r = confirm("Delete Template with id: " + id + "?");
+		var r = confirm("Delete Project with id: " + id + "?");
 		if (r == true) {
-			$.post("/templates/delete_template", {
+			$.post("/projects/delete_project", {
 				id: id
 			}).done(function(o) {
-				console.log('Template deleted.');
+				console.log('Project deleted.');
 				$('[id^=' + id + ']').remove();
 			});
 		}

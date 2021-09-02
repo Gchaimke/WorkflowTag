@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Templates_model extends CI_Model
+class Projects_model extends CI_Model
 {
 	function createDb()
     {
@@ -53,7 +53,7 @@ class Templates_model extends CI_Model
     }
 	
 	//id,client,project,data,template,scans
-	function getTemplates($client_name = '')
+	function getProjects($client_name = '')
 	{
 		$response = array();
 		// Select record
@@ -69,7 +69,7 @@ class Templates_model extends CI_Model
 		return $response;
 	}
 
-	public function addTemplate($data)
+	public function addProjects($data)
 	{
 		// Query to check whether username already exist or not
 		$this->db->select('*');
@@ -89,7 +89,7 @@ class Templates_model extends CI_Model
 		}
 	}
 
-	function getTemplate($id = '', $name = '')
+	function getProject($id = '', $name = '')
 	{
 		$response = array();
 		$condition = "";

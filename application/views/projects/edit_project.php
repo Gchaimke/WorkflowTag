@@ -18,7 +18,7 @@ if (isset($clients)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3">Edit Template</h2>
+				<h2 class="display-3">Edit Project</h2>
 			</center>
 		</div>
 	</div>
@@ -42,7 +42,7 @@ if (isset($clients)) {
 				$sd =  $project['scans'];
 			?>
 
-				<?php echo form_open("templates/edit_template/$id", 'class=user-create'); ?>
+				<?php echo form_open("projects/edit_project/$id", 'class=user-create'); ?>
 				<input type='hidden' name='id' value="<?php echo $id ?>">
 				<div class="input-group mb-2">
 					<div class="input-group-prepend">
