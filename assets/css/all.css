@@ -23,6 +23,21 @@ ul.navbar-nav.pull-right {
     margin-right: 50px;
 }
 
+.pagination-nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+ul.pagination-nav-menu {
+    padding: 0;
+}
+
+a#batchLink {
+    margin-left: 0;
+}
+
 div#preview {
     max-width: 100%;
 }
@@ -93,10 +108,6 @@ ul.pagination.left>a {
     margin-right: 10px;
     font-size: 20px;
     font-weight: 700;
-}
-
-a#batchLink {
-    margin-left: 50px;
 }
 
 form.user-create {
@@ -213,13 +224,21 @@ select.review {
     max-width: fit-content;
     float: right;
 }
-@media (max-width:360px){
-    .nav-item.project{
+
+.display-4, .display-3 {
+    font-size: 2.5rem;
+}
+
+@media (max-width:360px) {
+    .nav-item.project {
         display: none;
     }
 }
 
 @media (min-width: 320px) {
+    a#batchLink {
+        margin-left: 50px;
+    }
     .jumbotron {
         padding: 2rem 2rem;
     }
@@ -250,14 +269,14 @@ select.review {
 }
 
 @media (min-width: 991.98px) {
+    .pagination-nav {
+        position: relative;
+    }
     .mobile-hide {
         display: table-cell;
     }
     .table th, .table td {
         padding: 0.45rem;
-    }
-    .display-4, .display-3 {
-        font-size: 2.5rem;
     }
     .th_serial {
         min-width: max-content;
@@ -265,7 +284,6 @@ select.review {
     .card-columns .card {
         margin-bottom: 50px;
     }
-
 }
 
 @media (max-width: 1199.98px) {}

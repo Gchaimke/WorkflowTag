@@ -16,15 +16,15 @@ if (count($project) > 3) {
 		</div>
 	</div>
 	<div class="container">
-		<div style="height: 70px;">
+		<div>
 			<?php
 			if (isset($message_display)) {
 				echo "<div class='alert alert-success' role='alert'>";
 				echo $message_display . '</div>';
 			}
 			?>
-			<nav aria-label="Checklist navigation">
-				<ul class="pagination left">
+			<nav class="pagination-nav" aria-label="Checklist navigation">
+				<ul class="pagination-nav-menu">
 					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><?= lang('new') ?> <i class="fas fa-file-alt"></i></a>
 					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><?= lang('new') ?><?= lang('batch') ?> <i class="fas fa-copy"></i></a>
 					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/" onclick="cleanUrl()"><i class="fa fa-tasks"></i> Edit Selected </a>
