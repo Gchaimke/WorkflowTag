@@ -76,7 +76,8 @@ class Production extends CI_Controller
         $total_records = $this->Production_model->get_total($project);
         $params['users'] = array_column($this->users, 'name');
         $params['project'] = urldecode($project);
-        $params['client'] = $this->Clients_model->getClients('', urldecode($project))[0];
+        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
+        $params['client'] = $params['client'] ? $params['client'][0] : array("name"=>"error");
         if (isset($this->Templates_model->getTemplate('', $project)[0]['template'])) {
             $params['template'] = $this->Templates_model->getTemplate('', $project)[0]['template'];
         } else {

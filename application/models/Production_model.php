@@ -79,7 +79,7 @@ class Production_model extends CI_Model
 	public function addChecklist($data)
 	{
 		// Query to check whether serial already exist or not
-		$condition = "serial ='" . $data['serial'] . "' and project NOT LIKE 'Trash%'";
+		$condition = "serial ='" . $data['serial'] . "' and project ='" . urldecode($data['project'])."'";
 		$this->db->select('*');
 		$this->db->from('Checklists');
 		$this->db->where($condition);

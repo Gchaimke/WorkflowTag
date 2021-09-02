@@ -5,13 +5,20 @@ if (count($project) > 3) {
 } else {
 	$project = '';
 }
+$client['name'] = is_array($client) ? $client['name'] : "error";
+$file = "./Uploads/" . urldecode($client['name']) . "/" . urldecode($project) . "/assembly.pdf";
+if (file_exists($file)) {
+	$dispaly = "";
+} else {
+	$dispaly = "hidden";
+}
 ?>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
 			<center>
 				<h2 class="display-3"><?php echo urldecode($project); ?></h2>
-				<a class="btn btn-warning" target="_blank" href="\Uploads\<?=urldecode($client['name'])?>\<?=urldecode($project)?>\assembly.pdf"><?= lang('assembly') ?> <i class="fas fa-file-pdf"></i></a>
+				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 			</center>
 		</div>
 	</div>
@@ -25,8 +32,8 @@ if (count($project) > 3) {
 			?>
 			<nav class="pagination-nav" aria-label="Checklist navigation">
 				<ul class="pagination-nav-menu">
-					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><?= lang('new') ?> <i class="fas fa-file-alt"></i></a>
-					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><?= lang('new') ?><?= lang('batch') ?> <i class="fas fa-copy"></i></a>
+					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
+					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
 					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/" onclick="cleanUrl()"><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
 				<?php if (isset($links)) {
