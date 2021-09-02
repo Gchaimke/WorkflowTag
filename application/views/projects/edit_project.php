@@ -26,7 +26,7 @@ if (isset($clients)) {
 		<center>
 			<?php
 			if (isset($message_display)) {
-				echo "<div class='alert alert-danger' role='alert'>";
+				echo "<div class='alert alert-success' role='alert'>";
 				echo $message_display . '</div>';
 			}
 			if (validation_errors()) {

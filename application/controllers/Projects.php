@@ -76,9 +76,8 @@ class Projects extends CI_Controller
     public function edit_project($id = '')
     {
         $data = array();
-        // Check validation for user input in form
         $data['project'] =  $this->Projects_model->getProject($id)[0];
-
+        // Check validation for user input in form
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         if ($this->form_validation->run() != FALSE) {
             $sql = array(
@@ -96,14 +95,13 @@ class Projects extends CI_Controller
             $data['message_display'] = $this->Projects_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
         }
-
+        $data['project'] =  $this->Projects_model->getProject($id)[0];
         $data['js_to_load'] = array("add_project.js");
         $data['clients'] = $this->Clients_model->getClients();
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('projects/edit_project', $data);
         $this->load->view('footer');
-        //$this->index($data);
     }
 
     public function delete_project()
