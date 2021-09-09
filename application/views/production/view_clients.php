@@ -14,14 +14,14 @@
 		}
 
 		echo '<div class="card-columns">';
-		foreach ($clients_1 as $key => $client) {
+		foreach ($clients as $key => $client) {
 			echo '<div id="' . $client['id'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
 			echo $key;
 			echo '</h5></div>';
 			echo '<div class="card-footer">';
 			if ($client['status'] == 1) {
 				foreach ($client['projects'] as $project) {
-					echo  "<a href='/production/checklists/" . $project['project'] . "' class='btn btn-primary  btn-block text-nowrap'>" . $project['project'] . "</a>";
+					echo  "<a href='/production/checklists?client={$client['id']}&project=" . $project['project'] . "' class='btn btn-primary  btn-block text-nowrap'>" . $project['project'] . "</a>";
 				}
 			} else {
 				echo '<h3>OLD</h3>';

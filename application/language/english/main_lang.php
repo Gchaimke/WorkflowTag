@@ -30,6 +30,8 @@ $lang['assembly'] = 'Assembly';
 $lang['notes']        = 'notes';
 $lang['uploads']        = 'Uploads';
 $lang['projects']        = 'Projects';
+$lang['add_project']        = 'Add Project to ';
+$lang['project_name']        = 'Project Name';
 $lang['trash']        = 'Trash';
 $lang['system']        = 'System';
 $lang['settings']        = 'Settings';
@@ -81,6 +83,7 @@ $lang['connect'] = 'Connect';
 /**
  * Companies UI
  */
+$lang['clients']        = 'Clients';
 $lang['company_name']        = 'Company Name';
 $lang['logo']        = 'Logo';
 $lang['edit_company']        = 'Edit Company';

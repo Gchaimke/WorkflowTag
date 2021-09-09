@@ -28,7 +28,7 @@ if (isset($_GET['client'])) {
   </div>
   <?php
   if (isset($project) && $project != '') {
-    echo '<a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project" href="/production/checklists/' . $project . '">' . $client . ' ' . $project . '</a>';
+    echo "<a class='nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project' href='/production/checklists?client=$client&project=$project'>$project </a>";
   } ?>
   <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white"><i class="search_icon fas fa-search"></i></button>
 
@@ -70,12 +70,11 @@ if (isset($_GET['client'])) {
       <?php if ($role == 'Admin') { ?>
         <li class="nav-item dropdown nav-item mt-3 ml-md-3 mt-lg-0">
           <a class="nav-item dropdown-toggle btn btn-outline-info text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <?= lang('Admin') ?>
+            <?= lang('Admin') ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <b class="ml-2"><?= lang('system') ?></b>
-            <a class="dropdown-item" href="/clients"><?= lang('companies') ?></a>
-            <a class="dropdown-item" href="/projects"><?= lang('projects') ?></a>
+            <a class="dropdown-item" href="/clients"><?= lang('clients') ?></a>
             <a class="dropdown-item" href="/users"><?= lang('users') ?></a>
             <hr>
             <b class="ml-2"><?= lang('manage') ?></b>
@@ -96,7 +95,7 @@ if (isset($_GET['client'])) {
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/users/edit/<?php echo $id ?>"><?= lang('menu_update_my_data') ?></a>
-          <a class="dropdown-item" href="/users/logout"><?= lang('menu_logout')?></a>
+          <a class="dropdown-item" href="/users/logout"><?= lang('menu_logout') ?></a>
         </div>
       </li>
     </ul>
@@ -106,9 +105,9 @@ if (isset($_GET['client'])) {
 <div class="search_form bg-dark" style="display: none; ">
   <form id="form">
     <div class="input-group mb-3 col-md-4 m-auto">
-      <input id='inputSearch' type="text" class="form-control" placeholder="<?=lang('search_placeholder')?>" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
+      <input id='inputSearch' type="text" class="form-control" placeholder="<?= lang('search_placeholder') ?>" aria-label="Search for serial number" aria-describedby="basic-addon2" autofocus>
       <div class="input-group-append">
-        <button class="btn btn-secondary" type="button" onclick="serialSearch()"><?=lang('search')?></button>
+        <button class="btn btn-secondary" type="button" onclick="serialSearch()"><?= lang('search') ?></button>
       </div>
     </div>
     <div id='searchResult' class="text-white">

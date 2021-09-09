@@ -3,12 +3,20 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Clients extends CI_Controller
 {
+    public $clients, $users, $users_names, $clients_names;
+    private $system_models = array(
+        'Clients' => 'clients',
+        'Projects' => 'projects',
+    );
 
     public function __construct()
     {
         parent::__construct();
-        // Load model
-        $this->load->model('Clients_model');
+        // Load models
+        foreach ($this->system_models as $model => $table) {
+            $this->load->model($model . '_model');
+        }
+
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
             $this->lang->load('main', $this->user['language']);
@@ -16,6 +24,10 @@ class Clients extends CI_Controller
         } else {
             header("location: /users/login");
             exit('User not logedin');
+        }
+        $this->clients = $this->Clients_model->getClients();
+        foreach ($this->clients as $client) {
+            $this->clients_names[$client['id']] = $client['name'];
         }
     }
 
@@ -26,7 +38,11 @@ class Clients extends CI_Controller
             $data['message_display'] = $msg;
         }
         // get data from model
-        $data['clients'] = $this->Clients_model->getClients();
+        foreach ($this->clients as $client) {
+            $data['clients'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
+            $data['clients'][$client["name"]]['status'] = $client['status'];
+            $data['clients'][$client["name"]]['id'] = $client['id'];
+        }
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/manage', $data);
@@ -36,36 +52,26 @@ class Clients extends CI_Controller
     // Validate and store checklist data in database
     public function create()
     {
-        $msg = array();
+        $data = array();
         // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-        $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
-        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('clients/create');
-            $this->load->view('footer');
-        } else {
+        if ($this->form_validation->run()) {
             $data = array(
                 'name' => $this->input->post('name'),
                 'logo' => $this->input->post('logo'),
-                'projects' => $this->input->post('projects'),
                 'status' => $this->input->post('status')
             );
             $result = $this->Clients_model->addClient($data);
             if ($result == TRUE) {
-                $msg = 'Client added Successfully !';
-                $this->index($msg);
-            } else {
-                $msg['message_display'] = 'Client already exist!';
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('clients/create', $msg);
-                $this->load->view('footer');
+                header("location: /clients");
+            }else{
+                $data['message_display'] = ' Client '.$this->input->post('name').' Exists!';
             }
         }
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('clients/create',$data);
+        $this->load->view('footer');
     }
 
     public function edit($id = '', $msg = '')
@@ -78,7 +84,6 @@ class Clients extends CI_Controller
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
-        $this->form_validation->set_rules('projects', 'Projects', 'trim|xss_clean');
         if ($this->form_validation->run() == TRUE) {
             $sql = array(
                 'id' => $this->input->post('id'),

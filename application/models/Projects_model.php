@@ -71,7 +71,7 @@ class Projects_model extends CI_Model
 
 	public function addProjects($data)
 	{
-		// Query to check whether username already exist or not
+		// Query to check whether already exist or not
 		$this->db->select('*');
 		$this->db->from('projects');
 		$this->db->where("project ='" . urldecode($data['project']) . "'");

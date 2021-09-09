@@ -15,6 +15,27 @@ a.navbar-brand {
     height: 50px;
 }
 
+.card-body {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.card-footer span {
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+.project_row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    border-bottom: solid 0.1px #848484;
+}
+
 .hidden {
     display: none;
 }

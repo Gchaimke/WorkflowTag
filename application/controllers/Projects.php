@@ -32,25 +32,19 @@ class Projects extends CI_Controller
     }
 
     // Validate and store checklist data in database
-    public function add_project()
+    public function add_project($id)
     {
+        $data['client'] = $this->Clients_model->getClients($id)[0];
+        $data['js_to_load'] = array("add_project.js");
+
         // Check validation for user input in SignUp form
-        $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
-        $this->form_validation->set_rules('client', 'Client', 'trim|required|xss_clean');
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean|is_unique[projects.project]');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
-        if ($this->form_validation->run() == FALSE) {
-            $data['js_to_load'] = array("add_project.js");
-            $data['clients'] = $this->Clients_model->getClients();
-            $this->load->view('header');
-            $this->load->view('main_menu');
-            $this->load->view('projects/add_project', $data);
-            $this->load->view('footer');
-        } else {
+        if ($this->form_validation->run()) {
             $data = array(
-                'client' => $this->input->post('client'),
+                'client' => $data['client']['name'],
                 'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
@@ -58,19 +52,14 @@ class Projects extends CI_Controller
                 'scans' => $this->input->post('scans')
             );
             $result = $this->Projects_model->addProjects($data);
-            if ($result == TRUE) {
-                $data['message_display'] = 'Project added Successfully !';
-                $this->index($data);
-            } else {
-                $data['js_to_load'] = array("add_project.js");
-                $data['message_display'] = 'Project already exist!';
-                $data['clients'] = $this->Clients_model->getClients();
-                $this->load->view('header');
-                $this->load->view('main_menu');
-                $this->load->view('projects/add_project', $data);
-                $this->load->view('footer');
+            if ($result) {
+                header("location: /clients");
             }
         }
+        $this->load->view('header');
+        $this->load->view('main_menu');
+        $this->load->view('projects/add_project', $data);
+        $this->load->view('footer');
     }
 
     public function edit_project($id = '')
@@ -79,19 +68,14 @@ class Projects extends CI_Controller
         $data['project'] =  $this->Projects_model->getProject($id)[0];
         // Check validation for user input in form
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
-        if ($this->form_validation->run() != FALSE) {
+        if ($id != '' && $this->form_validation->run()) {
             $sql = array(
-                'id' => $this->input->post('id'),
-                'client' => $this->input->post('client'),
-                'project' => $this->input->post('project'),
+                'id' => $id,
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
-            if ($data['project']['project'] == $sql['project']) {
-                unset($sql['project']);
-            }
             $data['message_display'] = $this->Projects_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
         }

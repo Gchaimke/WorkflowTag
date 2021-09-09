@@ -36,7 +36,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
 				<?php if ($role != 'Assembler') { ?>
-					<button class="btn btn-warning mr-3 qc_note_btn"><i class="fa fa-sticky-note-o"></i></button>
+					<button class="btn btn-warning mr-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
 				<?php } ?>
 				<a class="btn btn-info mr-3" href="#scansTable"><i class="fa fa-list"></i></a>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>

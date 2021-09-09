@@ -50,11 +50,11 @@ class Production extends CI_Controller
     public function index()
     {
         $data = array();
-        $data['clients'] = $this->clients;
-        foreach ($data['clients'] as $key => $client) {
-            $data['clients_1'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
-            $data['clients_1'][$client["name"]]['status'] = $client['status'];
-            $data['clients_1'][$client["name"]]['id'] = $client['id'];
+        $clients = $this->clients;
+        foreach ($clients as $client) {
+            $data['clients'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
+            $data['clients'][$client["name"]]['status'] = $client['status'];
+            $data['clients'][$client["name"]]['id'] = $client['id'];
         }
         $this->view_page('production/view_clients', $data);
     }
@@ -67,25 +67,28 @@ class Production extends CI_Controller
         $this->load->view('footer');
     }
 
-    public function checklists($project = '', $limit_per_page = 20)
+    public function checklists($limit_per_page = 20)
     {
         // init params
         $params = array();
         $config = array();
+        $client_id = isset($_GET["client"]) ? $_GET["client"] : null;
+        $project = isset($_GET["project"]) ? $_GET["project"] : null;
         $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
         $total_records = $this->Production_model->get_total($project);
         $params['users'] = array_column($this->users, 'name');
-        $params['project'] = urldecode($project);
-        $params['client'] = $this->Clients_model->getClients('', urldecode($project));
-        $params['client'] = $params['client'] ? $params['client'][0] : array("name"=>"error");
+        $params['project'] = $project;
+        $params['client'] = $this->Clients_model->getClients($client_id);
+        $params['client'] = $params['client'] ? $params['client'][0] : array("name" => "error");
         if (isset($this->Projects_model->getProject('', $project)[0]['template'])) {
             $params['template'] = $this->Projects_model->getProject('', $project)[0]['template'];
         } else {
             $params['template'] = " - not set!";
         }
+
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start, $project);
-            $config['base_url'] = base_url() . 'production/checklists/' . $project;
+            $config['base_url'] = base_url() . "production/checklists?client=$client_id&project=$project";
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
             $this->pagination->initialize($config);
@@ -224,15 +227,17 @@ class Production extends CI_Controller
             $data['project'] =  urldecode($data['checklist']['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist']['data']);
             $data['scans_rows'] = $this->build_scans($data['project'], $data['checklist']['scans']);
-            $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
+            $data['client'] = urldecode($data['checklist']['client']);
+            $data['client'] = $this->Clients_model->getClients($_GET['client'])[0];
             $data['users'] = $this->users;
             $data['notes'] = $this->get_qc_notes($id);
             $this->view_page('production/edit_checklist', '', $data);
         }
     }
 
-    public function edit_batch($ids = '0', $msg = '')
+    public function edit_batch($msg = '')
     {
+        $ids = isset($_GET['checklists']) ? $_GET['checklists'] : '0';
         $data = array();
         if ($msg != '') {
             $data['message_display'] = $msg;
@@ -244,7 +249,7 @@ class Production extends CI_Controller
             $data['checklist'] = $data['checklists'];
             $data['project'] =  urldecode($data['checklists'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
-            $data['client'] = $this->Clients_model->getClients('', $data['project'])[0];
+            $data['client'] = $this->Clients_model->getClients($_GET['client'])[0];
             $this->view_page('production/edit_batch', '', $data);
         }
     }

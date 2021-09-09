@@ -37,10 +37,6 @@ if (isset($id)) {
 					<img id="logo_img" class="img-thumbnail" src="<?= $logo ?>" onclick="document.getElementById('browse').click();">
 					<input id="browse" style="display:none;" type="file" onchange="snapLogo()"></hr>
 				</div>
-
-				<div class="form-group"><label>Client Projects</label>
-					<textarea name="projects" class="form-control" cols="40" rows="5"><?= $projects ?></textarea>
-				</div>
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<div class="input-group-prepend">
@@ -52,7 +48,6 @@ if (isset($id)) {
 								'0' => 'Old',
 								'1' => 'Active',
 							);
-							print_r($arr);
 							foreach ($arr as $value => $cstatus) {
 								if ($value == $status) {
 									echo '<option value="' . $value . '" selected>' . $cstatus . '</option>';
@@ -64,7 +59,7 @@ if (isset($id)) {
 						</select>
 					</div>
 				</div>
-				<input type='submit' class="btn btn-info btn-block" name='submit' value='Update'>
+				<input type='submit' class="btn btn-info" name='submit' value='Update'>
 				<?= form_close(); ?>
 			<?php } ?>
 			</center>

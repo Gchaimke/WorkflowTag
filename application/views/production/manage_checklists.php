@@ -6,7 +6,7 @@ if (count($project) > 3) {
 	$project = '';
 }
 $client['name'] = is_array($client) ? $client['name'] : "error";
-$file = "./Uploads/" . urldecode($client['name']) . "/" . urldecode($project) . "/assembly.pdf";
+$file = "./Uploads/" . urldecode($client['name']) . "/" . $_GET['project'] . "/assembly.pdf";
 if (file_exists($file)) {
 	$dispaly = "";
 } else {
@@ -17,7 +17,7 @@ if (file_exists($file)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3"><?php echo urldecode($project); ?></h2>
+				<h2 class="display-3"><?= $_GET['project'] ?></h2>
 				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 			</center>
 		</div>
@@ -34,7 +34,7 @@ if (file_exists($file)) {
 				<ul class="pagination-nav-menu">
 					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
 					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
-					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/" onclick="cleanUrl()"><i class="fa fa-tasks"></i> Edit Selected </a>
+					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/?client=<?= $client['id'] ?>&checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
 				<?php if (isset($links)) {
 					echo $links;
@@ -47,7 +47,7 @@ if (file_exists($file)) {
 					<h3><?= lang('add_checklist') ?></h3>
 					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= urldecode($project) ?>'>
+					<input type='hidden' name='project' value='<?= $_GET['project'] ?>'>
 					<div class="form-group"><label>Serial template <?php echo $template ?></label>
 						<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
 					</div></br>
@@ -63,7 +63,7 @@ if (file_exists($file)) {
 					<h3><?= lang('add_batch') ?></h3>
 					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= urldecode($project) ?>'>
+					<input type='hidden' name='project' value='<?= $_GET['project'] ?>'>
 					<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
 					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
 					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'></br>
@@ -118,7 +118,7 @@ if (file_exists($file)) {
 									<td><?= $editors ?></td>
 									<td class="mobile-hide"><?php echo $data->date ?></td>
 									<td><?php echo $data->pictures ?></td>
-									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?php echo $data->id ?>?sn=<?php echo $data->serial ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?sn=<?= $data->serial ?>&client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
 									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }
@@ -140,6 +140,7 @@ if (file_exists($file)) {
 </main>
 <script>
 	var client = '<?php echo $client['name'] ?>';
+	var checklists = [];
 
 	function trashChecklist(id, project, serial) {
 		var r = confirm("Trash checklist " + serial + "?");
@@ -192,4 +193,31 @@ if (file_exists($file)) {
 			});
 		}
 	});
+
+
+	$('.select').click(function() {
+		var id = $(this).attr('id');
+		var link = document.getElementById('batchLink');
+		if ($(event.target).is(":checked")) {
+			checklists.push(id);
+			count += 1;
+		} else {
+			checklists = checklists.filter(item => item !== id)
+			count -= 1;
+		}
+
+		if (count > 0) {
+			$('#batchLink').removeClass('disabled');
+		} else {
+			$('#batchLink').addClass('disabled');
+		}
+		console.log(checklists);
+	});
+
+
+	$("#batchLink").on('click', function(e) {
+		let link = $(this).attr('href');
+		link = link + checklists.join(":");
+		$(this).attr('href', link);
+	})
 </script>

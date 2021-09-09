@@ -30,6 +30,8 @@ $lang['assembly'] = 'הוראות הרכבה';
 $lang['notes']        = 'הערות';
 $lang['uploads']        = 'קבצים';
 $lang['projects']        = 'פרויקטים';
+$lang['add_project']        = 'להוסיף פרויקט ל';
+$lang['project_name']        = 'שם פרויקט';
 $lang['trash']        = 'סל מחזור';
 $lang['system']        = 'מערכת';
 $lang['settings']        = 'הגדרות';
@@ -81,6 +83,7 @@ $lang['connect'] = 'להתחבר';
 /**
  * Companies UI
  */
+$lang['clients']        = 'חברות';
 $lang['company_name']        = 'שם החברה';
 $lang['logo']        = 'לוגו';
 $lang['edit_company']        = 'ערוך חברה';

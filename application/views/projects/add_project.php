@@ -4,21 +4,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		header("location: /");
 	}
 }
-
-if (isset($clients)) {
-	echo '<script>var clients = {};' . PHP_EOL;
-	echo "var curent_project ='';" . PHP_EOL;
-	foreach ($clients as $client) {
-		echo 'clients["' . $client['name'] . '"]="' . $client['projects'] . '";' . PHP_EOL;
-	}
-	echo '</script>';
-}
 ?>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3">Add Project</h2>
+				<h2 class="display-3"><?= lang('add_project') ?><?= $client['name'] ?></h2>
 			</center>
 		</div>
 	</div>
@@ -34,27 +25,13 @@ if (isset($clients)) {
 			}
 			?>
 
-			<?php echo form_open('projects/add_project', 'class=user-create'); ?>
+			<?php echo form_open('projects/add_project/'.$client['id'], 'class=user-create'); ?>
 			<div class="input-group">
 				<div class="input-group-prepend">
-					<div class="input-group-text"><?= lang('Select Client') ?></div>
+					<div class="input-group-text"><?= lang('project_name') ?></div>
 				</div>
-				<select id="select_client" class="form-control" name='client'>
-					<?php if (isset($clients)) {
-						foreach ($clients as $client) {
-							echo '<option>' . $client['name'] . '</option>';
-						}
-					}
-					?>
-				</select>
-			</div></br>
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<div class="input-group-text"><?= lang('Select Project') ?></div>
-				</div>
-				<select id="select_project" class="form-control" name='project'>
-				</select>
-			</div></br>
+				<input type="text" class="form-control" name='project'>
+			</div>
 			<label>yy = Year | mm = Month | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 			<div class="input-group">
 				<div class="input-group-prepend">

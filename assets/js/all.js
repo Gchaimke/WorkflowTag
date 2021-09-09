@@ -66,29 +66,6 @@ function dragElement(elmnt) {
     }
 }
 
-$('.select').click(function () {
-    var id = $(this).attr('id');
-    var link = document.getElementById('batchLink');
-    if ($(event.target).is(":checked")) {
-        $('#batchLink').attr('href', link.pathname + id + ':');
-        count += 1;
-    } else {
-        $('#batchLink').attr('href', link.pathname.replace(id + ':', ''));
-        count -= 1;
-    }
-
-    if (count > 0) {
-        $('#batchLink').removeClass('disabled');
-    } else {
-        $('#batchLink').addClass('disabled');
-    }
-});
-
-function cleanUrl() {
-    var link = document.getElementById('batchLink');
-    $('#batchLink').attr('href', link.pathname.replace(/:\s*$/, ""));
-}
-
 $('input[type="files"]').change(function (e) {
     var fileName = e.target.files[0].name;
     alert('The file "' + fileName + '" has been selected.');
