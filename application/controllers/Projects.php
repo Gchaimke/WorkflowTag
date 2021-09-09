@@ -34,7 +34,6 @@ class Projects extends CI_Controller
     // Validate and store checklist data in database
     public function add_project($id)
     {
-        $data['client'] = $this->Clients_model->getClients($id)[0];
         $data['js_to_load'] = array("add_project.js");
 
         // Check validation for user input in SignUp form
@@ -43,6 +42,7 @@ class Projects extends CI_Controller
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run()) {
+            $data['client'] = $this->Clients_model->get_client_by_id($id);
             $data = array(
                 'client' => $data['client']['name'],
                 'project' => $this->input->post('project'),
@@ -56,6 +56,7 @@ class Projects extends CI_Controller
                 header("location: /clients");
             }
         }
+        $data['client'] = $this->Clients_model->get_client_by_id($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('projects/add_project', $data);
