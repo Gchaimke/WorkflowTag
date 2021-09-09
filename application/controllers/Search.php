@@ -31,9 +31,10 @@ class Search extends CI_Controller
                 if (strpos($result["project"], 'Trash') !== false) {
                     continue;
                 }
-                $client = $this->Clients_model->get_client_by_name($result["client"]);
-                $client['id'] = isset($client) ? $client['id'] : "";
-
+                if (isset($result["client"])) {
+                    $client = $this->Clients_model->get_client_by_name($result["client"]);
+                    $client['id'] = isset($client) ? $client['id'] : "";
+                }
                 $html .= "<tr class='text-white'>";
                 if (isset($result['number']) && isset($result['parts'])) {
                     $html .= "<td class='text-left'>{$result['number']}</td>";
