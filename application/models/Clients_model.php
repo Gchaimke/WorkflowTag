@@ -67,7 +67,7 @@ class Clients_model extends CI_Model
         }
     }
 
-    function getClients($id = '', $project = '')
+    function getClients()
     {
         $response = array();
         if ($this->db->table_exists('clients')) {
@@ -75,21 +75,36 @@ class Clients_model extends CI_Model
             $this->db->select('*');
             $this->db->from('clients');
             $this->db->order_by('name');
-            if ($id != '') {
-                $condition = "id ='$id'";
-                $this->db->where($condition);
-                $this->db->limit(1);
-            }
-            if ($project != '') {
-                $project = urldecode($project);
-                $condition = "projects LIKE '%$project%'";
-                $this->db->where($condition);
-                $this->db->limit(1);
-            }
             $q = $this->db->get();
             $response = $q->result_array();
         }
         return $response;
+    }
+
+    function get_client_by_id($id = "")
+    {
+        if ($id != "") {
+            $this->db->select('*');
+            $this->db->from('clients');
+            $this->db->order_by('name');
+            $this->db->where("id =$id");
+            $q = $this->db->get();
+            return $q->row_array();
+        }
+        return null;
+    }
+
+    function get_client_by_name($name = "")
+    {
+        if ($name != "") {
+            $this->db->select('*');
+            $this->db->from('clients');
+            $this->db->order_by('name');
+            $this->db->where("name ='$name'");
+            $q = $this->db->get();
+            return $q->row_array();
+        }
+        return null;
     }
 
     public function editClient($data)

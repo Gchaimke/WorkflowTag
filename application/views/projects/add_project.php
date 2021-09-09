@@ -25,7 +25,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			}
 			?>
 
-			<?php echo form_open('projects/add_project/'.$client['id'], 'class=user-create'); ?>
+			<?php echo form_open('projects/add_project/' . $client['id'], 'class=user-create'); ?>
 			<div class="input-group">
 				<div class="input-group-prepend">
 					<div class="input-group-text"><?= lang('project_name') ?></div>

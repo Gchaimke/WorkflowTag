@@ -47,7 +47,7 @@ class Forms extends CI_Controller
         if ($type != '') {
             $data = array();
             $data['type'] = $type;
-            $data['client_name'] = isset($_GET['client']) ? $_GET['client'] : 'Avdor';
+            $data['client_name'] = isset($_GET['client']) ? $this->Clients_model->get_client_by_id($_GET['client'])['name'] : 'Avdor';
             $data['project'] = isset($_GET['project']) ? $_GET['project'] : 'All';
             $this->load->view('header');
             $this->load->view('main_menu');

@@ -78,8 +78,8 @@ class Production extends CI_Controller
         $total_records = $this->Production_model->get_total($project);
         $params['users'] = array_column($this->users, 'name');
         $params['project'] = $project;
-        $params['client'] = $this->Clients_model->getClients($client_id);
-        $params['client'] = $params['client'] ? $params['client'][0] : array("name" => "error");
+        $params['client'] = $this->Clients_model->get_client_by_id($client_id);
+        $params['client'] = $params['client'] ? $params['client'] : array("name" => "error");
         if (isset($this->Projects_model->getProject('', $project)[0]['template'])) {
             $params['template'] = $this->Projects_model->getProject('', $project)[0]['template'];
         } else {
@@ -228,7 +228,7 @@ class Production extends CI_Controller
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist']['data']);
             $data['scans_rows'] = $this->build_scans($data['project'], $data['checklist']['scans']);
             $data['client'] = urldecode($data['checklist']['client']);
-            $data['client'] = $this->Clients_model->getClients($_GET['client'])[0];
+            $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
             $data['users'] = $this->users;
             $data['notes'] = $this->get_qc_notes($id);
             $this->view_page('production/edit_checklist', '', $data);
@@ -249,7 +249,7 @@ class Production extends CI_Controller
             $data['checklist'] = $data['checklists'];
             $data['project'] =  urldecode($data['checklists'][0]['project']);
             $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
-            $data['client'] = $this->Clients_model->getClients($_GET['client'])[0];
+            $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
             $this->view_page('production/edit_batch', '', $data);
         }
     }

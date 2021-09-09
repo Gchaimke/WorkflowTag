@@ -8,6 +8,7 @@ class Search extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Search_model');
+        $this->load->model('Clients_model');
         $this->load->library('pagination');
     }
 

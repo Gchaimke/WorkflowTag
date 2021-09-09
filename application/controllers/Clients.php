@@ -64,13 +64,13 @@ class Clients extends CI_Controller
             $result = $this->Clients_model->addClient($data);
             if ($result == TRUE) {
                 header("location: /clients");
-            }else{
-                $data['message_display'] = ' Client '.$this->input->post('name').' Exists!';
+            } else {
+                $data['message_display'] = ' Client ' . $this->input->post('name') . ' Exists!';
             }
         }
         $this->load->view('header');
         $this->load->view('main_menu');
-        $this->load->view('clients/create',$data);
+        $this->load->view('clients/create', $data);
         $this->load->view('footer');
     }
 
@@ -84,7 +84,7 @@ class Clients extends CI_Controller
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
-        if ($this->form_validation->run() == TRUE) {
+        if ($this->form_validation->run()) {
             $sql = array(
                 'id' => $this->input->post('id'),
                 'logo' => $this->input->post('logo'),
@@ -96,15 +96,7 @@ class Clients extends CI_Controller
             $data['message_display'] = ' Client updated Successfully !';
         }
 
-        if (isset($this->Clients_model->getClients($id)[0])) {
-            $client = $this->Clients_model->getClients($id)[0];
-            $data["id"] = $client['id'];
-            $data["name"] = $client['name'];
-            $data["projects"] = $client['projects'];
-            $data["logo"] = $client['logo'];
-            $data["status"] = $client['status'];
-        }
-
+        $data['client'] = $this->Clients_model->get_client_by_id($id);
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/edit', $data);

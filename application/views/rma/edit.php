@@ -27,7 +27,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
       <div class="jumbotron">
             <div class="container">
                   <center>
-                        <h2 class="display-3"><?= $form->project ?> RMA receiving form</h2>
+                        <h2 class="display-3"><?= $form->project ?> RMA</h2>
                   </center>
             </div>
       </div>
@@ -41,7 +41,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
             <input type='hidden' name='client' value='<?= $form->client ?>'>
             <input type='hidden' name='project' value='<?= $form->project ?>'>
             <input type='hidden' name='id' value='<?= $form->id ?>'>
-            <input id="picrures_count" type='hidden' name='pictures' value=''>
+            <input id="pictures_count" type='hidden' name='pictures' value=''>
 
             <div class="mx-auto text-center p-4 col-12 ">
                   <div class="form-row">
@@ -358,7 +358,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
             }
       });
       $(document).ready(function() {
-            $("#picrures_count").val(photoCount);
+            $("#pictures_count").val(photoCount);
       });
       document.title = 'RMA <?= $form->number ?>';
 

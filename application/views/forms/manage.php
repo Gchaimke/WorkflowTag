@@ -23,7 +23,7 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
         ?>
         <nav aria-label="qc navigation">
             <ul class="pagination left">
-                <a class="btn btn-warning" href="<?= "/forms/add?type=" . $type . "&client=" . $client . "&project=" . $project; ?>"><i class="fas fa-file-alt"></i></a>
+                <a class="btn btn-warning" href="<?= "/forms/add?type=$type&client=$client&project=$project" ?>"><i class="fas fa-file-alt"></i></a>
             </ul>
             <?php if (isset($links)) {
                 echo $links;
@@ -83,7 +83,7 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
                                     <td><?php echo $data->product_num ?></td>
                                     <td class="mobile-hide"><?php echo $data->user ?></td>
                                     <td><?php echo $data->pictures ?></td>
-                                    <td><a href='<?= "/forms/edit?type=" . $type . "&id=" . $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+                                    <td><a href='<?= "/forms/edit?type=$type&client=$client&project=$project&id=$data->id" ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
                                     <td><span class="status btn btn-<?= $colors[$data->status] ?>" data-id="<?= $data->id ?>"><?= $status[$data->status] ?></span></td>
                                     <td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trash(this.id,"<?php echo $data->project; ?>","<?php echo $data->number; ?>")'><i class="fa fa-trash"></i></button></td>
                                 </tr>

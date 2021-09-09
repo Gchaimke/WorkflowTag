@@ -9,15 +9,8 @@ if (isset($this->session->userdata['logged_in'])) {
   exit();
 }
 
-if (isset($client) && !is_string($client)) {
-  $client = $client['name'];
-}
-
 if (isset($_GET['project'])) {
   $project = isset($_GET['project']) ? $_GET['project'] : $project;
-}
-if (isset($_GET['client'])) {
-  $client = isset($_GET['client']) ? $_GET['client'] : $client;
 }
 
 ?>
@@ -28,7 +21,7 @@ if (isset($_GET['client'])) {
   </div>
   <?php
   if (isset($project) && $project != '') {
-    echo "<a class='nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project' href='/production/checklists?client=$client&project=$project'>$project </a>";
+    echo "<a class='nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project' href='/production/checklists?client={$_GET['client']}&project=$project'>$project </a>";
   } ?>
   <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white"><i class="search_icon fas fa-search"></i></button>
 
@@ -48,8 +41,8 @@ if (isset($_GET['client'])) {
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php if (isset($project) && $project != '') { ?>
               <b class="ml-2"><?= $project ?></b><br>
-              <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/forms?type=rma&client=<?= $client . "&project=" . $project ?>">RMA</a>
-              <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/forms?type=qc&client=<?= $client . "&project=" . $project ?>">QC</a>
+              <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
+              <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/forms?type=qc&client=<?= $_GET['client'] . "&project=" . $project ?>">QC</a>
             <?php } ?>
             <hr>
             <b class="ml-2">All</b><br>
@@ -63,7 +56,7 @@ if (isset($_GET['client'])) {
       <?php if ($role == 'Assembler') { ?>
         <div class="navbar-nav mr-md-auto">
           <?php if (isset($project) && $project != '') { ?>
-            <a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 text-white" href="/forms?type=rma&client=<?= $client . "&project=" . $project ?>">RMA</a>
+            <a class="nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 text-white" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
           <?php } ?>
         </div>
       <?php } ?>

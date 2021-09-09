@@ -5,14 +5,14 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 }
 
-if (isset($id)) {
+if (isset($client)) {
 	//print_r($name);
 ?>
 	<main role="main">
 		<div class="jumbotron">
 			<div class="container">
 				<center>
-					<h2 class="display-3">Edit Client: <?= $name ?></h2>
+					<h2 class="display-3">Edit Client: <?= $client['name'] ?></h2>
 				</center>
 			</div>
 		</div>
@@ -27,14 +27,14 @@ if (isset($id)) {
 					echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 				}
 				?>
-				<?= form_open("clients/edit/$id", 'class=user-create'); ?>
-				<input type='hidden' name='id' value="<?= $id ?>">
-				<input id='client_name' type='hidden' name='name' value="<?= $name ?>"></hr>
+				<?= form_open("clients/edit/".$client['id'], 'class=user-create'); ?>
+				<input type='hidden' name='id' value="<?= $client['id'] ?>">
+				<input id='client_name' type='hidden' name='name' value="<?=  $client['name'] ?>"></hr>
 				<div class="form-group mb-3">
 					<label>Select Logo : </label>
-					<input id="logo_path" type='hidden' name='logo' value="<?= $logo ?>">
+					<input id="logo_path" type='hidden' name='logo' value="<?=  $client['logo'] ?>">
 					<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('browse').click();">Upload</button>
-					<img id="logo_img" class="img-thumbnail" src="<?= $logo ?>" onclick="document.getElementById('browse').click();">
+					<img id="logo_img" class="img-thumbnail" src="<?= $client['logo'] ?>" onclick="document.getElementById('browse').click();">
 					<input id="browse" style="display:none;" type="file" onchange="snapLogo()"></hr>
 				</div>
 				<div class="form-row">
@@ -49,7 +49,7 @@ if (isset($id)) {
 								'1' => 'Active',
 							);
 							foreach ($arr as $value => $cstatus) {
-								if ($value == $status) {
+								if ($value == $client['status']) {
 									echo '<option value="' . $value . '" selected>' . $cstatus . '</option>';
 								} else {
 									echo '<option value="' . $value . '">' . $cstatus . '</option>';
