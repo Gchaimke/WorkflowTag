@@ -28,29 +28,38 @@ class Search extends CI_Controller
         $html = "";
         if ($results) {
             foreach ($results as $result) {
-                if(strpos($result["project"], 'Trash') !== false ){
+                if (strpos($result["project"], 'Trash') !== false) {
                     continue;
                 }
+                $client = $this->Clients_model->get_client_by_name($result["client"]);
+                $client['id'] = isset($client) ? $client['id'] : "";
+
                 $html .= "<tr class='text-white'>";
                 if (isset($result['number']) && isset($result['parts'])) {
-                    $html .= "<td>RMA " . $result['number'] . "</td>";
-                    $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
+                    $html .= "<td class='text-left'>{$result['number']}</td>";
+                    $html .= "<td>" . urldecode($result["project"]) . "</td>";
+                    $html .= "<td>RMA</td>";
                     $html .= "<td><a href='/forms/edit?type=rma&id=" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
                 } else if (isset($result['number']) && !isset($result['parts'])) {
-                    $html .= "<td>QC " . $result['number'] . "</td>";
-                    $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
-                    $html .= "<td><a href='/forms/edit?type=qc&id=" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
+                    $html .= "<td class='text-left'{$result['number']}</td>";
+                    $html .= "<td>QC</td>";
+                    $html .= "<td>" . urldecode($result["project"]) . "</td>";
+                    $html .= "<td><a href='/forms/edit?type=qc&id={$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
                 } else if (isset($result['row'])) {
-                    $html .= "<td>Note " . $result['checklist_sn'] . "</td>";
-                    $html .= "<td>". urldecode($result["project"]) . "</td>";
-                    $html .= "<td><a href='/production/edit_note/" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
+                    $html .= "<td class='text-left'>{$result['checklist_sn']}</td>";
+                    $html .= "<td>" . urldecode($result["project"]) . "</td>";
+                    $html .= "<td>NOTE</td>";
+                    $html .= "<td><a href='/production/edit_note/{$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
                 } else {
-                    $html .= "<td>" . $result['serial'] . "</td>";
-                    $html .= "<td>" . urldecode($result["client"]) . " " . urldecode($result["project"]) . "</td>";
-                    if (strpos($result["project"], 'Trash') !== false) {
-                        $html .= "<td>No Actions for Trashed items</td>";
-                    } else {
-                        $html .= "<td><a href='/production/edit_checklist/" . $result["id"] . "?sn=" . $result["serial"] . "' class='btn btn-info fa fa-edit'></a></td>";
+                    if ($client['id'] != "") {
+                        $html .= "<td class='text-left'>" . $result['serial'] . "</td>";
+                        $html .= "<td>" . urldecode($result["project"]) . "</td>";
+                        $html .= "<td>CHECKLIS</td>";
+                        if (strpos($result["project"], 'Trash') !== false) {
+                            $html .= "<td>No Actions for Trashed items</td>";
+                        } else {
+                            $html .= "<td><a href='/production/edit_checklist/{$result["id"]}?sn={$result["serial"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
+                        }
                     }
                 }
                 $html .= "</tr>";

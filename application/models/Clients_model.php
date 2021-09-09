@@ -97,6 +97,7 @@ class Clients_model extends CI_Model
     function get_client_by_name($name = "")
     {
         if ($name != "") {
+            $name = urldecode($name);
             $this->db->select('*');
             $this->db->from('clients');
             $this->db->order_by('name');

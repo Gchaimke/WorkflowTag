@@ -215,7 +215,7 @@ a.btn.btn-primary.folder {
     position: fixed;
     margin: auto;
     width: 100%;
-    z-index: 9999;
+    z-index: 1021;
     top: 67px;
     bottom: 0;
 }
