@@ -24,7 +24,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
 		echo '<div class="card-columns">';
 		foreach ($clients as $key => $client) {
-			echo "<div id='client_{$client['id']}' class='card'><center><div class='card-body'><h3 class='card-title'>$key</h3>";
+			echo "<div id='client_{$client['id']}' class='card'><center><div class='clients card-body'><h3 class='card-title'>$key</h3>";
 			echo "<div class='m-2'>";
 			echo "<a href='/clients/edit/{$client['id']}' class='btn btn-info'><i class='fa fa-edit'></i></a>";
 			echo "<button class='btn btn-danger mx-2' onclick='deleteClient({$client['id']},\"$key\")'><i class='fa fa-trash'></i></button>";
