@@ -26,11 +26,12 @@ if (isset($this->session->userdata['logged_in'])) {
 		foreach ($clients as $key => $client) {
 			echo "<div class='col my-3'>
 					<div id='client_{$client['id']}' class='card h-100'>
+					<img src='{$client['logo']}' class='card-img-top' alt='...'>
 						<div class='card-header'>
 							<div class='row'>
 								<span class='card-title h3 col'>$key</span>
 								<a href='/clients/edit/{$client['id']}' class='btn btn-info'><i class='fa fa-edit'></i></a>
-								<button class='btn btn-danger mx-2' onclick='deleteClient({$client['id']},\"$key\")'>
+								<button class='btn btn-danger mx-2' onclick='deleteClient({c},\"$key\")'>
 									<i class='fa fa-trash'></i>
 								</button>
 							</div>
