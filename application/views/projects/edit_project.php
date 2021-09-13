@@ -43,6 +43,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						</div>
 					</div>
 				</div>
+				<?php //TODO: add assembly upload ?>
 				<div class="form-group">
 					<hr>
 					<label>Checklist Data</label><br>
