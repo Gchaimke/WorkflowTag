@@ -15,6 +15,9 @@ class Admin_model extends CI_Model
             'roles' => array(
                 'type' => 'TEXT'
             ),
+            'user_roles' => array(
+                'type' => 'TEXT'
+            ),
             'language' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 50,
@@ -28,7 +31,7 @@ class Admin_model extends CI_Model
         $this->dbforge->create_table('settings');
 
         $st = array(
-            'roles' => 'Admin,Assembler,QC'
+            'roles' => 'Admin,Assembler,QC,Engineer,Wearhouse'
         );
         $this->db->insert('settings', $st);
     }
@@ -40,7 +43,7 @@ class Admin_model extends CI_Model
         $this->db->select('*');
         $this->db->from('settings');
         $query = $this->db->get();
-        $response = $query->result_array();
+        $response = $query->row_array();
         return $response;
     }
 

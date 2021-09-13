@@ -34,15 +34,15 @@ if (isset($this->session->userdata['logged_in'])) {
         ?>
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <?= lang('users') ?>
+                <?= lang('users') ?>
                 <span class="badge badge-primary badge-pill"><?php echo $users_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <?= lang('companies') ?>
+                <?= lang('companies') ?>
                 <span class="badge badge-primary badge-pill"><?php echo $clients_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-            <?= lang('forms') ?> ( You saved minimum <?php echo $checklists_count ?> pages! )
+                <?= lang('forms') ?> ( You saved minimum <?php echo $checklists_count ?> pages! )
                 <span class="badge badge-primary badge-pill"><?php echo $checklists_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -52,12 +52,14 @@ if (isset($this->session->userdata['logged_in'])) {
         </ul><br>
         <div id="form-messages" class='alert hidden' role='alert'></div>
         <?php echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create'); ?>
-        <div class="form-group"><label>
-                <h3><?=lang('roles')?></h3>
+        <div class="form-group">
+            <label>
+                <h3><?= lang('roles') ?></h3>
+                <div>System: <?=$settings['roles']?></div>
             </label>
             <?php
             if (isset($settings) && $settings != "") {
-                echo '<textarea name="roles" class="form-control" rows="1" cols="30">' . $settings[0]['roles'].'</textarea>';
+                echo '<textarea name="user_roles" class="form-control" rows="1" cols="30">' . $settings['user_roles'] . '</textarea>';
             }
             ?>
         </div>
@@ -69,7 +71,7 @@ if (isset($this->session->userdata['logged_in'])) {
                 <select class="form-control" name='language'>
                     <?php if (isset($languages)) {
                         foreach ($languages as $lang) {
-                            if ($settings[0]['language'] == $lang) {
+                            if ($settings['language'] == $lang) {
                                 echo "<option selected>$lang</option>";
                             } else {
                                 echo "<option>$lang</option>";
@@ -81,7 +83,7 @@ if (isset($this->session->userdata['logged_in'])) {
             </div>
         </div>
         <?php
-        echo "<input type='submit' class='btn btn-success' name='submit' value='".lang('save')."'>";
+        echo "<input type='submit' class='btn btn-success' name='submit' value='" . lang('save') . "'>";
         echo form_close();
         ?>
         </br>

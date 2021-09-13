@@ -65,7 +65,7 @@ class Admin extends CI_Controller
 			$this->settings();
 		} else {
 			$data = array(
-				'roles' => $this->input->post('roles'),
+				'user_roles' => $this->input->post('user_roles'),
 				'language' => $this->input->post('language'),
 			);
 			$this->Admin_model->save_settings($data);
@@ -93,13 +93,11 @@ class Admin extends CI_Controller
 	function upgrade_db()
 	{
 		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$field_name = 'restart_serial';
-		$table_name = 'projects';
+		$field_name = 'user_roles';
+		$table_name = 'settings';
 		$fields = array(
 			$field_name => array(
-				'type' => 'INT',
-				'constraint' => 1,
-				'unsigned' => TRUE,
+				'type' => 'TEXT',
 			)
 		);
 		if (!$this->db->field_exists($field_name, $table_name)) {
