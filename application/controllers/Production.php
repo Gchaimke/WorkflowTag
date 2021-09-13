@@ -529,7 +529,9 @@ class Production extends CI_Controller
             mkdir($folder_path, 0770, true);
         }
         copy('assets/css/offline.css', $folder_path . DIRECTORY_SEPARATOR . "offline.css");
-        copy("." . $data['logo'], $folder_path . DIRECTORY_SEPARATOR . "logo.png");
+        if ($data['logo'] != "") {
+            copy("." . $data['logo'], $folder_path . DIRECTORY_SEPARATOR . "logo.png");
+        }
         $js = "
         var checkRows = $('.check_row');
         var inputRows = $('input.input');

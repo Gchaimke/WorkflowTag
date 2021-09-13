@@ -187,8 +187,8 @@ class Users extends CI_Controller
 
     function set_session_data($user_name = '')
     {
-        if ($this->Admin_model->getSettings()[0]['language'] != '') {
-            $sys_lang = $this->Admin_model->getSettings()[0]['language'];
+        if ($this->Admin_model->getSettings()['language'] != '') {
+            $sys_lang = $this->Admin_model->getSettings()['language'];
         } else {
             $sys_lang = $this->config->item('language');
         }

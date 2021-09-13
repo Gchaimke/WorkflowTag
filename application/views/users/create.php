@@ -34,9 +34,10 @@ if (isset($this->session->userdata['logged_in'])) {
                                     </div>
                                     <select class="form-control" name='role'>
                                           <?php if (isset($settings)) {
-                                                $arr = explode(",", $settings[0]['roles']);
+                                                $arr = explode(",", $settings['roles'] . "," . $settings['user_roles']);
                                                 foreach ($arr as $role) {
-                                                      echo "<option value='$role'>".lang($role)."</option>";
+                                                      $role_lang =  lang($role) != "" ? lang($role) : $role;
+                                                      echo "<option value='$role'>$role_lang</option>";
                                                 }
                                           }
                                           ?>
@@ -44,25 +45,25 @@ if (isset($this->session->userdata['logged_in'])) {
                               </div>
                         </div>
                         <div class="form-row">
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('language') ?></div>
-						</div>
-						<select class="form-control" name='language'>
-							<?php if (isset($languages)) {
-								echo "<option value='system'>" . lang('default') . "</option>";
-								foreach ($languages as $lang) {
-									if ($user['language'] == $lang) {
-										echo "<option selected>$lang</option>";
-									} else {
-										echo "<option>$lang</option>";
-									}
-								}
-							}
-							?>
-						</select>
-					</div>
-				</div>
+                              <div class="input-group mb-2">
+                                    <div class="input-group-prepend">
+                                          <div class="input-group-text"><?= lang('language') ?></div>
+                                    </div>
+                                    <select class="form-control" name='language'>
+                                          <?php if (isset($languages)) {
+                                                echo "<option value='system'>" . lang('default') . "</option>";
+                                                foreach ($languages as $lang) {
+                                                      if ($user['language'] == $lang) {
+                                                            echo "<option selected>$lang</option>";
+                                                      } else {
+                                                            echo "<option>$lang</option>";
+                                                      }
+                                                }
+                                          }
+                                          ?>
+                                    </select>
+                              </div>
+                        </div>
                         <div class="form-row">
                               <div class="input-group mb-2">
                                     <div class="input-group-prepend">

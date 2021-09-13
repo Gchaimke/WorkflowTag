@@ -15,7 +15,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h5><?= lang('edit_details') ." ". $user['name'] ?></h5>
+				<h5><?= lang('edit_details') . " " . $user['name'] ?></h5>
 
 			</center>
 		</div>
@@ -39,12 +39,21 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 							echo '<div class="input-group-prepend"><div class="input-group-text">' . lang('role') . '</div></div>';
 							echo "<select class='form-control' name='role'>";
 							if (isset($settings)) {
-								$arr = explode(",", $settings[0]['roles']);
+								$arr = explode(",", $settings['roles']);
+								foreach ($arr as $crole) {
+									$role_lang =  lang($crole);
+									if ($crole == $user['role']) {
+										echo "<option selected value='$crole'>$role_lang</option>";
+									} else {
+										echo "<option value='$crole'>$role_lang</option>";
+									}
+								}
+								$arr = explode(",", $settings['user_roles']);
 								foreach ($arr as $crole) {
 									if ($crole == $user['role']) {
-										echo "<option selected value='$crole'>" . lang($crole) . '</option>';
+										echo "<option selected value='$crole'>$crole</option>";
 									} else {
-										echo "<option value='$crole'>" . lang($crole) . '</option>';
+										echo "<option value='$crole'>$crole</option>";
 									}
 								}
 							}
