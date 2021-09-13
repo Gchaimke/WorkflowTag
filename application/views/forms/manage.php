@@ -2,7 +2,7 @@
 $status = ['receive', 'verification', 'on check', 'done'];
 $colors = ['info', 'warning', 'danger', 'success'];
 $type = isset($_GET['type']) ? $_GET['type'] : 'rma';
-$client =  isset($_GET['client']) ? $_GET['client'] : 'avdor';
+$client =  isset($_GET['client']) ? $_GET['client'] : 0;
 $project =  isset($_GET['project']) ? $_GET['project'] : 'All';
 $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
 ?>

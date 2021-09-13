@@ -47,7 +47,8 @@ class Forms extends CI_Controller
         if ($type != '') {
             $data = array();
             $data['type'] = $type;
-            $data['client_name'] = isset($_GET['client']) ? $this->Clients_model->get_client_by_id($_GET['client'])['name'] : null;
+            $data['client_name'] = isset($_GET['client']) ? $this->Clients_model->get_client_by_id($_GET['client']) : null;
+            $data['client_name'] = isset($data['client_name']) ? $data['client_name']['name'] : "Warehouse";
             $data['project'] = isset($_GET['project']) ? $_GET['project'] : 'All';
             $this->load->view('header');
             $this->load->view('main_menu');
@@ -129,22 +130,22 @@ class Forms extends CI_Controller
 
     public function save_file($id = 0)
     {
-        $upload_folder = 'Uploads/'.$_GET['client']."/".$_GET['project']."/".$_GET['type']."/".$id;
+        $upload_folder = 'Uploads/' . $_GET['client'] . "/" . $_GET['project'] . "/" . $_GET['type'] . "/" . $id;
         if (!file_exists($upload_folder)) {
             mkdir($upload_folder, 0770, true);
         }
         $count = 0;
-        $count += count(glob($upload_folder."/*.txt"));
-        $count += count(glob($upload_folder."/*.pdf"));
-        $count += count(glob($upload_folder."/*.csv"));
-        $count += count(glob($upload_folder."/*.log"));
+        $count += count(glob($upload_folder . "/*.txt"));
+        $count += count(glob($upload_folder . "/*.pdf"));
+        $count += count(glob($upload_folder . "/*.csv"));
+        $count += count(glob($upload_folder . "/*.log"));
         $count++;
         $config = array(
             'upload_path' => $upload_folder,
             'overwrite' => TRUE,
             'allowed_types' => 'txt|pdf|csv|log',
             'max_size' => "2048",
-            'file_name' => 'log_'.$count,
+            'file_name' => 'log_' . $count,
         );
         $this->load->library('upload', $config);
         if ($this->upload->do_upload('files')) {
@@ -158,12 +159,12 @@ class Forms extends CI_Controller
 
     public function delete_file()
     {
-            $file = $this->input->post('file');
-            // Use unlink() function to delete a file  
-            if (!unlink($_SERVER["DOCUMENT_ROOT"] . $file)) {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $file . " cannot be deleted due to an error");
-            } else {
-                echo ($_SERVER["DOCUMENT_ROOT"] . $file . " has been deleted");
-            }
+        $file = $this->input->post('file');
+        // Use unlink() function to delete a file  
+        if (!unlink($_SERVER["DOCUMENT_ROOT"] . $file)) {
+            echo ($_SERVER["DOCUMENT_ROOT"] . $file . " cannot be deleted due to an error");
+        } else {
+            echo ($_SERVER["DOCUMENT_ROOT"] . $file . " has been deleted");
+        }
     }
 }
