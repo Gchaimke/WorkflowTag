@@ -80,7 +80,7 @@ if (!isset($form)) {
       }
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&id=<?php echo $form->id ?>" role='alert'></div>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&client=<?=$_GET['client']?>&id=<?php echo $form->id ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $_GET['client'] . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> QC " hidden></nav>
 <main role="main">
       <div class="jumbotron">
@@ -91,7 +91,7 @@ if (!isset($form)) {
             </div>
       </div>
       <div class="control_btn_container">
-            <button id="snap1" class="btn btn-info mx-3" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
+            <button class="btn btn-info mx-3" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
             <button id="save" type='submit' class="btn btn-success navbar-btn mx-3" value="Save" onclick="document.getElementById('update_btn').click();"><i class="fa fa-save"></i></button>
       </div>
       <div class="container">
@@ -158,11 +158,11 @@ if (!isset($form)) {
       </div>
       <div id="photo-stock" class="container">
             <center>
-                  <h2>System Photos</h2>
+                  <h2>Pictures</h2>
             </center>
             <div id="photo-messages" class='alert hidden' role='alert'></div>
             <?php
-            $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/qc/' . $form->number . '/';
+            $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/QC/' . $form->number . '/';
             echo "<script>
                   var photoCount=0;
                   var id='" . $form->id . "';
@@ -175,12 +175,12 @@ if (!isset($form)) {
             if (file_exists("./$working_dir")) {
                   if ($handle = opendir("./$working_dir")) {
                         while (false !== ($entry = readdir($handle))) {
-                              if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
-                                    echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
-                                          '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
-                                          pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' .
-                                          pathinfo($entry, PATHINFO_FILENAME) . '" src="/' . $working_dir . $entry .
-                                          '" class="respondCanvas" >';
+                              $ext = pathinfo($entry, PATHINFO_EXTENSION);
+                              $file_name = pathinfo($entry, PATHINFO_FILENAME);
+                              if ($entry != "." && $entry != ".." && ($ext == 'jpeg' || $ext == 'png') && PATHINFO_FILENAME != '') {
+                                    echo "<span id='$file_name' onclick='delPhoto(this.id)' class='btn btn-danger delete-photo'>
+                                    <i class='fa fa-trash'></i> $file_name</span>
+                                    <img id='$file_name' src='/$working_dir$entry' class='respondCanvas' >";
                                     echo '<script>photoCount++</script>';
                               }
                         }
@@ -189,7 +189,7 @@ if (!isset($form)) {
             }
             ?>
       </div>
-      <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" multiple>
+      <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>
       <div id="preview"></div>
 </main>
 <script>
