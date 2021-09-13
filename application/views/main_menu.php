@@ -20,7 +20,7 @@ if (isset($_GET['project'])) {
     <a class="nav-item btn btn-outline-success p-1 mx-1 mt-1 mt-lg-0 text-white" href="/"><?= lang('projects') ?></a>
   </div>
   <?php
-  if (isset($project) && $project != '') {
+  if (isset($project) && $project != '' && $project != 'All') {
     echo "<a class='nav-item btn btn-outline-warning p-1 mx-1 mt-1 mt-lg-0 project' href='/production/checklists?client={$_GET['client']}&project=$project'>$project </a>";
   } ?>
   <button class="search nav-item btn btn-outline-success p-1 mx-1 px-3 mt-1 mt-lg-0 text-white"><i class="search_icon fas fa-search"></i></button>
@@ -39,7 +39,7 @@ if (isset($_GET['project'])) {
             <?= lang('forms') ?>
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <?php if (isset($project) && $project != '') { ?>
+            <?php if (isset($project) && $project != '' && $project != 'All') { ?>
               <b class="ml-2"><?= $project ?></b><br>
               <a class="nav-item btn btn-outline-warning p-1 mx-md-2 px-2 mt-3 mt-lg-0 text-black" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
               <a class="nav-item btn btn-outline-danger p-1 mx-md-2 px-3 mt-3 mt-lg-0 text-black" href="/forms?type=qc&client=<?= $_GET['client'] . "&project=" . $project ?>">QC</a>

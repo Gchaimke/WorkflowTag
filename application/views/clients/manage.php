@@ -22,27 +22,41 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo $message_display . '</div>';
 		}
 
-		echo '<div class="card-columns">';
+		echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
 		foreach ($clients as $key => $client) {
-			echo "<div id='client_{$client['id']}' class='card'><center><div class='clients card-body'><h3 class='card-title'>$key</h3>";
-			echo "<div class='m-2'>";
-			echo "<a href='/clients/edit/{$client['id']}' class='btn btn-info'><i class='fa fa-edit'></i></a>";
-			echo "<button class='btn btn-danger mx-2' onclick='deleteClient({$client['id']},\"$key\")'><i class='fa fa-trash'></i></button>";
-			echo "</div></div>";
-			echo '<div class="card-footer">';
+			echo "<div class='col my-3'>
+					<div id='client_{$client['id']}' class='card h-100'>
+						<div class='card-header'>
+							<div class='row'>
+								<span class='card-title h3 col'>$key</span>
+								<a href='/clients/edit/{$client['id']}' class='btn btn-info'><i class='fa fa-edit'></i></a>
+								<button class='btn btn-danger mx-2' onclick='deleteClient({$client['id']},\"$key\")'>
+									<i class='fa fa-trash'></i>
+								</button>
+							</div>
+						</div>
+						<div class='clients card-body'>";
 			if ($client['status'] == 1) {
 				foreach ($client['projects'] as $project) {
-					echo  "<div id='project_{$project['id']}' class='my-3 project_row'>
-					<span class='m-2'>{$project['project']}</span>
-					<span><a href='/projects/edit_project/{$project['id']}' class='btn btn-primary'><i class='fa fa-edit'></i></a>
-					<button class='btn btn-danger mx-2' onclick='deleteProject({$project['id']},\"{$project['project']}\")'>
-					<i class='fa fa-trash'></i></button></span></div>";
+					echo  "
+							<div id='project_{$project['id']}' class='my-3 project_row col-12'>
+								<span class='m-2 h5'>{$project['project']}</span>
+								<span><a href='/projects/edit_project/{$project['id']}' class='btn btn-primary'>
+								<i class='fa fa-edit'></i></a>
+								<button class='btn btn-danger mx-2' onclick='deleteProject({$project['id']},\"{$project['project']}\")'>
+								<i class='fa fa-trash'></i></button></span>
+							</div>";
 				}
-				echo "<a class='btn btn-success' href='/projects/add_project/{$client['id']}'>" . lang('add') . "<i class='fas fa-file-alt mx-2'></i></a>";
+				echo 	"</div>";
+				echo '	<div class="card-footer text-center">';
+				echo "		<a class='btn btn-success' href='/projects/add_project/{$client['id']}'>" . lang('add') . "
+								<i class='fas fa-file-alt mx-2'></i>
+							</a>
+						";
 			} else {
-				echo '<h3>OLD</h3>';
+				echo '<div class="h3 text-center w-100">Old</div>';
 			}
-			echo "</div></center></div>";
+			echo "</div></div></div>";
 		}
 		echo "</div>";
 		?>
@@ -51,7 +65,7 @@ if (isset($this->session->userdata['logged_in'])) {
 
 <script>
 	function deleteClient(id, name) {
-				$('[id^=client_' + id + ']').remove();
+		$('[id^=client_' + id + ']').remove();
 		if (confirm("Delete " + name + "?")) {
 			$.post("/clients/delete", {
 				id: id
