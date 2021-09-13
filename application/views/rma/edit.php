@@ -21,8 +21,8 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
 <?= "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&id=<?= $form->id ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> RMA " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?= $_GET['client'] ?>&id=<?= $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> RMA " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -219,26 +219,37 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                               </div>
                         </div>
                   </div>
+                  <h3>Logs</h3>
+
                   <div class="form-row mb-3">
                         <?PHP
                         if (file_exists("./$working_dir")) {
                               if ($handle = opendir("./$working_dir")) {
                                     $count = 1;
                                     while (false !== ($entry = readdir($handle))) {
-                                          if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'txt' && PATHINFO_FILENAME != '') {
-                                                echo '<div class="m-3"><span id="log_file_' .$count . '" onclick="delFile(this.id)" data-file="/' . $working_dir . $entry . '" class="btn btn-danger delete-file fa fa-trash">
-                                                </span>
-                                                <a target="_blank" href="/' . $working_dir . $entry .
-                                                      '" class="mx-3" >' . pathinfo($entry, PATHINFO_FILENAME) .
-                                                      '</a></div>';
+                                          $ext = pathinfo($entry, PATHINFO_EXTENSION);
+                                          $allowed_ext = ["txt", "pdf", "csv", "log"];
+                                          if ($entry != "." && $entry != ".." && PATHINFO_FILENAME != '') {
+                                                if (in_array($ext, $allowed_ext)) {
+                                                      echo "<div class='m-3'><span id='log_file_$count' onclick='delFile(this.id)'
+                                                            data-file='/$working_dir$entry' class='btn btn-danger delete-file'>
+                                                            <i class='fa fa-trash'></i></span>
+                                                            <a target='_blank' href='/$working_dir$entry' class='mx-3' >$entry</a></div>";
+                                                }
                                           }
+                                          $count++;
                                     }
+                              } else {
+                                    echo "Error open dir: $working_dir";
                               }
                               closedir($handle);
+                        } else {
+                              echo "no files in: $working_dir";
                         }
                         ?>
                   </div>
-                  <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?= $form->client ?>&project=<?= $form->project ?>&type=<?= $_GET['type'] ?>" />
+                  <div class="btn btn-info mx-3" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Log</div>
+                  <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?= $form->client ?>&project=<?= $form->project ?>&type=<?= $_GET['type'] ?>" hidden />
                   <hr>
                   <h2>QA</h2>
                   <div class="form-row mb-3">
@@ -327,12 +338,12 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
             if (file_exists("./$working_dir")) {
                   if ($handle = opendir("./$working_dir")) {
                         while (false !== ($entry = readdir($handle))) {
-                              if ($entry != "." && $entry != ".." && pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' && PATHINFO_FILENAME != '') {
-                                    echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
-                                          '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
-                                          pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' .
-                                          pathinfo($entry, PATHINFO_FILENAME) . '" src="/' . $working_dir . $entry .
-                                          '" class="respondCanvas" >';
+                              $ext = pathinfo($entry, PATHINFO_EXTENSION);
+                              $file_name = pathinfo($entry, PATHINFO_FILENAME);
+                              if ($entry != "." && $entry != ".." && ($ext == 'jpeg' || $ext == 'png') && PATHINFO_FILENAME != '') {
+                                    echo "<span id='$file_name' onclick='delPhoto(this.id)' class='btn btn-danger delete-photo'>
+                                    <i class='fa fa-trash'></i> $file_name</span>
+                                    <img id='$file_name' src='/$working_dir$entry' class='respondCanvas' >";
                                     echo '<script>photoCount++</script>';
                               }
                         }
@@ -377,7 +388,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                               if (data.result.includes("larger")) {
                                     alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
                               } else if (data.result.includes("filetype")) {
-                                    alert("אין אפשרות להעלות קובץ מסוג הזה!");
+                                    alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג TXT!");
                               } else {
                                     alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
                               }

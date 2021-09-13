@@ -47,7 +47,7 @@ class Forms extends CI_Controller
         if ($type != '') {
             $data = array();
             $data['type'] = $type;
-            $data['client_name'] = isset($_GET['client']) ? $this->Clients_model->get_client_by_id($_GET['client'])['name'] : 'Avdor';
+            $data['client_name'] = isset($_GET['client']) ? $this->Clients_model->get_client_by_id($_GET['client'])['name'] : null;
             $data['project'] = isset($_GET['project']) ? $_GET['project'] : 'All';
             $this->load->view('header');
             $this->load->view('main_menu');
@@ -65,7 +65,6 @@ class Forms extends CI_Controller
                 echo "$inserted_id: New  " . $this->input->post('type') . " Form created";
                 exit;
             }
-
             echo $inserted_id;
         }
     }
@@ -134,11 +133,18 @@ class Forms extends CI_Controller
         if (!file_exists($upload_folder)) {
             mkdir($upload_folder, 0770, true);
         }
+        $count = 0;
+        $count += count(glob($upload_folder."/*.txt"));
+        $count += count(glob($upload_folder."/*.pdf"));
+        $count += count(glob($upload_folder."/*.csv"));
+        $count += count(glob($upload_folder."/*.log"));
+        $count++;
         $config = array(
             'upload_path' => $upload_folder,
             'overwrite' => TRUE,
-            'allowed_types' => '*',
-            'max_size' => "2048"
+            'allowed_types' => 'txt|pdf|csv|log',
+            'max_size' => "2048",
+            'file_name' => 'log_'.$count,
         );
         $this->load->library('upload', $config);
         if ($this->upload->do_upload('files')) {

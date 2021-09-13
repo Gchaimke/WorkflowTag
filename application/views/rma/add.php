@@ -19,8 +19,8 @@ if (!isset($project)) {
 
 ?>
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&id=" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?php echo $client . "&project=" . $project ?>" data-url-name="<?= $client . " " . $project ?> RMA" hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?=$_GET['client']?>&id=" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>" data-url-name="<?= $project ?> RMA" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

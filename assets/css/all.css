@@ -232,6 +232,11 @@ a.btn.btn-primary.folder {
     z-index: 9999;
 }
 
+.close-notes {
+    margin-top: 70px;
+    margin-left: 15px;
+  }
+
 #ajax-form-qc {
     position: absolute;
     top: 55%;

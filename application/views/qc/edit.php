@@ -81,7 +81,7 @@ if (!isset($form)) {
 </style>
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
 <div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&id=<?php echo $form->id ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $form->client . "&project=" . $form->project ?>" data-url-name="All <?= $form->project ?> qc " hidden></nav>
+<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $_GET['client'] . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> QC " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
