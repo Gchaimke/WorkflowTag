@@ -11,7 +11,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="container">
 			<center>
 				<h2 class="display-4"><?= lang('clients') ?></h2>
-				<a class="btn btn-success" href="/clients/create"><?= lang('add') ?><i class="fa fa-user-plus mx-2"></i></a>
+				<a class="btn btn-outline-success" href="/clients/create"><?= lang('add') ?><i class="fa fa-user-plus mx-2"></i></a>
 			</center>
 		</div>
 	</div>
@@ -41,15 +41,15 @@ if (isset($this->session->userdata['logged_in'])) {
 					echo  "
 							<div id='project_{$project['id']}' class='my-3 project_row col-12'>
 								<span class='m-2 h5'>{$project['project']}</span>
-								<span><a href='/projects/edit_project/{$project['id']}' class='btn btn-primary'>
+								<span><a href='/projects/edit_project/{$project['id']}' class='btn btn-outline-primary'>
 								<i class='fa fa-edit'></i></a>
-								<button class='btn btn-danger mx-2' onclick='deleteProject({$project['id']},\"{$project['project']}\")'>
+								<button class='btn btn-outline-danger mx-2' onclick='deleteProject({$project['id']},\"{$project['project']}\")'>
 								<i class='fa fa-trash'></i></button></span>
 							</div>";
 				}
 				echo 	"</div>";
 				echo '	<div class="card-footer text-center">';
-				echo "		<a class='btn btn-success' href='/projects/add_project/{$client['id']}'>" . lang('add') . "
+				echo "		<a class='btn btn-outline-success' href='/projects/add_project/{$client['id']}'>" . lang('add') . "
 								<i class='fas fa-file-alt mx-2'></i>
 							</a>
 						";
