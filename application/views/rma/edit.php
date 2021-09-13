@@ -219,8 +219,8 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                               </div>
                         </div>
                   </div>
+                  <div style="page-break-after:always"></div>
                   <h3>Logs</h3>
-
                   <div class="form-row mb-3">
                         <?PHP
                         if (file_exists("./$working_dir")) {
@@ -232,7 +232,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                                           if ($entry != "." && $entry != ".." && PATHINFO_FILENAME != '') {
                                                 if (in_array($ext, $allowed_ext)) {
                                                       echo "<div class='m-3'><span id='log_file_$count' onclick='delFile(this.id)'
-                                                            data-file='/$working_dir$entry' class='btn btn-danger delete-file'>
+                                                            data-file='/$working_dir$entry' class='btn btn-danger delete-file d-print-none'>
                                                             <i class='fa fa-trash'></i></span>
                                                             <a target='_blank' href='/$working_dir$entry' class='mx-3' >$entry</a></div>";
                                                 }
@@ -243,12 +243,10 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                                     echo "Error open dir: $working_dir";
                               }
                               closedir($handle);
-                        } else {
-                              echo "no files in: $working_dir";
                         }
                         ?>
                   </div>
-                  <div class="btn btn-info mx-3" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Log</div>
+                  <div class="btn btn-info mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Log</div>
                   <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?= $form->client ?>&project=<?= $form->project ?>&type=<?= $_GET['type'] ?>" hidden />
                   <hr>
                   <h2>QA</h2>
