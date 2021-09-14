@@ -90,24 +90,6 @@ class Admin extends CI_Controller
 		echo $data['response'];
 	}
 
-	function upgrade_db()
-	{
-		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$field_name = 'user_roles';
-		$table_name = 'settings';
-		$fields = array(
-			$field_name => array(
-				'type' => 'TEXT',
-			)
-		);
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-		}else{
-			echo "$field_name exists in $table_name.";
-		}
-	}
-
 	function backupDB()
 	{
 		$working_dir = 'Uploads/Backups/';
@@ -373,5 +355,57 @@ class Admin extends CI_Controller
 		}
 		echo $msg;
 		return $empty && rmdir($path);
+	}
+
+	function upgrade_db()
+	{
+		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
+		$field_name = 'user_roles';
+		$table_name = 'settings';
+		$fields = array(
+			$field_name => array(
+				'type' => 'TEXT',
+			)
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		}else{
+			echo "$field_name exists in $table_name.";
+		}
+
+		$field_name = 'assembly';
+		$table_name = 'projects';
+		$fields = array(
+			$field_name => array(
+				'type' => 'VARCHAR',
+                'constraint' => 500
+			),
+			'checklist_version' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
+            )
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		}else{
+			echo "$field_name exists in $table_name.";
+		}
+
+		$field_name = 'version';
+		$table_name = 'checklists';
+		$fields = array(
+			$field_name => array(
+				'type' => 'VARCHAR',
+                'constraint' => 50
+			)
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		}else{
+			echo "$field_name exists in $table_name.";
+		}
 	}
 }

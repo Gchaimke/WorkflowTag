@@ -56,6 +56,10 @@ class Production_model extends CI_Model
             ),
             'log' => array(
                 'type' => 'TEXT'
+            ),
+            'version' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
             )
         );
         $this->dbforge->add_field($checklist);

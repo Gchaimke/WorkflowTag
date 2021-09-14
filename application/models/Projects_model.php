@@ -23,6 +23,10 @@ class Projects_model extends CI_Model
             'data' => array(
                 'type' => 'TEXT'
             ),
+            'checklist_version' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 50
+            ),
             'template' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 100,
@@ -34,6 +38,10 @@ class Projects_model extends CI_Model
                 'type' => 'INT',
 				'constraint' => 1,
 				'unsigned' => TRUE,
+            ),
+            'assembly' => array(
+                'type' => 'VARCHAR',
+                'constraint' => 500
             )
         );
 
