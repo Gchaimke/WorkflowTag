@@ -4,7 +4,16 @@ if (isset($this->session->userdata['logged_in'])) {
 		header("location: /");
 	}
 }
+$file = "./Uploads/" . urldecode($project['client']) . "/" . $project['project'] . "/assembly.pdf";
+if (file_exists($file)) {
+	$dispaly = "";
+} else {
+	$dispaly = "hidden";
+}
 ?>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.fileupload.js'); ?>"></script>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
@@ -43,8 +52,9 @@ if (isset($this->session->userdata['logged_in'])) {
 						</div>
 					</div>
 				</div>
-				<?php //TODO: add assembly upload 
-				?>
+				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				<div class="btn btn-info mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
+				<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
 				<hr>
 				<div class="form-group">
 					<div class="input-group mb-2">
@@ -86,7 +96,7 @@ if (isset($this->session->userdata['logged_in'])) {
 					<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header </label>
 					<textarea class="form-control" name='scans' rows="5" cols="170"><?= $project['scans'] ?></textarea></br>
 				</div>
-				<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'></ <?php echo form_close(); ?> </center>
+				<input type='submit' class="btn btn-info btn-block submit" name='submit' value='Submit'></ <?php echo form_close(); ?> </center>
 			<?php } ?>
 	</div>
 </main>
@@ -101,15 +111,38 @@ if (isset($this->session->userdata['logged_in'])) {
 		}).done(function(o) {
 			console.log('new version created');
 			console.log(o);
-			$('form').submit();
+			$('.submit').click();
 		});
 	})
 
-	$('.checklist_version').on("change", function(){
+	$('.checklist_version').on("change", function() {
 		$.post("/projects/get_checklist_version/<?= $project['id'] ?>", {
 			version: $(this).val()
 		}).done(function(o) {
 			$('.data').text(o);
 		});
-	})
+	});
+
+	//Uploader for assembly
+	if ($("#upload").length) {
+		$("#upload").fileupload({
+			autoUpload: true,
+			add: function(e, data) {
+				data.submit();
+			},
+			progress: function() {
+				$("#upload_spinner").css("display", "inherit");
+			},
+			done: function(e, data) {
+				if (data.result.includes("error")) {
+					if (data.result.includes("filetype")) {
+						alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג PDF!");
+					} else {
+						alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+					}
+				}
+				$('.submit').click();
+			}
+		});
+	}
 </script>

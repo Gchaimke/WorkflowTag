@@ -153,4 +153,26 @@ class Projects extends CI_Controller
             $this->Projects_model->deleteTemplate($id);
         }
     }
+
+    public function assembly_upload()
+    {
+        $upload_folder = "Uploads/{$_GET['client']}/{$_GET['project']}/";
+        if (!file_exists($upload_folder)) {
+            mkdir($upload_folder, 0770, true);
+        }
+        $config = array(
+            'upload_path' => $upload_folder,
+            'overwrite' => TRUE,
+            'allowed_types' => 'pdf',
+            'file_name' => 'assembly',
+        );
+        $this->load->library('upload', $config);
+        if ($this->upload->do_upload('files')) {
+            $data = array('upload_data' => $this->upload->data());
+            echo  $data['upload_data']["file_name"];
+        } else {
+            $error = "error " . $this->upload->display_errors();
+            echo $error;
+        }
+    }
 }
