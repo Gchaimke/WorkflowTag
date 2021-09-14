@@ -26,7 +26,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		foreach ($clients as $key => $client) {
 			echo "<div class='col my-3'>
 					<div id='client_{$client['id']}' class='card h-100'>
-						<div style='background-image:url(\"{$client['logo']}\")' class='card-header-bg'></div>
+						<div style='background-image:url({$client['logo']})' class='card-header-bg'></div>
 						<div class='card-header'>
 							<div class='row'>
 								<span class='card-title h3 col'>$key</span>

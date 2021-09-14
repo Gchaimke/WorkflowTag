@@ -55,6 +55,7 @@ class Production extends CI_Controller
             $data['clients'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
             $data['clients'][$client["name"]]['status'] = $client['status'];
             $data['clients'][$client["name"]]['id'] = $client['id'];
+            $data['clients'][$client["name"]]['logo'] = $client['logo'];
         }
         $this->view_page('production/view_clients', $data);
     }

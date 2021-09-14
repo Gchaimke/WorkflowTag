@@ -13,12 +13,16 @@
 			echo $message_display . '</div>';
 		}
 
-		echo '<div class="card-columns">';
+		echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
 		foreach ($clients as $key => $client) {
-			echo '<div id="' . $client['id'] . '" class="card"><center><div class="card-body"><h5 class="card-title">';
-			echo $key;
-			echo '</h5></div>';
-			echo '<div class="card-footer">';
+			
+			echo "<div class='col my-3'><div id='{$client['id']}' class='card h-100'>
+			<div style='background-image:url({$client['logo']})' class='card-header-bg'></div>
+			<div class='card-header'>		
+				<div class='card-title h5 text-center'>$key</div>
+			</div>
+			<div class='card-body'>
+			";
 			if ($client['status'] == 1) {
 				foreach ($client['projects'] as $project) {
 					echo  "<a href='/production/checklists?client={$client['id']}&project=" . $project['project'] . "' class='btn btn-primary  btn-block text-nowrap'>" . $project['project'] . "</a>";
@@ -26,7 +30,7 @@
 			} else {
 				echo '<h3>OLD</h3>';
 			}
-			echo '</div></center></div>';
+			echo '</div></div></div>';
 		}
 		echo "</div>";
 		?>
