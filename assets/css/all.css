@@ -15,6 +15,13 @@ a.navbar-brand {
     height: 50px;
 }
 
+.card-header-bg {
+    height: 100px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
 .clients.card-body {
     display: flex;
     flex-direction: row;

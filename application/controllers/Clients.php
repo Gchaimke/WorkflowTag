@@ -57,9 +57,10 @@ class Clients extends CI_Controller
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
         if ($this->form_validation->run()) {
+            $logo = str_replace(" ", "_", $this->input->post('logo'));
             $data = array(
                 'name' => $this->input->post('name'),
-                'logo' => $this->input->post('logo'),
+                'logo' => $logo,
                 'status' => $this->input->post('status')
             );
             $result = $this->Clients_model->addClient($data);
@@ -85,10 +86,11 @@ class Clients extends CI_Controller
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
         $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
+        $logo = str_replace(" ", "_", $this->input->post('logo'));
         if ($this->form_validation->run()) {
             $sql = array(
                 'id' => $this->input->post('id'),
-                'logo' => $this->input->post('logo'),
+                'logo' => $logo,
                 'name' => $this->input->post('name'),
                 'projects' => $this->input->post('projects'),
                 'status' => $this->input->post('status')
@@ -108,7 +110,8 @@ class Clients extends CI_Controller
     {
         // requires php5
         define('UPLOAD_DIR', 'Uploads/Clients/');
-        $file_name = $_POST['client'] . "_logo";
+        $client = str_replace(" ", "_", $_POST['client']);
+        $file_name = $client . "_logo";
         $img = $_POST['data'];
         $ext = $_POST['ext'];
         if (preg_match('/^data:image\/(\w+);base64,/', $img, $type)) {
