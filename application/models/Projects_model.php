@@ -116,7 +116,7 @@ class Projects_model extends CI_Model
 		$this->db->where($condition);
 		$this->db->limit(1);
 		$q = $this->db->get();
-		$response = $q->result_array();
+		$response = $q->row_array();
 		return $response;
 	}
 

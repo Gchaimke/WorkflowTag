@@ -66,27 +66,83 @@ class Projects extends CI_Controller
     public function edit_project($id = '')
     {
         $data = array();
-        $data['project'] =  $this->Projects_model->getProject($id)[0];
+        $data['project'] =  $this->Projects_model->getProject($id);
         // Check validation for user input in form
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         if ($id != '' && $this->form_validation->run()) {
             $sql = array(
                 'id' => $id,
                 'data' => $this->input->post('data'),
+                'checklist_version' => $this->input->post('checklist_version'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
+            file_put_contents($this->input->post('checklist_version'), $this->input->post('data'));
             $data['message_display'] = $this->Projects_model->editTemplate($sql);
             $data['message_display'] .= ' Project edited Successfully !';
         }
-        $data['project'] =  $this->Projects_model->getProject($id)[0];
-        $data['js_to_load'] = array("add_project.js");
+        $data['project'] =  $this->Projects_model->getProject($id);
+        $data['project']['data'] = $this->get_checklist_version($id);
+        $data['checklists'] = $this->get_checklists($id);
         $data['clients'] = $this->Clients_model->getClients();
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('projects/edit_project', $data);
         $this->load->view('footer');
+    }
+
+    function get_checklists($id)
+    {
+        $project =  $this->Projects_model->getProject($id);
+        $folder = "Uploads/{$project['client']}/{$project['project']}";
+        if (!file_exists($folder)) {
+            mkdir($folder, 0770, true);
+        }
+        return glob($folder . "/*.txt");
+    }
+
+    function get_checklist_version($id)
+    {
+        if ($id != "") {
+            $file = "";
+            $project =  $this->Projects_model->getProject($id);
+            $version = $this->input->post('version');
+            $version = isset($version) ? $version : $project['checklist_version'];
+            if (file_exists($version)) {
+                $file = file_get_contents($version);
+            }
+            if ($this->input->post('version')) {
+                echo $file;
+            }
+            return $file;
+        }
+        echo "id not set!";
+        return false;
+    }
+
+    function create_checklist_version()
+    {
+        $id = $this->input->post('project_id');
+        $version = $this->input->post('version');
+        $version = str_replace(".", "_", $version);
+        if ($id != "") {
+            $project =  $this->Projects_model->getProject($id);
+            $folder = "Uploads/{$project['client']}/{$project['project']}";
+            $file = $folder . DIRECTORY_SEPARATOR . "rev_$version.txt";
+            if (!file_exists($folder)) {
+                mkdir($folder, 0770, true);
+            }
+            if (!file_exists($file)) {
+                echo fopen($file, "w");
+                return true;
+            } else {
+                echo "file exists!";
+                return false;
+            }
+        }
+        echo "id not set!";
+        return false;
     }
 
     public function delete_project()

@@ -81,8 +81,8 @@ class Production extends CI_Controller
         $params['project'] = $project;
         $params['client'] = $this->Clients_model->get_client_by_id($client_id);
         $params['client'] = $params['client'] ? $params['client'] : array("name" => "error");
-        if (isset($this->Projects_model->getProject('', $project)[0]['template'])) {
-            $params['template'] = $this->Projects_model->getProject('', $project)[0]['template'];
+        if (isset($this->Projects_model->getProject('', $project)['template'])) {
+            $params['template'] = $this->Projects_model->getProject('', $project)['template'];
         } else {
             $params['template'] = " - not set!";
         }
@@ -165,10 +165,10 @@ class Production extends CI_Controller
         $last_serial = $this->Production_model->getLastChecklist($project);
         $month = date('m', strtotime($date));
         $year = date('y', strtotime($date));
-        if (isset($serial_project[0]['template']) &&  $serial_project[0]['template'] != "") {
-            $serial = $serial_project[0]['template']; //Get serial template
+        if (isset($serial_project['template']) &&  $serial_project['template'] != "") {
+            $serial = $serial_project['template']; //Get serial template
             $prev_month = substr($last_serial, strpos($serial, 'm'), substr_count($serial, 'm'));
-            if ($serial_project[0]["restart_serial"] != null && $prev_month !=  $month) {
+            if ($serial_project["restart_serial"] != null && $prev_month !=  $month) {
                 $last_serial = "00000000000000000";
             }
             $serial = str_replace("yy", $year, $serial); //add year
@@ -261,8 +261,8 @@ class Production extends CI_Controller
         $checked = "";
         $table = '';
         $select_users = '';
-        if (count($this->Projects_model->getProject('', $project)) > 0) {
-            $project_data = $this->Projects_model->getProject('', $project)[0]['data'];
+        if (is_array($this->Projects_model->getProject('', $project))) {
+            $project_data = $this->Projects_model->getProject('', $project)['data'];
             $rows = explode(PHP_EOL, $project_data);
             $status = explode(",", $checklist_data);
             $index = 0;
@@ -697,8 +697,8 @@ class Production extends CI_Controller
         $columns = 0;
         $id = 0;
         $scans_arr = explode(',', $data);
-        if (count($this->Projects_model->getProject('', $project)) > 0) {
-            $project_scans = $this->Projects_model->getProject('', $project)[0]['scans'];
+        if (is_array($this->Projects_model->getProject('', $project))) {
+            $project_scans = $this->Projects_model->getProject('', $project)['scans'];
             $rows = explode(PHP_EOL, $project_scans);
             if (count($rows) > 1) {
                 $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';

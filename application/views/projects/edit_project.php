@@ -43,13 +43,43 @@ if (isset($this->session->userdata['logged_in'])) {
 						</div>
 					</div>
 				</div>
-				<?php //TODO: add assembly upload ?>
+				<?php //TODO: add assembly upload 
+				?>
+				<hr>
 				<div class="form-group">
-					<hr>
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text">Create <?= lang('checklist_version') ?></div>
+						</div>
+						<input class="form-control col-3 new_version" type="number" step="0.01">
+						<div class="btn btn-outline-success create_checklist_version">Create</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="input-group mb-2">
+						<div class="input-group-prepend">
+							<div class="input-group-text"><?= lang('checklist_version') ?></div>
+						</div>
+						<select class="form-control col-3 checklist_version" name='checklist_version'>
+							<?php if (isset($checklists)) {
+								foreach ($checklists as $checklist) {
+									if ($project['checklist_version'] == $checklist) {
+										echo "<option selected>$checklist</option>";
+									} else {
+										echo "<option>$checklist</option>";
+									}
+								}
+							}
+							?>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+
 					<label>Checklist Data</label><br>
 					<label>Last column is function mark, columns separated by ';'.
 						<br> Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | I = data input</label>
-					<textarea class="form-control" name='data' rows="10" cols="170"><?= $project['data'] ?></textarea></br>
+					<textarea class="form-control data" name='data' rows="10" cols="170"><?= $project['data'] ?></textarea></br>
 				</div>
 				<div class="form-group">
 					<label>Scan Data</label><br>
@@ -60,3 +90,26 @@ if (isset($this->session->userdata['logged_in'])) {
 			<?php } ?>
 	</div>
 </main>
+<script>
+	$(document).ready(function() {
+
+	});
+	$('.create_checklist_version').on('click', function() {
+		$.post("/projects/create_checklist_version", {
+			project_id: <?= $project['id'] ?>,
+			version: $('.new_version').val()
+		}).done(function(o) {
+			console.log('new version created');
+			console.log(o);
+			$('form').submit();
+		});
+	})
+
+	$('.checklist_version').on("change", function(){
+		$.post("/projects/get_checklist_version/<?= $project['id'] ?>", {
+			version: $(this).val()
+		}).done(function(o) {
+			$('.data').text(o);
+		});
+	})
+</script>

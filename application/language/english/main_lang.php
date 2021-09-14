@@ -21,6 +21,7 @@ $lang['batch']        = 'batch';
 $lang['batch_msg']        = 'Before adding new serial here, add new serial to "%s\PRODUCTION\" folder inside Clients of drive G:';
 $lang['add_batch']        = 'Add Checklists';
 $lang['add_checklist']        = 'Add checklist';
+$lang['checklist_version']  = 'Checklist version';
 $lang['add']        = 'Add';
 $lang['assembly'] = 'Assembly';
 
