@@ -108,12 +108,13 @@ class Production extends CI_Controller
         $data = array();
         // Check validation for user input in SignUp form
         $zero_str = implode(",", array_fill(0, 400, ""));
-
+        $project = $this->Projects_model->getProject('', $this->input->post('project'));
         $serial = trim($this->input->post('serial'));
         $data = array(
             'client' => $this->input->post('client'),
-            'project' => $this->input->post('project'),
+            'project' => $project['project'],
             'serial' => $serial,
+            'version' => $project['checklist_version'],
             'data' =>  $zero_str,
             'date' => $this->input->post('date')
         );
@@ -130,26 +131,26 @@ class Production extends CI_Controller
     public function gen_checklists()
     {
         $result = 'Serial template not set!';
-        $project = $this->input->post('project');
+        $project = $this->Projects_model->getProject('', $this->input->post('project'));
         $client = $this->input->post('client');
         $date = $this->input->post('date');
-        $serials = $this->build_serials($project, $date, $this->input->post('count'));
+        $serials = $this->build_serials($project['project'], $date, $this->input->post('count'));
         if ($serials) {
             foreach ($serials as $serial) {
                 $data = array(
                     'client' => $client,
-                    'project' => $project,
+                    'project' => $project['project'],
                     'serial' => $serial,
+                    'version' => $project['checklist_version'],
                     'data' =>  implode(",", array_fill(0, 400, "")),
                     'date' =>  $date
                 );
                 $result = $this->Production_model->addChecklist($data);
                 if ($result != 1) {
                     echo 'Checklist ' . $data['serial'] . ' exists!';
-                    //return;
                 }
                 if ($result == true) {
-                    admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
+                    admin_log("created {$project['project']} checklist with serial '$serial'", 1, $this->user['name']);
                 }
             }
         }
@@ -224,11 +225,15 @@ class Production extends CI_Controller
         $data = array();
         $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
         $data['checklist'] =  $this->Production_model->getChecklists($id)[0];
+        $project = $this->Projects_model->getProject('', $data['checklist']['project']);
+
         if ($data['checklist']) {
-            $data['project'] =  urldecode($data['checklist']['project']);
-            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist']['data']);
-            $data['scans_rows'] = $this->build_scans($data['project'], $data['checklist']['scans']);
-            $data['client'] = urldecode($data['checklist']['client']);
+            if ($data['checklist']['version'] == "") {
+                $data['checklist']['version'] = $project['checklist_version'];
+            }
+            $data['project'] =  urldecode($project['project']);
+            $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
+            $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
             $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
             $data['users'] = $this->users;
             $data['notes'] = $this->get_qc_notes($id);
@@ -246,25 +251,46 @@ class Production extends CI_Controller
         $data['ids'] = $ids;
         $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
         $data['checklists'] =  $this->Production_model->getChecklists($ids);
+
         if ($data['checklists']) {
-            $data['checklist'] = $data['checklists'];
-            $data['project'] =  urldecode($data['checklists'][0]['project']);
-            $data['checklist_rows'] = $this->build_checklist($data['project'], $data['checklist'][0]['data']);
+            $data['checklist'] = $data['checklists'][0];
+            $project = $this->Projects_model->getProject('', $data['checklist']['project']);
+            if ($data['checklist']['version'] == "") {
+                $data['checklist']['version'] = $project['checklist_version'];
+            }
+            $data['project'] =  urldecode($project['project']);
+            $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
             $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
             $this->view_page('production/edit_batch', '', $data);
         }
     }
 
-    private function build_checklist($project, $checklist_data)
+    function get_checklist_version($version)
+    {
+        if ($version != "") {
+            if (file_exists($version)) {
+                return file_get_contents($version);
+            }
+        }
+        return false;
+    }
+
+    private function build_checklist($project, $checklist)
     {
         $prefix_count = 0;
         $checked = "";
         $table = '';
         $select_users = '';
+        $checklist = $checklist;
+
         if (is_array($this->Projects_model->getProject('', $project))) {
-            $project_data = $this->Projects_model->getProject('', $project)['data'];
-            $rows = explode(PHP_EOL, $project_data);
-            $status = explode(",", $checklist_data);
+            if ($checklist['version'] != "") {
+                $checklist_rows = $this->get_checklist_version($checklist['version']);
+            } else {
+                $checklist_rows =  $this->Projects_model->getProject('', $project)['data'];
+            }
+            $rows = explode(PHP_EOL, $checklist_rows);
+            $status = explode(",", $checklist['data']);
             $index = 0;
             $id = 0;
             foreach ($this->users as $user) {
@@ -343,6 +369,7 @@ class Production extends CI_Controller
             $data = array(
                 'id' =>  $id,
                 'data' =>  $this->input->post('data'),
+                'version' => $this->input->post('version'),
                 'log' =>  $this->input->post('log'),
                 'progress' => $this->input->post('progress'),
                 'assembler' => $this->input->post('assembler'),
@@ -376,6 +403,7 @@ class Production extends CI_Controller
                 $data = array(
                     'id' =>  $id,
                     'data' =>  $this->input->post('data'),
+                    'version' => $this->input->post('version'),
                     'log' =>  $this->input->post('log'),
                     'progress' => $this->input->post('progress'),
                     'assembler' => $this->input->post('assembler'),

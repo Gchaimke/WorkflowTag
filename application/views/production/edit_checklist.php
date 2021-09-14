@@ -42,6 +42,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 				<?= form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
 				<input id='input_data' type='hidden' name='data' value="<?= $checklist_data ?>">
+				<input id='version' type='hidden' name='version' value="<?= $checklist['version'] ?>">
 				<input id='input_progress' type='hidden' name='progress' value="<?= $progress ?>">
 				<input id='assembler' type='hidden' name='assembler' value="<?= $assembler ?>">
 				<input id="input_qc" type='hidden' name='qc' value="<?= $qc ?>">

@@ -7,6 +7,7 @@ $assembler = $checklists[0]['assembler'];
 $qc = $checklists[0]['qc'];
 $scans = $checklists[0]['scans'];
 $date = $checklists[0]['date'];
+$version = $checklist['version'];
 
 $this->load->helper('cookie');
 $session = get_cookie('ci_session');
@@ -33,6 +34,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<li class="nav-item">
 				<?php echo form_open('production/save_batch_checklists/' . $ids, 'id=ajax-form', 'class=saveData'); ?>
 				<input id="input_data" type='hidden' name='data' value="<?php echo $checklist_data ?>">
+				<input id='version' type='hidden' name='version' value="<?= $version ?>">
 				<input id="input_progress" type='hidden' name='progress' value="<?php echo $progress ?>">
 				<input id="assembler" type='hidden' name='assembler' value="<?php echo $assembler ?>">
 				<input type='hidden' name='client' value="<?php echo $client['name'] ?>">
