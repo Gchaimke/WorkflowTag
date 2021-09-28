@@ -25,15 +25,15 @@ table {
     width: 100%;
 }
 
-table td,table th{
+table td, table th {
     border: 1px solid #ddd;
     padding: 4px;
 }
 
 thead.thead-dark {
     background: #eeeeee;
-  }
-  
+}
+
 .scans {
     width: 99%;
 }
@@ -68,7 +68,11 @@ select:disabled {
     flex-direction: row;
     align-content: center;
     justify-content: space-between;
-  }
+}
+
+.print-hide {
+    display: none;
+}
 
 @media print {
     main {

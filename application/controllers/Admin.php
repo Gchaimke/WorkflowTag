@@ -407,5 +407,25 @@ class Admin extends CI_Controller
 		}else{
 			echo "$field_name exists in $table_name.";
 		}
+
+		$field_name = 'language';
+		$table_name = 'users';
+		$fields = array(
+			'language' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 20,
+				'null' => TRUE
+			),
+			'projects' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 60
+			)
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		}else{
+			echo "$field_name exists in $table_name.";
+		}
 	}
 }

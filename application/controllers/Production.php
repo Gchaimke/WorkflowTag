@@ -224,13 +224,14 @@ class Production extends CI_Controller
     {
         $data = array();
         $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
-        $data['checklist'] =  $this->Production_model->getChecklists($id)[0];
-        $project = $this->Projects_model->getProject('', $data['checklist']['project']);
+        $data['checklist'] =  $this->Production_model->getChecklists($id);
 
         if ($data['checklist']) {
-            if ($data['checklist']['version'] == "") {
-                $data['checklist']['version'] = $project['checklist_version'];
-            }
+            $data['checklist'] = $data['checklist'][0];
+            $project = $this->Projects_model->getProject('', $data['checklist']['project']);
+            $data['version'] = $data['checklist']['version'] ?
+                $data['checklist']['version'] :
+                $project['checklist_version'];
             $data['project'] =  urldecode($project['project']);
             $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
             $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
@@ -238,6 +239,8 @@ class Production extends CI_Controller
             $data['users'] = $this->users;
             $data['notes'] = $this->get_qc_notes($id);
             $this->view_page('production/edit_checklist', '', $data);
+        }else{
+            echo "Checklist not found, Deleted?";
         }
     }
 
@@ -255,9 +258,7 @@ class Production extends CI_Controller
         if ($data['checklists']) {
             $data['checklist'] = $data['checklists'][0];
             $project = $this->Projects_model->getProject('', $data['checklist']['project']);
-            if ($data['checklist']['version'] == "") {
-                $data['checklist']['version'] = $project['checklist_version'];
-            }
+            $data['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             $data['project'] =  urldecode($project['project']);
             $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
             $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
@@ -281,7 +282,6 @@ class Production extends CI_Controller
         $checked = "";
         $table = '';
         $select_users = '';
-        $checklist = $checklist;
 
         if (is_array($this->Projects_model->getProject('', $project))) {
             if ($checklist['version'] != "") {
@@ -383,6 +383,7 @@ class Production extends CI_Controller
                 $data['client'] = $this->input->post('client');
                 $data['project'] = $this->input->post('project');
                 $data['date'] = $this->input->post('date');
+                $data['version'] = $this->input->post('version');
                 $data['logo'] = $this->input->post('logo');
                 $data['scans'] = $this->input->post('scans');
                 $this->generate_offline_files($data);
@@ -548,18 +549,18 @@ class Production extends CI_Controller
     }
 
     //** OFFLINE FILES */
-    function generate_offline_files(array $data)
+    function generate_offline_files(array $checklist)
     {
         $folder_path = "Uploads" .
-            DIRECTORY_SEPARATOR . $data['client'] .
-            DIRECTORY_SEPARATOR . $data['project'] .
-            DIRECTORY_SEPARATOR . $data['serial'];
+            DIRECTORY_SEPARATOR . $checklist['client'] .
+            DIRECTORY_SEPARATOR . $checklist['project'] .
+            DIRECTORY_SEPARATOR . $checklist['serial'];
         if (!file_exists($folder_path)) {
             mkdir($folder_path, 0770, true);
         }
         copy('assets/css/offline.css', $folder_path . DIRECTORY_SEPARATOR . "offline.css");
-        if ($data['logo'] != "") {
-            copy("." . $data['logo'], $folder_path . DIRECTORY_SEPARATOR . "logo.png");
+        if ($checklist['logo'] != "") {
+            copy("." . $checklist['logo'], $folder_path . DIRECTORY_SEPARATOR . "logo.png");
         }
         $js = "
         var checkRows = $('.check_row');
@@ -597,31 +598,31 @@ class Production extends CI_Controller
             }
         });";
         $html_file = $_SERVER["DOCUMENT_ROOT"] . DIRECTORY_SEPARATOR . $folder_path . DIRECTORY_SEPARATOR . "index.html";
-        $checklist_table = $this->build_checklist($data['project'], $data['data']);
-        $scans_table = $this->build_scans($data['project'], $data['scans']);
+        $checklist_table = $this->build_checklist($checklist['project'], $checklist);
+        $scans_table = $this->build_scans($checklist['project'], $checklist['scans']);
         $fp = fopen($html_file, 'w');
         fwrite($fp, "<!DOCTYPE html><html lang='en' xml:lang='en' xmlns='http://www.w3.org/1999/xhtml'>" . PHP_EOL);
-        fwrite($fp, "<head><title>SN:" . $data['serial'] . " - " . $data['project'] . "</title>" . PHP_EOL);
+        fwrite($fp, "<head><title>SN:" . $checklist['serial'] . " - " . $checklist['project'] . "</title>" . PHP_EOL);
         fwrite($fp, "<link href='offline.css' rel='stylesheet'>" . PHP_EOL);
         fwrite($fp, "<script src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js'></script>" . PHP_EOL);
         fwrite($fp, "</head><body>" . PHP_EOL);
         fwrite($fp, "<img id='logo' src='logo.png'>" . PHP_EOL);
         fwrite($fp, "<div class='header'>" . PHP_EOL);
-        fwrite($fp, "<span id='project'>Project: " . $data['client'] . " - " . $data['project'] . "</span>" . PHP_EOL);
-        fwrite($fp, "<span id='serial'>SN: " . $data['serial'] . "</span>" . PHP_EOL);
-        fwrite($fp, "<span id='date'>DATE: " . $data['date'] . "</span>" . PHP_EOL);
+        fwrite($fp, "<span id='project'>Project: " . $checklist['client'] . " - " . $checklist['project'] . "</span>" . PHP_EOL);
+        fwrite($fp, "<span id='serial'>SN: " . $checklist['serial'] . "</span>" . PHP_EOL);
+        fwrite($fp, "<span id='date'>DATE: " . $checklist['date'] . "</span>" . PHP_EOL);
         fwrite($fp, "</div>" . PHP_EOL);
         fwrite($fp, "<div class='content'>" . $checklist_table . "</div>" . PHP_EOL);
         fwrite($fp, "<div class='content'>" . $scans_table . "</div>" . PHP_EOL);
         fwrite($fp, "<h2>Pictures</h2>" . PHP_EOL);
         fwrite($fp, "<div class='gallery'>" . $this->get_photos_as_html($folder_path) . "</div>" . PHP_EOL);
         fwrite($fp, "<script>" . PHP_EOL);
-        fwrite($fp, "var client='" . $data['client'] . "';" . PHP_EOL);
-        fwrite($fp, "var project='" . $data['project'] . "';" . PHP_EOL);
-        fwrite($fp, "var serial='" . $data['serial'] . "';" . PHP_EOL);
-        fwrite($fp, "var serial='" . $data['assembler'] . "';" . PHP_EOL);
-        fwrite($fp, "var data=`" . $data['data'] . "`;" . PHP_EOL);
-        fwrite($fp, "var scans=`" . $data['scans'] . "`;" . PHP_EOL);
+        fwrite($fp, "var client='" . $checklist['client'] . "';" . PHP_EOL);
+        fwrite($fp, "var project='" . $checklist['project'] . "';" . PHP_EOL);
+        fwrite($fp, "var serial='" . $checklist['serial'] . "';" . PHP_EOL);
+        fwrite($fp, "var serial='" . $checklist['assembler'] . "';" . PHP_EOL);
+        fwrite($fp, "var data=`" . $checklist['data'] . "`;" . PHP_EOL);
+        fwrite($fp, "var scans=`" . $checklist['scans'] . "`;" . PHP_EOL);
         fwrite($fp, $js . PHP_EOL);
         fwrite($fp, "</script>" . PHP_EOL);
         fwrite($fp, "</body></html>" . PHP_EOL);
