@@ -79,7 +79,7 @@ class Projects extends CI_Controller
                 'scans' => $this->input->post('scans')
             );
             file_put_contents($this->input->post('checklist_version'), $this->input->post('data'));
-            $data['message_display'] = $this->Projects_model->editTemplate($sql);
+            $data['message_display'] = $this->Projects_model->editProject($sql);
             $data['message_display'] .= ' Project edited Successfully !';
         }
         $data['project'] =  $this->Projects_model->getProject($id);
@@ -152,7 +152,7 @@ class Projects extends CI_Controller
         $role = ($this->session->userdata['logged_in']['role']);
         if ($role == "Admin") {
             $id = $_POST['id'];
-            $this->Projects_model->deleteTemplate($id);
+            $this->Projects_model->deleteProject($id);
         }
     }
 

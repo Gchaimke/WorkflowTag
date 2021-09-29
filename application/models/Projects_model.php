@@ -3,70 +3,70 @@
 class Projects_model extends CI_Model
 {
 	function createDb()
-    {
-        $this->load->dbforge();
-        $project = array(
-            'id' => array(
-                'type' => 'INT',
-                'constraint' => 9,
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
-            ),
-            'client' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 60
-            ),
-            'project' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 100
-            ),
-            'data' => array(
-                'type' => 'TEXT'
-            ),
-            'checklist_version' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50
-            ),
-            'template' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 100,
-            ),
-            'scans' => array(
-                'type' => 'TEXT'
-            ),
-            'restart_serial' => array(
-                'type' => 'INT',
+	{
+		$this->load->dbforge();
+		$project = array(
+			'id' => array(
+				'type' => 'INT',
+				'constraint' => 9,
+				'unsigned' => TRUE,
+				'auto_increment' => TRUE
+			),
+			'client' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 60
+			),
+			'project' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 100
+			),
+			'data' => array(
+				'type' => 'TEXT'
+			),
+			'checklist_version' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 50
+			),
+			'template' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 100,
+			),
+			'scans' => array(
+				'type' => 'TEXT'
+			),
+			'restart_serial' => array(
+				'type' => 'INT',
 				'constraint' => 1,
 				'unsigned' => TRUE,
-            ),
-            'assembly' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 500
-            )
-        );
+			),
+			'assembly' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 500
+			)
+		);
 
-        $this->dbforge->add_field($project);
-        // define primary key
-        $this->dbforge->add_key('id', TRUE);
-        // create table
-        $this->dbforge->create_table('projects');
+		$this->dbforge->add_field($project);
+		// define primary key
+		$this->dbforge->add_key('id', TRUE);
+		// create table
+		$this->dbforge->create_table('projects');
 
-        $tp = array(
-            "client" => 'Avdor-HLT',
-            "project" => 'Project 1',
-            "data" => "Assembly;Verify;HD\r\n verify V\r\n verify input;I\r\n verify name select;N\r\n QC verify;QC\r\n",
-            "template" => 'Pxxx-mm-yy',
+		$tp = array(
+			"client" => 'Avdor-HLT',
+			"project" => 'Project 1',
+			"data" => "Assembly;Verify;HD\r\n verify V\r\n verify input;I\r\n verify name select;N\r\n QC verify;QC\r\n",
+			"template" => 'Pxxx-mm-yy',
 			'checklist_version' => "Uploads/Avdor-HLT/Project 1/rev_1.txt"
-        );
-        $this->db->insert('projects', $tp);
+		);
+		$this->db->insert('projects', $tp);
 		if (!file_exists("Uploads/Avdor-HLT/Project 1")) {
 			mkdir("Uploads/Avdor-HLT/Project 1", 0770, true);
 			$assembly = fopen("Uploads/Avdor-HLT/Project 1/rev_1.txt", "w");
-			fwrite($assembly,"Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
+			fwrite($assembly, "Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
 			fclose($assembly);
 		}
-    }
-	
+	}
+
 	//id,client,project,data,template,scans
 	function getProjects($client_name = '')
 	{
@@ -127,15 +127,14 @@ class Projects_model extends CI_Model
 		return $response;
 	}
 
-	public function editTemplate($data)
+	public function editProject($data)
 	{
 		$where = "id =" . $data['id'];
 		return $this->db->update('projects', $data, $where);
 	}
 
-	function deleteTemplate($id)
+	function deleteProject($id)
 	{
 		$this->db->delete('wft_projects', array('id' => $id));
 	}
-
 }

@@ -71,6 +71,7 @@ if (file_exists($file)) {
 							<div class="input-group-text"><?= lang('checklist_version') ?></div>
 						</div>
 						<select class="form-control col-4 checklist_version" name='checklist_version'>
+						<option>Select Version</option>
 							<?php if (isset($checklists)) {
 								foreach ($checklists as $checklist) {
 									if ($project['checklist_version'] == $checklist) {

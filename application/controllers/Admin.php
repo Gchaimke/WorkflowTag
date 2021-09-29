@@ -364,10 +364,10 @@ class Admin extends CI_Controller
 			echo "$field_name exists in $table_name.";
 		}
 
-		$field_name = 'assembly';
+		$field_name = 'checklist_version';
 		$table_name = 'projects';
 		$fields = array(
-			$field_name => array(
+			'assembly' => array(
 				'type' => 'VARCHAR',
 				'constraint' => 500
 			),
@@ -376,9 +376,29 @@ class Admin extends CI_Controller
 				'constraint' => 50
 			)
 		);
+
 		if (!$this->db->field_exists($field_name, $table_name)) {
 			$this->Admin_model->add_column($table_name, $fields);
 			echo "$field_name add to $table_name.";
+			$clients = $this->Clients_model->getClients();
+			foreach ($clients as $client) {
+				$projects = $this->Projects_model->getProjects($client['name']);
+				foreach ($projects as $project) {
+					$folder = "Uploads/{$client['name']}/{$project['project']}/";
+					if (!file_exists($folder)) {
+						mkdir($folder, 0770, true);
+					}
+
+					if (!file_exists($folder . "rev_1.txt")) {
+						$assembly = fopen($folder . "rev_1.txt", "w");
+						fwrite($assembly, $project['data']);
+						fclose($assembly);
+						printf("new version created %s checklist: %s<br>", $client['name'], $project['project']);
+					}
+					$project["checklist_version"] = $folder . "rev_1.txt";
+					$this->Projects_model->editProject($project);
+				}
+			}
 		} else {
 			echo "$field_name exists in $table_name.";
 		}

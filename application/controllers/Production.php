@@ -216,7 +216,6 @@ class Production extends CI_Controller
                 return $num;
             }
         }
-
         return 0;
     }
 
@@ -225,13 +224,10 @@ class Production extends CI_Controller
         $data = array();
         $data['js_to_load'] = array("edit_checklist.js?" . filemtime('assets/js/edit_checklist.js'));
         $data['checklist'] =  $this->Production_model->getChecklists($id);
-
         if ($data['checklist']) {
             $data['checklist'] = $data['checklist'][0];
             $project = $this->Projects_model->getProject('', $data['checklist']['project']);
-            $data['version'] = $data['checklist']['version'] ?
-                $data['checklist']['version'] :
-                $project['checklist_version'];
+            $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             $data['project'] =  urldecode($project['project']);
             $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
             $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
@@ -258,7 +254,7 @@ class Production extends CI_Controller
         if ($data['checklists']) {
             $data['checklist'] = $data['checklists'][0];
             $project = $this->Projects_model->getProject('', $data['checklist']['project']);
-            $data['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
+            $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             $data['project'] =  urldecode($project['project']);
             $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
             $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
@@ -655,7 +651,7 @@ class Production extends CI_Controller
             if (strpos($checklist['project'], "Trash") === false) {
                 if ($checklist['progress'] > 90) {
                     $checklist['logo'] = $logos[$checklist['client']];
-                    echo $checklist['serial']."<br>";
+                    echo $checklist['serial'] . "<br>";
                     $this->generate_offline_files($checklist);
                     $count_progress_100++;
                 }
