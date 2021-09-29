@@ -54,10 +54,17 @@ class Projects_model extends CI_Model
         $tp = array(
             "client" => 'Avdor-HLT',
             "project" => 'Project 1',
-            "data" => 'header;HD',
-            "template" => 'Pxxx-mm-yy'
+            "data" => "Assembly;Verify;HD\r\n verify V\r\n verify input;I\r\n verify name select;N\r\n QC verify;QC\r\n",
+            "template" => 'Pxxx-mm-yy',
+			'assembly' => "Uploads/Avdor-HLT/Project 1/rev_1.txt"
         );
         $this->db->insert('projects', $tp);
+		if (!file_exists("Uploads/Avdor-HLT/Project 1")) {
+			mkdir("Uploads/Avdor-HLT/Project 1", 0770, true);
+			$assembly = fopen("Uploads/Avdor-HLT/Project 1/rev_1.txt", "w");
+			fwrite($assembly,"Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
+			fclose($assembly);
+		}
     }
 	
 	//id,client,project,data,template,scans

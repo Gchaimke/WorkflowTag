@@ -75,19 +75,7 @@ class Admin extends CI_Controller
 
 	function create_tables()
 	{
-		$data = array();
-		$data['response'] = '';
-		foreach ($this->system_models as $model => $table) {
-			$model_name = $model . '_model';
-			if (!$this->db->table_exists($table)) {
-				$this->$model_name->createDb();
-				$data['response'] .= "$model_name Table: $table created!<br>" . PHP_EOL;
-			} else {
-				$data['response'] .= "$model_name Table: $table exists!<br>" . PHP_EOL;
-			}
-		}
-		$data['settings'] = $this->Admin_model->getSettings();
-		echo $data['response'];
+		create_new_tables($this);
 	}
 
 	function backupDB()
@@ -372,7 +360,7 @@ class Admin extends CI_Controller
 		if (!$this->db->field_exists($field_name, $table_name)) {
 			$this->Admin_model->add_column($table_name, $fields);
 			echo "$field_name add to $table_name.";
-		}else{
+		} else {
 			echo "$field_name exists in $table_name.";
 		}
 
@@ -381,17 +369,17 @@ class Admin extends CI_Controller
 		$fields = array(
 			$field_name => array(
 				'type' => 'VARCHAR',
-                'constraint' => 500
+				'constraint' => 500
 			),
 			'checklist_version' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50
-            )
+				'type' => 'VARCHAR',
+				'constraint' => 50
+			)
 		);
 		if (!$this->db->field_exists($field_name, $table_name)) {
 			$this->Admin_model->add_column($table_name, $fields);
 			echo "$field_name add to $table_name.";
-		}else{
+		} else {
 			echo "$field_name exists in $table_name.";
 		}
 
@@ -400,13 +388,13 @@ class Admin extends CI_Controller
 		$fields = array(
 			$field_name => array(
 				'type' => 'VARCHAR',
-                'constraint' => 50
+				'constraint' => 50
 			)
 		);
 		if (!$this->db->field_exists($field_name, $table_name)) {
 			$this->Admin_model->add_column($table_name, $fields);
 			echo "$field_name add to $table_name.";
-		}else{
+		} else {
 			echo "$field_name exists in $table_name.";
 		}
 
@@ -426,7 +414,7 @@ class Admin extends CI_Controller
 		if (!$this->db->field_exists($field_name, $table_name)) {
 			$this->Admin_model->add_column($table_name, $fields);
 			echo "$field_name add to $table_name.";
-		}else{
+		} else {
 			echo "$field_name exists in $table_name.";
 		}
 	}

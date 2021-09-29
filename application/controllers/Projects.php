@@ -134,7 +134,9 @@ class Projects extends CI_Controller
                 mkdir($folder, 0770, true);
             }
             if (!file_exists($file)) {
-                echo fopen($file, "w");
+                echo $assembly = fopen($file, "w");
+                fwrite($assembly, "Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
+                fclose($assembly);
                 return true;
             } else {
                 echo "file exists!";

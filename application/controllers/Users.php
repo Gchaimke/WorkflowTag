@@ -8,6 +8,7 @@ class Users extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->helper('admin');
         // Load model
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
@@ -142,8 +143,7 @@ class Users extends CI_Controller
         $data = array();
         $data['response'] = '';
         if (!$this->db->table_exists('users')) {
-            $this->Users_model->createDb();
-            $this->Admin_model->createDb();
+            create_new_tables($this);
             $data['response'] .= "All Tables created!<br> username:Admin <br> Password:Admin.";
         }
         $this->load->view('users/login', $data);
