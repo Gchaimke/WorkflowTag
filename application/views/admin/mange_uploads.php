@@ -22,7 +22,22 @@ if (isset($this->session->userdata['logged_in'])) {
         }
         if (isset($folders)) {
             echo $folders;
-        }       
+        }
         ?>
     </div>
 </main>
+<script>
+    function delFile(id) {
+        var file = $(id).attr('data-file');
+        var r = confirm("Delete File " + file + "?");
+        if (r == true) {
+            $.post("/production/delete_photo", {
+                photo: file
+            }).done(function(o) {
+                console.log('File deleted from the server.');
+                sleep(1000)
+                location.reload();
+            });
+        }
+    }
+</script>

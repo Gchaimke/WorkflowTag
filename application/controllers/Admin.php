@@ -315,6 +315,7 @@ class Admin extends CI_Controller
 		$html_view .= "<tr><th>image</th><th>Path</th><th>Type</th><th>Size</th><th>Last Modified</th><th>Delete</th></tr>\n";
 		$html_view .= "</thead>\n";
 		$html_view .= "<tbody>\n";
+		$count = 1;
 		foreach ($dirlistR as $file) {
 			//filter file types
 			if ($file['type'] != 'image/png' && $file['type'] != 'image/jpeg' && $file['type'] != 'image/jpg' && $file['type'] != 'dir') {
@@ -337,9 +338,10 @@ class Admin extends CI_Controller
 				$html_view .= "<td>{$file['type']}</td>\n";
 				$html_view .= "<td>" . $this->human_filesize($file['size']) . "</td>\n";
 				$html_view .= "<td>" . date('d/m/Y h:i:s', $file['lastmod']) . "</td>\n";
-				$html_view .= '<td><span id="/' . $file['name'] . '" onclick="delFile(this.id)" class="btn btn-danger delete-photo">delete</span></td>';
+				$html_view .= "<td><span id='file_$count' data-file='/{$file['name']}' onclick='delFile(this.id)' class='btn btn-danger'>delete</span></td>";
 				$html_view .= "</tr>\n";
 			}
+			$count++;
 		}
 		$html_view .= "</tbody>\n";
 		$html_view .= "</table>\n\n";

@@ -109,18 +109,7 @@ function saveLogoToServer(file) {
     });
 }
 
-function delFile(file) {
-    var r = confirm("Delete File " + file + "?");
-    if (r == true) {
-        $.post("/production/delete_photo", {
-            photo: file
-        }).done(function (o) {
-            console.log('File deleted from the server.');
-            sleep(1000)
-            location.reload();
-        });
-    }
-}
+
 
 $('#ajax-form').submit(function (event) {
     // Stop the browser from submitting the form.
