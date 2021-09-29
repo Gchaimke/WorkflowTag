@@ -56,7 +56,7 @@ class Projects_model extends CI_Model
             "project" => 'Project 1',
             "data" => "Assembly;Verify;HD\r\n verify V\r\n verify input;I\r\n verify name select;N\r\n QC verify;QC\r\n",
             "template" => 'Pxxx-mm-yy',
-			'assembly' => "Uploads/Avdor-HLT/Project 1/rev_1.txt"
+			'checklist_version' => "Uploads/Avdor-HLT/Project 1/rev_1.txt"
         );
         $this->db->insert('projects', $tp);
 		if (!file_exists("Uploads/Avdor-HLT/Project 1")) {
