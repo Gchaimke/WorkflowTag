@@ -1,12 +1,7 @@
 <?php
-$project =  explode("/", $_SERVER['REQUEST_URI']);
-if (count($project) > 3) {
-	$project = explode("?", $project[3])[0];
-} else {
-	$project = '';
-}
+$project =  urldecode($_GET['project']);
 $client['name'] = is_array($client) ? $client['name'] : "error";
-$file = "./Uploads/" . urldecode($client['name']) . "/" . $_GET['project'] . "/assembly.pdf";
+$file = "./Uploads/" . urldecode($client['name']) . "/" . $project . "/assembly.pdf";
 if (file_exists($file)) {
 	$dispaly = "";
 } else {
@@ -17,7 +12,7 @@ if (file_exists($file)) {
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3"><?= $_GET['project'] ?></h2>
+				<h2 class="display-3"><?= $project ?></h2>
 				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 			</center>
 		</div>
@@ -45,9 +40,9 @@ if (file_exists($file)) {
 			<center>
 				<form id="add_checklist" action="production/add_checklist" class="my-4">
 					<h3><?= lang('add_checklist') ?></h3>
-					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
+					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= $_GET['project'] ?>'>
+					<input type='hidden' name='project' value='<?= $project ?>'>
 					<div class="form-group"><label>Serial template <?php echo $template ?></label>
 						<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
 					</div></br>
@@ -61,9 +56,9 @@ if (file_exists($file)) {
 			<center>
 				<form id="add_batch" action="/production/gen_checklists" class="my-4">
 					<h3><?= lang('add_batch') ?></h3>
-					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), urldecode($project)); ?></h5>
+					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= $_GET['project'] ?>'>
+					<input type='hidden' name='project' value='<?= $project ?>'>
 					<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
 					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
 					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'></br>
@@ -119,7 +114,7 @@ if (file_exists($file)) {
 									<td class="mobile-hide"><?php echo $data->date ?></td>
 									<td><?php echo $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?sn=<?= $data->serial ?>&client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?php echo urldecode($project); ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?=$project?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }
 						} ?>

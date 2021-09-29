@@ -239,7 +239,7 @@ class Production extends CI_Controller
             $data['users'] = $this->users;
             $data['notes'] = $this->get_qc_notes($id);
             $this->view_page('production/edit_checklist', '', $data);
-        }else{
+        } else {
             echo "Checklist not found, Deleted?";
         }
     }
@@ -652,13 +652,16 @@ class Production extends CI_Controller
         echo "<h2>Total checklists: " . count($all_checklists) . "</h2><br/>";
         $count_progress_100 = 0;
         foreach ($all_checklists as $checklist) {
-            if ($checklist['progress'] == 100) {
-                $checklist['logo'] = $logos[$checklist['client']];
-                $this->generate_offline_files($checklist);
-                $count_progress_100++;
+            if (strpos($checklist['project'], "Trash") === false) {
+                if ($checklist['progress'] > 90) {
+                    $checklist['logo'] = $logos[$checklist['client']];
+                    echo $checklist['serial']."<br>";
+                    $this->generate_offline_files($checklist);
+                    $count_progress_100++;
+                }
             }
         }
-        echo "<h2>Generated files for checklists with progress 100%: " . $count_progress_100 . "</h2><br/>";
+        echo "<h2>Generated files for checklists with more than 90%: " . $count_progress_100 . "</h2><br/>";
     }
 
 

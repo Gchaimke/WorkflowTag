@@ -112,14 +112,15 @@ class Admin_model extends CI_Model
 
     function restore_from_trash($data, $table = 'checklists')
     {
-        $condition = "serial ='" . $data['serial'] . "' and project NOT LIKE 'Trash%'";
+        $condition = "serial='{$data['serial']}' and project='Trash {$data['project']}'";
         $this->db->select('*');
-        $this->db->from('Checklists');
+        $this->db->from($table);
         $this->db->where($condition);
         $this->db->limit(1);
         $query = $this->db->get();
         if ($query->num_rows() == 0) {
-            $where = "id =" . $data['id'];
+
+            $where = "id=" . $data['id'];
             $project = str_replace('Trash ', '', $data['project']);
             $sqldata = array(
                 'project' => $project
@@ -132,13 +133,13 @@ class Admin_model extends CI_Model
     }
 
     // $fields can be named array
-    public function add_column($table,$fields)
+    public function add_column($table, $fields)
     {
         $this->load->dbforge();
         $this->dbforge->add_column($table, $fields);
     }
 
-    public function remove_column($table,$field)
+    public function remove_column($table, $field)
     {
         $this->load->dbforge();
         $this->dbforge->drop_column($table, $field);
