@@ -29,9 +29,9 @@ $dir = $user_language == 'hebrew' ? 'rtl' : 'ltr';
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Bootstrap core CSS -->
-  <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
-  <link href="<?php echo base_url('assets/css/all.css?' . filemtime('assets/css/all.css')); ?>" rel="stylesheet">
+  <link href="<?php echo base_url('assets/css/bootstrap/bootstrap.css'); ?>" rel="stylesheet">
   <!-- Custom styles for this template -->
+  <link href="<?php echo base_url('assets/css/all.css?' . filemtime('assets/css/all.css')); ?>" rel="stylesheet">
   <?php
   if (isset($css_to_load)) {
     if (is_array($css_to_load)) {

@@ -28,6 +28,7 @@ a.navbar-brand {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: baseline;
+    align-content: flex-start;
 }
 
 .card-footer span {
