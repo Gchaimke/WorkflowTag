@@ -28,9 +28,9 @@ if (!isset($type)) {
 
 			<div class='d-flex flex-row-reverse'>
 				<a id='type_checklist' class="btn btn-success mb-3" href="/admin/manage_trash?type=checklist"> Checklists </a>
-				<a id='type_rma' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=rma"> RMA </a>
-				<a id='type_qc' class="btn btn-warning mr-3 mb-3" href="/admin/manage_trash?type=qc"> QC </a>
-				<button id='batchLink' class="btn btn-danger disabled mr-5 mb-3" onclick='delete_selected()'><i class="fa fa-tasks"></i> Delete selected</button>
+				<a id='type_rma' class="btn btn-warning me-3 mb-3" href="/admin/manage_trash?type=rma"> RMA </a>
+				<a id='type_qc' class="btn btn-warning me-3 mb-3" href="/admin/manage_trash?type=qc"> QC </a>
+				<button id='batchLink' class="btn btn-danger disabled me-5 mb-3" onclick='delete_selected()'><i class="fa fa-tasks"></i> Delete selected</button>
 			</div>
 		</nav>
 		<?php if (isset($results)) { ?>

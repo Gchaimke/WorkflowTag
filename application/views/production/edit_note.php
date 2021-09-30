@@ -48,8 +48,8 @@ if (isset($this->session->userdata['logged_in'])) {
                 <input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" value="<?= $note->row ?>" />
                 <textarea name="note" placeholder="note" class="form-control col-md-12"><?= $note->note ?></textarea>
             </div>
-            <button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save mr-1"></i>Save</button>
-            <a href="/production/notes" class="btn btn-danger text-white" value="Close"><i class="fa fa-close mr-1"></i>Close</a>
+            <button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save me-1"></i>Save</button>
+            <a href="/production/notes" class="btn btn-danger text-white" value="Close"><i class="fa fa-close me-1"></i>Close</a>
             <?php echo form_close() ?>
         <?php } ?>
     </div>

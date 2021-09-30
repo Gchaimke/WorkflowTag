@@ -36,9 +36,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
 				<?php if ($role != 'Assembler') { ?>
-					<button class="btn btn-warning mr-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
+					<button class="btn btn-warning me-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
 				<?php } ?>
-				<a class="btn btn-info mr-3" href="#scansTable"><i class="fa fa-list"></i></a>
+				<a class="btn btn-info me-3" href="#scansTable"><i class="fa fa-list"></i></a>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 				<?= form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
 				<input id='input_data' type='hidden' name='data' value="<?= $checklist_data ?>">
@@ -145,8 +145,8 @@ if (isset($this->session->userdata['logged_in'])) {
 			<input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" />
 			<textarea name="note" placeholder="note" class="form-control col-md-12"></textarea>
 		</div>
-		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save mr-1"></i>Add</button>
-		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fas fa-times mr-1"></i>Close</div>
+		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save me-1"></i>Add</button>
+		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fas fa-times me-1"></i>Close</div>
 		<?= form_close(); ?>
 		<?php
 		echo "<div style='height:250px' class='overflow-auto mb-3 mt-3 notes'>";
@@ -155,7 +155,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				echo "<div class='col-md-5 border p-1 bg-light text-dark m-auto note'>";
 				echo "<span>
 					<button id='$note->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button>
-					<a target='_blank' class='btn btn-success mr-2 fa fa-edit' href='/production/edit_note/$note->id'></a> 
+					<a target='_blank' class='btn btn-success me-2 fa fa-edit' href='/production/edit_note/$note->id'></a> 
 					</span>";
 				echo "<span>ROW: $note->row </span>";
 				echo "<span>$note->note</span>";
@@ -165,7 +165,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo "<div class='col-md-5 border p-1 bg-light text-dark m-auto note'>";
 			echo "<p class='col-full col-md-4'>
 				<button id='$notes->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button>
-				<a target='_blank' class='btn btn-success mr-2 fa fa-edit' href='/production/edit_note/$notes->id'></a> 
+				<a target='_blank' class='btn btn-success me-2 fa fa-edit' href='/production/edit_note/$notes->id'></a> 
 				</p>";
 			echo "<b class='col-full'>ROW: $notes->row </b>";
 			echo "<p class='col-full col-md-8 m-2'>$notes->note</p>";
