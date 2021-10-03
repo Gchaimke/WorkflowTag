@@ -1,12 +1,14 @@
 @media print {
-
+    .row {
+        break-inside: avoid;
+    }
     body {
         margin-top: 0;
     }
     main {
         min-height: inherit;
     }
-    .print-hide{
+    .print-hide {
         display: none;
     }
     .navbar {
@@ -26,33 +28,27 @@
     .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer, #note_row {
         display: none;
     }
-    
     div#photo-stock img {
-        padding-bottom: 20px;
+        padding-bottom: 5px;
     }
-
     .badge {
-        border:none;
+        border: none;
     }
-
     .mobile-hide {
         display: block;
     }
-
     img.img-thumbnail.checklist-logo {
         max-width: 300px;
         max-height: 150px;
         display: block;
         opacity: 0.5;
     }
-
     b#date {
         margin-right: 50px;
     }
-
     img.respondCanvas {
         display: block;
         break-inside: avoid;
-        max-height: 1500px;
+        max-height: 45vh;
     }
 }

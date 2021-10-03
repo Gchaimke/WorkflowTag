@@ -37,7 +37,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						<?php
 						if ($current_role == "Admin") {
 							echo '<div class="input-group-prepend"><div class="input-group-text">' . lang('role') . '</div></div>';
-							echo "<select class='form-control' name='role'>";
+							echo "<select class='form-select' name='role'>";
 							if (isset($settings)) {
 								$arr = explode(",", $settings['roles']);
 								foreach ($arr as $crole) {

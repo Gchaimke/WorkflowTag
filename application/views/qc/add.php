@@ -16,8 +16,8 @@ if (!isset($project)) {
 }
 
 ?>
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&client=<?= $_GET['client'] . "&project=$project&id="?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?= $_GET['client'] . "&project=" . $project ?>" data-url-name="<?=$client_name." ".$project?> QC" hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&client=<?= $_GET['client'] . "&project=$project&id=" ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?= $_GET['client'] . "&project=" . $project ?>" data-url-name="<?= $client_name . " " . $project ?> QC" hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -31,43 +31,41 @@ if (!isset($project)) {
             <input type='hidden' name='type' value='<?php echo $_GET['type'] ?>'>
             <input type='hidden' name='project' value='<?php echo $project ?>'>
             <input type='hidden' name='user' value='<?php echo $this->session->userdata['logged_in']['name'] ?>'>
-            <div class="mx-auto text-center p-4 col-12 ">
-                  <div class="form-row">
-                        <div class="input-group mb-2 col-lg-2">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">QC #</div>
+            <div class="mx-auto text-center col-12 ">
+                  <div class="row">
+                        <div class="mb-2 col-md-3">
+                              <div class="form-floating">
+                                    <input type='number' class="form-control" name='number' required>
+                                    <label>QC #</label>
                               </div>
-                              <input type='number' class="form-control" name='number' required>
                         </div>
-                        <div class="input-group mb-2 col-lg-3">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">SN</div>
+                        <div class="mb-2 col-md-3">
+                              <div class="form-floating">
+                                    <input type='text' class="form-control" name='serial'>
+                                    <label>SN</label>
                               </div>
-                              <input type='text' class="form-control" name='serial'>
                         </div>
-                        <div class="input-group mb-2 col-lg-4">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">Product Number</div>
+                        <div class="mb-2 col-md-3">
+                              <div class="form-floating">
+                                    <input type='text' class="form-control" name='product_num' value=''>
+                                    <label>Product Number</label>
                               </div>
-                              <input type='text' class="form-control" name='product_num' value=''>
                         </div>
-                        <div class="input-group mb-2 col-lg-3">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">Date</div>
+                        <div class="mb-2 col-md-3">
+                              <div class="form-floating">
+                                    <input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>">
+                                    <label>Date</label>
                               </div>
-                              <input type='date' class="form-control" name='date' value="<?php echo date("Y-m-d"); ?>">
                         </div>
-                  </div>
-                  <div class="form-row">
-                        <div class="input-group mb-2 col-12">
-                              <div class="input-group-prepend">
-                                    <div class="input-group-text">Client Problem Description</div>
+
+                        <div class="mb-2 col-md-12">
+                              <div class="form-floating">
+                                    <textarea class="form-control" name='problem' style="height: 150px;"></textarea>
+                                    <label>Client Problem Description</label>
                               </div>
-                              <textarea type='text' rows="5" class="form-control" name='problem'></textarea>
                         </div>
                   </div>
                   <input type='hidden' class="form-control" name='client' value='<?php echo $client_name ?>'>
-
                   <input type='submit' class="btn btn-info my-5" name='submit' value='Submit'>
             </div>
             <?php echo form_close(); ?>

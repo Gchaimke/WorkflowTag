@@ -43,7 +43,7 @@ if (isset($_GET['project'])) {
             <a class="nav-item dropdown-toggle btn btn-outline-warning text-white" href="#" id="navbarDropdownForms" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <?= lang('forms') ?>
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownForms">
+            <div class="dropdown-menu p-2" aria-labelledby="navbarDropdownForms">
               <?php if (isset($project) && $project != '' && $project != 'All') { ?>
                 <b class="ml-2"><?= $project ?></b><br>
                 <a class="nav-item btn btn-outline-warning text-black" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
@@ -70,7 +70,7 @@ if (isset($_GET['project'])) {
             <a class="nav-item dropdown-toggle btn btn-outline-info text-white" href="#" id="navbarDropdownAdmin" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <?= lang('Admin') ?>
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+            <div class="dropdown-menu p-2" aria-labelledby="navbarDropdownAdmin">
               <b class="ml-2"><?= lang('system') ?></b>
               <a class="dropdown-item" href="/clients"><?= lang('clients') ?></a>
               <a class="dropdown-item" href="/users"><?= lang('users') ?></a>
@@ -91,7 +91,7 @@ if (isset($_GET['project'])) {
             printf(lang('menu_hi'), $name)
             ?>
           </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdownUser">
+          <div class="dropdown-menu p-2" aria-labelledby="navbarDropdownUser">
             <a class="dropdown-item" href="/users/edit/<?php echo $id ?>"><?= lang('menu_update_my_data') ?></a>
             <a class="dropdown-item" href="/users/logout"><?= lang('menu_logout') ?></a>
           </div>

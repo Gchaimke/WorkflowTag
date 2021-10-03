@@ -133,7 +133,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<input type="hidden" name="project" value="<?= $project ?>" />
 		<div class="form-row mb-3">
 			<div class="col-md-6 mb-2">
-				<select class='form-control' name="assembler_id">
+				<select class='form-select' name="assembler_id">
 					<option value='0'>Select</option>
 					<?php foreach ($users as $user) {
 						if (strpos($checklist_data, $user['name']) !== false)

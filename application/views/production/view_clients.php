@@ -25,7 +25,7 @@
 			";
 			if ($client['status'] == 1) {
 				foreach ($client['projects'] as $project) {
-					echo  "<a href='/production/checklists?client={$client['id']}&project=" . $project['project'] . "' class='btn btn-primary  btn-block text-nowrap'>" . $project['project'] . "</a>";
+					echo  "<a href='/production/checklists?client={$client['id']}&project=" . $project['project'] . "' class='btn btn-outline-primary text-nowrap w-100 my-1 py-2'>" . $project['project'] . "</a>";
 				}
 			} else {
 				echo '<h3>OLD</h3>';

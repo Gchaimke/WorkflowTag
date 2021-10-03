@@ -15,7 +15,6 @@ if (isset($this->session->userdata['logged_in'])) {
     </div>
     <div class="container">
         <div id="form-messages" class='alert hidden' role='alert'></div>
-
         <?php
         if (isset($message_display)) {
             echo "<div class='alert alert-success' role='alert'>";
@@ -30,27 +29,41 @@ if (isset($this->session->userdata['logged_in'])) {
             <input type="hidden" name="qc_id" value="<?= $note->qc_id ?>" />
             <input type="hidden" name="client_id" value="<?= $note->client_id ?>" />
             <input type="hidden" name="project" value="<?= $note->project ?>" />
-            <div class="form-row mb-3">
-                <div class="col-md-6 mb-2">
-                    <select class='form-control' name="assembler_id">
-                        <option value='0'>Select</option>
-                        <?php foreach ($users as $id => $name) {
-                            if ($id == $note->assembler_id) {
-                                $selected = 'selected';
-                            } else {
-                                $selected = '';
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="form-floating">
+                        <select class='form-select' name="assembler_id">
+                            <option value='0'>Select</option>
+                            <?php foreach ($users as $id => $name) {
+                                if ($id == $note->assembler_id) {
+                                    $selected = 'selected';
+                                } else {
+                                    $selected = '';
+                                }
+                                echo "<option value=" . $id . " $selected>" . $name . "</option>";
                             }
-                            echo "<option value=" . $id . " $selected>" . $name . "</option>";
-                        }
-                        ?>
-                    </select>
+                            ?>
+                        </select>
+                        <label for="assembler_id" class="m-1">Assembler</label>
+                    </div>
                 </div>
-                <input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" value="<?= $note->row ?>" />
-                <textarea name="note" placeholder="note" class="form-control col-md-12"><?= $note->note ?></textarea>
+                <div class="col">
+                    <div class="form-floating">
+                        <input type="text" name="row" placeholder="checklist row" class="form-control col mb-2" value="<?= $note->row ?>" />
+                        <label for="row" class="m-1">Row</label>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-floating">
+                        <textarea name="note" placeholder="note" class="form-control" style="height: 150px;"><?= $note->note ?></textarea>
+                        <label for="note" class="m-1">Note</label>
+                    </div>
+                </div>
             </div>
             <button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save me-1"></i>Save</button>
             <a href="/production/notes" class="btn btn-danger text-white" value="Close"><i class="fa fa-close me-1"></i>Close</a>
             <?php echo form_close() ?>
-        <?php } ?>
     </div>
+<?php } ?>
+</div>
 </main>

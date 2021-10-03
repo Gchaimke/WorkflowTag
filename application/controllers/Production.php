@@ -317,7 +317,7 @@ class Production extends CI_Controller
                         $prefix_count++;
                     } else if (end($col) == "QC") {
                         $tr .= "<tr class='qc_row'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
-                        $tr .= "<select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
+                        $tr .= "<select class='form-select review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $select_users . "</select></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
@@ -329,7 +329,7 @@ class Production extends CI_Controller
                     } else if (end($col) == "N") {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td>";
                         $tr .= "<td class='row m-0'><div class='checkbox col-md-6'><input type='checkbox' class='verify'  id='$id' $checked></div>";
-                        $tr .= "<div class='col-md-6'><select class='form-control review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
+                        $tr .= "<div class='col-md-6'><select class='form-select review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $select_users . "</select></div></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;

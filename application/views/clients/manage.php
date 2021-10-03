@@ -30,8 +30,8 @@ if (isset($this->session->userdata['logged_in'])) {
 						<div class='card-header'>
 							<div class='row'>
 								<span class='card-title h3 col'>$key</span>
-								<a href='/clients/edit/{$client['id']}' class='btn btn-info'><i class='fa fa-edit'></i></a>
-								<button class='btn btn-danger mx-2' onclick='deleteClient({c},\"$key\")'>
+								<a href='/clients/edit/{$client['id']}' class='btn btn-info col-2'><i class='fa fa-edit'></i></a>
+								<button class='btn btn-danger mx-2 col-2' onclick='deleteClient({c},\"$key\")'>
 									<i class='fa fa-trash'></i>
 								</button>
 							</div>
