@@ -5,6 +5,7 @@ class Users extends CI_Controller
 {
     private $languages;
     private $user;
+    private $clients;
     public function __construct()
     {
         parent::__construct();
@@ -12,9 +13,11 @@ class Users extends CI_Controller
         // Load model
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
+        $this->load->model('Clients_model');
+        $this->clients = $this->Clients_model->getClients();
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
-            $lang = isset($this->user['language'])?$this->user['language']:'english';
+            $lang = isset($this->user['language']) ? $this->user['language'] : 'english';
             $this->lang->load('main', $lang);
             $this->languages = array("english", "hebrew");
         }
@@ -46,25 +49,29 @@ class Users extends CI_Controller
             $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
             $this->form_validation->set_rules('view_name', 'view_name', 'trim|xss_clean');
             $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
+
+            $data['users'] = $this->Users_model->getUsers();
+            $data['settings'] = $this->Admin_model->getSettings();
+            $data['languages'] = $this->languages;
+            $data['clients'] = $this->clients;
+
             if ($this->form_validation->run() == FALSE) {
-                $data['settings'] = $this->Admin_model->getSettings();
-                $data['languages'] = $this->languages;
                 $this->load->view('header');
                 $this->load->view('main_menu');
                 $this->load->view('users/create', $data);
                 $this->load->view('footer');
             } else {
-                $data = array(
+                $sql = array(
                     'name' => $this->input->post('name'),
                     'view_name' => $this->input->post('view_name'),
                     'role' => $this->input->post('role'),
                     'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
+                    'clients' => $this->input->post('clients'),
                 );
-                $result = $this->Users_model->registration_insert($data);
+                $result = $this->Users_model->registration_insert($sql);
                 if ($result == TRUE) {
-                    $data['users'] = $this->Users_model->getUsers();
                     $data['message_display'] = 'User Registration Successfully !';
                     $this->load->view('header');
                     $this->load->view('main_menu');
@@ -72,7 +79,6 @@ class Users extends CI_Controller
                     $this->load->view('footer');
                 } else {
                     $data['message_display'] = 'Username already exist!';
-                    $data['settings'] = $this->Admin_model->getSettings();
                     $this->load->view('header');
                     $this->load->view('main_menu');
                     $this->load->view('users/create', $data);
@@ -100,10 +106,13 @@ class Users extends CI_Controller
         $this->form_validation->set_rules('role', 'Role', 'trim|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|xss_clean');
         $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
+
+        $data['user'] =  $this->Users_model->getUser($id);
+        $data['languages'] = $this->languages;
+        $data['settings'] = $this->Admin_model->getSettings();
+        $data['clients'] = $this->clients;
+
         if ($this->form_validation->run() == FALSE) {
-            $data['user'] =  $this->Users_model->getUser($id);
-            $data['languages'] = $this->languages;
-            $data['settings'] = $this->Admin_model->getSettings();
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view('users/edit', $data);
@@ -117,6 +126,7 @@ class Users extends CI_Controller
                     'role' => $this->input->post('role'),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
+                    'clients' => implode(",", $this->input->post('clients')),
                 );
                 if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
@@ -201,6 +211,7 @@ class Users extends CI_Controller
                 'view_name' => $result[0]->view_name,
                 'role' => $result[0]->role,
                 'email' => $result[0]->email,
+                'clients' => $result[0]->clients,
                 'language' => $language
             );
             $this->session->set_userdata('logged_in', $session_data);

@@ -119,6 +119,24 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						<input type='text' class="form-control ltr" name='email' value="<?php echo $user['email'] ?>">
 					</div>
 				</div>
+
+				<div class="row">
+					<div><?= lang('clients') ?></div>
+					<?php
+					$user_clients = explode(",", $user['clients']);
+					foreach ($clients as $key => $client) {
+						echo "<div class='form-check'>";
+						if (in_array($client['id'], $user_clients)) {
+							$checked = "checked";
+						} else {
+							$checked = "";
+						}
+						echo "<input class='form-check-input' type='checkbox' name='clients[{$client['id']}]' value='{$client['id']}' aria-label='{$client['name']}' $checked>
+						<label class='form-check-label' for='clients'>{$client['name']}</label>";
+						echo "</div>";
+					}
+					?>
+				</div>
 				<input type='submit' class="btn btn-info" name='submit' value='<?= lang('update') ?>'>
 				<?php echo form_close(); ?>
 			</div>

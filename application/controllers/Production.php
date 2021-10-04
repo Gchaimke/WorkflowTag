@@ -51,7 +51,9 @@ class Production extends CI_Controller
     {
         $data = array();
         $clients = $this->clients;
+        $user_clients = explode(",", $this->user['clients']);
         foreach ($clients as $client) {
+            if (!in_array($client['id'], $user_clients)) continue;
             $data['clients'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
             $data['clients'][$client["name"]]['status'] = $client['status'];
             $data['clients'][$client["name"]]['id'] = $client['id'];
