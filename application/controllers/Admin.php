@@ -437,5 +437,19 @@ class Admin extends CI_Controller
 		} else {
 			echo "$field_name exists in $table_name.";
 		}
+
+		if ($this->db->field_exists("projects", "users")) {
+			$fields = array(
+				'projects' => array(
+					'name' => 'clients',
+					'type' => 'TEXT',
+				),
+			);
+			$this->load->dbforge();
+			$this->dbforge->modify_column('users', $fields);
+			echo "projects field now named clients";
+		} else {
+			echo "projects field is clients";
+		}
 	}
 }
