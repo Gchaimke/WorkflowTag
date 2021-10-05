@@ -15,7 +15,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <title>WorkFlow Tag&copy; <?php echo date('Y'); ?> </title>
 
     <!-- Bootstrap core CSS -->
-    <link href="<?php echo base_url('assets/css/bootstrap.css'); ?>" rel="stylesheet">
+    <link href="<?php echo base_url('assets/css/bootstrap/bootstrap.css'); ?>" rel="stylesheet">
     <link href="<?php echo base_url('assets/css/login.css?' . filemtime('assets/css/login.css')); ?>" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <style>
@@ -30,8 +30,8 @@ if (isset($this->session->userdata['logged_in'])) {
     <section id="cover" class="min-vh-100">
         <div id="cover-caption">
             <div class="container">
-                <div class="row text-white">
-                    <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto text-center form p-4">
+                <div class="row">
+                    <div class="col-md-2 w-25 mx-auto text-center form py-3">
                         <?php
                         if (isset($response) && $response != "") {
                             echo '<div class="alert alert-success" role="alert">';
@@ -57,13 +57,13 @@ if (isset($this->session->userdata['logged_in'])) {
                         <img class="display-4 py-2 text-truncate" src="/assets/img/user.png" alt="" width="100" height="100">
                         <div class="px-2 rtl">
                             <?php echo form_open('users/user_login_process', 'class=justify-content-center'); ?>
-                            <div class="form-group">
-                                <label for="inputUser" class="sr-only">username</label>
+                            <div class="form-floating mb-3">
                                 <input type="text" name="name" id="name" class="form-control center" placeholder="Username" required autofocus>
+                                <label for="inputUser" class="sr-only">username</label>
                             </div>
-                            <div class="form-group">
-                                <label for="inputPassword" class="sr-only">password</label>
+                            <div class="form-floating mb-3">
                                 <input type="password" name="password" id="password" class="form-control center" placeholder="Password" required>
+                                <label for="inputPassword" class="sr-only">password</label>
                             </div>
                             <button type="submit" class="btn btn-primary btn-lg">Login</button>
                             </form>
