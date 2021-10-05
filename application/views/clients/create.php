@@ -27,8 +27,10 @@ if (isset($this->session->userdata['logged_in'])) {
 
                   <?php echo form_open('clients/create', 'class=user-create'); ?>
                   <input type="hidden" name="status" value="1">
-                  <label>Client Name</label>
-                  <input id='client_name' type='text' class="form-control" name='name' value="" onchange="updateClient(this.value)">
+                  <div class="form-floating mb-2">
+                        <input id='client_name' type='text' class="form-control" name='name' value="" onchange="updateClient(this.value)">
+                        <label>Client Name</label>
+                  </div>
 
                   <div class="form-group mb-3">
                         <label>Select Logo : </label>
@@ -37,14 +39,12 @@ if (isset($this->session->userdata['logged_in'])) {
                         <img id="logo_img" class="img-thumbnail" src="" onclick="document.getElementById('browse').click();">
                         <input id="browse" style="display:none;" type="file" onchange="snapLogo()" disabled></hr>
                   </div>
-                  <div class="input-group mb-2">
-                        <div class="input-group-prepend">
-                              <div class="input-group-text">Status</div>
-                        </div>
-                        <select class="form-control" name='status'>
+                  <div class="form-floating mb-2">
+                        <select class="form-select" name='status'>
                               <option value="1" selected>Active</option>
                               <option value="0">Old</option>
                         </select>
+                        <label>Status</label>
                   </div>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>

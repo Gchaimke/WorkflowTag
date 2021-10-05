@@ -3,9 +3,9 @@ $project =  urldecode($_GET['project']);
 $client['name'] = is_array($client) ? $client['name'] : "error";
 $file = "./Uploads/" . urldecode($client['name']) . "/" . $project . "/assembly.pdf";
 if (file_exists($file)) {
-	$dispaly = "";
+	$assembly = true;
 } else {
-	$dispaly = "hidden";
+	$assembly = false;
 }
 ?>
 <main role="main">
@@ -13,7 +13,9 @@ if (file_exists($file)) {
 		<div class="container">
 			<center>
 				<h2 class="display-3"><?= $project ?></h2>
-				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				<?php if ($assembly) { ?>
+					<a class="btn btn-warning d-none d-xl-inline" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				<?php }; ?>
 			</center>
 		</div>
 	</div>
@@ -114,7 +116,7 @@ if (file_exists($file)) {
 									<td class="mobile-hide"><?php echo $data->date ?></td>
 									<td><?php echo $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?sn=<?= $data->serial ?>&client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?=$project?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }
 						} ?>

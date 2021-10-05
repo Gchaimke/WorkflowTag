@@ -27,22 +27,19 @@ if (isset($client)) {
 					echo "<div class='alert alert-danger' role='alert'>" . validation_errors() . "</div>";
 				}
 				?>
-				<?= form_open("clients/edit/".$client['id'], 'class=user-create'); ?>
+				<?= form_open("clients/edit/" . $client['id'], 'class=user-create'); ?>
 				<input type='hidden' name='id' value="<?= $client['id'] ?>">
-				<input id='client_name' type='hidden' name='name' value="<?=  $client['name'] ?>"></hr>
+				<input id='client_name' type='hidden' name='name' value="<?= $client['name'] ?>"></hr>
 				<div class="form-group mb-3">
 					<label>Select Logo : </label>
-					<input id="logo_path" type='hidden' name='logo' value="<?=  $client['logo'] ?>">
+					<input id="logo_path" type='hidden' name='logo' value="<?= $client['logo'] ?>">
 					<button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('browse').click();">Upload</button>
 					<img id="logo_img" class="img-thumbnail" src="<?= $client['logo'] ?>" onclick="document.getElementById('browse').click();">
 					<input id="browse" style="display:none;" type="file" onchange="snapLogo()"></hr>
 				</div>
 				<div class="form-row">
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<div class="input-group-text">Status</div>
-						</div>
-						<select class="form-control" name='status'>
+					<div class="form-floating mb-2">
+						<select class="form-select" name='status'>
 							<?php
 							$arr = array(
 								'0' => 'Old',
@@ -57,6 +54,7 @@ if (isset($client)) {
 							}
 							?>
 						</select>
+						<label>Status</label>
 					</div>
 				</div>
 				<input type='submit' class="btn btn-info" name='submit' value='Update'>
