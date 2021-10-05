@@ -1,5 +1,9 @@
 <!doctype html>
 <?php
+if(MAINTAINCE){
+  include_once("application/views/miantaince.php");
+  die;
+}
 $user_language = $this->config->item('language');
 if (isset($this->session->userdata['logged_in'])) {
   $user = ($this->session->userdata['logged_in']);
