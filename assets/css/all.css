@@ -20,7 +20,7 @@ a.navbar-brand {
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-  }
+}
 
 .clients.card-body {
     display: flex;
@@ -185,10 +185,10 @@ div#show-log ul {
 }
 
 button.close {
-    margin-top: -36px;
-    margin-left: -40px;
     background: white;
-    padding: 10px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
 }
 
 .fa-user-plus, .fa-file-text {
@@ -243,7 +243,7 @@ a.btn.btn-primary.folder {
 .close-notes {
     margin-top: 70px;
     margin-left: 15px;
-  }
+}
 
 #ajax-form-qc {
     position: absolute;

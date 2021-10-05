@@ -28,11 +28,13 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?= base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <main role="main" class="container ltr">
-	<nav id="navbar" class="navbar checklist navbar-light bg-light">
+	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
 		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
-		<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
-		<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
-		<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
+		<div class="d-flex checklist-data w-75" style="justify-content: space-evenly;">
+			<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
+			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
+			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
+		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
 				<?php if ($role != 'Assembler') { ?>
@@ -73,11 +75,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		</form>
 	</div>
 	<div class="mt-2" id="note_row">
-		<div class="input-group mb-2 col-12">
-			<div class="input-group-prepend">
-				<div class="input-group-text">Note</div>
-			</div>
-			<textarea id="note" type='text' rows="2" class="form-control" name='note'><?= $note ?></textarea>
+		<div class="form-floating">
+			<textarea id="note" type='text' class="form-control" name='note' style="height: 100px;"><?= $note ?></textarea>
+			<label>Note</label>
 		</div>
 	</div>
 

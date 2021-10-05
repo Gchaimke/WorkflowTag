@@ -106,7 +106,7 @@ $("input:checkbox.verify").click(function (e) {
     $('#assembler').val(assembler);
     $('#input_data').val(chArray.toString());
     if ($(event.target).is(":checked")) {
-        log += getDateTime() + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
+        log += getDateTime() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
     }
     $('#input_log').val(log);
 });
@@ -155,7 +155,7 @@ $('textarea#note').change(function () {
 });
 
 $('input.input').change(function (e) {
-    chArray[this.id] = $(this).val().replace(",","|");
+    chArray[this.id] = $(this).val().replace(",", "|");
     log += getDateTime() + assembler + " inserted " + $(this).val() + ";";
     $('#input_log').val(log);
     $('#input_data').val(chArray.toString());
