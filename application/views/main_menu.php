@@ -16,7 +16,7 @@ if (isset($_GET['project'])) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px"></a>
+    <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px" class="mx-2"><?=APP_VERSION?></a>
     <div>
       <button class="search btn btn-outline-success me-2 text-white"><i class="search_icon fas fa-search"></i></button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
