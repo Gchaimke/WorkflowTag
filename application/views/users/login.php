@@ -21,7 +21,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <style>
         #cover {
             /*background: #222 url('https://unsplash.it/1920/1080/?random') center center no-repeat;*/
-            background: #222 url('<?php echo base_url('assets/img/backgrounds/').mt_rand(1,14).'.jpg'?>') center center no-repeat;
+            background: #222 url('<?php echo base_url('assets/img/backgrounds/') . mt_rand(1, 14) . '.jpg' ?>') center center no-repeat;
         }
     </style>
 </head>
@@ -31,42 +31,44 @@ if (isset($this->session->userdata['logged_in'])) {
         <div id="cover-caption">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-2 w-25 mx-auto text-center form py-3">
-                        <?php
-                        if (isset($response) && $response != "") {
-                            echo '<div class="alert alert-success" role="alert">';
-                            echo $response . ' </div>';
-                        }
+                    <div class="col-lg-4 mx-auto">
+                        <div class="w-100 text-center form p-4">
+                            <?php
+                            if (isset($response) && $response != "") {
+                                echo '<div class="alert alert-success" role="alert">';
+                                echo $response . ' </div>';
+                            }
 
-                        if (isset($logout_message)) {
-                            echo "<div class='message'>";
-                            echo $logout_message;
-                            echo "</div>";
-                        }
+                            if (isset($logout_message)) {
+                                echo "<div class='message'>";
+                                echo $logout_message;
+                                echo "</div>";
+                            }
 
-                        if (isset($message_display)) {
-                            echo "<div class='message'>";
-                            echo $message_display;
-                            echo "</div>";
-                        }
+                            if (isset($message_display)) {
+                                echo "<div class='message'>";
+                                echo $message_display;
+                                echo "</div>";
+                            }
 
-                        if (isset($error_message)) {
-                            echo "<div class='error_msg'>$error_message" . validation_errors() . "</div>";
-                        }
-                        ?>
-                        <img class="display-4 py-2 text-truncate" src="/assets/img/user.png" alt="" width="100" height="100">
-                        <div class="px-2 rtl">
-                            <?php echo form_open('users/user_login_process', 'class=justify-content-center'); ?>
-                            <div class="form-floating mb-3">
-                                <input type="text" name="name" id="name" class="form-control center" placeholder="Username" required autofocus>
-                                <label for="inputUser" class="sr-only">username</label>
+                            if (isset($error_message)) {
+                                echo "<div class='error_msg'>$error_message" . validation_errors() . "</div>";
+                            }
+                            ?>
+                            <img class="display-4 py-2 text-truncate" src="/assets/img/user.png" alt="" width="100" height="100">
+                            <div class="px-2 rtl">
+                                <?php echo form_open('users/user_login_process', 'class=justify-content-center'); ?>
+                                <div class="form-floating mb-3">
+                                    <input type="text" name="name" id="name" class="form-control center" required autofocus>
+                                    <label for="inputUser" class="sr-only">username</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="password" name="password" id="password" class="form-control center" required>
+                                    <label for="inputPassword" class="sr-only">password</label>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                                </form>
                             </div>
-                            <div class="form-floating mb-3">
-                                <input type="password" name="password" id="password" class="form-control center" placeholder="Password" required>
-                                <label for="inputPassword" class="sr-only">password</label>
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-lg">Login</button>
-                            </form>
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ if (isset($_GET['project'])) {
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px" class="mx-2"><?=APP_VERSION?></a>
+    <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px" class="mx-2"><?= APP_VERSION ?></a>
     <div>
       <button class="search btn btn-outline-success me-2 text-white"><i class="search_icon fas fa-search"></i></button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,7 +24,7 @@ if (isset($_GET['project'])) {
       </button>
     </div>
     <div class="collapse navbar-collapse" id="navbarTogglerMobile">
-      <ul class="navbar-nav me-auto">
+      <ul class="nav me-auto my-2">
         <li class="nav-item me-2">
           <a class="btn btn-outline-success text-white" href="/"><?= lang('projects') ?></a>
         </li>
@@ -37,9 +37,9 @@ if (isset($_GET['project'])) {
         </li>
       </ul>
 
-      <ul class="navbar-nav">
+      <ul class="nav">
         <?php if ($role != 'Assembler') { ?>
-          <li class="nav-item dropdown nav-item me-2">
+          <li class="nav-item dropdown nav-item me-2 mb-2 mb-md-0">
             <a class="nav-item dropdown-toggle btn btn-outline-warning text-white" href="#" id="navbarDropdownForms" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <?= lang('forms') ?>
             </a>
@@ -59,7 +59,7 @@ if (isset($_GET['project'])) {
         <?php } ?>
 
         <?php if ($role == 'Assembler') { ?>
-          <div class="navbar-nav me-md-auto">
+          <div class="nav me-md-auto">
             <?php if (isset($project) && $project != '') { ?>
               <a class="nav-item btn btn-outline-warning text-white" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
             <?php } ?>
@@ -84,7 +84,7 @@ if (isset($_GET['project'])) {
           </li>
         <?php } ?>
 
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown mx-2">
           <a class="nav-item dropdown-toggle btn btn-outline-secondary text-white" href="#" id="navbarDropdownUser" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <?php
             $name = isset($user_view_name) ? $user_view_name : "";
