@@ -16,8 +16,8 @@ $project =  'Trash';
 			} ?>
 		</nav>
 		<?php if (isset($results)) { ?>
-			<table class="table">
-				<thead class="thead-dark">
+			<table class="table table-striped table-hover">
+				<thead class="table-dark">
 					<tr>
 						<th scope="col">Logs</th>
 						<th scope="col">Size</th>

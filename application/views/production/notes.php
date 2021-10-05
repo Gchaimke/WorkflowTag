@@ -22,8 +22,8 @@ if (isset($this->session->userdata['logged_in'])) {
         }
         if (isset($notes)) { ?>
             <div class="table-responsive">
-                <table class="table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
                         <tr>
                             <th scope="col"><i class="fa fa-user"></i></th>
                             <th scope="col">QC</th>

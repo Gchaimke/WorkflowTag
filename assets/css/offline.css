@@ -30,7 +30,7 @@ table td, table th {
     padding: 4px;
 }
 
-thead.thead-dark {
+thead.table-dark {
     background: #eeeeee;
 }
 
@@ -44,7 +44,7 @@ thead.thead-dark {
     max-height: 1500px;
 }
 
-thead.thead-dark {
+thead.table-dark {
     color: rgb(0, 0, 0);
 }
 

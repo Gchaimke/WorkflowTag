@@ -24,8 +24,8 @@ if (isset($this->session->userdata['logged_in'])) {
         }
         ?>
         <a class="btn btn-success" href="/users/create"><i class="fa fa-user-plus"></i></a>
-        <table class="table">
-            <thead class="thead-dark">
+        <table class="table table-striped table-hover">
+            <thead class="table-dark">
                 <tr>
                     <th scope="col">Username</th>
                     <th scope="col" class="mobile-hide">Real Name</th>

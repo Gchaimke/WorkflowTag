@@ -44,8 +44,8 @@ $status_filter = isset($_GET['status']) ? $_GET['status'] : '-1';
         </div>
         <?php if (isset($forms)) { ?>
             <div class="table-responsive">
-                <table class="table">
-                    <thead class="thead-dark">
+                <table class="table table-striped table-hover">
+                    <thead class="table-dark">
                         <tr>
                             <th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
                             <th scope="col">Form Number</th>

@@ -70,8 +70,8 @@ if (file_exists($file)) {
 
 		<?php if (isset($results)) { ?>
 			<div class="table-responsive">
-				<table class="table">
-					<thead class="thead-dark">
+				<table class="table table-striped table-hover">
+					<thead class="table-dark">
 						<tr>
 							<th scope="col">*</th>
 							<th scope="col">Serial Number</th>

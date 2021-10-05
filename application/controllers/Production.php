@@ -310,7 +310,7 @@ class Production extends CI_Controller
                 $col = explode(";", $rows[$i]);
                 if (count($col) > 1) {
                     if (end($col) == "HD") {
-                        $tr = '<table id="checklist" class="table"><thead class="thead-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
+                        $tr = '<table id="checklist" class="table table-striped table-hover"><thead class="table-dark">' . '<tr><th scope="col">#</th><th id="result" scope="col">' . $col[0] . '</th>';
                         for ($j = 1; $j < count($col) - 1; $j++) {
                             $tr .= '<th scope="col">' . $col[$j] . '</th>';
                         }
@@ -318,7 +318,7 @@ class Production extends CI_Controller
                         $index = 1;
                         $prefix_count++;
                     } else if (end($col) == "QC") {
-                        $tr .= "<tr class='qc_row'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
+                        $tr .= "<tr class='qc_row table-warning'><th scope='row' style=\"width: 10%;\">$prefix$index</th><td class='description' colspan='2'>" . $col[0];
                         $tr .= "<select class='form-select review' id='" . ($id + count($rows)) . "'><option value='0'>Select</option>";
                         $tr .= $select_users . "</select></td></tr>" . PHP_EOL;
                         $index++;
@@ -731,7 +731,7 @@ class Production extends CI_Controller
             $project_scans = $this->Projects_model->getProject('', $project)['scans'];
             $rows = explode(PHP_EOL, $project_scans);
             if (count($rows) > 1) {
-                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="thead-dark">';
+                $table .= '<center><h2> Scans Table</h2></center><table id="scans" class="table"><thead class="table-dark">';
                 for ($i = 0; $i < count($rows); $i++) {
                     $col = explode(";", $rows[$i]);
                     if (end($col) == "HD") {

@@ -139,7 +139,7 @@ if (isset($_GET['project'])) {
         search: search
       }).done(function(e) {
         $('#serach_rows').empty();
-        var head = '<thead class="thead-dark text-white"> <tr><th class="text-left">Serial Number</th><th>Project</th><th>Type</th><th>Action</th></tr></thead>';
+        var head = '<thead class="table-dark text-white"> <tr><th class="text-left">Serial Number</th><th>Project</th><th>Type</th><th>Action</th></tr></thead>';
         if (e != '') {
           $('#serach_rows').append(head);
           $('#serach_rows').append(e);

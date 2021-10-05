@@ -255,7 +255,7 @@ a.btn.btn-primary.folder {
 }
 
 select.review {
-    max-width: fit-content;
+    max-width: 120px;
     float: right;
 }
 
