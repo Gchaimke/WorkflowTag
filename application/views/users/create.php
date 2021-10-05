@@ -32,7 +32,7 @@ if (isset($this->session->userdata['logged_in'])) {
                                     <div class="input-group-prepend">
                                           <div class="input-group-text"><?= lang('role') ?></div>
                                     </div>
-                                    <select class="form-control" name='role'>
+                                    <select class="form-select" name='role'>
                                           <?php if (isset($settings)) {
                                                 $arr = explode(",", $settings['roles'] . "," . $settings['user_roles']);
                                                 foreach ($arr as $role) {
@@ -49,7 +49,7 @@ if (isset($this->session->userdata['logged_in'])) {
                                     <div class="input-group-prepend">
                                           <div class="input-group-text"><?= lang('language') ?></div>
                                     </div>
-                                    <select class="form-control" name='language'>
+                                    <select class="form-select" name='language'>
                                           <?php if (isset($languages)) {
                                                 echo "<option value='system'>" . lang('default') . "</option>";
                                                 foreach ($languages as $lang) {
@@ -97,6 +97,18 @@ if (isset($this->session->userdata['logged_in'])) {
                                     </div>
                                     <input type='text' class="form-control ltr" name='email'>
                               </div>
+                        </div>
+                        <div class="row">
+                              <div><?= lang('clients') ?></div>
+                              <?php
+                              $user_clients = explode(",", $user['clients']);
+                              foreach ($clients as $key => $client) {
+                                    echo "<div class='form-check'>";
+                                    echo "<input class='form-check-input' type='checkbox' name='clients[{$client['id']}]' value='{$client['id']}' aria-label='{$client['name']}'>
+						<label class='form-check-label' for='clients'>{$client['name']}</label>";
+                                    echo "</div>";
+                              }
+                              ?>
                         </div>
                         <input type='submit' class="btn btn-info" name='submit' value='<?= lang('add_user') ?>'>
                         <?php echo form_close(); ?>

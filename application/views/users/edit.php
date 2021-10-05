@@ -2,7 +2,7 @@
 if (isset($this->session->userdata['logged_in']) && isset($user)) {
 	$current_role = ($this->session->userdata['logged_in']['role']);
 	if ($this->session->userdata['logged_in']['id'] != $user['id']) {
-		if ($this->session->userdata['logged_in']['role'] != "Admin") {
+		if ($current_role != "Admin") {
 			header("location: /");
 		}
 	}
@@ -67,7 +67,7 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						<div class="input-group-prepend">
 							<div class="input-group-text"><?= lang('language') ?></div>
 						</div>
-						<select class="form-control" name='language'>
+						<select class="form-select" name='language'>
 							<?php if (isset($languages)) {
 								echo "<option value='system'>" . lang('default') . "</option>";
 								foreach ($languages as $lang) {
@@ -119,24 +119,25 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 						<input type='text' class="form-control ltr" name='email' value="<?php echo $user['email'] ?>">
 					</div>
 				</div>
-
-				<div class="row">
-					<div><?= lang('clients') ?></div>
-					<?php
-					$user_clients = explode(",", $user['clients']);
-					foreach ($clients as $key => $client) {
-						echo "<div class='form-check'>";
-						if (in_array($client['id'], $user_clients)) {
-							$checked = "checked";
-						} else {
-							$checked = "";
-						}
-						echo "<input class='form-check-input' type='checkbox' name='clients[{$client['id']}]' value='{$client['id']}' aria-label='{$client['name']}' $checked>
+				<?php if ($current_role == "Admin") { ?>
+					<div class="row">
+						<div><?= lang('clients') ?></div>
+						<?php
+						$user_clients = explode(",", $user['clients']);
+						foreach ($clients as $key => $client) {
+							echo "<div class='form-check'>";
+							if (in_array($client['id'], $user_clients)) {
+								$checked = "checked";
+							} else {
+								$checked = "";
+							}
+							echo "<input class='form-check-input' type='checkbox' name='clients[{$client['id']}]' value='{$client['id']}' aria-label='{$client['name']}' $checked>
 						<label class='form-check-label' for='clients'>{$client['name']}</label>";
-						echo "</div>";
-					}
-					?>
-				</div>
+							echo "</div>";
+						}
+						?>
+					</div>
+				<?php }; ?>
 				<input type='submit' class="btn btn-info" name='submit' value='<?= lang('update') ?>'>
 				<?php echo form_close(); ?>
 			</div>

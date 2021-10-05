@@ -108,13 +108,14 @@ if (isset($_GET['project'])) {
         <button class="btn btn-secondary" type="button" onclick="serialSearch()"><?= lang('search') ?></button>
       </div>
     </div>
-    <div id='searchResult' class="text-white">
-      <div class='col-md-8 m-auto overflow-auto pt-3' style='height:85vh'>
-        <table class="table" id='serach_rows'>
-        </table>
-      </div>
-    </div>
   </form>
+
+  <div id='searchResult' class="text-white">
+    <div class='col-md-8 m-auto overflow-auto pt-3' style='height:85vh'>
+      <table class="table table-striped table-dark" id='serach_rows'>
+      </table>
+    </div>
+  </div>
 </div>
 
 
@@ -138,7 +139,7 @@ if (isset($_GET['project'])) {
         search: search
       }).done(function(e) {
         $('#serach_rows').empty();
-        var head = '<thead class="thead-dark"> <tr><th class="text-left">Serial Number</th><th>Project</th><th>Type</th><th>Action</th></tr></thead>';
+        var head = '<thead class="thead-dark text-white"> <tr><th class="text-left">Serial Number</th><th>Project</th><th>Type</th><th>Action</th></tr></thead>';
         if (e != '') {
           $('#serach_rows').append(head);
           $('#serach_rows').append(e);

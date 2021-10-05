@@ -3,6 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Search extends CI_Controller
 {
+    private $user, $user_clients;
     public function __construct()
     {
         parent::__construct();
@@ -10,6 +11,14 @@ class Search extends CI_Controller
         $this->load->model('Search_model');
         $this->load->model('Clients_model');
         $this->load->library('pagination');
+
+        if (isset($this->session->userdata['logged_in'])) {
+            $this->user = $this->session->userdata['logged_in'];
+            if ($this->user['role'] == "") {
+                exit;
+            }
+            $this->user_clients = explode(",", $this->user['clients']);
+        }
     }
 
     public function index()
@@ -19,11 +28,11 @@ class Search extends CI_Controller
         $search = $this->input->post('search');
         foreach ($tables as $table) {
             $results = $this->Search_model->search($search, $table);
-            echo $this->build_table($results, $table);
+            echo $this->build_table($results['data'], $results['type']);
         }
     }
 
-    function build_table($results)
+    function build_table($results, $type)
     {
         $html = "";
         if ($results) {
@@ -34,35 +43,38 @@ class Search extends CI_Controller
                 if (isset($result["client"])) {
                     $client = $this->Clients_model->get_client_by_name($result["client"]);
                     $client['id'] = isset($client) ? $client['id'] : "";
+                    if (!in_array($client['id'], $this->user_clients)) continue;
                 }
                 $html .= "<tr class='text-white'>";
-                if (isset($result['number']) && isset($result['parts'])) {
+                if ($type == "rma") {
                     $html .= "<td class='text-left'>{$result['number']}</td>";
                     $html .= "<td>" . urldecode($result["project"]) . "</td>";
                     $html .= "<td>RMA</td>";
-                    $html .= "<td><a href='/forms/edit?type=rma&id=" . $result["id"] . "' class='btn btn-info fa fa-edit'></a></td>";
-                } else if (isset($result['number']) && !isset($result['parts'])) {
+                    $html .= "<td><a href='/forms/edit?type=rma&id={$result["id"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
+                }
+                if ($type == "qc" && $this->user['role'] != "Assembler") {
                     $html .= "<td class='text-left'{$result['number']}</td>";
                     $html .= "<td>QC</td>";
                     $html .= "<td>" . urldecode($result["project"]) . "</td>";
-                    $html .= "<td><a href='/forms/edit?type=qc&id={$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
-                } else if (isset($result['row'])) {
+                    $html .= "<td><a href='/forms/edit?type=qc&id={$result["id"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
+                }
+                if ($type == "note" && $this->user['role'] != "Assembler") {
                     $html .= "<td class='text-left'>{$result['checklist_sn']}</td>";
                     $html .= "<td>" . urldecode($result["project"]) . "</td>";
                     $html .= "<td>NOTE</td>";
                     $html .= "<td><a href='/production/edit_note/{$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
-                } else {
-                    if ($client['id'] != "") {
-                        $html .= "<td class='text-left'>" . $result['serial'] . "</td>";
-                        $html .= "<td>" . urldecode($result["project"]) . "</td>";
-                        $html .= "<td>CHECKLIS</td>";
-                        if (strpos($result["project"], 'Trash') !== false) {
-                            $html .= "<td>No Actions for Trashed items</td>";
-                        } else {
-                            $html .= "<td><a href='/production/edit_checklist/{$result["id"]}?sn={$result["serial"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
-                        }
+                }
+                if ($client['id'] != "" && $type == "checklist") {
+                    $html .= "<td class='text-left'>" . $result['serial'] . "</td>";
+                    $html .= "<td>" . urldecode($result["project"])."</td>";
+                    $html .= "<td>CHECKLIST</td>";
+                    if (strpos($result["project"], 'Trash') !== false) {
+                        $html .= "<td>No Actions for Trashed items</td>";
+                    } else {
+                        $html .= "<td><a href='/production/edit_checklist/{$result["id"]}?sn={$result["serial"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
                     }
                 }
+
                 $html .= "</tr>";
             }
         }

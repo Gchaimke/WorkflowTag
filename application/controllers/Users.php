@@ -68,7 +68,7 @@ class Users extends CI_Controller
                     'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
-                    'clients' => $this->input->post('clients'),
+                    'clients' =>implode(",", $this->input->post('clients')),
                 );
                 $result = $this->Users_model->registration_insert($sql);
                 if ($result == TRUE) {
