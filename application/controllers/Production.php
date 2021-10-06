@@ -123,7 +123,7 @@ class Production extends CI_Controller
         $result = $this->Production_model->addChecklist($data);
         if ($result == TRUE) {
             echo '1';
-            admin_log("created '$project' checklist with serial '$serial'", 1, $this->user['name']);
+            admin_log("created {$project['project']} checklist with serial '$serial'", 1, $this->user['name']);
         } else {
             echo 'Checklist ' . $data['serial'] . ' exists!';
         }
