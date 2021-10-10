@@ -52,35 +52,38 @@ if (isset($this->session->userdata['logged_in'])) {
         </ul><br>
         <div id="form-messages" class='alert hidden' role='alert'></div>
         <?php echo form_open('admin/save_settings', 'id=ajax-form', 'class=user-create'); ?>
-        <div class="form-group">
-            <label>
-                <h3><?= lang('roles') ?></h3>
-                <div>System: <?=$settings['roles']?></div>
-            </label>
-            <?php
-            if (isset($settings) && $settings != "") {
-                echo '<textarea name="user_roles" class="form-control" rows="1" cols="30">' . $settings['user_roles'] . '</textarea>';
-            }
-            ?>
-        </div>
-        <div class="form-row col-md-5">
-            <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                    <div class="input-group-text"><?= lang('language') ?></div>
-                </div>
-                <select class="form-control" name='language'>
-                    <?php if (isset($languages)) {
-                        foreach ($languages as $lang) {
-                            if ($settings['language'] == $lang) {
-                                echo "<option selected>$lang</option>";
-                            } else {
-                                echo "<option>$lang</option>";
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-floating mb-2">
+                    <select class="form-select" name='language'>
+                        <?php if (isset($languages)) {
+                            foreach ($languages as $lang) {
+                                if ($settings['language'] == $lang) {
+                                    echo "<option selected>$lang</option>";
+                                } else {
+                                    echo "<option>$lang</option>";
+                                }
                             }
                         }
+                        ?>
+                    </select>
+                    <label><?= lang('language') ?></label>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-floating">
+                    <?php
+                    if (isset($settings) && $settings != "") {
+                        echo '<textarea name="user_roles" class="form-control" rows="1" cols="30">' . $settings['user_roles'] . '</textarea>';
                     }
                     ?>
-                </select>
+                    <label>
+                        <?= lang('roles') ?>.
+                    </label>
+                    System roles is: <?= $settings['roles'] ?>
+                </div>
             </div>
+
         </div>
         <?php
         echo "<input type='submit' class='btn btn-success' name='submit' value='" . lang('save') . "'>";
@@ -99,7 +102,6 @@ if (isset($this->session->userdata['logged_in'])) {
             <h3>File system Utils</h3>
             <button class="btn btn-info mt-3" onclick="RemoveEmptySubFolders()">Remove empty folders from uploads</button>
             <a target="_blank" class="btn btn-info mt-3" href="/production/generate_all_offline_files">Generate offline files</a>
-            <a target="_blank" class="btn btn-info mt-3" href="/production/all_checklists/500">View first 500 Checklists</a>
         </div>
         <hr>
     </div>

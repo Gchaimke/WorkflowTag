@@ -100,11 +100,6 @@ class Production extends CI_Controller
         $this->view_page('production/manage_checklists', $params, $params);
     }
 
-    public function all_checklists($limit = 1000)
-    {
-        $this->checklists('', $limit);
-    }
-
     public function add_checklist($project = '', $data = '')
     {
         $data = array();

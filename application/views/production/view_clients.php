@@ -1,3 +1,8 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+	$user_role = $this->session->userdata['logged_in']['role'];
+}
+?>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
@@ -12,29 +17,37 @@
 			echo "<div class='alert alert-success' role='alert'>";
 			echo $message_display . '</div>';
 		}
-
-		echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
-		if (isset($clients)) {
-			foreach ($clients as $key => $client) {
-
-				echo "<div class='col my-3'><div id='{$client['id']}' class='card h-100'>
-			<div style='background-image:url({$client['logo']})' class='card-header-bg'></div>
-			<div class='card-header'>		
-				<div class='card-title h5 text-center'>$key</div>
-			</div>
-			<div class='card-body'>
-			";
-				if ($client['status'] == 1) {
-					foreach ($client['projects'] as $project) {
-						echo  "<a href='/production/checklists?client={$client['id']}&project=" . $project['project'] . "' class='btn btn-outline-primary text-nowrap w-100 my-1 py-2'>" . $project['project'] . "</a>";
-					}
-				} else {
-					echo '<h3>OLD</h3>';
-				}
-				echo '</div></div></div>';
-			}
-			echo "</div>";
-		}
 		?>
+
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+			<?php if (isset($clients)) :
+				foreach ($clients as $key => $client) : ?>
+					<div class='col my-3'>
+						<div id='<?= $client['id'] ?>' class='card h-100'>
+							<div style='background-image:url(<?= $client['logo'] ?>)' class='card-header-bg'></div>
+							<div class='card-header'>
+								<div class='card-title h5 text-center'><?= $key ?></div>
+							</div>
+							<div class='card-body'>
+								<?php if ($client['status'] == 1) :
+									foreach ($client['projects'] as $project) : ?>
+										<div class="row">
+											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary text-nowrap col mb-2'>
+												<?= $project['project'] ?></a>
+											<?php if ($user_role == "Admin") : ?>
+												<a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary col-2 mb-2 mx-1'>
+													<i class='fa fa-edit'></i></a>
+											<?php endif ?>
+										</div>
+									<?php endforeach ?>
+								<?php else : ?>
+									<h3>OLD</h3>
+								<?php endif ?>
+							</div>
+						</div>
+					</div>
+				<?php endforeach ?>
+		</div>
+	<?php endif ?>
 	</div>
 </main>

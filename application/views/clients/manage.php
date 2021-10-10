@@ -5,7 +5,6 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 }
 ?>
-
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
@@ -21,46 +20,46 @@ if (isset($this->session->userdata['logged_in'])) {
 			echo "<div class='alert alert-success' role='alert'>";
 			echo $message_display . '</div>';
 		}
-
-		echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
-		foreach ($clients as $key => $client) {
-			echo "<div class='col my-3'>
-					<div id='client_{$client['id']}' class='card h-100'>
-						<div style='background-image:url({$client['logo']})' class='card-header-bg'></div>
+		?>
+		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+			<?php foreach ($clients as $key => $client) : ?>
+				<div class='col my-3'>
+					<div id='client_<?= $client['id'] ?>' class='card h-100'>
+						<div style='background-image:url(<?= $client['logo'] ?>)' class='card-header-bg'></div>
 						<div class='card-header'>
 							<div class='row'>
-								<span class='card-title h3 col'>$key</span>
-								<a href='/clients/edit/{$client['id']}' class='btn btn-info col-2'><i class='fa fa-edit'></i></a>
-								<button class='btn btn-danger mx-2 col-2' onclick='deleteClient({c},\"$key\")'>
+								<span class='card-title h3 col'><?= $key ?></span>
+								<a href='/clients/edit/<?= $client['id'] ?>' class='btn btn-info col-2'><i class='fa fa-edit'></i></a>
+								<button class='btn btn-danger mx-2 col-2' onclick='deleteClient(<?= $client["id"] ?>,"<?= $key ?>")'>
 									<i class='fa fa-trash'></i>
 								</button>
 							</div>
 						</div>
-						<div class='clients card-body'>";
-			if ($client['status'] == 1) {
-				foreach ($client['projects'] as $project) {
-					echo  "
-							<div id='project_{$project['id']}' class='my-3 project_row col-12'>
-								<span class='m-2 h5'>{$project['project']}</span>
-								<span><a href='/projects/edit_project/{$project['id']}' class='btn btn-outline-primary'>
-								<i class='fa fa-edit'></i></a>
-								<button class='btn btn-outline-danger mx-2' onclick='deleteProject({$project['id']},\"{$project['project']}\")'>
-								<i class='fa fa-trash'></i></button></span>
-							</div>";
-				}
-				echo 	"</div>";
-				echo '	<div class="card-footer text-center">';
-				echo "		<a class='btn btn-outline-success' href='/projects/add_project/{$client['id']}'>" . lang('add') . "
+						<div class='clients card-body'>
+							<?php if ($client['status'] == 1) :
+								foreach ($client['projects'] as $project) : ?>
+
+									<div id='project_<?= $project['id'] ?>' class='my-3 project_row col-12'>
+										<span class='m-2 h5'><?= $project['project'] ?></span>
+										<span><a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary'>
+												<i class='fa fa-edit'></i></a>
+											<button class='btn btn-outline-danger mx-2' onclick='deleteProject(<?= $project["id"] ?>,<?= $project["project"] ?>)'>
+												<i class='fa fa-trash'></i></button></span>
+									</div>
+								<?php endforeach ?>
+						</div>
+						<div class="card-footer text-center">
+							<a class='btn btn-outline-success' href='/projects/add_project/<?= $client['id'] ?>'><?= lang('add') ?>
 								<i class='fas fa-file-alt mx-2'></i>
 							</a>
-						";
-			} else {
-				echo '<div class="h3 text-center w-100">Old</div>';
-			}
-			echo "</div></div></div>";
-		}
-		echo "</div>";
-		?>
+						<?php else : ?>
+							<div class="h3 text-center w-100">Old</div>
+						<?php endif ?>
+						</div>
+					</div>
+				</div>
+			<?php endforeach ?>
+		</div>
 	</div>
 </main>
 

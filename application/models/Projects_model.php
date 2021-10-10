@@ -37,7 +37,8 @@ class Projects_model extends CI_Model
 			'restart_serial' => array(
 				'type' => 'INT',
 				'constraint' => 1,
-				'unsigned' => TRUE,
+				'default' => 0,
+				'null' => TRUE,
 			),
 			'assembly' => array(
 				'type' => 'VARCHAR',
