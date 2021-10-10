@@ -29,8 +29,8 @@ if (file_exists($file)) {
 			?>
 			<nav class="pagination-nav" aria-label="Checklist navigation">
 				<ul class="pagination-nav-menu">
-					<a class="btn btn-warning" onclick="$('#add_form').toggle()"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
-					<a class="btn btn-info" onclick="$('#batch_add_form').toggle()"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
+					<a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add_one"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
+					<a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add_many"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
 					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/?client=<?= $client['id'] ?>&checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
 				<?php if (isset($links)) {
@@ -38,34 +38,58 @@ if (file_exists($file)) {
 				} ?>
 			</nav>
 		</div>
-		<div id="add_form" style="display: none;">
-			<center>
-				<form id="add_checklist" action="production/add_checklist" class="my-4">
-					<h3><?= lang('add_checklist') ?></h3>
-					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
-					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= $project ?>'>
-					<div class="form-group"><label>Serial template <?= $template ?></label>
-						<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
-					</div></br>
-					<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
-					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'>
-				</form>
-			</center>
+		<!-- Modal -->
+		<div class="modal fade" id="add_one" tabindex="-1" aria-labelledby="add_oneLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_checklist') ?></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<center>
+							<form id="add_checklist" action="production/add_checklist" class="my-4">
+								<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+								<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+								<input type='hidden' name='project' value='<?= $project ?>'>
+								<div class="form-group"><label>Serial template <?= $template ?></label>
+									<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
+								</div></br>
+								<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
+							</form>
+						</center>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="$('#add_checklist').submit()"><?= lang('add') ?></button>
+					</div>
+				</div>
+			</div>
 		</div>
-
-		<div id="batch_add_form" style="display: none;">
-			<center>
-				<form id="add_batch" action="/production/gen_checklists" class="my-4">
-					<h3><?= lang('add_batch') ?></h3>
-					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
-					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-					<input type='hidden' name='project' value='<?= $project ?>'>
-					<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
-					<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
-					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'></br>
-				</form>
-			</center>
+		<!-- Modal -->
+		<div class="modal fade" id="add_many" tabindex="-1" aria-labelledby="add_manyLabel" aria-hidden="true">
+			<div class="modal-dialog modal-dialog-centered">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_checklist') ?></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<center>
+							<form id="add_batch" action="/production/gen_checklists" class="my-4">
+								<h3><?= lang('add_batch') ?></h3>
+								<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+								<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+								<input type='hidden' name='project' value='<?= $project ?>'>
+								<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
+								<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
+							</form>
+						</center>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="$('#add_batch').submit()"><?= lang('add') ?></button>
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<?php if (isset($results)) { ?>
@@ -159,31 +183,33 @@ if (file_exists($file)) {
 	$('#add_checklist').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
-		var formData = $('#add_checklist').serialize();
-		var r = confirm("Add " + $('input[name=count]').val() + " checklist to " + $('input[name=project]').val() + "?");
-		if (r == true) {
+		let serial = $('#add_checklist').find("input[name=serial]").val();
+		let formData = $('#add_checklist').serialize();
+		if (serial != "") {
+			//let r = confirm("Add " + $('input[name=count]').val() + " checklist to " + $('input[name=project]').val() + "?");
 			$.ajax("/production/add_checklist/", {
 				type: 'POST',
-				url: $('#ajax-form').attr('action'),
 				data: formData
-			}).done(function(o) {
-				if (o != 1) {
-					alert(o);
+			}).done(function(out) {
+				if (out != 1) {
+					alert(out);
 				}
 				location.reload();
 			});
+		} else {
+			alert("input serial is empty");
 		}
 	});
 
 	$('#add_batch').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
-		var formData = $('#add_batch').serialize();
-		var r = confirm("Add " + $('input[name=count]').val() + " checklist/s to " + $('input[name=project]').val() + "?");
-		if (r == true) {
+		let count = $('#add_batch').find("input[name=count]").val();
+		let formData = $('#add_batch').serialize();
+		// let r = confirm("Add " + $('input[name=count]').val() + " checklist/s to " + $('input[name=project]').val() + "?");
+		if (count != "") {
 			$.ajax("/production/gen_checklists", {
 				type: 'POST',
-				url: $('#ajax-form').attr('action'),
 				data: formData
 			}).done(function(o) {
 				if (o != 1) {
