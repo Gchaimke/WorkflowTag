@@ -45,10 +45,10 @@ if (file_exists($file)) {
 					<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 					<input type='hidden' name='project' value='<?= $project ?>'>
-					<div class="form-group"><label>Serial template <?php echo $template ?></label>
+					<div class="form-group"><label>Serial template <?= $template ?></label>
 						<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
 					</div></br>
-					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+					<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
 					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'>
 				</form>
 			</center>
@@ -62,7 +62,7 @@ if (file_exists($file)) {
 					<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 					<input type='hidden' name='project' value='<?= $project ?>'>
 					<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
-					<input type='date' class="form-control col-md-3" name='date' value="<?php echo date("Y-m-d"); ?>"></br>
+					<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
 					<input type='submit' class="btn btn-info btn-block col-md-3" name='submit' value='<?= lang('add') ?>'></br>
 				</form>
 			</center>
@@ -76,9 +76,10 @@ if (file_exists($file)) {
 							<th scope="col">*</th>
 							<th scope="col">Serial Number</th>
 							<th scope="col" class="mobile-hide">Project</th>
-							<th scope="col"><i class="fa fa-tasks"></i></th>
+							<th scope="col"><i class="fas fa-clipboard-check"></i></th>
 							<th scope="col"><i class="fa fa-user"></i></th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
+							<th scope="col"><i class="fa fa-tasks"></i></th>
 							<th scope="col"><i class="fas fa-image"></i></th>
 							<th scope="col">Edit</th>
 							<th scope="col">Trash</th>
@@ -97,26 +98,28 @@ if (file_exists($file)) {
 									}
 								}
 								$editors = implode(', ', $editors);
+								$scans = explode(",", $data->scans);
 						?>
-								<tr id='<?php echo $data->id ?>'>
+								<tr id='<?= $data->id ?>'>
 									<td>
-										<div class='checkbox'><input type='checkbox' class='select' id='<?php echo $data->id ?>' $checked></div>
+										<div class='checkbox'><input type='checkbox' class='select' id='<?= $data->id ?>' $checked></div>
 									</td>
 									<td><?php if ($data->serial != '') {
 											echo $data->serial;
 										} else {
 											echo "SN template not found!";
 										}  ?></td>
-									<td class="mobile-hide"><?php echo $data->project ?></td>
+									<td class="mobile-hide"><?= $data->project ?></td>
 									<td>
-										<div class="div_link" id='<?php echo $data->id ?>' onclick='showLog("<?php echo $data->log ?>","<?php echo $data->serial ?>")'>
-											<?php echo $data->progress ?>%</div>
+										<div class="div_link" id='<?= $data->id ?>' onclick='showLog("<?= $data->log ?>","<?= $data->serial ?>")'>
+											<?= $data->progress ?>%</div>
 									</td>
 									<td><?= $editors ?></td>
-									<td class="mobile-hide"><?php echo $data->date ?></td>
-									<td><?php echo $data->pictures ?></td>
+									<td class="mobile-hide"><?= $data->date ?></td>
+									<td><?= count(array_filter($scans)) ?></td>
+									<td><?= $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?sn=<?= $data->serial ?>&client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-									<td><button id='<?php echo $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?php echo $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+									<td><button id='<?= $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?= $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }
 						} ?>
@@ -136,7 +139,7 @@ if (file_exists($file)) {
 	</div>
 </main>
 <script>
-	var client = '<?php echo $client['name'] ?>';
+	var client = '<?= $client['name'] ?>';
 	var checklists = [];
 
 	function trashChecklist(id, project, serial) {
