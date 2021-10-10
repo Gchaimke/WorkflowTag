@@ -182,6 +182,10 @@ if (isset($this->session->userdata['logged_in'])) {
 		stickHeader()
 	};
 
+	$('.scans').on('change', function() {
+		$('#ajax-form-scans').submit();
+	})
+
 	$('.qc_note_btn').on('click', function() {
 		$('#qc-checklist-note').toggle(300);
 	})

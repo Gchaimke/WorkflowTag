@@ -757,7 +757,7 @@ class Production extends CI_Controller
                         $id++;
                     }
                 }
-                $table .= "</tbody></table><button type='submit' class='btn btn-info navbar-btn float-right mb-4 print-hide'><i class='fa fa-save me-2'></i>Save Scans</button>";
+                $table .= "</tbody></table>";
             }
         }
         return $table;
