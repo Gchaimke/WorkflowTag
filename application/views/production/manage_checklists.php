@@ -176,6 +176,10 @@ if (file_exists($file)) {
 		}
 	}
 
+	var addOne = document.getElementById('add_one');
+	addOne.addEventListener('shown.bs.modal', function() {
+		$('#add_checklist').find("input[name=serial]").focus();
+	});
 	$('#add_checklist').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
@@ -197,6 +201,11 @@ if (file_exists($file)) {
 		}
 	});
 
+
+	var addMany = document.getElementById('add_many');
+	addMany.addEventListener('shown.bs.modal', function() {
+		$('#add_batch').find("input[name=count]").focus();
+	});
 	$('#add_batch').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
