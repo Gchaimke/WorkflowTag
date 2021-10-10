@@ -167,6 +167,8 @@ function snapPhoto() {
                 var image = new Image();
                 image.title = file.name;
                 image.src = this.result;
+                photoCount++;
+                $("#picrures_count").val(photoCount);
             }, false);
             reader.readAsDataURL(file);
         }
@@ -187,8 +189,6 @@ function savePhotoToServer(file) {
         var photo_id = out.split("/")[4].replace(".jpeg", "").replace(".png", ""); //get photo id
         $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
             photo_id + '</span><img id="' + photo_id + '"src="/' + out + '" class="respondCanvas" >');
-        photoCount++;
-        $("#picrures_count").val(photoCount);
         $('#form-messages').addClass('alert-success');
         $("#save").trigger("click");
         console.log(out + " Uploaded");
@@ -214,8 +214,8 @@ function delPhoto(id) {
 }
 
 function delFile(id) {
-    var file = $("#"+id).attr('data-file');
-    var r = confirm("Delete file "+file+"?");
+    var file = $("#" + id).attr('data-file');
+    var r = confirm("Delete file " + file + "?");
     if (r == true) {
         $.post("/forms/delete_file", {
             file: file
