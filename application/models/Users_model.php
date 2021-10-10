@@ -57,6 +57,7 @@ class Users_model extends CI_Model
 			"name" => 'Admin',
 			"view_name" => 'Admin',
 			"role" => 'Admin',
+			"email" => 'Admin',
 			"password" => password_hash('Admin', PASSWORD_DEFAULT),
 			"projects" => '1,2,3',
 		);
