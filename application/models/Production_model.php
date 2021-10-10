@@ -3,87 +3,87 @@
 class Production_model extends CI_Model
 {
 	function createDb()
-    {
-        $this->load->dbforge();
-        $checklist = array(
-            'id' => array(
-                'type' => 'INT',
-                'constraint' => 9,
-                'unsigned' => TRUE,
-                'auto_increment' => TRUE
-            ),
-            'serial' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 30,
-            ),
-            'client' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 30
-            ),
-            'project' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 60
-            ),
-            'data' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 500
-            ),
-            'progress' => array(
-                'type' => 'INT',
-                'constraint' => 5,
-                'unsigned' => TRUE
-            ),
-            'assembler' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50
-            ),
-            'qc' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50
-            ),
-            'date' => array(
-                'type' => 'DATE',
-                'null' => FALSE
-            ),
-            'scans' => array(
-                'type' => 'TEXT'
-            ),
-            'pictures' => array(
-                'type' => 'TEXT'
-            ),
-            'note' => array(
-                'type' => 'TEXT'
-            ),
-            'log' => array(
-                'type' => 'TEXT'
-            ),
-            'version' => array(
-                'type' => 'VARCHAR',
-                'constraint' => 50
-            )
-        );
-        $this->dbforge->add_field($checklist);
-        $this->dbforge->add_key('id', TRUE);
-        $this->dbforge->create_table('checklists');
+	{
+		$this->load->dbforge();
+		$checklist = array(
+			'id' => array(
+				'type' => 'INT',
+				'constraint' => 9,
+				'unsigned' => TRUE,
+				'auto_increment' => TRUE
+			),
+			'serial' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 30,
+			),
+			'client' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 30
+			),
+			'project' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 60
+			),
+			'data' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 500
+			),
+			'progress' => array(
+				'type' => 'INT',
+				'constraint' => 5,
+				'unsigned' => TRUE
+			),
+			'assembler' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 50
+			),
+			'qc' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 50
+			),
+			'date' => array(
+				'type' => 'DATE',
+				'null' => FALSE
+			),
+			'scans' => array(
+				'type' => 'TEXT'
+			),
+			'pictures' => array(
+				'type' => 'TEXT'
+			),
+			'note' => array(
+				'type' => 'TEXT'
+			),
+			'log' => array(
+				'type' => 'TEXT'
+			),
+			'version' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 50
+			)
+		);
+		$this->dbforge->add_field($checklist);
+		$this->dbforge->add_key('id', TRUE);
+		$this->dbforge->create_table('checklists');
 
-        $demoChecklist = array(
-            "serial" => 'P001-07-20',
-            "client" => 'Avdor-HLT',
-            "project" => 'Project 1',
-            "data" => '',
-            "progress" => '0',
-            "assembler" => 'User',
-            "qc" => 'Admin',
-            "date" => '2020-04-30',
-            'log' => 'Checklist created'
-        );
-        $this->db->insert('checklists', $demoChecklist);
-    }
+		$demoChecklist = array(
+			"serial" => 'P001-07-20',
+			"client" => 'Avdor-HLT',
+			"project" => 'Project 1',
+			"data" => '',
+			"progress" => '0',
+			"assembler" => 'User',
+			"qc" => 'Admin',
+			"date" => '2020-04-30',
+			'log' => 'Checklist created'
+		);
+		$this->db->insert('checklists', $demoChecklist);
+	}
 
 	public function addChecklist($data)
 	{
 		// Query to check whether serial already exist or not
-		$condition = "serial ='" . $data['serial'] . "' and project ='" . urldecode($data['project'])."'";
+		$condition = "serial ='" . $data['serial'] . "' and project ='" . urldecode($data['project']) . "'";
 		$this->db->select('*');
 		$this->db->from('Checklists');
 		$this->db->where($condition);
@@ -117,13 +117,14 @@ class Production_model extends CI_Model
 					$condition = "id IN ($id)";
 					$this->db->where($condition);
 				}
+
+				if ($project != '') {
+					$project = urldecode($project);
+					$this->db->where("project =$project");
+				}
+				$q = $this->db->get();
+				$response = $q->result_array();
 			}
-			if ($project != '') {
-				$project = urldecode($project);
-				$this->db->where("project =$project");
-			}
-			$q = $this->db->get();
-			$response = $q->result_array();
 		}
 		return $response;
 	}
@@ -162,7 +163,8 @@ class Production_model extends CI_Model
 		}
 	}
 
-	function update_picture_count($data){
+	function update_picture_count($data)
+	{
 		$where = "id =" . $data['id'];
 		$this->db->update('checklists', $data, $where);
 		if ($this->db->affected_rows() > 0) {
@@ -193,7 +195,7 @@ class Production_model extends CI_Model
 		}
 	}
 
-	public function get_current_checklists_records($limit, $start, $project,$table = 'checklists', $client = '')
+	public function get_current_checklists_records($limit, $start, $project, $table = 'checklists', $client = '')
 	{
 		$this->db->limit($limit, $start);
 		if ($project != '') {

@@ -244,7 +244,7 @@ class Production extends CI_Controller
 
     public function edit_batch($msg = '')
     {
-        $ids = isset($_GET['checklists']) ? $_GET['checklists'] : '0';
+        $ids = isset($_GET['checklists']) ? $_GET['checklists'] : '';
         $data = array();
         if ($msg != '') {
             $data['message_display'] = $msg;

@@ -31,73 +31,19 @@ if (file_exists($file)) {
 				<ul class="pagination-nav-menu">
 					<a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add_one"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
 					<a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add_many"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
-					<a id='batchLink' class="btn btn-info disabled" href="/production/edit_batch/?client=<?= $client['id'] ?>&checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
+					<a id='batchLink' class="btn btn-info" href="/production/edit_batch/?client=<?= $client['id'] ?>&checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
 				<?php if (isset($links)) {
 					echo $links;
 				} ?>
 			</nav>
 		</div>
-		<!-- Modal -->
-		<div class="modal fade" id="add_one" tabindex="-1" aria-labelledby="add_oneLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_checklist') ?></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<center>
-							<form id="add_checklist" action="production/add_checklist" class="my-4">
-								<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
-								<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-								<input type='hidden' name='project' value='<?= $project ?>'>
-								<div class="form-group"><label>Serial template <?= $template ?></label>
-									<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
-								</div></br>
-								<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
-							</form>
-						</center>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="$('#add_checklist').submit()"><?= lang('add') ?></button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Modal -->
-		<div class="modal fade" id="add_many" tabindex="-1" aria-labelledby="add_manyLabel" aria-hidden="true">
-			<div class="modal-dialog modal-dialog-centered">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_checklist') ?></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<center>
-							<form id="add_batch" action="/production/gen_checklists" class="my-4">
-								<h3><?= lang('add_batch') ?></h3>
-								<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
-								<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-								<input type='hidden' name='project' value='<?= $project ?>'>
-								<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
-								<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
-							</form>
-						</center>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-primary" onclick="$('#add_batch').submit()"><?= lang('add') ?></button>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<?php if (isset($results)) { ?>
 			<div class="table-responsive">
 				<table class="table table-striped table-hover">
 					<thead class="table-dark">
 						<tr>
-							<th scope="col">*</th>
+							<th scope="col" class="select_all">*</th>
 							<th scope="col">Serial Number</th>
 							<th scope="col" class="mobile-hide">Project</th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
@@ -110,7 +56,6 @@ if (file_exists($file)) {
 						</tr>
 					</thead>
 					<tbody>
-
 						<?php
 						if (is_array($results)) {
 							foreach ($results as $data) {
@@ -126,7 +71,7 @@ if (file_exists($file)) {
 						?>
 								<tr id='<?= $data->id ?>'>
 									<td>
-										<div class='checkbox'><input type='checkbox' class='select' id='<?= $data->id ?>' $checked></div>
+										<div class='checkbox'><input type='checkbox' class='select select_checklist' id='<?= $data->id ?>'></div>
 									</td>
 									<td><?php if ($data->serial != '') {
 											echo $data->serial;
@@ -161,10 +106,61 @@ if (file_exists($file)) {
 		<ul class="list-group list-group-flush">
 		</ul>
 	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="add_one" tabindex="-1" aria-labelledby="add_oneLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_checklist') ?></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<center>
+						<form id="add_checklist" action="production/add_checklist" class="my-4">
+							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+							<input type='hidden' name='project' value='<?= $project ?>'>
+							<div class="form-group"><label>Serial template <?= $template ?></label>
+								<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
+							</div></br>
+							<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
+						</form>
+					</center>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="$('#add_checklist').submit()"><?= lang('add') ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="add_many" tabindex="-1" aria-labelledby="add_manyLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_batch') ?></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<center>
+						<form id="add_batch" action="/production/gen_checklists" class="my-4">
+							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
+							<input type='hidden' name='project' value='<?= $project ?>'>
+							<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
+							<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
+						</form>
+					</center>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="$('#add_batch').submit()"><?= lang('add') ?></button>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
 <script>
 	var client = '<?= $client['name'] ?>';
-	var checklists = [];
 
 	function trashChecklist(id, project, serial) {
 		var r = confirm("Trash checklist " + serial + "?");
@@ -220,30 +216,30 @@ if (file_exists($file)) {
 		}
 	});
 
-
-	$('.select').click(function() {
-		var id = $(this).attr('id');
-		var link = document.getElementById('batchLink');
-		if ($(event.target).is(":checked")) {
-			checklists.push(id);
-			count += 1;
+	$("#batchLink").on('click', function(e) {
+		let checklists = [];
+		$('.select_checklist').each(function() {
+			if ($(this).prop('checked')) {
+				checklists.push($(this).attr('id'));
+			}
+		});
+		if (checklists.length > 0) {
+			let link = $(this).attr('href');
+			link = link + checklists.join(":");
+			$(this).attr('href', link);
 		} else {
-			checklists = checklists.filter(item => item !== id)
-			count -= 1;
+			event.preventDefault();
+			alert("no checklist selected!");
 		}
-
-		if (count > 0) {
-			$('#batchLink').removeClass('disabled');
-		} else {
-			$('#batchLink').addClass('disabled');
-		}
-		console.log(checklists);
 	});
 
-
-	$("#batchLink").on('click', function(e) {
-		let link = $(this).attr('href');
-		link = link + checklists.join(":");
-		$(this).attr('href', link);
+	$('.select_all').on('click', function() {
+		$('.select_checklist').each(function() {
+			if ($(this).prop('checked')) {
+				$(this).prop('checked', false);
+			} else {
+				$(this).prop('checked', true);
+			}
+		});
 	})
 </script>
