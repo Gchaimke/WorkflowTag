@@ -76,11 +76,11 @@ if (file_exists($file)) {
 							<th scope="col">*</th>
 							<th scope="col">Serial Number</th>
 							<th scope="col" class="mobile-hide">Project</th>
-							<th scope="col"><i class="fas fa-clipboard-check"></i></th>
-							<th scope="col"><i class="fa fa-user"></i></th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
+							<th scope="col"><i class="fa fa-user"></i></th>
 							<th scope="col"><i class="fa fa-tasks"></i></th>
 							<th scope="col"><i class="fas fa-image"></i></th>
+							<th scope="col"><i class="fas fa-clipboard-check"></i></th>
 							<th scope="col">Edit</th>
 							<th scope="col">Trash</th>
 						</tr>
@@ -110,14 +110,14 @@ if (file_exists($file)) {
 											echo "SN template not found!";
 										}  ?></td>
 									<td class="mobile-hide"><?= $data->project ?></td>
+									<td class="mobile-hide"><?= $data->date ?></td>
+									<td><?= $editors ?></td>
+									<td><?= count(array_filter($scans)) ?></td>
+									<td><?= $data->pictures ?></td>
 									<td>
 										<div class="div_link" id='<?= $data->id ?>' onclick='showLog("<?= $data->log ?>","<?= $data->serial ?>")'>
 											<?= $data->progress ?>%</div>
 									</td>
-									<td><?= $editors ?></td>
-									<td class="mobile-hide"><?= $data->date ?></td>
-									<td><?= count(array_filter($scans)) ?></td>
-									<td><?= $data->pictures ?></td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?sn=<?= $data->serial ?>&client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
 									<td><button id='<?= $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?= $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
