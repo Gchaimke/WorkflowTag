@@ -19,11 +19,13 @@ class Users_model extends CI_Model
 			),
 			'view_name' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 150
+				'constraint' => 150,
+				'null' => TRUE
 			),
 			'email' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 30
+				'constraint' => 50,
+				'null' => TRUE
 			),
 			'role' => array(
 				'type' => 'VARCHAR',
@@ -40,10 +42,12 @@ class Users_model extends CI_Model
 			),
 			'clients' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 60
+				'constraint' => 60,
+				'null' => TRUE
 			),
 			'log' => array(
-				'type' => 'TEXT'
+				'type' => 'TEXT',
+				'null' => TRUE
 			),
 		);
 

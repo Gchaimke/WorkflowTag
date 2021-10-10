@@ -28,6 +28,9 @@ class Users extends CI_Controller
         $data = array();
         // get data from model
         $data['users'] = $this->Users_model->getUsers();
+        $data['settings'] = $this->Admin_model->getSettings();
+        $data['languages'] = $this->languages;
+        $data['clients'] = $this->clients;
         $this->load->view('header');
         $this->load->view('main_menu');
         if ($this->user['role'] != "Admin") {
@@ -45,11 +48,6 @@ class Users extends CI_Controller
         if ($this->user['role'] == "Admin") {
             // Check validation for user input in SignUp form
             $this->form_validation->set_rules('name', 'Name', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('role', 'Role', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean');
-            $this->form_validation->set_rules('view_name', 'view_name', 'trim|xss_clean');
-            $this->form_validation->set_rules('email', 'email', 'trim|xss_clean');
-
             $data['users'] = $this->Users_model->getUsers();
             $data['settings'] = $this->Admin_model->getSettings();
             $data['languages'] = $this->languages;
@@ -61,6 +59,7 @@ class Users extends CI_Controller
                 $this->load->view('users/create', $data);
                 $this->load->view('footer');
             } else {
+                $clients = $this->input->post('clients') != "" ? $this->input->post('clients') : array(0);
                 $sql = array(
                     'name' => $this->input->post('name'),
                     'view_name' => $this->input->post('view_name'),
@@ -68,33 +67,19 @@ class Users extends CI_Controller
                     'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
-                    'clients' =>implode(",", $this->input->post('clients')),
+                    'clients' => implode(",", $clients),
                 );
                 $result = $this->Users_model->registration_insert($sql);
                 if ($result == TRUE) {
                     $data['message_display'] = 'User Registration Successfully !';
-                    $this->load->view('header');
-                    $this->load->view('main_menu');
-                    $this->load->view('users/manage', $data);
-                    $this->load->view('footer');
+                    redirect("users/");
                 } else {
                     $data['message_display'] = 'Username already exist!';
-                    $this->load->view('header');
-                    $this->load->view('main_menu');
-                    $this->load->view('users/create', $data);
-                    $this->load->view('footer');
+                    redirect("users/");
                 }
             }
         } else {
             header("location: /");
-        }
-    }
-
-    public function delete()
-    {
-        if ($this->user['role'] == "Admin") {
-            $id = $_POST['id'];
-            $this->Users_model->deleteUser($id);
         }
     }
 
@@ -119,6 +104,7 @@ class Users extends CI_Controller
             $this->load->view('footer');
         } else {
             if ($this->user['role'] == "Admin") {
+                $clients = $this->input->post('clients') != "" ? $this->input->post('clients') : array(0);
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
@@ -126,7 +112,7 @@ class Users extends CI_Controller
                     'role' => $this->input->post('role'),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
-                    'clients' => implode(",", $this->input->post('clients')),
+                    'clients' => implode(",",  $clients),
                 );
                 if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
@@ -146,6 +132,14 @@ class Users extends CI_Controller
             }
         }
         $this->set_session_data($this->user['name']);
+    }
+
+    public function delete()
+    {
+        if ($this->user['role'] == "Admin") {
+            $id = $_POST['id'];
+            $this->Users_model->deleteUser($id);
+        }
     }
 
     public function login()

@@ -12,7 +12,7 @@ if (isset($this->session->userdata['logged_in'])) {
     <div class="jumbotron">
         <div class="container">
             <center>
-            <h2 class="display-4">Users</h2>
+                <h2 class="display-4">Users</h2>
             </center>
         </div>
     </div>
@@ -23,7 +23,7 @@ if (isset($this->session->userdata['logged_in'])) {
             echo $message_display . '</div>';
         }
         ?>
-        <a class="btn btn-success" href="/users/create"><i class="fa fa-user-plus"></i></a>
+        <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#add_edit_user"><i class="fa fa-user-plus"></i></a>
         <table class="table table-striped table-hover">
             <thead class="table-dark">
                 <tr>
@@ -54,6 +54,19 @@ if (isset($this->session->userdata['logged_in'])) {
                 } ?>
             </tbody>
         </table>
+    </div>
+    <div class="modal fade" id="add_edit_user" tabindex="-1" aria-labelledby="add_edit_userLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel"><?= lang('add_user') ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php include("application/views/users/create.php") ?>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script>
