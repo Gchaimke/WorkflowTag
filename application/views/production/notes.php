@@ -15,11 +15,23 @@ if (isset($this->session->userdata['logged_in'])) {
         </div>
     </div>
     <div class="container">
+        <div>
+            <?php
+            if (isset($message_display)) {
+                echo "<div class='alert alert-success' role='alert'>";
+                echo $message_display . '</div>';
+            }
+            ?>
+            <nav class="pagination-nav" aria-label="Checklist navigation">
+                <ul class="pagination-nav-menu">
+                    <a class="btn btn-success" href="/production/export_csv"><i class="fas fa-file-alt"></i></a>
+                </ul>
+                <?php if (isset($links)) {
+                    echo $links;
+                } ?>
+            </nav>
+        </div>
         <?php
-        if (isset($message_display)) {
-            echo "<div class='alert alert-success' role='alert'>";
-            echo $message_display . '</div>';
-        }
         if (isset($notes)) { ?>
             <div class="table-responsive">
                 <table class="table table-striped table-hover">
@@ -67,4 +79,5 @@ if (isset($this->session->userdata['logged_in'])) {
             });
         }
     }
+
 </script>

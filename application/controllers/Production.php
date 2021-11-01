@@ -773,4 +773,39 @@ class Production extends CI_Controller
         }
         # code...
     }
+
+    public function export_csv()
+    {
+        $file_name = "notes.csv";
+        $notes = $this->Checklists_notes_model->get_all();
+        $users = $this->users_names;
+        $clients = $this->clients_names;
+        header('Content-Encoding: UTF-8');
+        header("Content-type: text/csv; charset=UTF-8");
+        header("Content-Disposition: attachment; filename=$file_name");
+        header("Pragma: no-cache");
+        header("Expires: 0");
+        echo "sep=;\n";
+        if ($this->user['language'] == 'hebrew') {
+            echo "\xEF\xBB\xBF";
+        }
+        $fp = fopen('php://output', 'w');
+        $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Assembler", "QC"));
+        foreach ($notes as  $note) {
+            array_push($tmp_arr, array(
+                $note->date,
+                $clients[$note->client_id],
+                $note->project,
+                $note->checklist_sn,
+                $note->row,
+                $note->note,
+                $users[$note->assembler_id],
+                $users[$note->qc_id]
+            ));
+        }
+        foreach ($tmp_arr as $fields) {
+            fputcsv($fp, $fields, ";");
+        }
+        fclose($fp);
+    }
 }
