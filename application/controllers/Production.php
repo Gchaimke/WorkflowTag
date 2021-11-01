@@ -785,11 +785,8 @@ class Production extends CI_Controller
         header("Content-Disposition: attachment; filename=$file_name");
         header("Pragma: no-cache");
         header("Expires: 0");
-        echo "sep=;\n";
-        if ($this->user['language'] == 'hebrew') {
-            echo "\xEF\xBB\xBF";
-        }
         $fp = fopen('php://output', 'w');
+        fprintf($fp, "\xEF\xBB\xBF");
         $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Assembler", "QC"));
         foreach ($notes as  $note) {
             array_push($tmp_arr, array(
@@ -804,7 +801,7 @@ class Production extends CI_Controller
             ));
         }
         foreach ($tmp_arr as $fields) {
-            fputcsv($fp, $fields, ";");
+            fputcsv($fp, $fields);
         }
         fclose($fp);
     }
