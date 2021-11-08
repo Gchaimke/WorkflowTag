@@ -53,6 +53,25 @@ if (isset($this->session->userdata['logged_in'])) {
                         <label for="row" class="m-1">Row</label>
                     </div>
                 </div>
+                <div class="col">
+                    <div class="form-floating">
+                        <select class='form-select' name="action">
+                            <option value='0'>Select</option>
+                            <?php
+                            $actions = array("Repaired", "Changed", "Returned");
+                            foreach ($actions as $action) {
+                                if ($action == $note->action) {
+                                    $selected = 'selected';
+                                } else {
+                                    $selected = '';
+                                }
+                                echo "<option value=" . $action . " $selected>" . $action . "</option>";
+                            }
+                            ?>
+                        </select>
+                        <label for="row" class="m-1">Action</label>
+                    </div>
+                </div>
                 <div class="col-md-12">
                     <div class="form-floating">
                         <textarea name="note" placeholder="note" class="form-control" style="height: 150px;"><?= $note->note ?></textarea>

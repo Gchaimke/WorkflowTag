@@ -364,6 +364,20 @@ class Admin extends CI_Controller
 			echo "$field_name exists in $table_name.";
 		}
 
+		$field_name = 'action';
+		$table_name = 'checklists_notes';
+		$fields = array(
+			$field_name => array(
+				'type' => 'TEXT'
+			)
+		);
+		if (!$this->db->field_exists($field_name, $table_name)) {
+			$this->Admin_model->add_column($table_name, $fields);
+			echo "$field_name add to $table_name.";
+		} else {
+			echo "$field_name exists in $table_name.";
+		}
+
 		$field_name = 'checklist_version';
 		$table_name = 'projects';
 		$fields = array(

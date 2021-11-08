@@ -43,6 +43,9 @@ class Checklists_notes_model extends CI_Model
             'note' => array(
                 'type' => 'TEXT'
             ),
+            'action' => array(
+                'type' => 'TEXT'
+            ),
             'date' => array(
                 'type' => 'DATE',
                 'null' => FALSE
@@ -59,6 +62,7 @@ class Checklists_notes_model extends CI_Model
             "client_id" => 1,
             "project" => "test",
             "row" => '1.03',
+            'action' => "Repaired",
             "note" => 'Test note',
         );
         $this->db->insert('checklists_notes', $demoData);

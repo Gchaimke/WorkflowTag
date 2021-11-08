@@ -131,19 +131,48 @@ if (isset($this->session->userdata['logged_in'])) {
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
 		<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
 		<input type="hidden" name="project" value="<?= $project ?>" />
-		<div class="form-row mb-3">
-			<div class="col-md-6 mb-2">
-				<select class='form-select' name="assembler_id">
-					<option value='0'>Select</option>
-					<?php foreach ($users as $user) {
-						if (strpos($checklist_data, $user['name']) !== false)
-							echo "<option value=" . $user['id'] . ">" . $user['name'] . "</option>";
-					}
-					?>
-				</select>
+
+		<div class="row mb-3">
+			<div class="col">
+				<div class="form-floating">
+					<input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" />
+					<label for="row" class="m-1 text-black">Row</label>
+				</div>
 			</div>
-			<input type="text" name="row" placeholder="checklist row" class="form-control col-md-6 mb-2" />
-			<textarea name="note" placeholder="note" class="form-control col-md-12"></textarea>
+			<div class="col">
+				<div class="form-floating">
+					<select class='form-select' name="assembler_id">
+						<option value='0'>Select</option>
+						<?php foreach ($users as $user) {
+							if (strpos($checklist_data, $user['name']) !== false)
+								echo "<option value=" . $user['id'] . ">" . $user['name'] . "</option>";
+						}
+						?>
+					</select>
+					<label for="row" class="m-1 text-black">User</label>
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-floating">
+					<select class='form-select' name="action">
+						<option value='0'>Select</option>
+						<?php
+						$actions = array("Repaired", "Changed", "Returned");
+						foreach ($actions as $action) {
+							if ($action == $note->action) {
+								$selected = 'selected';
+							} else {
+								$selected = '';
+							}
+							echo "<option value=" . $action . " $selected>" . $action . "</option>";
+						}
+						?>
+					</select>
+					<label for="row" class="m-1 text-black">Action</label>
+				</div>
+			</div>
+
+			<input name="note" placeholder="note" class="form-control col-md-12">
 		</div>
 		<button type='submit' class="btn btn-success" value="Save"><i class="fa fa-save me-1"></i>Add</button>
 		<div class="btn btn-danger qc_note_btn" value="Close"><i class="fas fa-times me-1"></i>Close</div>
@@ -157,8 +186,9 @@ if (isset($this->session->userdata['logged_in'])) {
 					<button id='$note->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button>
 					<a target='_blank' class='btn btn-success me-2 fa fa-edit' href='/production/edit_note/$note->id'></a> 
 					</span>";
-				echo "<span>ROW: $note->row </span>";
-				echo "<span>$note->note</span>";
+				echo "<span>ROW: $note->row | </span>";
+				echo "<span> $note->note | </span>";
+				echo "<span> $note->action </span>";
 				echo "</div>";
 			}
 		} else {

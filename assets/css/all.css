@@ -252,6 +252,7 @@ a.btn.btn-primary.folder {
     color: white;
     transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
+    width: 40%;
 }
 
 select.review {

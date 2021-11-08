@@ -787,7 +787,7 @@ class Production extends CI_Controller
         header("Expires: 0");
         $fp = fopen('php://output', 'w');
         fprintf($fp, "\xEF\xBB\xBF");
-        $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Assembler", "QC"));
+        $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Action", "Assembler", "QC"));
         foreach ($notes as  $note) {
             array_push($tmp_arr, array(
                 $note->date,
@@ -796,6 +796,7 @@ class Production extends CI_Controller
                 $note->checklist_sn,
                 $note->row,
                 $note->note,
+                $note->action,
                 $users[$note->assembler_id],
                 $users[$note->qc_id]
             ));

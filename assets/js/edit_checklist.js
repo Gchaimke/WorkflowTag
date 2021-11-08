@@ -173,7 +173,8 @@ function getDateTime() {
     const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(now);
     const H = (now.getHours() < 10 ? '0' : '') + now.getHours();
     const M = (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
-    return `${da}/${mo}/${ye} ${H}:${M}`;
+    // return `${da}/${mo}/${ye} ${H}:${M}`;
+    return `${da}/${mo}/${ye}`;
 }
 
 $('#ajax-form-qc').submit(function (event) {
