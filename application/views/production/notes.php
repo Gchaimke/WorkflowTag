@@ -38,6 +38,7 @@ if (isset($this->session->userdata['logged_in'])) {
                     <thead class="table-dark">
                         <tr>
                             <th scope="col"><i class="fa fa-user"></i></th>
+                            <th scope="col">Date</th>
                             <th scope="col">QC</th>
                             <th scope="col" class="mobile-hide">Client</th>
                             <th scope="col">Project</th>
@@ -51,6 +52,7 @@ if (isset($this->session->userdata['logged_in'])) {
                     <tbody>
                     <?php foreach ($notes as $note) {
                         echo "<tr id='$note->id'>";
+                        echo "<td>" . $note->date. "</td>";
                         echo "<td>" . $users[$note->assembler_id] . "</td>";
                         echo "<td>" . $users[$note->qc_id] . "</td>";
                         echo "<td  class='mobile-hide'>" . $clients[$note->client_id] . "</td>";

@@ -157,7 +157,7 @@ if (isset($this->session->userdata['logged_in'])) {
 					<select class='form-select' name="action">
 						<option value='0'>Select</option>
 						<?php
-						$actions = array("Repaired", "Changed", "Returned");
+						$actions = array("Repaired", "Replaced", "Returned");
 						foreach ($actions as $action) {
 							if ($action == $note->action) {
 								$selected = 'selected';

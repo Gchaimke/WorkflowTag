@@ -70,6 +70,7 @@ class Checklists_notes_model extends CI_Model
 
     public function get_all()
     {
+        $this->db->order_by('date','DESC');
         $query = $this->db->get('checklists_notes');
         return $query->result();
     }
@@ -101,5 +102,4 @@ class Checklists_notes_model extends CI_Model
     {
         $this->db->delete('checklists_notes', array('id' => $id));
     }
-    
 }
