@@ -183,6 +183,7 @@ class Production_model extends CI_Model
 			$this->db->select('*');
 			$this->db->from('checklists');
 			$this->db->where($condition);
+			$this->db->order_by('date', 'DESC');
 			$this->db->order_by('id', 'DESC');
 			$this->db->limit(1);
 			$q = $this->db->get();
@@ -207,6 +208,7 @@ class Production_model extends CI_Model
 			$client = urldecode($client);
 			$this->db->where("client ='$client'");
 		}
+		$this->db->order_by('date', 'DESC');
 		$this->db->order_by('id', 'DESC');
 		$query = $this->db->get($table);
 
