@@ -43,6 +43,9 @@ class Checklists_notes_model extends CI_Model
             'note' => array(
                 'type' => 'TEXT'
             ),
+            'fault' => array(
+                'type' => 'TEXT'
+            ),
             'action' => array(
                 'type' => 'TEXT'
             ),
@@ -62,6 +65,7 @@ class Checklists_notes_model extends CI_Model
             "client_id" => 1,
             "project" => "test",
             "row" => '1.03',
+            'fault' => "Scerws",
             'action' => "Repaired",
             "note" => 'Test note',
         );

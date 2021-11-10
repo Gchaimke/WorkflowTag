@@ -154,6 +154,25 @@ if (isset($this->session->userdata['logged_in'])) {
 			</div>
 			<div class="col">
 				<div class="form-floating">
+					<select class='form-select' name="fault">
+						<option value='0'>Select</option>
+						<?php
+						$faults = array("Cables Routing", "Connector Connection", "Screws", "Assembly", "Labels & Documentetion", "Scratches & Stains");
+						foreach ($faults as $fault) {
+							if ($fault == $note->fault) {
+								$selected = 'selected';
+							} else {
+								$selected = '';
+							}
+							echo "<option value='$fault' $selected>$fault</option>";
+						}
+						?>
+					</select>
+					<label for="row" class="m-1 text-black">Fault Description</label>
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-floating">
 					<select class='form-select' name="action">
 						<option value='0'>Select</option>
 						<?php
@@ -164,7 +183,7 @@ if (isset($this->session->userdata['logged_in'])) {
 							} else {
 								$selected = '';
 							}
-							echo "<option value=" . $action . " $selected>" . $action . "</option>";
+							echo "<option value='$action' $selected>$action</option>";
 						}
 						?>
 					</select>

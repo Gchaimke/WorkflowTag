@@ -364,7 +364,7 @@ class Admin extends CI_Controller
 			echo "$field_name exists in $table_name.";
 		}
 
-		$field_name = 'action';
+		$field_name = 'fault';
 		$table_name = 'checklists_notes';
 		$fields = array(
 			$field_name => array(

@@ -43,6 +43,7 @@ if (isset($this->session->userdata['logged_in'])) {
                             <th scope="col" class="mobile-hide">Client</th>
                             <th scope="col">Project</th>
                             <th scope="col">Row</th>
+                            <th scope="col">Fault</th>
                             <th scope="col">Action</th>
                             <th scope="col">Checklist</th>
                             <th scope="col">Edit</th>
@@ -58,6 +59,7 @@ if (isset($this->session->userdata['logged_in'])) {
                         echo "<td  class='mobile-hide'>" . $clients[$note->client_id] . "</td>";
                         echo "<td>$note->project</td>";
                         echo "<td>$note->row</td>";
+                        echo "<td>$note->fault</td>";
                         echo "<td>$note->action</td>";
                         echo "<td><a class='btn btn-info' href='/production/edit_checklist/$note->checklist_id?sn=$note->checklist_sn&client=$note->client_id'><i class='fa fa-list'></td>";
                         echo "<td><a href='/production/edit_note/$note->id' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
