@@ -21,6 +21,13 @@ if (isset($this->session->userdata['logged_in'])) {
 	$logo = $client['logo'];
 	$client_name = $client['name'];
 	$pictures = 0;
+
+	$file = "./Uploads/" . $checklist_client . "/" . $project . "/assembly.pdf";
+	if (file_exists($file)) {
+		$assembly = true;
+	} else {
+		$assembly = false;
+	}
 } else {
 	exit();
 }
@@ -31,6 +38,11 @@ if (isset($this->session->userdata['logged_in'])) {
 	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
 		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 		<div class="d-flex checklist-data w-75" style="justify-content: space-evenly;">
+			<?php if ($assembly) { ?>
+				<div class="print-hide">
+					<a class="btn btn-warning d-none d-xl-inline " target="_blank" href="/<?= $file ?>" style="position:relative; top:5px;left:-100px;"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				</div>
+			<?php }; ?>
 			<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
