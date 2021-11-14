@@ -159,7 +159,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						<?php
 						$faults = array("Cables Routing", "Connector Connection", "Screws", "Assembly", "Labels & Documentetion", "Scratches & Stains");
 						foreach ($faults as $fault) {
-							if ($fault == $note->fault) {
+							if (isset($note->fault) && $fault == $note->fault) {
 								$selected = 'selected';
 							} else {
 								$selected = '';
@@ -178,7 +178,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						<?php
 						$actions = array("Repaired", "Replaced", "Returned");
 						foreach ($actions as $action) {
-							if ($action == $note->action) {
+							if (isset($note->action) && $action == $note->action) {
 								$selected = 'selected';
 							} else {
 								$selected = '';

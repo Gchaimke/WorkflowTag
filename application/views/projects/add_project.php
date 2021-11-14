@@ -32,7 +32,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				</div>
 				<input type="text" class="form-control" name='project'>
 			</div>
-			<label>yy = Year | mm = Month | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
+			<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 			<div class="input-group">
 				<div class="input-group-prepend">
 					<div class="input-group-text"><?= lang('Serial template') ?></div>
@@ -46,19 +46,6 @@ if (isset($this->session->userdata['logged_in'])) {
 						<div class="mx-2"><?= lang('Serial number restarts every month') ?></div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<hr>
-				<label>Checklist Data</label><br>
-				<label>Last column is function mark, columns separated by ';'.<br>
-					Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | I = data input </label>
-				<textarea class="form-control" name='data' rows="10" cols="100">Assembly;Verify;HD&#13;&#10;checkbox 1;V&#13;&#10;checkbox 2;V&#13;&#10;Qc select;QC
-                  </textarea></br>
-			</div>
-			<div class="form-group">
-				<label>Scan Data</label><br>
-				<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header </label>
-				<textarea class="form-control" name='scans' rows="10" cols="100">PN;SN;HD&#13;&#10;Serail 1&#13;&#10;Serial 2</textarea></br>
 			</div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
 			<?php echo form_close(); ?>

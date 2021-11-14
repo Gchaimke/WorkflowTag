@@ -163,6 +163,7 @@ class Production extends CI_Controller
         $last_serial = $this->Production_model->getLastChecklist($project);
         $month = date('m', strtotime($date));
         $year = date('y', strtotime($date));
+        $week = date('W', strtotime($date));
         if (isset($serial_project['template']) &&  $serial_project['template'] != "") {
             $serial = $serial_project['template']; //Get serial template
             $prev_month = substr($last_serial, strpos($serial, 'm'), substr_count($serial, 'm'));
@@ -172,7 +173,7 @@ class Production extends CI_Controller
             $serial = str_replace("yy", $year, $serial); //add year
             $serial = str_replace("mm", $month, $serial); //add month with zero
             $serial = str_replace("dm", $dfend_month[$month], $serial); //add month from dfend array
-
+            $serial = str_replace("ww", $week, $serial); //add week number
             $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0; // false = 00000000000000000
             for ($i = 1; $i <= $count; $i++) {
                 $serial_end++;
@@ -225,13 +226,17 @@ class Production extends CI_Controller
             $data['checklist'] = $data['checklist'][0];
             $project = $this->Projects_model->getProject('', $data['checklist']['project']);
             $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
-            $data['project'] =  urldecode($project['project']);
-            $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
-            $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
-            $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
-            $data['users'] = $this->users;
-            $data['notes'] = $this->get_qc_notes($id);
-            $this->view_page('production/edit_checklist', '', $data);
+            if (isset($project['project'])) {
+                $data['project'] =  urldecode($project['project']);
+                $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
+                $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
+                $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
+                $data['users'] = $this->users;
+                $data['notes'] = $this->get_qc_notes($id);
+                $this->view_page('production/edit_checklist', '', $data);
+            } else {
+                exit("Checklist not found, Deleted?");
+            }
         } else {
             echo "Checklist not found, Deleted?";
         }

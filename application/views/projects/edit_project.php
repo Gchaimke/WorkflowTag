@@ -36,7 +36,7 @@ if (file_exists($file)) {
 			if (isset($project)) {	?>
 				<?php echo form_open("projects/edit_project/{$project['id']}", 'class=user-create'); ?>
 				<div class="form-group">
-					<label>yy = Year | mm = Month | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
+				<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 					<div class="input-group">
 						<div class="input-group-prepend">
 							<div class="input-group-text"><?= lang('Serial template') ?></div>
