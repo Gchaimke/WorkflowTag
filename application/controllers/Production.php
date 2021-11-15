@@ -794,7 +794,7 @@ class Production extends CI_Controller
         fprintf($fp, "\xEF\xBB\xBF");
         $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Fault", "Action", "Assembler", "QC"));
         foreach ($notes as  $note) {
-            if ($month != 0) {
+            if ($month != 13) {
                 if (intval(date('m', strtotime($note->date))) != intval($month)) continue;
             }
             array_push($tmp_arr, array(
