@@ -43,7 +43,7 @@ if (isset($this->session->userdata['logged_in'])) {
 										<span class='m-2 h5'><?= $project['project'] ?></span>
 										<span><a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary'>
 												<i class='fa fa-edit'></i></a>
-											<button class='btn btn-outline-danger mx-2' onclick='deleteProject(<?= $project["id"] ?>,<?= $project["project"] ?>)'>
+											<button class='btn btn-outline-danger mx-2' onclick='deleteProject(<?= $project["id"] ?>,"<?= $project["project"] ?>")'>
 												<i class='fa fa-trash'></i></button></span>
 									</div>
 								<?php endforeach ?>

@@ -43,7 +43,7 @@ class Projects extends CI_Controller
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run()) {
             $data['client'] = $this->Clients_model->get_client_by_id($id);
-            $data = array(
+            $sql = array(
                 'client' => $data['client']['name'],
                 'project' => $this->input->post('project'),
                 'data' => $this->input->post('data'),
@@ -51,8 +51,9 @@ class Projects extends CI_Controller
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
-            $result = $this->Projects_model->addProjects($data);
+            $result = $this->Projects_model->addProjects($sql);
             if ($result) {
+                $this->create_checklist_version($sql['client'], $sql['project']);
                 header("location: /clients");
             }
         }
@@ -121,28 +122,37 @@ class Projects extends CI_Controller
         return false;
     }
 
-    function create_checklist_version()
+    function create_checklist_version($client = "", $project = "")
     {
-        $id = $this->input->post('project_id');
-        $version = $this->input->post('version');
-        $version = str_replace(".", "_", $version);
-        if ($id != "") {
+        if ($this->input->post('project_id') !== null) {
+            $id = $this->input->post('project_id');
+        }
+        if ($this->input->post('version') !== null) {
+            $version = $this->input->post('version');
+            $version = str_replace(".", "_", $version);
+        } else {
+            $version = 1;
+        }
+        if ($client == "" && $project == "") {
             $project =  $this->Projects_model->getProject($id);
             $folder = "Uploads/{$project['client']}/{$project['project']}";
-            $file = $folder . DIRECTORY_SEPARATOR . "rev_$version.txt";
-            if (!file_exists($folder)) {
-                mkdir($folder, 0770, true);
-            }
-            if (!file_exists($file)) {
-                echo $assembly = fopen($file, "w");
-                fwrite($assembly, "Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
-                fclose($assembly);
-                return true;
-            } else {
-                echo "file exists!";
-                return false;
-            }
+        } else {
+            $folder = "Uploads/$client/$project";
         }
+        $file = $folder . DIRECTORY_SEPARATOR . "rev_$version.txt";
+        if (!file_exists($folder)) {
+            mkdir($folder, 0770, true);
+        }
+        if (!file_exists($file)) {
+            echo $assembly = fopen($file, "w");
+            fwrite($assembly, "Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
+            fclose($assembly);
+            return true;
+        } else {
+            echo "file exists!";
+            return false;
+        }
+
         echo "id not set!";
         return false;
     }

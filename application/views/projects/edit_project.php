@@ -112,7 +112,7 @@ if (file_exists($file)) {
 		}).done(function(o) {
 			console.log('new version created');
 			console.log(o);
-			$('.submit').click();
+			// $('.submit').click();
 		});
 	})
 
