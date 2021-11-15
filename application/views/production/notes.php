@@ -24,7 +24,7 @@ if (isset($this->session->userdata['logged_in'])) {
             ?>
             <nav class="pagination-nav" aria-label="Checklist navigation">
                 <ul class="pagination-nav-menu">
-                    <a class="btn btn-success" href="/production/export_csv"><i class="fas fa-file-alt"></i></a>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#csv_month_selector"><i class="fas fa-file-alt"></i></button>
                 </ul>
                 <?php if (isset($links)) {
                     echo $links;
@@ -53,7 +53,7 @@ if (isset($this->session->userdata['logged_in'])) {
                     <tbody>
                     <?php foreach ($notes as $note) {
                         echo "<tr id='$note->id'>";
-                        echo "<td>" . $note->date. "</td>";
+                        echo "<td>" . $note->date . "</td>";
                         echo "<td>" . $users[$note->assembler_id] . "</td>";
                         echo "<td>" . $users[$note->qc_id] . "</td>";
                         echo "<td  class='mobile-hide'>" . $clients[$note->client_id] . "</td>";
@@ -73,6 +73,31 @@ if (isset($this->session->userdata['logged_in'])) {
                 </table>
             </div>
     </div>
+    <div class="modal fade" id="csv_month_selector" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Select month</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="recipient-name" class="col-form-label">Month:</label>
+                        <select type="text" class="form-control" id="csv-month">
+                            <option value="13">All</option>
+                            <?php for ($i=1; $i < 13; $i++) { 
+                                echo "<option value='$i'>$i</option>";
+                            }?>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary export_csv" data-bs-dismiss="modal">Send message</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 <script>
     function trashNote(id) {
@@ -85,5 +110,8 @@ if (isset($this->session->userdata['logged_in'])) {
             });
         }
     }
-
+    $('.export_csv').on('click', function() {
+        let month = $('#csv-month').val();
+        window.location.replace("/production/export_csv/" + month);
+    })
 </script>

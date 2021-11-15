@@ -779,9 +779,9 @@ class Production extends CI_Controller
         # code...
     }
 
-    public function export_csv()
+    public function export_csv($month = 1)
     {
-        $file_name = "notes.csv";
+        $file_name = date('d_m_y')."_notes.csv";
         $notes = $this->Checklists_notes_model->get_all();
         $users = $this->users_names;
         $clients = $this->clients_names;
@@ -794,6 +794,9 @@ class Production extends CI_Controller
         fprintf($fp, "\xEF\xBB\xBF");
         $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Fault", "Action", "Assembler", "QC"));
         foreach ($notes as  $note) {
+            if ($month != 0) {
+                if (intval(date('m', strtotime($note->date))) != intval($month)) continue;
+            }
             array_push($tmp_arr, array(
                 $note->date,
                 $clients[$note->client_id],
@@ -811,5 +814,9 @@ class Production extends CI_Controller
             fputcsv($fp, $fields);
         }
         fclose($fp);
+    }
+
+    public function test()
+    {
     }
 }
