@@ -131,17 +131,4 @@ class Admin_model extends CI_Model
             printf("Serial number %s exists in project %s!", $data['serial'], str_replace('Trash ', '', $data['project']));
         }
     }
-
-    // $fields can be named array
-    public function add_column($table, $fields)
-    {
-        $this->load->dbforge();
-        $this->dbforge->add_column($table, $fields);
-    }
-
-    public function remove_column($table, $field)
-    {
-        $this->load->dbforge();
-        $this->dbforge->drop_column($table, $field);
-    }
 }

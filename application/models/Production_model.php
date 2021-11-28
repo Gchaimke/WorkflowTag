@@ -60,6 +60,11 @@ class Production_model extends CI_Model
 			'version' => array(
 				'type' => 'VARCHAR',
 				'constraint' => 50
+			),
+			'paka' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 500,
+				'null' => TRUE
 			)
 		);
 		$this->dbforge->add_field($checklist);

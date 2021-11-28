@@ -349,121 +349,42 @@ class Admin extends CI_Controller
 
 	function upgrade_db()
 	{
-		//$this->Admin_model->remove_column('rma_forms','recive_pictures');
-		$field_name = 'user_roles';
-		$table_name = 'settings';
 		$fields = array(
-			$field_name => array(
-				'type' => 'TEXT',
-			)
-		);
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-		} else {
-			echo "$field_name exists in $table_name.";
-		}
-
-		$field_name = 'fault';
-		$table_name = 'checklists_notes';
-		$fields = array(
-			$field_name => array(
-				'type' => 'TEXT'
-			)
-		);
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-		} else {
-			echo "$field_name exists in $table_name.";
-		}
-
-		$field_name = 'checklist_version';
-		$table_name = 'projects';
-		$fields = array(
-			'assembly' => array(
+			'paka' => array(
 				'type' => 'VARCHAR',
-				'constraint' => 500
-			),
-			'checklist_version' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 50
-			)
-		);
-
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-			$clients = $this->Clients_model->getClients();
-			foreach ($clients as $client) {
-				$projects = $this->Projects_model->getProjects($client['name']);
-				foreach ($projects as $project) {
-					$folder = "Uploads/{$client['name']}/{$project['project']}/";
-					if (!file_exists($folder)) {
-						mkdir($folder, 0770, true);
-					}
-
-					if (!file_exists($folder . "rev_1.txt")) {
-						$assembly = fopen($folder . "rev_1.txt", "w");
-						fwrite($assembly, $project['data']);
-						fclose($assembly);
-						printf("new version created %s checklist: %s<br>", $client['name'], $project['project']);
-					}
-					$project["checklist_version"] = $folder . "rev_1.txt";
-					$this->Projects_model->editProject($project);
-				}
-			}
-		} else {
-			echo "$field_name exists in $table_name.";
-		}
-
-		$field_name = 'version';
-		$table_name = 'checklists';
-		$fields = array(
-			$field_name => array(
-				'type' => 'VARCHAR',
-				'constraint' => 50
-			)
-		);
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-		} else {
-			echo "$field_name exists in $table_name.";
-		}
-
-		$field_name = 'language';
-		$table_name = 'users';
-		$fields = array(
-			'language' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 20,
+				'constraint' => 100,
 				'null' => TRUE
-			),
-			'projects' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 60
 			)
 		);
-		if (!$this->db->field_exists($field_name, $table_name)) {
-			$this->Admin_model->add_column($table_name, $fields);
-			echo "$field_name add to $table_name.";
-		} else {
-			echo "$field_name exists in $table_name.";
+		$table_name = 'checklists';
+		$return = add_fields_to_table($this,$fields,'checklists');
+		if($return){
+			echo "Table: $table_name now up to date!";
+		}else{
+			echo "Table: $table_name is up to date!";
 		}
+	}
 
-		if ($this->db->field_exists("projects", "users")) {
-			$fields = array(
-				'projects' => array(
-					'name' => 'clients',
-					'type' => 'TEXT',
-				),
-			);
-			$this->load->dbforge();
-			$this->dbforge->modify_column('users', $fields);
-			echo "projects field now named clients";
-		} else {
-			echo "projects field is clients";
+	function add_checklist_version()
+	{
+		$clients = $this->Clients_model->getClients();
+		foreach ($clients as $client) {
+			$projects = $this->Projects_model->getProjects($client['name']);
+			foreach ($projects as $project) {
+				$folder = "Uploads/{$client['name']}/{$project['project']}/";
+				if (!file_exists($folder)) {
+					mkdir($folder, 0770, true);
+				}
+
+				if (!file_exists($folder . "rev_1.txt")) {
+					$assembly = fopen($folder . "rev_1.txt", "w");
+					fwrite($assembly, $project['data']);
+					fclose($assembly);
+					printf("new version created %s checklist: %s<br>", $client['name'], $project['project']);
+				}
+				$project["checklist_version"] = $folder . "rev_1.txt";
+				$this->Projects_model->editProject($project);
+			}
 		}
 	}
 }
