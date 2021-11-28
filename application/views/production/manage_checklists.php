@@ -45,6 +45,7 @@ if (file_exists($file)) {
 						<tr>
 							<th scope="col" class="select_all">*</th>
 							<th scope="col">Serial Number</th>
+							<th scope="col" class="mobile-hide">WO</th>
 							<th scope="col" class="mobile-hide">Project</th>
 							<th scope="col" class="mobile-hide"><i class="fa fa-calendar"></i></th>
 							<th scope="col"><i class="fa fa-user"></i></th>
@@ -78,6 +79,7 @@ if (file_exists($file)) {
 										} else {
 											echo "SN template not found!";
 										}  ?></td>
+									<td class="mobile-hide"><?= $data->paka ?></td>
 									<td class="mobile-hide"><?= $data->project ?></td>
 									<td class="mobile-hide"><?= $data->date ?></td>
 									<td><?= $editors ?></td>
@@ -120,6 +122,9 @@ if (file_exists($file)) {
 							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 							<input type='hidden' name='project' value='<?= $project ?>'>
+							<div class="form-group">
+								<input class="form-control col-md-3" type='text' name='paka' placeholder="Work Order">
+							</div></br>
 							<div class="form-group"><label>Serial template <?= $template ?></label>
 								<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
 							</div></br>
@@ -147,6 +152,9 @@ if (file_exists($file)) {
 							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 							<input type='hidden' name='project' value='<?= $project ?>'>
+							<div class="form-group">
+								<input class="form-control col-md-3" type='text' name='paka' placeholder="Work Order">
+							</div></br>
 							<input class="form-control col-md-3" type='number' name='count' placeholder="Quantity"></br>
 							<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
 						</form>

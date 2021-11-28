@@ -44,6 +44,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				</div>
 			<?php }; ?>
 			<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
+			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
 		</div>

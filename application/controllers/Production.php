@@ -112,6 +112,7 @@ class Production extends CI_Controller
             'project' => $project['project'],
             'serial' => $serial,
             'version' => $project['checklist_version'],
+            'paka' =>  $this->input->post('paka'),
             'data' =>  $zero_str,
             'date' => $this->input->post('date')
         );
@@ -139,6 +140,7 @@ class Production extends CI_Controller
                     'project' => $project['project'],
                     'serial' => $serial,
                     'version' => $project['checklist_version'],
+                    'paka' =>  $this->input->post('paka'),
                     'data' =>  implode(",", array_fill(0, 400, "")),
                     'date' =>  $date
                 );
@@ -781,7 +783,7 @@ class Production extends CI_Controller
 
     public function export_csv($month = 1)
     {
-        $file_name = date('d_m_y')."_notes.csv";
+        $file_name = date('d_m_y') . "_notes.csv";
         $notes = $this->Checklists_notes_model->get_all();
         $users = $this->users_names;
         $clients = $this->clients_names;
