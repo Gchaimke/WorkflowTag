@@ -778,7 +778,6 @@ class Production extends CI_Controller
         } else {
             echo 'ERROR: checklist id 0';
         }
-        # code...
     }
 
     public function export_csv($month = 1)

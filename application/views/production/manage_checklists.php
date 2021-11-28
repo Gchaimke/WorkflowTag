@@ -126,7 +126,7 @@ if (file_exists($file)) {
 								<input class="form-control col-md-3" type='text' name='paka' placeholder="Work Order">
 							</div></br>
 							<div class="form-group"><label>Serial template <?= $template ?></label>
-								<input class="form-control col-md-3" type='text' name='serial' placeholder="Serial Number">
+								<input class="form-control col-md-3" type='text' name='serial' value="<?= $template ?>" placeholder="Serial Number">
 							</div></br>
 							<input type='date' class="form-control col-md-3" name='date' value="<?= date("Y-m-d"); ?>"></br>
 						</form>
