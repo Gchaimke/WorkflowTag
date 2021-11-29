@@ -25,12 +25,15 @@ button#save {
         width: 100%;
         text-align: center;
     }
+
     .control_btn_container>button {
         width: 100px;
     }
+
     button#save {
         margin-top: 0;
     }
+
     .jumbotron {
         padding: 5rem 0rem;
         padding-bottom: 1rem;
@@ -41,6 +44,7 @@ button#save {
     main {
         margin: 0;
     }
+
     .jumbotron {
         top: 0;
         left: 0;
@@ -49,27 +53,37 @@ button#save {
         padding: 0;
         margin-bottom: 0;
     }
+
     .form-row {
         margin-bottom: 1em;
     }
+
     .input-group-text {
         font-weight: bold;
     }
+
     #save {
         display: none;
     }
+
     .form-row {
         break-inside: avoid-page;
     }
+
     .not-print {
         display: none;
     }
+
     .to-print {
         display: block;
     }
+
     pre {
         display: table-cell;
         padding: 10px 20px;
         text-align: left;
+        unicode-bidi: plaintext;
+        font-family: sans-serif;
+        font-size: 1em;
     }
 }
