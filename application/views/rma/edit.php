@@ -283,7 +283,18 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
             <div class="row m-3">
                   <div class="input-group mb-2 col-lg-6">
                         <div class="input-group-text">Final Documentation Check:</div>
-                        <input type='text' class="form-control" name='final_user' value='<?= $assembler ?>'>
+                        <select class="form-select" name='final_user'>
+                        <option value='NA' $selected >Select</option>
+                              <?php
+                              foreach ($this->users as $user) {
+                                    $selected = "";
+                                    if ($user['name'] == $form->final_user) {
+                                          $selected = "selected";
+                                    }
+                                    echo "<option value='{$user['name']}' $selected >{$user['name']}</option>";
+                              }
+                              ?>
+                        </select>
                   </div>
             </div>
             <input id="update_btn" type='submit' style="display:none;" class="btn btn-info my-5 print-hide" name='submit' value='Update'>

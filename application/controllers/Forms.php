@@ -9,12 +9,14 @@ class Forms extends CI_Controller
         // Load model
         $this->load->model('Forms_model');
         $this->load->model('Production_model');
+        $this->load->model('Users_model');
         $this->load->model('Clients_model');
         $this->load->library('pagination');
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
             $this->lang->load('main', $this->user['language']);
             $this->languages = array("english", "hebrew");
+            $this->users = $this->Users_model->getUsers();
         } else {
             header("location: /users/login");
             exit('User not logedin');
@@ -77,6 +79,7 @@ class Forms extends CI_Controller
         $data = array();
         if ($id != '') {
             $data['form'] = $this->Forms_model->get($type, $id)[0];
+            $data['users'] = $this->users;
             $this->load->view('header');
             $this->load->view('main_menu');
             $this->load->view("/$type/edit", $data);
