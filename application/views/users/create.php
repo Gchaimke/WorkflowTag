@@ -8,8 +8,10 @@
                   <?php if (isset($settings)) {
                         $arr = explode(",", $settings['roles'] . "," . $settings['user_roles']);
                         foreach ($arr as $role) {
-                              $role_lang =  lang($role) != "" ? lang($role) : $role;
-                              echo "<option value='$role'>$role_lang</option>";
+                              if ($role != "") {
+                                    $role_lang =  lang($role) != "" ? lang($role) : $role;
+                                    echo "<option value='$role'>$role_lang</option>";
+                              }
                         }
                   }
                   ?>
@@ -24,11 +26,11 @@
             <select class="form-select" name='language'>
                   <?php if (isset($languages)) {
                         echo "<option value='system'>" . lang('default') . "</option>";
-                        foreach ($languages as $lang) {
-                              if ($user['language'] == $lang) {
-                                    echo "<option selected>$lang</option>";
+                        foreach ($languages as $language) {
+                              if ($user['language'] == $language) {
+                                    echo "<option selected>$language</option>";
                               } else {
-                                    echo "<option>$lang</option>";
+                                    echo "<option>$language</option>";
                               }
                         }
                   }

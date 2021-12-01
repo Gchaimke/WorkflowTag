@@ -35,31 +35,27 @@ if (isset($this->session->userdata['logged_in']) && isset($user)) {
 				<div class="form-row">
 					<div class="input-group mb-2">
 						<?php
-						if ($current_role == "Admin") {
-							echo '<div class="input-group-prepend"><div class="input-group-text">' . lang('role') . '</div></div>';
-							echo "<select class='form-select' name='role'>";
-							if (isset($settings)) {
-								$arr = explode(",", $settings['roles']);
-								foreach ($arr as $crole) {
-									$role_lang =  lang($crole);
-									if ($crole == $user['role']) {
-										echo "<option selected value='$crole'>$role_lang</option>";
-									} else {
-										echo "<option value='$crole'>$role_lang</option>";
+						if ($current_role == "Admin") { ?>
+							<div class="input-group-prepend">
+								<div class="input-group-text"><?= lang('role') ?></div>
+							</div>
+							<select class="form-select" name='role'>
+								<?php if (isset($settings)) {
+									$arr = explode(",", $settings['roles'] . "," . $settings['user_roles']);
+									foreach ($arr as $role) {
+										if ($role != "") {
+											$role_lang =  lang($role) != "" ? lang($role) : $role;
+											if ($role == $user['role']) {
+												echo "<option selected value='$role'>$role_lang</option>";
+											} else {
+												echo "<option value='$role'>$role_lang</option>";
+											}
+										}
 									}
 								}
-								$arr = explode(",", $settings['user_roles']);
-								foreach ($arr as $crole) {
-									if ($crole == $user['role']) {
-										echo "<option selected value='$crole'>$crole</option>";
-									} else {
-										echo "<option value='$crole'>$crole</option>";
-									}
-								}
-							}
-							echo "</select>";
-						}
-						?>
+								?>
+							</select>
+						<?php }	?>
 					</div>
 				</div>
 				<div class="form-row">
