@@ -57,6 +57,26 @@ if (isset($client)) {
 						<label>Status</label>
 					</div>
 				</div>
+				<div class="row">
+					<div><?= lang('users') ?></div>
+					<div class="users_check">
+						<?php
+
+						$user_clients = explode(",", $client['users']);
+						foreach ($users as $key => $user) {
+							echo "<div class='form-check'>";
+							if (in_array($user['id'], $user_clients)) {
+								$checked = "checked";
+							} else {
+								$checked = "";
+							}
+							echo "<input class='form-check-input' type='checkbox' name='users[{$user['id']}]' value='{$user['id']}' aria-label='{$user['name']}' $checked>
+						<label class='form-check-label' for='users'>{$user['name']} ({$user['role']})</label>";
+							echo "</div>";
+						}
+						?>
+					</div>
+				</div>
 				<input type='submit' class="btn btn-info" name='submit' value='Update'>
 				<?= form_close(); ?>
 			<?php } ?>

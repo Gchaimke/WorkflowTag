@@ -363,6 +363,8 @@ class Admin extends CI_Controller
 		}else{
 			echo "Table: $table_name is up to date!";
 		}
+
+		echo modify_field_table($this,"users1","users","clients");
 	}
 
 	function add_checklist_version()

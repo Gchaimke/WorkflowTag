@@ -166,6 +166,17 @@ div#show-log {
     z-index: 3;
 }
 
+.form-check:nth-child(odd) {
+    float: left;
+    min-width: 50%;
+}
+
+.users_check {
+    text-align: left;
+    min-width: 360px;
+    margin: 15px 5px;
+}
+
 #show-log-header {
     padding: 10px;
     cursor: move;
@@ -274,24 +285,31 @@ select.review {
     a#batchLink {
         margin-left: 50px;
     }
+
     .jumbotron {
         padding: 2rem 2rem;
     }
+
     .badge-info, .badge-danger {
         font-size: 12px;
     }
+
     .mobile-hide {
         display: none;
     }
+
     .table th, .table td {
         padding: 0.45rem;
     }
+
     .display-4, .display-3 {
         font-size: 2.5rem;
     }
+
     .th_serial {
         min-width: min-content;
     }
+
     div#form-messages {
         width: 100%;
         text-align: center;
@@ -307,15 +325,19 @@ select.review {
     .pagination-nav {
         position: relative;
     }
+
     .mobile-hide {
         display: table-cell;
     }
+
     .table th, .table td {
         padding: 0.45rem;
     }
+
     .th_serial {
         min-width: max-content;
     }
+
     .card-columns .card {
         margin-bottom: 50px;
     }

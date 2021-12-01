@@ -7,11 +7,13 @@ class Clients extends CI_Controller
     private $system_models = array(
         'Clients' => 'clients',
         'Projects' => 'projects',
+        'Users' => 'users',
     );
 
     public function __construct()
     {
         parent::__construct();
+		$this->load->helper('admin');
         // Load models
         foreach ($this->system_models as $model => $table) {
             $this->load->model($model . '_model');
@@ -85,14 +87,13 @@ class Clients extends CI_Controller
         // Check validation for user input in form
         $this->form_validation->set_rules('id', 'Id', 'trim|xss_clean');
         $this->form_validation->set_rules('name', 'Name', 'trim|xss_clean');
-        $this->form_validation->set_rules('logo', 'Logo', 'trim|xss_clean');
         $logo = str_replace(" ", "_", $this->input->post('logo'));
         if ($this->form_validation->run()) {
             $sql = array(
                 'id' => $this->input->post('id'),
                 'logo' => $logo,
                 'name' => $this->input->post('name'),
-                'projects' => $this->input->post('projects'),
+                'users' => $this->input->post('users')!=""?implode(",", $this->input->post('users')):"",
                 'status' => $this->input->post('status')
             );
             $this->Clients_model->editClient($sql);
@@ -100,6 +101,9 @@ class Clients extends CI_Controller
         }
 
         $data['client'] = $this->Clients_model->get_client_by_id($id);
+        $users = $this->Users_model->getUsers();
+        usort($users, "sort_users_by_role");
+        $data['users'] =  $users;
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/edit', $data);

@@ -5,7 +5,6 @@ class Users extends CI_Controller
 {
     private $languages;
     private $user;
-    private $clients;
     public function __construct()
     {
         parent::__construct();
@@ -14,7 +13,6 @@ class Users extends CI_Controller
         $this->load->model('Users_model');
         $this->load->model('Admin_model');
         $this->load->model('Clients_model');
-        $this->clients = $this->Clients_model->getClients();
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
             $lang = isset($this->user['language']) ? $this->user['language'] : 'english';
@@ -27,10 +25,11 @@ class Users extends CI_Controller
     {
         $data = array();
         // get data from model
-        $data['users'] = $this->Users_model->getUsers();
+        $users = $this->Users_model->getUsers();
+        usort($users, "sort_users_by_role");
+        $data['users'] =  $users;
         $data['settings'] = $this->Admin_model->getSettings();
         $data['languages'] = $this->languages;
-        $data['clients'] = $this->clients;
         $this->load->view('header');
         $this->load->view('main_menu');
         if ($this->user['role'] != "Admin") {
@@ -51,7 +50,6 @@ class Users extends CI_Controller
             $data['users'] = $this->Users_model->getUsers();
             $data['settings'] = $this->Admin_model->getSettings();
             $data['languages'] = $this->languages;
-            $data['clients'] = $this->clients;
 
             if ($this->form_validation->run() == FALSE) {
                 $this->load->view('header');
@@ -59,7 +57,6 @@ class Users extends CI_Controller
                 $this->load->view('users/create', $data);
                 $this->load->view('footer');
             } else {
-                $clients = $this->input->post('clients') != "" ? $this->input->post('clients') : array(0);
                 $sql = array(
                     'name' => $this->input->post('name'),
                     'view_name' => $this->input->post('view_name'),
@@ -67,7 +64,6 @@ class Users extends CI_Controller
                     'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
-                    'clients' => implode(",", $clients),
                 );
                 $result = $this->Users_model->registration_insert($sql);
                 if ($result == TRUE) {
@@ -95,7 +91,6 @@ class Users extends CI_Controller
         $data['user'] =  $this->Users_model->getUser($id);
         $data['languages'] = $this->languages;
         $data['settings'] = $this->Admin_model->getSettings();
-        $data['clients'] = $this->clients;
 
         if ($this->form_validation->run() == FALSE) {
             $this->load->view('header');
@@ -104,7 +99,6 @@ class Users extends CI_Controller
             $this->load->view('footer');
         } else {
             if ($this->user['role'] == "Admin") {
-                $clients = $this->input->post('clients') != "" ? $this->input->post('clients') : array(0);
                 $sql = array(
                     'id' => $this->input->post('id'),
                     'name' => $this->input->post('name'),
@@ -112,7 +106,6 @@ class Users extends CI_Controller
                     'role' => $this->input->post('role'),
                     'language' => $this->input->post('language'),
                     'email' => $this->input->post('email'),
-                    'clients' => implode(",",  $clients),
                 );
                 if ($this->input->post('password') != '') {
                     $sql += array('password' => $this->input->post('password'));
@@ -205,7 +198,6 @@ class Users extends CI_Controller
                 'view_name' => $result[0]->view_name,
                 'role' => $result[0]->role,
                 'email' => $result[0]->email,
-                'clients' => $result[0]->clients,
                 'language' => $language
             );
             $this->session->set_userdata('logged_in', $session_data);

@@ -56,15 +56,22 @@ function add_fields_to_table($controller, $fields, $table_name)
 
 function modify_field_table($controller, $old_field_name, $new_field_name, $table_name)
 {
-	if ($controller->db->field_exists($old_field_name,)) {
-		$field = array(
-			$old_field_name => array(
-				'name' => $new_field_name,
-			),
-		);
-		$controller->load->dbforge();
-		$controller->dbforge->modify_column($table_name, $field);
-		return true;
+	if ($controller->db->field_exists($old_field_name, $table_name)) {
+		$old_field_meta = $controller->db->field_data($table_name);
+		foreach ($old_field_meta as $field) {
+			if ($field->name == $old_field_name) {
+				$field = array(
+					$old_field_name => array(
+						'name' => $new_field_name,
+						'type' => $field->type,
+						'constraint' => $field->max_length,
+					),
+				);
+				$controller->load->dbforge();
+				$controller->dbforge->modify_column($table_name, $field);
+				return true;
+			}
+		}
 	} else {
 		return false;
 	}
@@ -79,4 +86,9 @@ function remove_field_from_table($controller, $field_name, $table_name)
 	} else {
 		return false;
 	}
+}
+
+function sort_users_by_role($a, $b)
+{
+	return strcmp($a["role"], $b["role"]);
 }

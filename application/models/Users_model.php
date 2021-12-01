@@ -40,11 +40,6 @@ class Users_model extends CI_Model
 				'constraint' => 20,
 				'null' => TRUE
 			),
-			'clients' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 60,
-				'null' => TRUE
-			),
 			'log' => array(
 				'type' => 'TEXT',
 				'null' => TRUE
@@ -63,7 +58,6 @@ class Users_model extends CI_Model
 			"role" => 'Admin',
 			"email" => 'Admin',
 			"password" => password_hash('Admin', PASSWORD_DEFAULT),
-			"clients" => '1,2,3',
 		);
 		$this->db->insert('users', $admin);
 	}

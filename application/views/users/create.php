@@ -70,18 +70,6 @@
             <input type='text' class="form-control ltr" name='email'>
       </div>
 </div>
-<div class="row">
-      <div><?= lang('clients') ?></div>
-      <?php
-      $user_clients = explode(",", $user['clients']);
-      foreach ($clients as $key => $client) {
-            echo "<div class='form-check'>";
-            echo "<input class='form-check-input' type='checkbox' name='clients[{$client['id']}]' value='{$client['id']}' aria-label='{$client['name']}'>
-						<label class='form-check-label' for='clients'>{$client['name']}</label>";
-            echo "</div>";
-      }
-      ?>
-</div>
 <div class="modal-footer">
       <input type='submit' class="btn btn-primary" name='submit' value='<?= lang('add_user') ?>'>
 </div>

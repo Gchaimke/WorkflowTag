@@ -16,7 +16,7 @@ class Clients_model extends CI_Model
                 'type' => 'VARCHAR',
                 'constraint' => 60
             ),
-            'projects' => array(
+            'users' => array(
                 'type' => 'VARCHAR',
                 'constraint' => 500
             ),
@@ -38,13 +38,13 @@ class Clients_model extends CI_Model
 
         $cl = array(
             "name" => 'Avdor-HLT',
-            "projects" => 'Project 1,Project 2',
+            "users" => '1,2,3',
             "logo" => '/assets/img/logo.png',
             'status' => 1
         );
         $this->db->insert('clients', $cl);
     }
-    //id,name,projects,status,logo
+    //id,name,users,status,logo
     public function addClient($data)
     {
         if ($this->db->table_exists('clients')) {
