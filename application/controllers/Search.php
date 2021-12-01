@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Search extends CI_Controller
 {
-    private $user, $user_clients;
+    private $user;
     public function __construct()
     {
         parent::__construct();
@@ -17,7 +17,6 @@ class Search extends CI_Controller
             if ($this->user['role'] == "") {
                 exit;
             }
-            $this->user_clients = explode(",", $this->user['clients']);
         }
     }
 
@@ -42,8 +41,10 @@ class Search extends CI_Controller
                 }
                 if (isset($result["client"])) {
                     $client = $this->Clients_model->get_client_by_name($result["client"]);
+                    $client_users = isset($client['users']) ? explode(",", $client['users']) : array();
+
                     $client['id'] = isset($client) ? $client['id'] : "";
-                    if (!in_array($client['id'], $this->user_clients)) continue;
+                    if (!in_array($this->user['id'], $client_users)) continue;
                 }
                 $html .= "<tr class='text-white'>";
                 if ($type == "rma") {
@@ -53,7 +54,7 @@ class Search extends CI_Controller
                     $html .= "<td><a href='/forms/edit?type=rma&id={$result["id"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
                 }
                 if ($type == "qc" && $this->user['role'] != "Assembler") {
-                    $html .= "<td class='text-left'{$result['number']}</td>";
+                    $html .= "<td class='text-left'>{$result['number']}</td>";
                     $html .= "<td>QC</td>";
                     $html .= "<td>" . urldecode($result["project"]) . "</td>";
                     $html .= "<td><a href='/forms/edit?type=qc&id={$result["id"]}&client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
@@ -66,7 +67,7 @@ class Search extends CI_Controller
                 }
                 if ($client['id'] != "" && $type == "checklist") {
                     $html .= "<td class='text-left'>" . $result['serial'] . "</td>";
-                    $html .= "<td>" . urldecode($result["project"])."</td>";
+                    $html .= "<td>" . urldecode($result["project"]) . "</td>";
                     $html .= "<td>CHECKLIST</td>";
                     if (strpos($result["project"], 'Trash') !== false) {
                         $html .= "<td>No Actions for Trashed items</td>";
