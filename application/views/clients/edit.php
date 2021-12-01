@@ -59,9 +59,11 @@ if (isset($client)) {
 				</div>
 				<div class="row">
 					<div><?= lang('users') ?></div>
+					<div class='form-check text-start'>
+						<input class='form-check-input' type="checkbox" id="check_all"><label class='form-check-label' for='users'>Select all</label>
+					</div>
 					<div class="users_check">
 						<?php
-
 						$user_clients = explode(",", $client['users']);
 						foreach ($users as $key => $user) {
 							echo "<div class='form-check'>";
@@ -86,4 +88,7 @@ if (isset($client)) {
 	<script>
 		var client = document.getElementById("client_name").value;
 		var ext = '';
+		$("#check_all").click(function() {
+			$('input:checkbox').not(this).prop('checked', this.checked);
+		});
 	</script>

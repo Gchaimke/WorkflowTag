@@ -3,6 +3,11 @@ main {
     min-height: calc(100vh - 100px);
 }
 
+.dropdown-menu[data-bs-popper] {
+    left: auto;
+    right: 0;
+}
+
 .rma {
     background-color: #ffe3b8;
 }
