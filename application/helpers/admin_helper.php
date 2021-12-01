@@ -81,7 +81,7 @@ function remove_field_from_table($controller, $field_name, $table_name)
 {
 	if ($controller->db->field_exists($field_name, $table_name)) {
 		$controller->load->dbforge();
-		$controller->db->remove_column($table_name, $field_name);
+		$controller->dbforge->drop_column($table_name, $field_name);
 		return true;
 	} else {
 		return false;

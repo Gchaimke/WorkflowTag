@@ -349,22 +349,17 @@ class Admin extends CI_Controller
 
 	function upgrade_db()
 	{
-		$fields = array(
-			'paka' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 100,
-				'null' => TRUE
-			)
-		);
-		$table_name = 'checklists';
-		$return = add_fields_to_table($this,$fields,'checklists');
-		if($return){
-			echo "Table: $table_name now up to date!";
-		}else{
-			echo "Table: $table_name is up to date!";
-		}
-
-		echo modify_field_table($this,"users1","users","clients");
+		// $fields = array(
+		// 	'paka' => array(
+		// 		'type' => 'VARCHAR',
+		// 		'constraint' => 100,
+		// 		'null' => TRUE
+		// 	)
+		// );
+		// $table_name = 'checklists';
+		// echo add_fields_to_table($this,$fields,'checklists')?"Table: $table_name now up to date!":"Table: $table_name is up to date!";
+		echo modify_field_table($this, "projects", "users", "clients") ? "<br>Field now up to date" : "<br>Field is up to date!";
+		echo remove_field_from_table($this, "clients", "users") ? "<br>Field is removed!" : "<br>Field is not exists!";
 	}
 
 	function add_checklist_version()
