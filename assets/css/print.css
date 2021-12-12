@@ -1,46 +1,69 @@
 @media print {
+
+    .checklist-data {
+        display: flex;
+        width: 45%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+
+    .checklist-data b {
+        flex-basis: 250px;
+      }
+
     .row {
         break-inside: avoid;
     }
+
     body {
         margin-top: 0;
     }
+
     main {
         min-height: inherit;
     }
+
     .print-hide {
         display: none;
     }
+
     .navbar {
         position: relative;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: .9rem 1rem;
+        padding: 0.9rem 1rem;
         margin-top: -120px;
-        margin-bottom: 70px;
+        flex-direction: row;
+        align-items: stretch;
     }
+
     .navbar-right, .progress, .delete-photo, .alert, #snap1, .main-menu, footer {
         display: none;
     }
+
     div#photo-stock img {
         padding-bottom: 5px;
     }
+
     .badge {
         border: none;
     }
+
     .mobile-hide {
         display: block;
     }
+
     img.img-thumbnail.checklist-logo {
         max-width: 300px;
         max-height: 150px;
         display: block;
         opacity: 0.5;
     }
+
     b#date {
         margin-right: 50px;
     }
+
     img.respondCanvas {
         display: block;
         break-inside: avoid;

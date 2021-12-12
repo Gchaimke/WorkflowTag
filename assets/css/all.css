@@ -280,6 +280,11 @@ select.review {
     font-size: 2.5rem;
 }
 
+.checklist-data {
+    display: flex;
+    width: 35%;
+}
+
 @media (max-width:360px) {
     .nav-item.project {
         display: none;
@@ -345,6 +350,13 @@ select.review {
 
     .card-columns .card {
         margin-bottom: 50px;
+    }
+
+    .checklist-data {
+        display: flex;
+        width: 60%;
+        flex-direction: row;
+        justify-content: space-between;
     }
 }
 

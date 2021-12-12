@@ -37,12 +37,7 @@ if (isset($this->session->userdata['logged_in'])) {
 <main role="main" class="container ltr">
 	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
 		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
-		<div class="d-flex checklist-data w-75" style="justify-content: space-evenly;">
-			<?php if ($assembly) { ?>
-				<div class="print-hide">
-					<a class="btn btn-warning d-none d-xl-inline " target="_blank" href="/<?= $file ?>" style="position:relative; top:5px;left:-100px;"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-				</div>
-			<?php }; ?>
+		<div class="checklist-data">
 			<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
 			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
@@ -50,6 +45,11 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
+				<?php if ($assembly) { ?>
+					<div class="print-hide">
+						<a class="btn btn-warning d-none d-xl-block me-3" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+					</div>
+				<?php }; ?>
 				<?php if ($role != 'Assembler') { ?>
 					<button class="btn btn-warning me-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
 				<?php } ?>
