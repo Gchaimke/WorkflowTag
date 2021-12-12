@@ -216,6 +216,45 @@ $('#ajax-form-scans').submit(function (event) {
     });
 });
 
+//CONTEXTMENU START
+$(".verify").bind('contextmenu', function (e) {
+    var id = this.id;
+    $("#checkbox_id").val(id);
+
+    var top = e.pageY + 5;
+    var left = e.pageX;
+
+    // Show contextmenu
+    $(".context-menu").toggle(100).css({
+        top: top + "px",
+        left: left + "px"
+    });
+    return false;
+});
+
+// Clicked context-menu item
+$('.context-menu li').click(function () {
+    var checkbox_id = $('#checkbox_id').val();
+    var className = $(this).find("span:nth-child(1)").attr("class");
+    if (className == "checkbox_yes") {
+        $("#" + checkbox_id).prop("checked", true);
+        $("#" + checkbox_id).prop("indeterminate", false).css("background-color", "#0d6efd");
+    } else {
+        $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#f70c0c");
+        $("#" + checkbox_id).prop("checked", false);
+    }
+    $(".context-menu").hide();
+});
+
+$(document).bind('contextmenu click', function () {
+    $(".context-menu").hide();
+});
+
+$('.context-menu').bind('contextmenu', function () {
+    return false;
+});
+//CONTEXTMENU END
+
 //KEYBOARD BIDINGS START
 jQuery.extend(jQuery.expr[':'], {
     focusable: function (el, index, selector) {

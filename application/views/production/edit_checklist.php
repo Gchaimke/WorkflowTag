@@ -122,7 +122,7 @@ if (isset($this->session->userdata['logged_in'])) {
 						pathinfo($entry, PATHINFO_FILENAME) != 'logo'
 					) {
 						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
-							'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' .
+							'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo "><li class=" far fa-trash-alt"></li> ' .
 							pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) .
 							'" src="/' . $working_dir . $entry . '" class="respondCanvas" >';
 						echo '<script>photoCount++</script>';
@@ -236,6 +236,14 @@ if (isset($this->session->userdata['logged_in'])) {
 		}
 		echo "</div>";
 		?>
+	</div>
+	<!-- Context-menu -->
+	<div class='context-menu'>
+		<ul>
+			<li><span class='checkbox_yes'></span>&nbsp;<span>Yes</span></li>
+			<li><span class='checkbox_no'></span>&nbsp;<span>No</span></li>
+		</ul>
+		<div value='' id='checkbox_id' class="hidden"></div>
 	</div>
 </main>
 <script>
