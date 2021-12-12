@@ -32,7 +32,7 @@
         position: relative;
         display: flex;
         padding: 0.9rem 1rem;
-        margin-top: -120px;
+        margin-top: -60px;
         flex-direction: row;
         align-items: stretch;
     }
