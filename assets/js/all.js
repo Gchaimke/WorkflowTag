@@ -9,6 +9,8 @@ function showLog(log_data, serial) {
             if (element != '') {
                 if (~element.indexOf("QC")) {
                     $("#show-log .list-group").append("<li class='list-group-item list-group-item-warning'>" + element + "</li>");
+                } else if (~element.indexOf(" no ")) {
+                    $("#show-log .list-group").append("<li class='list-group-item list-group-item-danger'>" + element + "</li>");
                 } else {
                     $("#show-log .list-group").append("<li class='list-group-item list-group-item-info'>" + element + "</li>");
                 }

@@ -247,6 +247,7 @@ $('.context-menu li').click(function () {
         $("#" + checkbox_id).prop("checked", true);
         $("#" + checkbox_id).prop("indeterminate", false).css("background-color", "#0d6efd");
         $("#" + checkbox_id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
+        log += getDateTime() + " " + assembler + " checked yes " + $("#" + checkbox_id).closest("tr").find('th').text() + ";";
         chArray[checkbox_id] = assembler;
     }
     if (className == "checkbox_no") {
@@ -254,7 +255,9 @@ $('.context-menu li').click(function () {
         $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#ff9595");
         $("#" + checkbox_id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
         chArray[checkbox_id] = "!" + assembler;
+        log += getDateTime() + " " + assembler + " checked no " + $("#" + checkbox_id).closest("tr").find('th').text() + ";";
     }
+    $('#input_log').val(log);
     $('#input_data').val(chArray.toString());
     updateProgress();
     $(".context-menu").hide();
