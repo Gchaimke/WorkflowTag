@@ -13,7 +13,12 @@ $(document).ready(function () {
     //Get checked rows and add Name after
     checkRows.each(function () {
         if ($(this).find("input").prop('checked')) {
-            $(this).find("input").after("<div class='badge badge-secondary check-lable'>" + chArray[$(this).find("input").attr('id')] + "</div>");
+            assembler_name = chArray[$(this).find("input").attr('id')];
+            if (assembler_name.substring(0,1) == "!") {
+                $(this).find("input").prop("indeterminate", true).css("background-color", "#f70c0c");
+                assembler_name = assembler_name.substring(1)
+            }
+            $(this).find("input").after("<div class='badge badge-secondary check-lable'>" + assembler_name + "</div>");
         }
     });
 
@@ -58,9 +63,11 @@ function toggleOne(id) {
     if ($(event.target).is(":checked")) {
         $("#" + id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
         chArray[id] = assembler;
+        $(event.target).css("background-color", "#0d6efd")
     } else {
         $("#" + id + "+ div").remove();
         chArray[id] = '';
+        $(event.target).css("background-color", "initial")
     }
     updateProgress();
 }
@@ -105,7 +112,7 @@ $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
     $('#assembler').val(assembler);
     $('#input_data').val(chArray.toString());
-    if ($(event.target).is(":checked")) {
+    if ($(e.target).is(":checked")) {
         log += getDateTime() + " " + assembler + " checked " + $(this).closest("tr").find('th').text() + ";";
     }
     $('#input_log').val(log);
@@ -239,10 +246,18 @@ $('.context-menu li').click(function () {
     if (className == "checkbox_yes") {
         $("#" + checkbox_id).prop("checked", true);
         $("#" + checkbox_id).prop("indeterminate", false).css("background-color", "#0d6efd");
-    } else {
-        $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#f70c0c");
-        $("#" + checkbox_id).prop("checked", false);
+        $("#" + checkbox_id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
+        chArray[checkbox_id] = assembler;
     }
+    if (className == "checkbox_no") {
+        $("#" + checkbox_id).prop("checked", true);
+        $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#f70c0c");
+        toggleOne(checkbox_id)
+        $("#" + checkbox_id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
+        chArray[checkbox_id] = "!" + assembler;
+    }
+    $('#input_data').val(chArray.toString());
+    updateProgress();
     $(".context-menu").hide();
 });
 
