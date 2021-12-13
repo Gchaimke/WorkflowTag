@@ -14,7 +14,7 @@ $(document).ready(function () {
     checkRows.each(function () {
         if ($(this).find("input").prop('checked')) {
             assembler_name = chArray[$(this).find("input").attr('id')];
-            if (assembler_name.substring(0,1) == "!") {
+            if (assembler_name.substring(0, 1) == "!") {
                 $(this).find("input").prop("indeterminate", true).css("background-color", "#ff9595");
                 assembler_name = assembler_name.substring(1)
             }
@@ -33,8 +33,6 @@ $(document).ready(function () {
             $(this).val('Select');
         }
     });
-
-    //chArray = chArray.slice(0, checkRows.length * 3);
     updateProgress();
 });
 
@@ -93,7 +91,6 @@ function toggleQc(id, qc_name) {
     if (qc_name != '') {
         chArray[id] = qc_name;
     } else {
-        //$("#" + id + "+ div").remove();
         chArray[id] = '';
     }
     updateProgress();
@@ -185,7 +182,6 @@ function getDateTime() {
 }
 
 $('#ajax-form-qc').submit(function (event) {
-    // Stop the browser from submitting the form.
     event.preventDefault();
     var formData = $('#ajax-form-qc').serialize();
     $.ajax({
@@ -205,7 +201,6 @@ $('#ajax-form-qc').submit(function (event) {
 });
 
 $('#ajax-form-scans').submit(function (event) {
-    // Stop the browser from submitting the form.
     event.preventDefault();
     var formData = $('#ajax-form-scans').serialize();
     $.ajax({
@@ -228,8 +223,8 @@ $(".verify").bind('contextmenu', function (e) {
     var id = this.id;
     $("#checkbox_id").val(id);
 
-    var top = e.pageY + 5;
-    var left = e.pageX;
+    var top = e.pageY + 20;
+    var left = e.pageX - 50;
 
     // Show contextmenu
     $(".context-menu").toggle(100).css({
@@ -270,54 +265,21 @@ $(document).bind('contextmenu click', function () {
 $('.context-menu').bind('contextmenu', function () {
     return false;
 });
-//CONTEXTMENU END
 
-//KEYBOARD BIDINGS START
-jQuery.extend(jQuery.expr[':'], {
-    focusable: function (el, index, selector) {
-        return $(el).is('a, button, :input, [tabindex]');
-    }
-});
-
-$(document).on('keypress', 'input,select', function (e) {
-    if (e.which == 13) {
-        e.preventDefault();
-        // Get all focusable elements on the page
-        var $canfocus = $(':focusable');
-        var index = $canfocus.index(this) + 1;
-        if (index >= $canfocus.length) index = 0;
-        $canfocus.eq(index).focus();
-    }
-});
-
+//KEYBOARD BIDINGS
 document.onkeydown = function (e) {
-    var pathname = window.location.pathname.split("/");
-    if (e.ctrlKey && e.which == 83) { //ctrl + S
+    if (e.ctrlKey && e.key == "s") { //ctrl + S
         e.preventDefault();
-        $(".saveData").submit();
-    } else if (e.ctrlKey && e.which == 37) { //ctrl + <-
+        $("#save").click();
+    } else if (e.ctrlKey && e.key == "a") { //ctrl+a
         e.preventDefault();
-        window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) - 1);
-    } else if (e.ctrlKey && e.which == 39) { //ctrl + ->
-        e.preventDefault();
-        window.location.href = '/' + pathname[1] + "/" + pathname[2] + "/" + (parseInt(pathname[3]) + 1);
-    } else if (e.ctrlKey && e.which == 81) { //ctrl+Q
-        e.preventDefault();
-        //print2PDF(window.location.href,ci_session);
         toggleAll();
-    } else if (e.which == 40) {
+    } else if (e.key == "Enter") {
         e.preventDefault();
         var focused = $(':focus')
         var id = focused.parent().parent().attr('id');
         if (id >= 0) {
-            var id = parseInt(id) + 1;
-        }
-        $('tr[id^=' + id + '] input:eq(0)').focus();
-    } else if (e.which == 38) {
-        e.preventDefault();
-        var id = $(':focus').parent().parent().attr('id');
-        if (id >= 0) {
-            id = parseInt(id) - 1;
+            id = parseInt(id) + 1;
         }
         $('tr[id^=' + id + '] input:eq(0)').focus();
     }

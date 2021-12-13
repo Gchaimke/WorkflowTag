@@ -176,6 +176,10 @@ div#show-log {
     min-width: 50%;
 }
 
+.checkbox {
+    padding: 5px 0;
+}
+
 .users_check {
     text-align: left;
     min-width: 360px;
@@ -285,64 +289,65 @@ select.review {
     width: 35%;
 }
 
-.container{
-    border-radius:3px;
-    padding:5px;
+.container {
+    border-radius: 3px;
+    padding: 5px;
     /* width: 60%; */
     margin: 0 auto;
 }
 
-h2{
+h2 {
     font-weight: normal;
     font-size: 25px;
 }
-h2:hover{
+
+h2:hover {
     cursor: pointer;
 }
 
 /* Context menu */
-.context-menu{
+.context-menu {
     display: none;
     position: absolute;
     border: 1px solid black;
     border-radius: 3px;
-    width: 200px;
+    width: 100px;
     background: white;
     box-shadow: 10px 10px 5px #888888;
 }
 
-.context-menu ul{
+.context-menu ul {
     list-style: none;
     padding: 2px;
 }
 
 .context-menu ul li {
-    padding: 5px 2px;
+    padding: 15px 10px;
     margin-bottom: 3px;
     font-weight: bold;
     border-bottom: solid 0.5px;
-  }
+}
 
-.context-menu ul li:hover{
+.context-menu ul li:hover {
     cursor: pointer;
     background-color: #7fffd4;
 }
 
 /* Colors */
-.checkbox_no ,.checkbox_yes {
-    width:15px;
-    height:15px;
+.checkbox_no, .checkbox_yes {
+    width: 15px;
+    height: 15px;
     border: 0px solid black;
     display: inline-block;
     margin-right: 5px;
 }
 
 .checkbox_yes {
-    background-color: rgb(13, 194, 67) ;
+    background-color: rgb(13, 194, 67);
 }
 
 .checkbox_no {
-    background-color: rgb(231, 38, 80) ;
+    background-color: rgb(231, 38, 80);
 }
 
 @media (max-width:360px) {
