@@ -15,7 +15,7 @@ $(document).ready(function () {
         if ($(this).find("input").prop('checked')) {
             assembler_name = chArray[$(this).find("input").attr('id')];
             if (assembler_name.substring(0,1) == "!") {
-                $(this).find("input").prop("indeterminate", true).css("background-color", "#f70c0c");
+                $(this).find("input").prop("indeterminate", true).css("background-color", "#ff9595");
                 assembler_name = assembler_name.substring(1)
             }
             $(this).find("input").after("<div class='badge badge-secondary check-lable'>" + assembler_name + "</div>");
@@ -67,7 +67,7 @@ function toggleOne(id) {
     } else {
         $("#" + id + "+ div").remove();
         chArray[id] = '';
-        $(event.target).css("background-color", "initial")
+        $(event.target).css("background-color", "white")
     }
     updateProgress();
 }
@@ -251,8 +251,7 @@ $('.context-menu li').click(function () {
     }
     if (className == "checkbox_no") {
         $("#" + checkbox_id).prop("checked", true);
-        $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#f70c0c");
-        toggleOne(checkbox_id)
+        $("#" + checkbox_id).prop("indeterminate", true).css("background-color", "#ff9595");
         $("#" + checkbox_id).after("<div class='badge badge-secondary check-lable'>" + assembler + "</div>");
         chArray[checkbox_id] = "!" + assembler;
     }

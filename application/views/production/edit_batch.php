@@ -55,6 +55,14 @@ if (isset($this->session->userdata['logged_in'])) {
 	<div id="workTable">
 		<?php echo $checklist_rows ?>
 	</div>
+	<!-- Context-menu -->
+	<div class='context-menu'>
+		<ul>
+			<li><span class='checkbox_yes'></span>&nbsp;<span>Yes</span></li>
+			<li><span class='checkbox_no'></span>&nbsp;<span>No</span></li>
+		</ul>
+		<div value='' id='checkbox_id' class="hidden"></div>
+	</div>
 </main>
 <?php
 echo "<script>var photoCount=0; var id='$ids'; var pr='$project'; var ci_session='$session';"; //pass PHP data to JS

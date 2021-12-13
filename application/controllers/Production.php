@@ -339,7 +339,7 @@ class Production extends CI_Controller
                         $id++;
                     } else {
                         $tr = "<tr class='check_row'><th scope='row'>$prefix$index</th><td class='description'>" . $col[0] . "</td><td>" .
-                            "<div class='checkbox'><input type='checkbox' class='verify' id='$id' $checked></div></td></tr>" . PHP_EOL;
+                            "<div class='checkbox'><input type='checkbox' class='verify form-check-input' id='$id' $checked></div></td></tr>" . PHP_EOL;
                         $index++;
                         $id++;
                     }
