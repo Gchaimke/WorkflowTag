@@ -350,6 +350,26 @@ h2:hover {
     background-color: rgb(231, 38, 80);
 }
 
+.upload_photo_spinner {
+    position: fixed;
+    width: 100VW;
+    height: 100VH;
+    left: 0;
+    top: 0;
+    margin: auto;
+    z-index: 1;
+    background-color: #0000007a;
+}
+
+.spinner-border {
+    width: 10rem;
+    height: 10rem;
+    top: 35VH;
+    left: 45VW;
+    border-width: 2em;
+    position: absolute;
+}
+
 @media (max-width:360px) {
     .nav-item.project {
         display: none;

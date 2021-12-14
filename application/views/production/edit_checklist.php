@@ -35,6 +35,11 @@ if (isset($this->session->userdata['logged_in'])) {
 <link rel="stylesheet" href="<?= base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <main role="main" class="container ltr">
+	<div class="upload_photo_spinner text-center" style="display: none;">
+		<div class="spinner-border" role="status">
+			<span class="visually-hidden">Loading...</span>
+		</div>
+	</div>
 	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
 		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 		<div class="checklist-data">

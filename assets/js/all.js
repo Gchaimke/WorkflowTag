@@ -182,6 +182,8 @@ function snapPhoto() {
 }
 
 function savePhotoToServer(file) {
+    console.log("Start uploading:" + Date().toLocaleString() + " file")
+    $('.upload_photo_spinner').show();
     $.post("/production/save_photo", {
         data: file,
         serial: serial,
@@ -189,11 +191,12 @@ function savePhotoToServer(file) {
         working_dir: working_dir
     }).done(function (out) {
         var photo_id = out.split("/")[4].replace(".jpeg", "").replace(".png", ""); //get photo id
-        $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo fa fa-trash"> ' +
+        $("#photo-stock").append('<span id="' + photo_id + '" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo"><li class="far fa-trash-alt"></li> ' +
             photo_id + '</span><img id="' + photo_id + '"src="/' + out + '" class="respondCanvas" >');
         $('#form-messages').addClass('alert-success');
         $("#save").trigger("click");
-        console.log(out + " Uploaded");
+        console.log("End uploading:" + Date().toLocaleString() + " " + out)
+        $('.upload_photo_spinner').hide();
     });
 }
 

@@ -9,7 +9,6 @@ var chArray = checklist_data.split(",");
 
 $(document).ready(function () {
     $("#picrures_count").val(photoCount);
-
     //Get checked rows and add Name after
     checkRows.each(function () {
         if ($(this).find("input").prop('checked')) {
