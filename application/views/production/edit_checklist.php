@@ -60,7 +60,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<?php } ?>
 				<a class="btn btn-info me-3" href="#scansTable"><i class="fa fa-list"></i></a>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
-				<?= form_open('production/save_checklist/' . $id . '?sn=' . $serial, 'id=ajax-form', 'class=saveData'); ?>
+				<?= form_open('production/save_checklist/' . $id, 'id=ajax-form', 'class=saveData'); ?>
 				<input id='input_data' type='hidden' name='data' value="<?= $checklist_data ?>">
 				<input id='version' type='hidden' name='version' value="<?= $checklist['version'] ?>">
 				<input id='input_progress' type='hidden' name='progress' value="<?= $progress ?>">
@@ -252,6 +252,11 @@ if (isset($this->session->userdata['logged_in'])) {
 	</div>
 </main>
 <script>
+	// self executing function here
+	(function() {
+		document.title = '<?= $serial ?>';
+	})();
+
 	var checklist_data = "<?= $checklist_data ?>";
 	window.onscroll = function() {
 		stickHeader()

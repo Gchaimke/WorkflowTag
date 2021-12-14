@@ -22,14 +22,7 @@ $dir = $user_language == 'hebrew' ? 'rtl' : 'ltr';
   <meta name="description" content="Checklist online">
   <meta name="author" content="Chaim Gorbov">
   <link rel="icon" href="<?php echo base_url('assets/favicon.ico'); ?>">
-  <title>
-    <?php
-    if (isset($_GET['sn'])) {
-      echo $_GET['sn'];
-    } else {
-      echo "WorkflowTag - " . pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME);
-    }
-    ?></title>
+  <title>WorkflowTag</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <!-- Bootstrap core CSS -->

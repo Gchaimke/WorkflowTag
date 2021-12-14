@@ -388,6 +388,7 @@ class Production extends CI_Controller
                 $data['scans'] = $this->input->post('scans');
                 $this->generate_offline_files($data);
             }
+            $this->Users_model->update_user_log($data);
             echo 'Checklist saved successfully!';
         }
     }

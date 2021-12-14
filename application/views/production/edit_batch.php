@@ -13,7 +13,7 @@ $this->load->helper('cookie');
 $session = get_cookie('ci_session');
 
 foreach ($checklists as $checklist) {
-	$serials_links .= "<a target='_blank' class='badge badge-light' href='/production/edit_checklist/{$checklist['id']}?sn={$checklist['serial']}&client={$client['id']}'>{$checklist['serial']}</a> |";
+	$serials_links .= "<a target='_blank' class='badge badge-light' href='/production/edit_checklist/{$checklist['id']}?client={$client['id']}'>{$checklist['serial']}</a> |";
 }
 if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);

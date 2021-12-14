@@ -153,7 +153,6 @@ class Users_model extends CI_Model
 
 	function getUser($id)
 	{
-		$response = array();
 		// Select record
 		$this->db->select('*');
 		$this->db->from('users');
@@ -166,5 +165,25 @@ class Users_model extends CI_Model
 		} else {
 			return false;
 		}
+	}
+
+	function get_user_log($id)
+	{
+		// Select record
+		$this->db->select('log');
+		$this->db->from('users');
+		$condition = "id ='" . $id . "'";
+		$this->db->where($condition);
+		$this->db->limit(1);
+		$query = $this->db->get();
+		if ($query->num_rows() == 1) {
+			return $query->row_array();
+		} else {
+			return false;
+		}
+	}
+
+	function update_user_log($data){
+
 	}
 }

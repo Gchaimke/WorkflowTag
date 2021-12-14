@@ -370,6 +370,21 @@ h2:hover {
     position: absolute;
 }
 
+.open_menu {
+    position: fixed;
+    top: 50VH;
+    left:-5px;
+    transition: 0.3s ease-in-out;
+}
+
+.offcanvas-start{
+    top: 67px;
+}
+
+.offcanvas{
+    z-index: 1025;
+}
+
 @media (max-width:360px) {
     .nav-item.project {
         display: none;

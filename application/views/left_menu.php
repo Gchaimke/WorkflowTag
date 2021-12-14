@@ -1,0 +1,38 @@
+<?php
+if (isset($this->session->userdata['logged_in'])) {
+    $user_id = $this->session->userdata['logged_in']['id'];
+}
+$this->load->model('Users_model');
+$user_log = $this->Users_model->get_user_log($user_id);
+
+$checklists = json_decode($user_log['log'], true);
+krsort($checklists['checklists']);
+?>
+<div>
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="left_menu" aria-labelledby="offcanvasScrollingLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Last Opened</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <?php
+            foreach ($checklists['checklists'] as $key => $checklist) {
+                echo "<p><a href='$checklist'>$key</a></p>";
+            }
+            ksort($checklists['checklists']);
+            print_r($checklists['checklists']);
+            ?>
+        </div>
+    </div>
+    <button class="btn btn-outline-secondary open_menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#left_menu" aria-controls="left_menu">
+        <i class="fas fa-bars"></i></button>
+</div>
+<script>
+    var myOffcanvas = document.getElementById('left_menu')
+    myOffcanvas.addEventListener('show.bs.offcanvas', function() {
+        $('.open_menu').css('left', 395)
+    })
+    myOffcanvas.addEventListener('hide.bs.offcanvas', function() {
+        $('.open_menu').css('left', -5)
+    })
+</script>
