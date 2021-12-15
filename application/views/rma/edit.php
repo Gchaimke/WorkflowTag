@@ -14,6 +14,14 @@ if (!isset($form)) {
 
 $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $form->number . '/';
 
+$client_id = null;
+if (isset($_GET['client'])) {
+      $client_id = $_GET['client'];
+}
+if (isset($client) && isset($client['id'])) {
+      $client_id = $client['id'];
+}
+
 ?>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
@@ -21,8 +29,8 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
 <?= "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?= $_GET['client'] ?>&id=<?= $form->id ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> RMA " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?= $client_id ?>&id=<?= $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $client_id . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> RMA " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">
@@ -284,7 +292,7 @@ $working_dir = 'Uploads/' . $form->client . '/' . $form->project . '/RMA/' . $fo
                   <div class="input-group mb-2 col-lg-6">
                         <div class="input-group-text">Final Documentation Check:</div>
                         <select class="form-select" name='final_user'>
-                        <option value='NA' $selected >Select</option>
+                              <option value='NA' $selected>Select</option>
                               <?php
                               foreach ($this->users as $user) {
                                     $selected = "";

@@ -11,12 +11,19 @@ if (!isset($form)) {
       header("location: /forms/");
 }
 
+$client_id = null;
+if (isset($_GET['client'])) {
+      $client_id = $_GET['client'];
+}
+if (isset($client) && isset($client['id'])) {
+      $client_id = $client['id'];
+}
 ?>
 <link rel="stylesheet" href="<?php echo base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
 <?php echo "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
-<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&client=<?= $_GET['client'] ?>&id=<?php echo $form->id ?>" role='alert'></div>
-<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?php echo $_GET['client'] . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> QC " hidden></nav>
+<div id="form-messages" class='alert hidden' data-url="/forms/edit?type=qc&client=<?= $client_id ?>&id=<?php echo $form->id ?>" role='alert'></div>
+<nav id='nav_main_category_data' data-url="/forms?type=qc&client=<?= $client_id . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> QC " hidden></nav>
 <main role="main">
       <div class="jumbotron">
             <div class="container">

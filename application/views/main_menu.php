@@ -12,8 +12,8 @@ if (isset($this->session->userdata['logged_in'])) {
 if (isset($_GET['project'])) {
   $project = isset($_GET['project']) ? $_GET['project'] : $project;
 }
-$client_id = 0;
-if (isset($client)) {
+$client_id = null;
+if (isset($client) && isset($client['id'])) {
   $client_id = $client['id'];
 }
 if (isset($_GET['client'])) {

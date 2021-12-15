@@ -79,6 +79,7 @@ class Forms extends CI_Controller
         $data = array();
         if ($id != '') {
             $data['form'] = $this->Forms_model->get($type, $id)[0];
+            $data['client'] = $this->Clients_model->get_client_by_name($data['form']->client);
             $data['users'] = $this->users;
             $this->load->view('header');
             $this->load->view('main_menu');
