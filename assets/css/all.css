@@ -148,8 +148,16 @@ form.user-create {
     max-width: fit-content;
 }
 
-table {
-    text-align: center;
+a.file_manager_folder {
+    text-decoration: none;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+
+nav.breadcrumbs {
+    font-size: 1.3em;
+    letter-spacing: 1px;
+    font-weight: 700;
 }
 
 table.table.files td {

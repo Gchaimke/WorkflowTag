@@ -10,21 +10,27 @@ $user_log = $this->Users_model->get_user_log($user_id);
 <div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="left_menu" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Last 10 Opened</h5>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Workflow Center</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
-            <?php
-            if ($user_log['log'] != "") {
-                $checklists = json_decode($user_log['log'], true);
-                $checklists['checklists'] = array_reverse($checklists['checklists']);
-                foreach ($checklists['checklists'] as $key => $checklist) {
-                    echo "<p><a href='$checklist'>$key</a></p>";
+            <div class="last_checklists">
+                <h2>Last 10 checklists</h2>
+                <?php
+                if ($user_log['log'] != "") {
+                    $checklists = json_decode($user_log['log'], true);
+                    $checklists['checklists'] = array_reverse($checklists['checklists']);
+                    foreach ($checklists['checklists'] as $key => $checklist) {
+                        echo "<p><a href='$checklist'>$key</a></p>";
+                    }
+                } else {
+                    echo "No last items";
                 }
-            } else {
-                echo "No last items";
-            }
-            ?>
+                ?>
+            </div>
+            <div class="last_checklists">
+                <h2>Messages</h2>
+            </div>
         </div>
     </div>
     <button class="btn btn-outline-secondary open_menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#left_menu" aria-controls="left_menu">

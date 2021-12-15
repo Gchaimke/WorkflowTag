@@ -85,15 +85,11 @@ class Admin extends CI_Controller
 		if (!file_exists(BACKUP_DIR)) {
 			mkdir(BACKUP_DIR, 0770, true);
 		}
-		// Load the DB utility class
 		$this->load->dbutil();
-		// Backup your entire database and assign it to a variable
 		$backup = $this->dbutil->backup();
-		// Load the file helper and write the file to your server
 		$this->load->helper('file');
 		$file = BACKUP_DIR . 'db-' . date("Y-m-d") . '.zip';
 		$success = file_put_contents($file, $backup);
-		// Load the download helper and send the file to your desktop
 		echo $success ? $file : 'Unable to save the file: ' . $file;
 	}
 
@@ -194,7 +190,7 @@ class Admin extends CI_Controller
 		if (!file_exists('application/logs/admin')) {
 			mkdir('application/logs/admin', 0770, true);
 		}
-		$filesList = $this->getFileList('application/logs/admin');
+		$filesList = getFileList('application/logs/admin');
 		$reversedList = array_reverse($filesList);
 		// init params
 		$params = array();
@@ -204,12 +200,10 @@ class Admin extends CI_Controller
 		$total_records = count($filesList);
 		if ($total_records > 0) {
 			$params["results"] = array_slice($reversedList, $start, $limit_per_page);
-
 			$config['base_url'] = base_url() . 'admin/view_log';
 			$config['total_rows'] = $total_records;
 			$config['per_page'] = $limit_per_page;
 			$this->pagination->initialize($config);
-			// build paging links
 			$params["links"] = $this->pagination->create_links();
 		}
 		$this->load->view('header');
@@ -224,117 +218,17 @@ class Admin extends CI_Controller
 		echo file_get_contents(APPPATH . 'logs/admin/' . $this->input->post('file'));
 	}
 
-	function getFileList($dir, $recurse = FALSE)
-	{
-		$files = [];
-		$patterns[0] = '/\:/';
-		$patterns[1] = '/\./';
-		$dir = preg_replace($patterns, '',  $dir);
-		// add trailing slash if missing
-		if (substr($dir, -1) != "/") {
-			$dir .= "/";
-		}
-		// open pointer to directory and read list of files
-		$d = @dir($dir) or die("getFileList: Failed opening directory {$dir} for reading");
-		while (FALSE !== ($entry = $d->read())) {
-			// skip hidden files
-			if ($entry[0] == ".") continue;
-			if (is_dir("{$dir}{$entry}")) {
-				$files[] = [
-					'name' => "{$dir}{$entry}",
-					'type' => filetype("{$dir}{$entry}"),
-					'size' => 0,
-					'lastmod' => filemtime("{$dir}{$entry}")
-				];
-				if ($recurse && is_readable("{$dir}{$entry}/")) {
-					$files = array_merge($files, getFileList("{$dir}{$entry}/", TRUE));
-				}
-			} elseif (is_readable("{$dir}{$entry}")) {
-				$files[] = [
-					'name' => "{$dir}{$entry}",
-					'type' => mime_content_type("{$dir}{$entry}"),
-					'size' => filesize("{$dir}{$entry}"),
-					'lastmod' => filemtime("{$dir}{$entry}")
-				];
-			}
-		}
-		$d->close();
-
-		$lastmod = array_column($files, 'lastmod');
-
-		array_multisort($lastmod, SORT_ASC, $files);
-		return $files;
-	}
-
-	function human_filesize($bytes, $decimals = 2)
-	{
-		$sz = 'BKMGTP';
-		$factor = floor((strlen($bytes) - 1) / 3);
-		return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
-	}
-
 	function mange_uploads()
 	{
 		$data = array();
 		$folder = $this->security->xss_clean($this->input->get('folder'));
-		$data['folders'] = $this->build_folder_view($folder);
+		$data['folders'] = build_folder_view($folder);
 		$this->load->view('header');
 		$this->load->view('main_menu');
 		$this->load->view('admin/mange_uploads', $data);
 		$this->load->view('footer');
 	}
 
-	function build_folder_view($dir = "Uploads")
-	{
-		if ($dir == '') {
-			$dir = "Uploads";
-		}
-		$html_view = '';
-		$dirlistR = $this->getFileList($dir);
-		$dir = explode('/', $dir);  //string to array
-		$last_dir = array_pop($dir);            //remove last element
-		$dir = implode('/', $dir);  //array to string
-		if ($dir != '') {
-			$html_view .=  "<a href='?folder=$dir'>$dir/<a><b>" . $last_dir . "/</b><br>";
-		}
-		// output file list as HTML table
-		$html_view .= "<table class='table files'";
-		$html_view .= "<thead>\n";
-		$html_view .= "<tr><th>image</th><th>Path</th><th>Type</th><th>Size</th><th>Last Modified</th><th>Delete</th></tr>\n";
-		$html_view .= "</thead>\n";
-		$html_view .= "<tbody>\n";
-		$count = 1;
-		foreach ($dirlistR as $file) {
-			//filter file types
-			if ($file['type'] != 'image/png' && $file['type'] != 'image/jpeg' && $file['type'] != 'image/jpg' && $file['type'] != 'dir') {
-				continue;
-			}
-
-			if ($file['type'] == 'dir') {
-				$subDir = $this->getFileList($file['name']);
-				$count = count(array_filter($subDir, function ($x) {
-					return $x['type'] != 'text/html';
-				})); //count all files, filter html
-				$html_view .= '<a class="btn btn-primary folder" href="?folder=' . $file['name'] .
-					'" role="button"><i class="fa fa-folder"></i> ' .
-					basename($file['name']) . ' (' .  $count . ')</a>';
-			} else {
-				$html_view .= "<tr>\n";
-				$html_view .=  "<td class='td_file_manager'><a target='_blank' href=\"/{$file['name']}\"><img class='img-thumbnail' src=\"/{$file['name']}\"></a>" .
-					"</td>\n"; //basename($file['name'])
-				$html_view .=  "<td>" . $file['name'] . "</td>\n"; //basename($file['name'])
-				$html_view .= "<td>{$file['type']}</td>\n";
-				$html_view .= "<td>" . $this->human_filesize($file['size']) . "</td>\n";
-				$html_view .= "<td>" . date('d/m/Y h:i:s', $file['lastmod']) . "</td>\n";
-				$html_view .= "<td><span id='file_$count' data-file='/{$file['name']}' onclick='delFile(this.id)' class='btn btn-danger'>delete</span></td>";
-				$html_view .= "</tr>\n";
-			}
-			$count++;
-		}
-		$html_view .= "</tbody>\n";
-		$html_view .= "</table>\n\n";
-		return $html_view;
-	}
 
 	function RemoveEmptySubFolders($path = 'Uploads', $msg = "")
 	{
