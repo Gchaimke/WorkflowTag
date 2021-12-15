@@ -373,16 +373,27 @@ h2:hover {
 .open_menu {
     position: fixed;
     top: 50VH;
-    left:-5px;
+    left: -5px;
     transition: 0.3s ease-in-out;
 }
 
-.offcanvas-start{
+.offcanvas-start {
     top: 67px;
 }
 
-.offcanvas{
+.offcanvas {
     z-index: 1025;
+}
+
+.offcanvas-body a {
+    text-decoration: none;
+    padding: 5px;
+    background: #adadad1f;
+    border-radius: 5px;
+    display: block;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: 600;
 }
 
 @media (max-width:360px) {

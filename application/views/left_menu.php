@@ -10,7 +10,7 @@ $user_log = $this->Users_model->get_user_log($user_id);
 <div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="left_menu" aria-labelledby="offcanvasScrollingLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Last Opened</h5>
+            <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Last 10 Opened</h5>
             <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">

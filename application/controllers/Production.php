@@ -414,6 +414,8 @@ class Production extends CI_Controller
                 $this->Production_model->batchEditChecklist($data);
             }
             echo 'Checklists saved successfully!', $ids;
+            $log_label = "Batch " . $this->input->post('project') . " " . date("d_m")." (".count($ids_arr).")";
+            $this->Users_model->update_user_log($ids, $log_label, $this->input->post('client_id'));
             //$this->edit_batch($ids, $message_display);
         }
     }
