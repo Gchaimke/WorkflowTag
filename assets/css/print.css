@@ -24,7 +24,7 @@
         min-height: inherit;
     }
 
-    .print-hide {
+    .print-hide, .open_menu, .offcanvas {
         display: none;
     }
 
