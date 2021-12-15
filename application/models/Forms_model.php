@@ -38,13 +38,16 @@ class Forms_model extends CI_Model
         }
     }
 
-    function get($type = 'rma', $id = '')
+    function get($type = 'rma', $id = '',$project = '')
     {
         if ($this->db->table_exists($type . '_forms')) {
             if ($id != "") {
                 $id = urldecode($id);
                 $this->db->where("id = $id");
                 $this->db->limit(1);
+            }
+            if ($project != "") {
+                $this->db->where("project",$project);
             }
             $this->db->order_by('id', 'DESC');
             $this->db->from($type . '_forms');
@@ -54,11 +57,14 @@ class Forms_model extends CI_Model
         }
     }
 
-    function paginate($type = 'rma', $start = 0, $limit = 5)
+    function paginate($type = 'rma', $project = "", $start = 0, $limit = 5)
     {
         if ($this->db->table_exists($type . '_forms')) {
             $this->db->limit($limit, $start);
             $this->db->order_by('id', 'DESC');
+            if ($project != "") {
+                $this->db->where("project",$project);
+            }
             $this->db->from($type . '_forms');
             $query = $this->db->get();
             $response = $query->result_object();
