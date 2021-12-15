@@ -375,7 +375,7 @@ class Production extends CI_Controller
                 'assembler' => $this->input->post('assembler'),
                 'qc' => $this->input->post('qc'),
                 'note' => $this->input->post('note'),
-                'pictures' => $this->input->post('pictures'),
+                'pictures' => $this->input->post('pictures')
             );
             $this->Production_model->editChecklist($data);
             if ($this->input->post('progress') == 100) {
@@ -388,7 +388,7 @@ class Production extends CI_Controller
                 $data['scans'] = $this->input->post('scans');
                 $this->generate_offline_files($data);
             }
-            $this->Users_model->update_user_log($data);
+            $this->Users_model->update_user_log($id, $this->input->post('serial'), $this->input->post('client_id'));
             echo 'Checklist saved successfully!';
         }
     }

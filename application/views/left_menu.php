@@ -5,8 +5,7 @@ if (isset($this->session->userdata['logged_in'])) {
 $this->load->model('Users_model');
 $user_log = $this->Users_model->get_user_log($user_id);
 
-$checklists = json_decode($user_log['log'], true);
-krsort($checklists['checklists']);
+
 ?>
 <div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="left_menu" aria-labelledby="offcanvasScrollingLabel">
@@ -16,11 +15,15 @@ krsort($checklists['checklists']);
         </div>
         <div class="offcanvas-body">
             <?php
-            foreach ($checklists['checklists'] as $key => $checklist) {
-                echo "<p><a href='$checklist'>$key</a></p>";
+            if ($user_log['log'] != "") {
+                $checklists = json_decode($user_log['log'], true);
+                $checklists['checklists'] = array_reverse($checklists['checklists']);
+                foreach ($checklists['checklists'] as $key => $checklist) {
+                    echo "<p><a href='$checklist'>$key</a></p>";
+                }
+            } else {
+                echo "No last items";
             }
-            ksort($checklists['checklists']);
-            print_r($checklists['checklists']);
             ?>
         </div>
     </div>

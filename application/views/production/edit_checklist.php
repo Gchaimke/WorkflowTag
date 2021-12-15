@@ -68,6 +68,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input id="input_qc" type='hidden' name='qc' value="<?= $qc ?>">
 				<input type='hidden' name='serial' value="<?= $serial ?>">
 				<input type='hidden' name='client' value="<?= $client_name ?>">
+				<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
 				<input type='hidden' name='project' value="<?= $project ?>">
 				<input type='hidden' name='logo' value="<?= $logo ?>">
 				<input type='hidden' name='date' value="<?= $date ?>">
