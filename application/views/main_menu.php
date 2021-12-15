@@ -12,7 +12,13 @@ if (isset($this->session->userdata['logged_in'])) {
 if (isset($_GET['project'])) {
   $project = isset($_GET['project']) ? $_GET['project'] : $project;
 }
-
+$client_id = 0;
+if (isset($client)) {
+  $client_id = $client['id'];
+}
+if (isset($_GET['client'])) {
+  $client_id = $_GET['client'];
+}
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark main-menu">
   <div class="container-fluid">
@@ -29,8 +35,8 @@ if (isset($_GET['project'])) {
           <a class="btn btn-outline-success text-white" href="/"><?= lang('projects') ?></a>
         </li>
         <?php
-        if (isset($project) && $project != '' && $project != 'All' && isset($_GET['client'])) {
-          echo " <li class='nav-item me-2'><a class='btn btn-outline-warning project' href='/production/checklists?client={$_GET['client']}&project=$project'>$project </a></li>";
+        if (isset($project) && $project != '' && $project != 'All') {
+          echo " <li class='nav-item me-2'><a class='btn btn-outline-warning project' href='/production/checklists?client=$client_id&project=$project'>$project </a></li>";
         } ?>
         <li class="nav-item">
           <a id="nav_main_category" class="btn btn-outline-warning" href="/" hidden></a>
@@ -46,8 +52,8 @@ if (isset($_GET['project'])) {
             <div class="dropdown-menu p-2" aria-labelledby="navbarDropdownForms">
               <?php if (isset($project) && $project != '' && $project != 'All') { ?>
                 <b class="ml-2"><?= $project ?></b><br>
-                <a class="nav-item btn btn-outline-warning text-black" href="/forms?type=rma&project=<?= $project ?>">RMA</a>
-                <a class="nav-item btn btn-outline-danger text-black" href="/forms?type=qc&project=<?= $project ?>">QC</a>
+                <a class="nav-item btn btn-outline-warning text-black" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project ?>">RMA</a>
+                <a class="nav-item btn btn-outline-danger text-black" href="/forms?type=qc&client=<?= $client_id . "&project=" . $project ?>">QC</a>
               <?php } ?>
               <hr>
               <b class="ml-2">All</b><br>

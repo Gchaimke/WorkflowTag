@@ -91,7 +91,7 @@ class Production extends CI_Controller
 
         if ($total_records > 0) {
             $params["results"] = $this->Production_model->get_current_checklists_records($limit_per_page, $start, $project);
-            $config['base_url'] = base_url() . "production/checklists?client=$client_id&project=$project";
+            $config['base_url'] = base_url() . "production/checklists";
             $config['total_rows'] = $total_records;
             $config['per_page'] = $limit_per_page;
             $this->pagination->initialize($config);
