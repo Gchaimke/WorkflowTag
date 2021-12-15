@@ -46,7 +46,11 @@ function build_folder_view($dir = "Uploads")
 		$html_view .= "<td>{$file['type']}</td>\n";
 		$html_view .= "<td>" . human_filesize($file['size']) . "</td>\n";
 		$html_view .= "<td>" . date('d/m/Y h:i:s', $file['lastmod']) . "</td>\n";
-		$html_view .= "<td><span id='file_$count' data-file='/{$file['name']}' onclick='delFile(this.id)' class='btn btn-danger'>delete</span></td>";
+		$html_view .= "<td>";
+		if ($file['type'] != 'dir') {
+			$html_view .= "<span id='file_$count' data-file='/{$file['name']}' onclick='delFile(this.id)' class='btn btn-danger'>delete</span></td>";
+		}
+
 		$html_view .= "</tr>\n";
 		$count++;
 	}
