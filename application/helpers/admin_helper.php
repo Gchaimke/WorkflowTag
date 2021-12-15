@@ -38,7 +38,6 @@ function build_folder_view($dir = "Uploads")
 			}));
 			$html_view .= "<a class='file_manager_folder' href=\"?folder={$file['name']}\"><i class=\"fa fa-folder\"></i> " . basename($file['name']) . "($count)</a>";
 		} else {
-			$html_view .= var_dump($file);
 			$html_view .= "<h2><a target='_blank' href=\"/{$file['name']}\">{$file['type']}</a></h2>";
 		}
 		$html_view .= "</td>\n";
