@@ -109,6 +109,7 @@ class Production extends CI_Controller
         $serial = trim($this->input->post('serial'));
         $data = array(
             'client' => $this->input->post('client'),
+            'client_id' => $this->input->post('client_id'),
             'project' => $project['project'],
             'serial' => $serial,
             'version' => $project['checklist_version'],
@@ -130,13 +131,13 @@ class Production extends CI_Controller
     {
         $result = 'Serial template not set!';
         $project = $this->Projects_model->getProject('', $this->input->post('project'));
-        $client = $this->input->post('client');
         $date = $this->input->post('date');
         $serials = $this->build_serials($project['project'], $date, $this->input->post('count'));
         if ($serials) {
             foreach ($serials as $serial) {
                 $data = array(
-                    'client' => $client,
+                    'client_id' => $this->input->post('client_id'),
+                    'client' => $this->input->post('client'),
                     'project' => $project['project'],
                     'serial' => $serial,
                     'version' => $project['checklist_version'],
@@ -414,7 +415,7 @@ class Production extends CI_Controller
                 $this->Production_model->batchEditChecklist($data);
             }
             echo 'Checklists saved successfully!', $ids;
-            $log_label = "Batch " . $this->input->post('project') . " " . date("d_m")." (".count($ids_arr).")";
+            $log_label = "Batch " . $this->input->post('project') . " " . date("d_m") . " (" . count($ids_arr) . ")";
             $this->Users_model->update_user_log($ids, $log_label, $this->input->post('client_id'));
             //$this->edit_batch($ids, $message_display);
         }

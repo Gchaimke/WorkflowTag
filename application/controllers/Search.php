@@ -65,7 +65,7 @@ class Search extends CI_Controller
                     $html .= "<td>NOTE</td>";
                     $html .= "<td><a href='/production/edit_note/{$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
                 }
-                if ($client['id'] != "" && $type == "checklist") {
+                if (isset($client['id']) && $client['id'] != "" && $type == "checklist") {
                     $html .= "<td class='text-left'>" . $result['serial'] . "</td>";
                     $html .= "<td>" . urldecode($result["project"]) . "</td>";
                     $html .= "<td>CHECKLIST</td>";

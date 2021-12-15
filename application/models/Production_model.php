@@ -20,6 +20,10 @@ class Production_model extends CI_Model
 				'type' => 'VARCHAR',
 				'constraint' => 30
 			),
+			'client_id' => array(
+				'type' => 'INT',
+				'constraint' => 10
+			),
 			'project' => array(
 				'type' => 'VARCHAR',
 				'constraint' => 60
@@ -74,6 +78,7 @@ class Production_model extends CI_Model
 		$demoChecklist = array(
 			"serial" => 'P001-07-20',
 			"client" => 'Avdor-HLT',
+			"client_id" => '1',
 			"project" => 'Project 1',
 			"data" => '',
 			"progress" => '0',

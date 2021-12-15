@@ -9,6 +9,7 @@ class Projects extends CI_Controller
         parent::__construct();
         // Load model
         $this->load->model('Projects_model');
+        $this->load->model('Users_model');
         $this->load->model('Clients_model');
         if (isset($this->session->userdata['logged_in'])) {
             $this->user = $this->session->userdata['logged_in'];
