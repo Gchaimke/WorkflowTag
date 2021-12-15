@@ -61,7 +61,7 @@ if (isset($this->session->userdata['logged_in'])) {
                         echo "<td>$note->row</td>";
                         echo "<td>$note->fault</td>";
                         echo "<td>$note->action</td>";
-                        echo "<td><a class='btn btn-info' href='/production/edit_checklist/$note->checklist_id?client=$note->client_id'><i class='fa fa-list'></td>";
+                        echo "<td><a class='btn btn-info' href='/production/edit_checklist/$note->checklist_id'><i class='fa fa-list'></td>";
                         echo "<td><a href='/production/edit_note/$note->id' class='btn btn-info'><i class='fa fa-edit'></i></a></td>";
                         echo "<td><button id='$note->id' class='btn btn-danger' onclick='trashNote(this.id)'><i class='fa fa-trash'></i></button></td>";
                         echo "</tr>";

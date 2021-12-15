@@ -233,7 +233,7 @@ class Production extends CI_Controller
                 $data['project'] =  urldecode($project['project']);
                 $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
                 $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
-                $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
+                $data['client'] = $this->Clients_model->get_client_by_id($data['checklist']['client_id']);
                 $data['users'] = $this->users;
                 $data['notes'] = $this->get_qc_notes($id);
                 $this->view_page('production/edit_checklist', '', $data);
@@ -262,7 +262,7 @@ class Production extends CI_Controller
             $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             $data['project'] =  urldecode($project['project']);
             $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
-            $data['client'] = $this->Clients_model->get_client_by_id($_GET['client']);
+            $data['client'] = $this->Clients_model->get_client_by_id($data['checklist']['client_id']);
             $this->view_page('production/edit_batch', '', $data);
         }
     }

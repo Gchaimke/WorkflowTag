@@ -183,15 +183,15 @@ class Users_model extends CI_Model
 		}
 	}
 
-	function update_user_log($checklist_id, $lable, $client_id = "")
+	function update_user_log($checklist_id, $lable)
 	{
 		$user_id = $this->session->userdata['logged_in']['id'];
 		$log = json_decode($this->get_user_log($user_id)['log'], true);
 
 		if (strpos($checklist_id, ":") === false) {
-			$log['checklists'][$lable] = "/production/edit_checklist/$checklist_id?client=$client_id";
+			$log['checklists'][$lable] = "/production/edit_checklist/$checklist_id";
 		} else {
-			$log['checklists'][$lable] = "/production/edit_batch?checklists=$checklist_id&client=$client_id";
+			$log['checklists'][$lable] = "/production/edit_batch?checklists=$checklist_id";
 		}
 		$log['checklists'] = array_unique($log['checklists']);
 		$log['checklists'] = array_slice($log['checklists'], -10);

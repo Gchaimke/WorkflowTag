@@ -31,7 +31,7 @@ if (file_exists($file)) {
 				<ul class="pagination-nav-menu">
 					<a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add_one"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>
 					<a class="btn btn-info" data-bs-toggle="modal" data-bs-target="#add_many"><i class="fas fa-copy"></i> <?= lang('new') ?><?= lang('batch') ?></a>
-					<a id='batchLink' class="btn btn-info" href="/production/edit_batch/?client=<?= $client['id'] ?>&checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
+					<a id='batchLink' class="btn btn-info" href="/production/edit_batch?checklists="><i class="fa fa-tasks"></i> Edit Selected </a>
 				</ul>
 				<?php if (isset($links)) {
 					echo $links;
@@ -89,7 +89,7 @@ if (file_exists($file)) {
 										<div class="div_link" id='<?= $data->id ?>' onclick='showLog("<?= $data->log ?>","<?= $data->serial ?>")'>
 											<?= $data->progress ?>%</div>
 									</td>
-									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>?client=<?= $client['id'] ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
+									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
 									<td><button id='<?= $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?= $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }

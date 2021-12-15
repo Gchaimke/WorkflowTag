@@ -72,7 +72,7 @@ class Search extends CI_Controller
                     if (strpos($result["project"], 'Trash') !== false) {
                         $html .= "<td>No Actions for Trashed items</td>";
                     } else {
-                        $html .= "<td><a href='/production/edit_checklist/{$result["id"]}?client={$client['id']}' class='btn btn-info fa fa-edit'></a></td>";
+                        $html .= "<td><a href='/production/edit_checklist/{$result["id"]}' class='btn btn-info fa fa-edit'></a></td>";
                     }
                 }
 
