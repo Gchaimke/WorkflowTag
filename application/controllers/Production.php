@@ -672,10 +672,20 @@ class Production extends CI_Controller
     //** QC NOTES */
     public function notes()
     {
+        $limit = 20;
         $data = array();
         $data['notes'] = $this->Checklists_notes_model->get_all();
         $data['users'] = $this->users_names;
         $data['clients'] = $this->clients_names;
+        $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
+        if (count($data['notes']) > 0) {
+            $config['base_url'] = base_url() . 'production/notes';
+            $config['total_rows'] = count($data['notes']);
+            $config['per_page'] = $limit;
+            $this->pagination->initialize($config);
+            $data["notes"] = $this->Checklists_notes_model->paginate($start, $limit);
+            $data["links"] = $this->pagination->create_links();
+        }
         $this->view_page('production/notes', $data);
     }
 

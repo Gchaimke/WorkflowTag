@@ -74,7 +74,7 @@ class Checklists_notes_model extends CI_Model
 
     public function get_all()
     {
-        $this->db->order_by('date','DESC');
+        $this->db->order_by('date', 'DESC');
         $query = $this->db->get('checklists_notes');
         return $query->result();
     }
@@ -87,6 +87,16 @@ class Checklists_notes_model extends CI_Model
         } else {
             return $query->result();
         }
+    }
+
+    function paginate($start = 0, $limit = 5)
+    {
+        $this->db->limit($limit, $start);
+        $this->db->order_by('id', 'DESC');
+        $this->db->from('checklists_notes');
+        $query = $this->db->get();
+        $response = $query->result();
+        return $response;
     }
 
     public function insert($data)
