@@ -357,9 +357,10 @@ class Admin extends CI_Controller
 			)
 		);
 		$table_name = 'checklists';
-		echo add_fields_to_table($this,$fields,'checklists')?"Table: $table_name now up to date!":"Table: $table_name is up to date!";
+		echo add_fields_to_table($this, $fields, 'checklists') ? "Table: $table_name now up to date!" : "Table: $table_name is up to date!";
 		echo modify_field_table($this, "projects", "users", "clients") ? "<br>Field now up to date" : "<br>Field is up to date!";
 		echo remove_field_from_table($this, "clients", "users") ? "<br>Field is removed!" : "<br>Field is not exists!";
+		echo $this->Admin_model->add_checklist_client_id();
 	}
 
 	function add_checklist_version()

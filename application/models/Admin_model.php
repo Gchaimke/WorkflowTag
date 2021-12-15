@@ -110,6 +110,30 @@ class Admin_model extends CI_Model
         $this->db->delete($table, array('id' => $id));
     }
 
+    function add_checklist_client_id($table = 'checklists')
+    {
+        $clients = $this->get_clients();
+        foreach ($clients as $name => $id) {
+            $this->db->set('client_id', $id);
+            $this->db->where('client', $name);
+            $this->db->update($table);
+        }
+    }
+
+    function get_clients()
+    {
+        $this->db->select('*');
+        $this->db->from('clients');
+        $this->db->order_by('name');
+        $q = $this->db->get();
+        $response = $q->result_array();
+        $clients = array();
+        foreach ($response as $client) {
+            $clients[$client['name']] = $client['id'];
+        }
+        return $clients;
+    }
+
     function restore_from_trash($data, $table = 'checklists')
     {
         $condition = "serial='{$data['serial']}' and project='Trash {$data['project']}'";
