@@ -67,7 +67,7 @@ if (isset($_GET['client'])) {
         <?php if ($role == 'Assembler') { ?>
           <div class="nav me-md-auto">
             <?php if (isset($project) && $project != '') { ?>
-              <a class="nav-item btn btn-outline-warning text-white" href="/forms?type=rma&client=<?= $_GET['client'] . "&project=" . $project ?>">RMA</a>
+              <a class="nav-item btn btn-outline-warning text-white" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project ?>">RMA</a>
             <?php } ?>
           </div>
         <?php } ?>
