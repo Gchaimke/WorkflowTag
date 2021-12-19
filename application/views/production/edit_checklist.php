@@ -52,7 +52,7 @@ if (isset($this->session->userdata['logged_in'])) {
 			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project ?></b>
 			<b id="project_num" class="navbar-text mobile-hide">PN: <?= $project_num ?></b>
 			<b id="project_rev" class="navbar-text mobile-hide">Rev: <?= $revision ?></b>
-			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
+			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
 			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
