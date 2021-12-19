@@ -88,7 +88,7 @@ img#logo_img {
     max-height: 200px;
 }
 
-img.img-thumbnail.checklist-logo {
+.checklist-logo {
     display: none;
 }
 
