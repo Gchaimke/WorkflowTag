@@ -12,6 +12,7 @@
     .checklist-logo {
         flex-basis: 30%;
         opacity: 0.7;
+        display: block;
     }
 
 
