@@ -231,6 +231,7 @@ class Production extends CI_Controller
             $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             if (isset($project['project'])) {
                 $data['project'] =  urldecode($project['project']);
+                $data['project_num'] =  urldecode($project['project_num']);
                 $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
                 $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);
                 $data['client'] = $this->Clients_model->get_client_by_id($data['checklist']['client_id']);

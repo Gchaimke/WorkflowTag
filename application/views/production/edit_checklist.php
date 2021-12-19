@@ -7,8 +7,6 @@ if (isset($this->session->userdata['logged_in'])) {
 		$pictures = $checklist['pictures'];
 	}
 	$id = $checklist['id'];
-	$project = $checklist['project'];
-	$checklist_client = $checklist['client'];
 	$serial = $checklist['serial'];
 	$checklist_data = $checklist['data'];
 	$log = $checklist['log'];
@@ -22,11 +20,19 @@ if (isset($this->session->userdata['logged_in'])) {
 	$client_name = $client['name'];
 	$pictures = 0;
 
-	$file = "./Uploads/" . $checklist_client . "/" . $project . "/assembly.pdf";
+	$file = "./Uploads/" . $client_name . "/" . $project . "/assembly.pdf";
 	if (file_exists($file)) {
 		$assembly = true;
 	} else {
 		$assembly = false;
+	}
+
+	$revision = "";
+	if (isset($checklist['version'])) {
+		$re = '/rev_(?<rev>\d+)\.txt/m';
+		preg_match($re, $checklist['version'], $rev_arr,);
+
+		$revision = $rev_arr['rev'];
 	}
 } else {
 	exit();
@@ -43,7 +49,10 @@ if (isset($this->session->userdata['logged_in'])) {
 	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
 		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
 		<div class="checklist-data">
-			<b id="project" class="navbar-text mobile-hide" href="#">Project: <?= $project ?></b>
+			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project ?></b>
+			<b id="project_num" class="navbar-text mobile-hide">PN: <?= $project_num ?></b>
+			<b id="project_rev" class="navbar-text mobile-hide">Rev: <?= $revision ?></b>
+			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
 			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
@@ -106,7 +115,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		</center>
 		<div id="photo-messages" class='alert hidden' role='alert'></div>
 		<?php
-		$working_dir = 'Uploads/' . $checklist_client . '/' . $project . '/' . $serial . '/';
+		$working_dir = 'Uploads/' . $client_name . '/' . $project . '/' . $serial . '/';
 		echo "<script>
 				var photoCount=0;
 				var log ='$log';

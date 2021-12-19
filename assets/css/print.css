@@ -10,7 +10,11 @@
 
     .checklist-data b {
         flex-basis: 250px;
-      }
+    }
+
+    #project_assembly {
+        display: initial !important;
+    }
 
     .row {
         break-inside: avoid;
@@ -24,7 +28,7 @@
         min-height: inherit;
     }
 
-    .print-hide, .open_menu, .offcanvas {
+    .print-hide, .open_menu, .offcanvas, #project_rev {
         display: none;
     }
 
