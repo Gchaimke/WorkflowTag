@@ -21,7 +21,7 @@
         flex-basis: 100%;
     }
 
-    #project_assembly {
+    #project_assembly, #project_num {
         display: initial !important;
     }
 
@@ -37,7 +37,7 @@
         min-height: inherit;
     }
 
-    .print-hide, .open_menu, .offcanvas, #project_rev {
+    .print-hide, .open_menu, .offcanvas {
         display: none;
     }
 
