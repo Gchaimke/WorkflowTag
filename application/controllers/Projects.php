@@ -84,7 +84,9 @@ class Projects extends CI_Controller
                 'restart_serial' => $this->input->post('restart_serial'),
                 'scans' => $this->input->post('scans')
             );
-            file_put_contents($this->input->post('checklist_version'), $this->input->post('data'));
+            if ($this->input->post('checklist_version') != "") {
+                file_put_contents($this->input->post('checklist_version'), $this->input->post('data'));
+            }
             $data['message_display'] = $this->Projects_model->editProject($sql);
             $data['message_display'] .= ' Project edited Successfully !';
         }

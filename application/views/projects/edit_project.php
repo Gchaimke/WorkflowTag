@@ -35,61 +35,71 @@ if (file_exists($file)) {
 
 			if (isset($project)) {	?>
 				<?php echo form_open("projects/edit_project/{$project['id']}", 'class=user-create'); ?>
-				<div class="form-group">
-					<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
-					<div class="input-group">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('Serial template') ?></div>
+				<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
+				<div class="row">
+					<div class="col-md my-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><?= lang('Serial template') ?></div>
+							</div>
+							<input type="text" name="template" value="<?= $project['template'] ?>" class="form-control">
 						</div>
-						<input type="text" name="template" value="<?= $project['template'] ?>" class="form-control">
 					</div>
-					<div class="input-group my-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text">
-								<input type="checkbox" name="restart_serial" <?= $project['restart_serial'] != null ? "checked" : "" ?>>
-								<div class="mx-2"><?= lang('Serial number restarts every month') ?></div>
+					<div class="col-md my-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" name="restart_serial" <?= $project['restart_serial'] != null ? "checked" : "" ?>>
+									<div class="mx-2"><?= lang('Serial number restarts every month') ?></div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="input-group my-3">
-					<div class="input-group-prepend">
-						<div class="input-group-text"><?= lang('project_num') ?></div>
-					</div>
-					<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
-				</div>
-				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-				<div class="btn btn-info mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
-				<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
-				<hr>
-				<div class="form-group">
-					<div class="input-group mb-2">
+				<div class="row">
+					<div class="input-group col-md my-3">
 						<div class="input-group-prepend">
-							<div class="input-group-text">Create <?= lang('checklist_version') ?></div>
+							<div class="input-group-text"><?= lang('project_num') ?></div>
 						</div>
-						<input class="form-control col-3 new_version" type="number" step="0.01">
-						<div class="btn btn-outline-success create_checklist_version">Create</div>
+						<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+					</div>
+					<div class="input-group col-md my-3">
+						<div class="btn btn-info not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
+						<a class="btn btn-warning mx-3  <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+						<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
 					</div>
 				</div>
-				<div class="form-group">
-					<div class="input-group mb-2">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('checklist_version') ?></div>
-						</div>
-						<select class="form-control col-4 checklist_version" name='checklist_version'>
-							<option>Select Version</option>
-							<?php if (isset($checklists)) {
-								foreach ($checklists as $checklist) {
-									if ($project['checklist_version'] == $checklist) {
-										echo "<option selected>$checklist</option>";
-									} else {
-										echo "<option>$checklist</option>";
+				<div class="row my-3">
+					<div class="form-group col-md">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><?= lang('checklist_version') ?></div>
+							</div>
+							<select class="form-select col-4 checklist_version" name='checklist_version'>
+								<option value="">Select Version</option>
+								<?php if (isset($checklists)) {
+									foreach ($checklists as $checklist) {
+										if ($project['checklist_version'] == $checklist) {
+											echo "<option selected>$checklist</option>";
+										} else {
+											echo "<option>$checklist</option>";
+										}
 									}
 								}
-							}
-							?>
-						</select>
+								?>
+							</select>
+						</div>
 					</div>
+					<div class="form-group col-md">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text">Create new <?= lang('checklist_version') ?></div>
+							</div>
+							<input class="form-control col-3 new_version" type="number">
+							<div class="btn btn-outline-success create_checklist_version">Create</div>
+						</div>
+					</div>
+
 				</div>
 				<div class="form-group">
 
@@ -118,7 +128,7 @@ if (file_exists($file)) {
 		}).done(function(o) {
 			console.log('new version created');
 			console.log(o);
-			// $('.submit').click();
+			location.reload();
 		});
 	})
 
