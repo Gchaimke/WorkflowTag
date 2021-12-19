@@ -6,10 +6,18 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
+        flex-basis: 65%;
     }
 
+    .checklist-logo {
+        flex-basis: 30%;
+        opacity: 0.7;
+    }
+
+
+
     .checklist-data b {
-        flex-basis: 315px;
+        flex-basis: 100%;
     }
 
     #project_assembly {
@@ -55,13 +63,6 @@
 
     .mobile-hide {
         display: block;
-    }
-
-    img.img-thumbnail.checklist-logo {
-        max-width: 300px;
-        max-height: 150px;
-        display: block;
-        opacity: 0.5;
     }
 
     b#date {

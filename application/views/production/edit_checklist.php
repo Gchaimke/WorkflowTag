@@ -47,7 +47,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 	</div>
 	<nav id="navbar" class="navbar checklist navbar-light bg-light px-3">
-		<?= "<img class='img-thumbnail checklist-logo' src='$logo'>" ?>
+		<div class="checklist-logo">
+			<?= "<img class='img-thumbnail' src='$logo'>" ?>
+		</div>
 		<div class="checklist-data">
 			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project ?></b>
 			<b id="project_num" class="navbar-text mobile-hide">PN: <?= $project_num ?></b>
