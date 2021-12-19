@@ -20,6 +20,11 @@ class Projects_model extends CI_Model
 				'type' => 'VARCHAR',
 				'constraint' => 100
 			),
+			'project_num' => array(
+				'type' => 'VARCHAR',
+				'constraint' => 100,
+				'null' => TRUE,
+			),
 			'data' => array(
 				'type' => 'TEXT'
 			),
