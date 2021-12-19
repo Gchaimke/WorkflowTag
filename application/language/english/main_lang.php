@@ -181,5 +181,9 @@ $lang['Select Project'] = 'Select Project';
 $lang['Select Client'] = 'Select Client';
 $lang['Serial template'] = 'Serial template';
 $lang['Serial number restarts every month'] = 'Serial number restarts every month';
+/**
+ * Projects UI
+ */
+$lang['project_num'] = 'Project Number';
 
 

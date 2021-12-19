@@ -36,7 +36,7 @@ if (file_exists($file)) {
 			if (isset($project)) {	?>
 				<?php echo form_open("projects/edit_project/{$project['id']}", 'class=user-create'); ?>
 				<div class="form-group">
-				<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
+					<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 					<div class="input-group">
 						<div class="input-group-prepend">
 							<div class="input-group-text"><?= lang('Serial template') ?></div>
@@ -51,6 +51,12 @@ if (file_exists($file)) {
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="input-group my-3">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><?= lang('project_num') ?></div>
+					</div>
+					<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
 				</div>
 				<a class="btn btn-warning <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 				<div class="btn btn-info mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
@@ -71,7 +77,7 @@ if (file_exists($file)) {
 							<div class="input-group-text"><?= lang('checklist_version') ?></div>
 						</div>
 						<select class="form-control col-4 checklist_version" name='checklist_version'>
-						<option>Select Version</option>
+							<option>Select Version</option>
 							<?php if (isset($checklists)) {
 								foreach ($checklists as $checklist) {
 									if ($project['checklist_version'] == $checklist) {

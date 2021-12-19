@@ -39,6 +39,7 @@ class Projects extends CI_Controller
 
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean|is_unique[projects.project]');
+        $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
         $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
         $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
         $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
@@ -47,6 +48,7 @@ class Projects extends CI_Controller
             $sql = array(
                 'client' => $data['client']['name'],
                 'project' => $this->input->post('project'),
+                'project_num' => $this->input->post('project_num'),
                 'data' => $this->input->post('data'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),
@@ -71,10 +73,12 @@ class Projects extends CI_Controller
         $data['project'] =  $this->Projects_model->getProject($id);
         // Check validation for user input in form
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
+        $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
         if ($id != '' && $this->form_validation->run()) {
             $sql = array(
                 'id' => $id,
                 'data' => $this->input->post('data'),
+                'project_num' => $this->input->post('project_num'),
                 'checklist_version' => $this->input->post('checklist_version'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),

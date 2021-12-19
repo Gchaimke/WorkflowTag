@@ -50,6 +50,12 @@ if (isset($this->session->userdata['logged_in'])) {
 					</div>
 				</div>
 			</div>
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<div class="input-group-text"><?= lang('project_num') ?></div>
+				</div>
+				<input type="text" class="form-control" name='project_num'>
+			</div>
 			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
 			<?php echo form_close(); ?>
 		</center>

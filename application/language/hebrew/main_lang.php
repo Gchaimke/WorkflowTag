@@ -185,3 +185,8 @@ $lang['Select Client'] = 'בחר לקוח';
 $lang['Serial template'] = 'סגנון מספ סריאלי';
 $lang['Serial number restarts every month'] = 'מספר סריאלי מתחיל מחדש כל חודש';
 
+/**
+ * Projects UI
+ */
+$lang['project_num'] = 'Project Number';
+

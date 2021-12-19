@@ -33,7 +33,12 @@ if (isset($this->session->userdata['logged_in'])) {
 									foreach ($client['projects'] as $project) : ?>
 										<div class="row">
 											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary text-nowrap col mb-2'>
-												<?= $project['project'] ?></a>
+												<?php
+												echo $project['project'];
+												if ($project['project_num']) {
+													echo " ({$project['project_num']})";
+												} ?>
+											</a>
 											<?php if ($user_role == "Admin") : ?>
 												<a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary col-2 mb-2 mx-1'>
 													<i class='fa fa-edit'></i></a>
