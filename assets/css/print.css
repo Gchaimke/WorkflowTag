@@ -2,14 +2,14 @@
 
     .checklist-data {
         display: flex;
-        width: 45%;
+        width: 50%;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: flex-start;
     }
 
     .checklist-data b {
-        flex-basis: 250px;
+        flex-basis: 315px;
     }
 
     #project_assembly {
