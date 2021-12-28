@@ -95,14 +95,14 @@ function toggleQc(id, qc_name) {
     updateProgress();
 }
 
-function selectOne(id, name) {
-    if (name != '') {
-        chArray[id] = name;
-    } else {
-        chArray[id] = '';
-    }
-    updateProgress();
-}
+// function selectOne(id, name) {
+//     if (name != '') {
+//         chArray[id] = name;
+//     } else {
+//         chArray[id] = '';
+//     }
+//     updateProgress();
+// }
 
 $("input:checkbox.verify").click(function (e) {
     toggleOne(this.id);
