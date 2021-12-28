@@ -170,7 +170,8 @@ class Production extends CI_Controller
         if (isset($serial_project['template']) &&  $serial_project['template'] != "") {
             $serial = $serial_project['template']; //Get serial template
             $prev_month = substr($last_serial, strpos($serial, 'm'), substr_count($serial, 'm'));
-            if ($serial_project["restart_serial"] != null && $prev_month !=  $month) {
+            $prev_year = substr($last_serial, strpos($serial, 'y'), substr_count($serial, 'y'));
+            if (($serial_project["restart_serial"] != null && $prev_month !=  $month) || $year != $prev_year) {
                 $last_serial = "00000000000000000";
             }
             $serial = str_replace("yy", $year, $serial); //add year
