@@ -3,6 +3,7 @@ if (isset($this->session->userdata['logged_in'])) {
 	$username = ($this->session->userdata['logged_in']['name']);
 	$user_id = ($this->session->userdata['logged_in']['id']);
 	$role = ($this->session->userdata['logged_in']['role']);
+
 	if ($checklist['pictures'] != '') {
 		$pictures = $checklist['pictures'];
 	}
@@ -34,10 +35,15 @@ if (isset($this->session->userdata['logged_in'])) {
 
 		$revision = $rev_arr['rev'];
 	}
+
+	$working_dir = 'Uploads/' . $client_name . '/' . $project . '/' . $serial . '/';
 } else {
 	exit();
 }
 ?>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
+<script src="<?php echo base_url('assets/js/jQUpload/jquery.fileupload.js'); ?>"></script>
 <link rel="stylesheet" href="<?= base_url('assets/css/checklist_create.css?' . filemtime('assets/css/checklist_create.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <main role="main" class="container ltr">
@@ -69,6 +75,7 @@ if (isset($this->session->userdata['logged_in'])) {
 					<button class="btn btn-warning me-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
 				<?php } ?>
 				<a class="btn btn-info me-3" href="#scansTable"><i class="fa fa-list"></i></a>
+				<button class="btn btn-dark mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fas fa-paperclip"></i></button>
 				<button id="snap1" class="btn btn-info" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
 				<?= form_open('production/save_checklist/' . $id, 'id=ajax-form', 'class=saveData'); ?>
 				<input id='input_data' type='hidden' name='data' value="<?= $checklist_data ?>">
@@ -110,13 +117,19 @@ if (isset($this->session->userdata['logged_in'])) {
 		</div>
 	</div>
 
+	<div class="row m-3">
+		<center>
+			<h3>System Files</h3>
+		</center>
+		<?php include("application/views/storage/view_files.php") ?>
+	</div>
+
 	<div id="photo-stock" class="container">
 		<center>
-			<h2>System Photos</h2>
+			<h3>System Photos</h3>
 		</center>
 		<div id="photo-messages" class='alert hidden' role='alert'></div>
 		<?php
-		$working_dir = 'Uploads/' . $client_name . '/' . $project . '/' . $serial . '/';
 		echo "<script>
 				var photoCount=0;
 				var log ='$log';
@@ -128,28 +141,12 @@ if (isset($this->session->userdata['logged_in'])) {
 				var working_dir='$working_dir';
 				var progress='$progress';
             </script>";  //pass PHP data to JS
-		if (file_exists("./$working_dir")) {
-			if ($handle = opendir("./$working_dir")) {
-				while (false !== ($entry = readdir($handle))) {
-					if (
-						$entry != "." && $entry != ".." &&
-						(pathinfo($entry, PATHINFO_EXTENSION) == 'jpeg' || pathinfo($entry, PATHINFO_EXTENSION) == 'png') &&
-						PATHINFO_FILENAME != '' &&
-						pathinfo($entry, PATHINFO_FILENAME) != 'logo'
-					) {
-						echo '<span id="' . pathinfo($entry, PATHINFO_FILENAME) .
-							'" onclick="delPhoto(this.id)" class="btn btn-danger delete-photo "><li class=" far fa-trash-alt"></li> ' .
-							pathinfo($entry, PATHINFO_FILENAME) . '</span><img id="' . pathinfo($entry, PATHINFO_FILENAME) .
-							'" src="/' . $working_dir . $entry . '" class="respondCanvas" >';
-						echo '<script>photoCount++</script>';
-					}
-				}
-				closedir($handle);
-			}
-		}
+		include("application/views/storage/view_pictures.php");
+
 		?>
 	</div>
-	<input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>
+	<input id="browse" type="file" onchange="snapPhoto()" name="photos" hidden>
+	<input id="upload" type="file" name="files" data-url="/storage/save_file/<?= $id ?>?type=checklist" hidden />
 	<div id="preview"></div>
 
 	<div id="qc-checklist-note" style="display:none">

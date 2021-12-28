@@ -32,6 +32,11 @@ if (isset($client) && isset($client['id'])) {
 <div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?= $client_id ?>&id=<?= $form->id ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $client_id . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> RMA " hidden></nav>
 <main role="main">
+      <div class="upload_photo_spinner text-center" style="display: none;">
+            <div class="spinner-border" role="status">
+                  <span class="visually-hidden">Loading...</span>
+            </div>
+      </div>
       <div class="jumbotron">
             <div class="container">
                   <center>
@@ -40,6 +45,7 @@ if (isset($client) && isset($client['id'])) {
             </div>
       </div>
       <div class="control_btn_container  d-print-none">
+            <div class="btn btn-dark mx-3 my-3 not-print" onclick="document.getElementById('upload').click();"><i class="fas fa-paperclip"></i></div>
             <button id="snap1" class="btn btn-info mx-3" onclick="document.getElementById('browse').click();"><i class="fa fa-camera"></i></button>
             <button id="save" type='submit' class="btn btn-success navbar-btn mx-3" value="Save" onclick="document.getElementById('update_btn').click();"><i class="fa fa-save"></i></button>
       </div>
@@ -203,33 +209,10 @@ if (isset($client) && isset($client['id'])) {
                   </div>
             </div>
             <div class="row m-3">
-                  <h3>Logs</h3>
-                  <?PHP
-                  if (file_exists("./$working_dir")) {
-                        if ($handle = opendir("./$working_dir")) {
-                              $count = 1;
-                              while (false !== ($entry = readdir($handle))) {
-                                    $ext = pathinfo($entry, PATHINFO_EXTENSION);
-                                    $allowed_ext = ["txt", "pdf", "csv", "log"];
-                                    if ($entry != "." && $entry != ".." && PATHINFO_FILENAME != '') {
-                                          if (in_array($ext, $allowed_ext)) {
-                                                echo "<div class='m-3'><span id='log_file_$count' onclick='delFile(this.id)'
-                                                            data-file='/$working_dir$entry' class='btn btn-danger delete-file d-print-none'>
-                                                            <i class='fa fa-trash'></i></span>
-                                                            <a target='_blank' href='/$working_dir$entry' class='mx-3' >$entry</a></div>";
-                                          }
-                                    }
-                                    $count++;
-                              }
-                        } else {
-                              echo "Error open dir: $working_dir";
-                        }
-                        closedir($handle);
-                  }
-                  ?>
+                  <h3>Files</h3>
+                  <?php include("application/views/storage/view_files.php") ?>
             </div>
-            <div class="btn btn-info mx-3 not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Log</div>
-            <input id="upload" type="file" name="files" data-url="/forms/save_file/<?= $form->number ?>?client=<?= $form->client ?>&project=<?= $form->project ?>&type=<?= $_GET['type'] ?>" hidden />
+            <input id="upload" type="file" name="files" data-url="/storage/save_file/<?= $form->id ?>?type=<?= $_GET['type'] ?>" hidden />
             <hr>
             <div class="row m-3">
                   <h2>QA</h2>
@@ -324,21 +307,7 @@ if (isset($client) && isset($client['id'])) {
                   var client='" . $form->client . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS
-            if (file_exists("./$working_dir")) {
-                  if ($handle = opendir("./$working_dir")) {
-                        while (false !== ($entry = readdir($handle))) {
-                              $ext = pathinfo($entry, PATHINFO_EXTENSION);
-                              $file_name = pathinfo($entry, PATHINFO_FILENAME);
-                              if ($entry != "." && $entry != ".." && ($ext == 'jpeg' || $ext == 'png') && PATHINFO_FILENAME != '') {
-                                    echo "<span id='$file_name' onclick='delPhoto(this.id)' class='btn btn-danger delete-photo'>
-                                    <i class='fa fa-trash'></i> $file_name</span>
-                                    <img id='$file_name' src='/$working_dir$entry' class='respondCanvas' >";
-                                    echo '<script>photoCount++</script>';
-                              }
-                        }
-                        closedir($handle);
-                  }
-            }
+            include("application/views/storage/view_pictures.php");
             ?>
       </div>
       <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>
@@ -361,30 +330,4 @@ if (isset($client) && isset($client['id'])) {
             $("#pictures_count").val(photoCount);
       });
       document.title = 'RMA <?= $form->number ?>';
-
-      //Uploader for scripts and tickets
-      if ($("#upload").length) {
-            $("#upload").fileupload({
-                  autoUpload: true,
-                  add: function(e, data) {
-                        data.submit();
-                  },
-                  progress: function() {
-                        //$("#upload_spinner").css("display", "inherit");
-                  },
-                  done: function(e, data) {
-                        if (data.result.includes("error")) {
-                              if (data.result.includes("larger")) {
-                                    alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
-                              } else if (data.result.includes("filetype")) {
-                                    alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג TXT!");
-                              } else {
-                                    alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
-                              }
-                        }
-                        $('#save').click();
-                        location.reload();
-                  }
-            });
-      }
 </script>

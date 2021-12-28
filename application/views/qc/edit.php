@@ -105,21 +105,8 @@ if (isset($client) && isset($client['id'])) {
                   var client='" . $form->client . "';
                   var working_dir='$working_dir';
             </script>";  //pass PHP data to JS
-            if (file_exists("./$working_dir")) {
-                  if ($handle = opendir("./$working_dir")) {
-                        while (false !== ($entry = readdir($handle))) {
-                              $ext = pathinfo($entry, PATHINFO_EXTENSION);
-                              $file_name = pathinfo($entry, PATHINFO_FILENAME);
-                              if ($entry != "." && $entry != ".." && ($ext == 'jpeg' || $ext == 'png') && PATHINFO_FILENAME != '') {
-                                    echo "<span id='$file_name' onclick='delPhoto(this.id)' class='btn btn-danger delete-photo'>
-                                    <i class='fa fa-trash'></i> $file_name</span>
-                                    <img id='$file_name' src='/$working_dir$entry' class='respondCanvas' >";
-                                    echo '<script>photoCount++</script>';
-                              }
-                        }
-                        closedir($handle);
-                  }
-            }
+		include("application/views/storage/view_pictures.php");
+
             ?>
       </div>
       <input id="browse" style="display:none;" type="file" onchange="snapPhoto()" name="photos" multiple>

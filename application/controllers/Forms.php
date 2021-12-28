@@ -133,43 +133,4 @@ class Forms extends CI_Controller
         echo $this->Forms_model->update($sql);
     }
 
-    public function save_file($id = 0)
-    {
-        $upload_folder = 'Uploads/' . $_GET['client'] . "/" . $_GET['project'] . "/" . $_GET['type'] . "/" . $id;
-        if (!file_exists($upload_folder)) {
-            mkdir($upload_folder, 0770, true);
-        }
-        $count = 0;
-        $count += count(glob($upload_folder . "/*.txt"));
-        $count += count(glob($upload_folder . "/*.pdf"));
-        $count += count(glob($upload_folder . "/*.csv"));
-        $count += count(glob($upload_folder . "/*.log"));
-        $count++;
-        $config = array(
-            'upload_path' => $upload_folder,
-            'overwrite' => TRUE,
-            'allowed_types' => 'txt|pdf|csv|log',
-            'max_size' => "2048",
-            'file_name' => 'log_' . $count,
-        );
-        $this->load->library('upload', $config);
-        if ($this->upload->do_upload('files')) {
-            $data = array('upload_data' => $this->upload->data());
-            echo  $data['upload_data']["file_name"];
-        } else {
-            $error = "error " . $this->upload->display_errors();
-            echo $error;
-        }
-    }
-
-    public function delete_file()
-    {
-        $file = $this->input->post('file');
-        // Use unlink() function to delete a file  
-        if (!unlink($_SERVER["DOCUMENT_ROOT"] . $file)) {
-            echo ($_SERVER["DOCUMENT_ROOT"] . $file . " cannot be deleted due to an error");
-        } else {
-            echo ($_SERVER["DOCUMENT_ROOT"] . $file . " has been deleted");
-        }
-    }
 }

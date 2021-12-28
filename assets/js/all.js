@@ -218,11 +218,37 @@ function delPhoto(id) {
     }
 }
 
+//Uploader for scripts and tickets
+if ($("#upload").length) {
+    $("#upload").fileupload({
+        autoUpload: true,
+        add: function (e, data) {
+            data.submit();
+        },
+        progress: function () {
+            $('.upload_photo_spinner').show();
+        },
+        done: function (e, data) {
+            if (data.result.includes("error")) {
+                if (data.result.includes("larger")) {
+                    alert("אין אפשרות להעלות קובץ גדול מ-2מגה!");
+                } else if (data.result.includes("filetype")) {
+                    alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג txt|pdf|csv|log!");
+                } else {
+                    alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+                }
+            }
+            $('#save').click();
+            location.reload();
+        }
+    });
+}
+
 function delFile(id) {
     var file = $("#" + id).attr('data-file');
     var r = confirm("Delete file " + file + "?");
     if (r == true) {
-        $.post("/forms/delete_file", {
+        $.post("/storage/delete_file", {
             file: file
         }).done(function (out) {
             $('#form-messages').addClass('alert-success');
