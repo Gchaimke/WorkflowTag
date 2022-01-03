@@ -204,9 +204,9 @@ class Production_model extends CI_Model
 			$q = $this->db->get();
 			if ($q->num_rows() > 0) {
 				$response = $q->result_array();
-				return $response[0]['serial'];
+				return $response[0];
 			} else {
-				return '00000000000000000';
+				return null;
 			}
 		}
 	}

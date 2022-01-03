@@ -3,9 +3,11 @@ if (isset($this->session->userdata['logged_in'])) {
     $user_id = $this->session->userdata['logged_in']['id'];
 }
 $this->load->model('Users_model');
-$user_log = $this->Users_model->get_user_log($user_id);
-
-
+if (isset($user_id)) {
+    $user_log = $this->Users_model->get_user_log($user_id);
+}else{
+    header("location: /users/login");
+}
 ?>
 <div>
     <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="left_menu" aria-labelledby="offcanvasScrollingLabel">

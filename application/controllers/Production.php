@@ -163,22 +163,23 @@ class Production extends CI_Controller
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
         $xcount_arr = array("xxxx", "xxx", "xx");
         $serial_project = $this->Projects_model->getProject('', $project);
-        $last_serial = $this->Production_model->getLastChecklist($project);
+        $last_system = $this->Production_model->getLastChecklist($project);
         $month = date('m', strtotime($date));
         $year = date('y', strtotime($date));
         $week = date('W', strtotime($date));
         if (isset($serial_project['template']) &&  $serial_project['template'] != "") {
             $serial = $serial_project['template']; //Get serial template
-            $prev_month = substr($last_serial, strpos($serial, 'm'), substr_count($serial, 'm'));
-            $prev_year = substr($last_serial, strpos($serial, 'y'), substr_count($serial, 'y'));
+            $prev_month = substr($last_system['serial'], strpos($serial, 'm'), substr_count($serial, 'm'));
+            $prev_year = date('y', strtotime($last_system['date']));
+            // admin_log("{$year} != {$prev_year}", 1, "Chaim");
             if (($serial_project["restart_serial"] != null && $prev_month !=  $month) || $year != $prev_year) {
-                $last_serial = "00000000000000000";
+                $last_system['serial'] = "00000000000000000";
             }
             $serial = str_replace("yy", $year, $serial); //add year
             $serial = str_replace("mm", $month, $serial); //add month with zero
             $serial = str_replace("dm", $dfend_month[$month], $serial); //add month from dfend array
             $serial = str_replace("ww", $week, $serial); //add week number
-            $serial_end = substr($last_serial, strpos($serial, 'x'), substr_count($serial, 'x')) + 0; // false = 00000000000000000
+            $serial_end = substr($last_system['serial'], strpos($serial, 'x'), substr_count($serial, 'x')) + 0; // false = 00000000000000000
             for ($i = 1; $i <= $count; $i++) {
                 $serial_end++;
                 $zero_count = $this->zero_count(substr_count($serial, 'x'), $serial_end);
