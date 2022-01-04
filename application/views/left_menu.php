@@ -6,7 +6,7 @@ $this->load->model('Users_model');
 if (isset($user_id)) {
     $user_log = $this->Users_model->get_user_log($user_id);
 }else{
-    header("location: /users/login");
+    $user_log = "";
 }
 ?>
 <div>
