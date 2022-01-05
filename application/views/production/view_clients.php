@@ -32,7 +32,7 @@ if (isset($this->session->userdata['logged_in'])) {
 								<?php if ($client['status'] == 1) :
 									foreach ($client['projects'] as $project) : ?>
 										<div class="row">
-											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary text-nowrap col mb-2'>
+											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary col mb-2'>
 												<?php
 												echo $project['project'];
 												if ($project['project_num']) {

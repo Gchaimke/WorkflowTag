@@ -28,7 +28,7 @@ if (isset($client) && isset($client['id'])) {
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.fileupload.js'); ?>"></script>
 <link rel="stylesheet" href="<?= base_url('assets/css/print.css?' . filemtime('assets/css/print.css')); ?>">
 <link rel="stylesheet" href="<?= base_url('assets/css/rma.css?' . filemtime('assets/css/rma.css')); ?>">
-<?= "<img class='img-thumbnail checklist-logo' src='/assets/img/logo.png'>" ?>
+<img class='img-thumbnail forms-logo' src='/assets/img/logo.png'>
 <div id="form-messages" class='alert hidden' data-url="/forms/edit?type=rma&client=<?= $client_id ?>&id=<?= $form->id ?>" role='alert'></div>
 <nav id='nav_main_category_data' data-url="/forms?type=rma&client=<?= $client_id . "&project=" . $form->project ?>" data-url-name="<?= $form->project ?> RMA " hidden></nav>
 <main role="main">
@@ -86,39 +86,41 @@ if (isset($client) && isset($client['id'])) {
                   </div>
             </div>
             <hr>
+            <h2>Receive</h2>
             <div class="row m-3">
-                  <h2>Receive</h2>
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="package" id="package1" value="1" <?= $form->package == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="package1">Package picture</label>
+                  <div class="col m-1 bg-light border border-primary">
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="package" id="package1" value="1" <?= $form->package == 1 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="package1">Package picture</label>
+                        </div>
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="package" id="package2" value="0" <?= $form->package == 0 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="package2">No package</label>
+                        </div>
                   </div>
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="package" id="package2" value="0" <?= $form->package == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="package2">No package</label>
+                  <div class="col m-1 bg-light border border-primary ">
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="accessories" id="accessories1" value="1" <?= $form->accessories == 1 ? "checked" : "" ?>>
+                              <label class="form-check-label text-nowrap" for="accessories1">Accessories pictures</label>
+                        </div>
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0" <?= $form->accessories == 0 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="accessories2">No accessories</label>
+                        </div>
                   </div>
-            </div>
-            <div class="row m-3">
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="accessories" id="accessories1" value="1" <?= $form->accessories == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label text-nowrap" for="accessories1">Accessories pictures</label>
-                  </div>
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="accessories" id="accessories2" value="0" <?= $form->accessories == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="accessories2">No accessories</label>
-                  </div>
-            </div>
-            <div class="row m-3">
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="warranty" id="warranty1" value="2" <?= $form->warranty == 2 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="warranty1">With warranty</label>
-                  </div>
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="warranty" id="warranty2" value="1" <?= $form->warranty == 1 ? "checked" : "" ?>>
-                        <label class="form-check-label" for="warranty2">No warranty</label>
-                  </div>
-                  <div class="form-check form-check-inline col-md-3">
-                        <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0" <?= $form->warranty == 0 ? "checked" : "" ?>>
-                        <label class="form-check-label text-nowrap" for="warranty3">Warranty not defined</label>
+                  <div class="col m-1 bg-light border border-primary">
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty1" value="2" <?= $form->warranty == 2 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="warranty1">With warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline p-md-4">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty2" value="1" <?= $form->warranty == 1 ? "checked" : "" ?>>
+                              <label class="form-check-label" for="warranty2">No warranty</label>
+                        </div>
+                        <div class="form-check form-check-inline px-md-4">
+                              <input class="form-check-input" type="radio" name="warranty" id="warranty3" value="0" <?= $form->warranty == 0 ? "checked" : "" ?>>
+                              <label class="form-check-label text-nowrap" for="warranty3">Warranty not defined</label>
+                        </div>
                   </div>
             </div>
             <div class="row m-3">

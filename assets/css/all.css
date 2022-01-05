@@ -3,11 +3,6 @@ main {
     min-height: calc(100vh - 100px);
 }
 
-.dropdown-menu[data-bs-popper] {
-    left: auto;
-    right: 0;
-}
-
 .rma {
     background-color: #ffe3b8;
 }
@@ -88,9 +83,10 @@ img#logo_img {
     max-height: 200px;
 }
 
-.checklist-logo {
+.checklist-logo, .forms-logo {
     display: none;
 }
+
 
 a.fa {
     font-weight: 100 !important;
@@ -451,6 +447,11 @@ h2:hover {
 }
 
 @media (min-width: 991.98px) {
+    .dropdown-menu[data-bs-popper] {
+        left: auto;
+        right: 0;
+    }
+
     .pagination-nav {
         position: relative;
     }

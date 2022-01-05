@@ -15,7 +15,13 @@
         display: block;
     }
 
-
+    .forms-logo {
+        width: 100px;
+        opacity: 0.7;
+        margin-left: 35px;
+        position: relative;
+        display: block;
+    }
 
     .checklist-data b {
         flex-basis: 100%;
