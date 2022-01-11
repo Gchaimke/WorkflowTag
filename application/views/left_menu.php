@@ -19,7 +19,7 @@ if (isset($user_id)) {
             <div class="last_checklists">
                 <h2>Last 10 checklists</h2>
                 <?php
-                if ($user_log['log'] != "") {
+                if (isset($user_log['log']) && $user_log['log'] != "") {
                     $checklists = json_decode($user_log['log'], true);
                     $checklists['checklists'] = array_reverse($checklists['checklists']);
                     foreach ($checklists['checklists'] as $key => $checklist) {
