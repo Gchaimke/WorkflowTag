@@ -84,6 +84,7 @@ class Production_model extends CI_Model
 			"progress" => '0',
 			"assembler" => 'User',
 			"qc" => 'Admin',
+			"paka" => 'AS123456',
 			"date" => '2020-04-30',
 			'log' => 'Checklist created'
 		);
@@ -148,11 +149,6 @@ class Production_model extends CI_Model
 	public function batchEditChecklist($data)
 	{
 		$where = "id =" . $data['id'];
-		// $prev_data = $this->getChecklists($data['id'])[0]["data"];
-		// $prev_data_arr = explode(",",$prev_data);
-		// $data_arr = explode(",",$data['data']);
-		// echo print_r($data_arr);
-
 		$data = array(
 			'data' => $data['data'],
 			'version' => $data['version'],
