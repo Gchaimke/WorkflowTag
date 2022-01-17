@@ -40,6 +40,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input type='hidden' name='client' value="<?php echo $client['name'] ?>">
 				<input type='hidden' name='client_id' value="<?php echo $client['id'] ?>">
 				<input type='hidden' name='project' value="<?php echo $project ?>">
+				<input type='hidden' name='paka' value="<?= $checklist['paka'] ?>">
 				<input type='hidden' name='date' value="<?php echo $date ?>">
 				<input id="input_qc" type='hidden' name='qc' value="<?php echo $qc ?>">
 				<input id="input_log" type='hidden' name='log' value="<?php echo $log ?>">

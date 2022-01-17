@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-defined('APP_VERSION')  or define('APP_VERSION', '2.2');
+defined('APP_VERSION')  or define('APP_VERSION', '2.3');
 defined('MAINTAINCE')  or define('MAINTAINCE', FALSE);
 
 /*
