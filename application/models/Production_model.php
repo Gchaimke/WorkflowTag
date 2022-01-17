@@ -159,6 +159,7 @@ class Production_model extends CI_Model
 			'log' => $data['log'],
 			'progress' => $data['progress'],
 			'assembler' => $data['assembler'],
+			'paka' => $data['paka'],
 			'qc' => $data['qc'],
 		);
 		return $this->db->update('checklists', $data, $where);

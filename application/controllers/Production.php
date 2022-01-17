@@ -414,6 +414,7 @@ class Production extends CI_Controller
                     'log' =>  $this->input->post('log'),
                     'progress' => $this->input->post('progress'),
                     'assembler' => $this->input->post('assembler'),
+                    'paka' =>  $this->input->post('paka'),
                     'qc' => $this->input->post('qc')
                 );
                 $this->Production_model->batchEditChecklist($data);

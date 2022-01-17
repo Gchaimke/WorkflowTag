@@ -315,7 +315,6 @@ h2:hover {
     position: absolute;
     border: 1px solid black;
     border-radius: 3px;
-    width: 100px;
     background: white;
     box-shadow: 10px 10px 5px #888888;
 }
@@ -334,7 +333,7 @@ h2:hover {
 
 .context-menu ul li:hover {
     cursor: pointer;
-    background-color: #7fffd4;
+    background-color: #cccccc;
 }
 
 /* Colors */

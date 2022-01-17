@@ -19,6 +19,4 @@ if (isset($working_dir) && file_exists("./$working_dir")) {
         echo "Error open dir: $working_dir";
     }
     closedir($handle);
-}else{
-    echo "var working_dir not set.";
 }

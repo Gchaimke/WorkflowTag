@@ -171,6 +171,17 @@ if (file_exists($file)) {
 </main>
 <script>
 	var client = '<?= $client['name'] ?>';
+	var checklists
+	$(document).ready(function() {
+		let batch = getCookie("batch");
+		if (batch != "") {
+			checklists = batch.split(":").filter(function(value, index, self) {
+				return self.indexOf(value) === index;
+			});
+		} else {
+			checklists = [];
+		}
+	});
 
 	function trashChecklist(id, project, serial) {
 		var r = confirm("Trash checklist " + serial + "?");
@@ -235,21 +246,30 @@ if (file_exists($file)) {
 		}
 	});
 
-	$("#batchLink").on('click', function(e) {
-		let checklists = [];
+	function get_checked() {
 		$('.select_checklist').each(function() {
 			if ($(this).prop('checked')) {
 				checklists.push($(this).attr('id'));
 			}
 		});
+	}
+
+	$("#batchLink").on('click', function(e) {
+		get_checked();
 		if (checklists.length > 0) {
 			let link = $(this).attr('href');
 			link = link + checklists.join(":");
+			setCookie("batch", "", 1);
 			$(this).attr('href', link);
 		} else {
 			event.preventDefault();
 			alert("no checklist selected!");
 		}
+	});
+
+	$(".page-item").on('click', function(e) {
+		get_checked();
+		setCookie("batch", checklists.join(":"), 1);
 	});
 
 	$('.select_all').on('click', function() {
