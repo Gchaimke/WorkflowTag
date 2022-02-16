@@ -76,11 +76,11 @@ class Production extends CI_Controller
         $params = array();
         $config = array();
         $client_id = isset($_GET["client"]) ? $_GET["client"] : null;
-        $project = isset($_GET["project"]) ? $_GET["project"] : null;
+        $project = isset($_GET["project"]) ? $_GET["project"] : "";
         $start = isset($_GET['per_page']) ? $_GET['per_page'] : 0;
         $total_records = $this->Production_model->get_total($project);
         $params['users'] = array_column($this->users, 'name');
-        $params['project'] = $project;
+        $params['project'] =  $this->Projects_model->getProject("", $project);
         $params['client'] = $this->Clients_model->get_client_by_id($client_id);
         $params['client'] = $params['client'] ? $params['client'] : array("name" => "error");
         if (isset($this->Projects_model->getProject('', $project)['template'])) {
@@ -232,7 +232,8 @@ class Production extends CI_Controller
             $project = $this->Projects_model->getProject('', $data['checklist']['project']);
             $data['checklist']['version'] = $data['checklist']['version'] ? $data['checklist']['version'] : $project['checklist_version'];
             if (isset($project['project'])) {
-                $data['project'] =  urldecode($project['project']);
+                $data['project'] = $project;
+                $data['project_name'] =  urldecode($project['project']);
                 $data['project_num'] =  urldecode($project['project_num']);
                 $data['checklist_rows'] = $this->build_checklist($project['project'], $data['checklist']);
                 $data['scans_rows'] = $this->build_scans($project['project'], $data['checklist']['scans']);

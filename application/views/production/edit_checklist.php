@@ -21,11 +21,23 @@ if (isset($this->session->userdata['logged_in'])) {
 	$client_name = $client['name'];
 	$pictures = 0;
 
-	$file = "./Uploads/" . $client_name . "/" . $project . "/assembly.pdf";
+	$file = "./Uploads/" . $client_name . "/" . $project_name . "/assembly.pdf";
 	if (file_exists($file)) {
 		$assembly = true;
 	} else {
 		$assembly = false;
+	}
+
+	$file = "./Uploads/" . $client_name . "/" . $project_name . "/assembly.pdf";
+	$dispaly_file = "hidden";
+	$dispaly_link = "hidden";
+	if ($project['assembly']) {
+		$dispaly_link = "d-none d-xl-inline me-3";
+	} else {
+		if (file_exists($file)) {
+			$dispaly_file = "d-none d-xl-inline me-3";
+		} else {
+		}
 	}
 
 	$revision = "";
@@ -36,7 +48,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		$revision = $rev_arr['rev'];
 	}
 
-	$working_dir = 'Uploads/' . $client_name . '/' . $project . '/' . $serial . '/';
+	$working_dir = 'Uploads/' . $client_name . '/' . $project_name . '/' . $serial . '/';
 } else {
 	exit();
 }
@@ -57,20 +69,19 @@ if (isset($this->session->userdata['logged_in'])) {
 			<?= "<img class='img-thumbnail' src='$logo'>" ?>
 		</div>
 		<div class="checklist-data">
-			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project ?></b>
+			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project_name ?></b>
 			<b id="project_num" class="navbar-text mobile-hide" style="display: none;">PN: <?= $project_num ?></b>
-			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
+			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project_name ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
 			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
-				<?php if ($assembly) { ?>
-					<div class="print-hide">
-						<a class="btn btn-warning d-none d-xl-block me-3" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-					</div>
-				<?php }; ?>
+				<div class="print-hide">
+					<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+					<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				</div>
 				<?php if ($role != 'Assembler') { ?>
 					<button class="btn btn-warning me-3 qc_note_btn"><i class="fas fa-sticky-note"></i></button>
 				<?php } ?>
@@ -86,7 +97,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				<input type='hidden' name='serial' value="<?= $serial ?>">
 				<input type='hidden' name='client' value="<?= $client_name ?>">
 				<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
-				<input type='hidden' name='project' value="<?= $project ?>">
+				<input type='hidden' name='project' value="<?= $project_name ?>">
 				<input type='hidden' name='paka' value="<?= $checklist['paka'] ?>">
 				<input type='hidden' name='logo' value="<?= $logo ?>">
 				<input type='hidden' name='date' value="<?= $date ?>">
@@ -157,7 +168,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<input type="hidden" name="checklist_sn" value="<?= $serial ?>" />
 		<input type="hidden" name="qc_id" value="<?= $user_id ?>" />
 		<input type="hidden" name="client_id" value="<?= $client['id'] ?>" />
-		<input type="hidden" name="project" value="<?= $project ?>" />
+		<input type="hidden" name="project" value="<?= $project_name ?>" />
 
 		<div class="row mb-3">
 			<div class="col">

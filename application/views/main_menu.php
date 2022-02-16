@@ -10,7 +10,7 @@ if (isset($this->session->userdata['logged_in'])) {
 }
 
 if (isset($_GET['project'])) {
-  $project = isset($_GET['project']) ? $_GET['project'] : $project;
+  $project_name = isset($_GET['project']) ? $_GET['project'] : $project_name;
 }
 $client_id = null;
 if (isset($client) && isset($client['id'])) {
@@ -35,8 +35,8 @@ if (isset($_GET['client'])) {
           <a class="btn btn-outline-success text-white" href="/"><?= lang('projects') ?></a>
         </li>
         <?php
-        if (isset($project) && $project != '' && $project != 'All') {
-          echo " <li class='nav-item me-2'><a class='btn btn-outline-warning project' href='/production/checklists?client=$client_id&project=$project'>$project </a></li>";
+        if (isset($project_name) && $project_name != '' && $project_name != 'All') {
+          echo " <li class='nav-item me-2'><a class='btn btn-outline-warning project' href='/production/checklists?client=$client_id&project=$project_name'>$project_name </a></li>";
         } ?>
         <li class="nav-item">
           <a id="nav_main_category" class="btn btn-outline-warning" href="/" hidden></a>
@@ -50,10 +50,10 @@ if (isset($_GET['client'])) {
               <?= lang('forms') ?>
             </a>
             <div class="dropdown-menu p-2" aria-labelledby="navbarDropdownForms">
-              <?php if (isset($project) && $project != '' && $project != 'All') { ?>
-                <b class="ml-2"><?= $project ?></b><br>
-                <a class="nav-item btn btn-outline-warning text-black" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project ?>">RMA</a>
-                <a class="nav-item btn btn-outline-danger text-black" href="/forms?type=qc&client=<?= $client_id . "&project=" . $project ?>">QC</a>
+              <?php if (isset($project_name) && $project_name != '' && $project_name != 'All') { ?>
+                <b class="ml-2"><?= $project_name ?></b><br>
+                <a class="nav-item btn btn-outline-warning text-black" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project_name ?>">RMA</a>
+                <a class="nav-item btn btn-outline-danger text-black" href="/forms?type=qc&client=<?= $client_id . "&project=" . $project_name ?>">QC</a>
               <?php } ?>
               <hr>
               <b class="ml-2">All</b><br>
@@ -66,8 +66,8 @@ if (isset($_GET['client'])) {
 
         <?php if ($role == 'Assembler') { ?>
           <div class="nav me-md-auto">
-            <?php if (isset($project) && $project != '') { ?>
-              <a class="nav-item btn btn-outline-warning text-white" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project ?>">RMA</a>
+            <?php if (isset($project_name) && $project_name != '') { ?>
+              <a class="nav-item btn btn-outline-warning text-white" href="/forms?type=rma&client=<?= $client_id . "&project=" . $project_name ?>">RMA</a>
             <?php } ?>
           </div>
         <?php } ?>

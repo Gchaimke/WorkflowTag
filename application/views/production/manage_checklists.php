@@ -1,21 +1,25 @@
 <?php
-$project =  urldecode($_GET['project']);
+$project_name =  urldecode($_GET['project']);
 $client['name'] = is_array($client) ? $client['name'] : "error";
-$file = "./Uploads/" . urldecode($client['name']) . "/" . $project . "/assembly.pdf";
-if (file_exists($file)) {
-	$assembly = true;
+$file = "./Uploads/" . urldecode($client['name']) . "/" . $project_name . "/assembly.pdf";
+$dispaly_file = "hidden";
+$dispaly_link = "hidden";
+if ($project['assembly']) {
+	$dispaly_link = "d-none d-xl-inline";
 } else {
-	$assembly = false;
+	if (file_exists($file)) {
+		$dispaly_file = "d-none d-xl-inline";
+	} else {
+	}
 }
 ?>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
 			<center>
-				<h2 class="display-3"><?= $project ?></h2>
-				<?php if ($assembly) { ?>
-					<a class="btn btn-warning d-none d-xl-inline" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-				<?php }; ?>
+				<h2 class="display-3"><?= $project_name ?></h2>
+				<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 			</center>
 		</div>
 	</div>
@@ -90,7 +94,7 @@ if (file_exists($file)) {
 											<?= $data->progress ?>%</div>
 									</td>
 									<td><a id='edit_checklist' target="_blank" href='/production/edit_checklist/<?= $data->id ?>' class='btn btn-info'><i class="fa fa-edit"></i></a></td>
-									<td><button id='<?= $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project ?>","<?= $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
+									<td><button id='<?= $data->id ?>' class='btn btn-danger' onclick='trashChecklist(this.id,"<?= $project_name ?>","<?= $data->serial; ?>")'><i class="fa fa-trash"></i></button></td>
 								</tr>
 						<?php }
 						} ?>
@@ -122,7 +126,7 @@ if (file_exists($file)) {
 							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 							<input type='hidden' name='client_id' value='<?= $client['id'] ?>'>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-							<input type='hidden' name='project' value='<?= $project ?>'>
+							<input type='hidden' name='project' value='<?= $project_name ?>'>
 							<div class="form-group">
 								<input class="form-control col-md-3" type='text' name='paka' placeholder="Work Order">
 							</div></br>
@@ -153,7 +157,7 @@ if (file_exists($file)) {
 							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
 							<input type='hidden' name='client_id' value='<?= $client['id'] ?>'>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
-							<input type='hidden' name='project' value='<?= $project ?>'>
+							<input type='hidden' name='project' value='<?= $project_name ?>'>
 							<div class="form-group">
 								<input class="form-control col-md-3" type='text' name='paka' placeholder="Work Order">
 							</div></br>

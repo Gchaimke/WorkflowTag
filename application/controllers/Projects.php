@@ -70,7 +70,7 @@ class Projects extends CI_Controller
     public function edit_project($id = '')
     {
         $data = array();
-        $data['project'] =  $this->Projects_model->getProject($id);
+        // $data['project'] =  $this->Projects_model->getProject($id);
         // Check validation for user input in form
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
@@ -82,6 +82,7 @@ class Projects extends CI_Controller
                 'checklist_version' => $this->input->post('checklist_version'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),
+                'assembly'=> $this->input->post('assembly'),
                 'scans' => $this->input->post('scans')
             );
             if ($this->input->post('checklist_version') != "") {

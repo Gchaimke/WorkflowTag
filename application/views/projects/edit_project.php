@@ -5,11 +5,17 @@ if (isset($this->session->userdata['logged_in'])) {
 	}
 }
 $file = "./Uploads/" . urldecode($project['client']) . "/" . $project['project'] . "/assembly.pdf";
-if (file_exists($file)) {
-	$dispaly = "";
+$dispaly_file = "hidden";
+$dispaly_link = "hidden";
+if ($project['assembly']) {
+	$dispaly_link = "";
 } else {
-	$dispaly = "hidden";
+	if (file_exists($file)) {
+		$dispaly_file = "";
+	} else {
+	}
 }
+
 ?>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.iframe-transport.js'); ?>"></script>
@@ -35,8 +41,16 @@ if (file_exists($file)) {
 
 			if (isset($project)) {	?>
 				<?php echo form_open("projects/edit_project/{$project['id']}", 'class=user-create'); ?>
+
+				<div class="input-group my-3">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><?= lang('project_num') ?></div>
+					</div>
+					<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+				</div>
 				<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 				<div class="row">
+
 					<div class="col-md my-3">
 						<div class="input-group">
 							<div class="input-group-prepend">
@@ -59,13 +73,14 @@ if (file_exists($file)) {
 				<div class="row">
 					<div class="input-group col-md my-3">
 						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('project_num') ?></div>
+							<div class="input-group-text"><?= lang('assembly') ?> URL</div>
 						</div>
-						<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+						<input type="text" class="form-control" name='assembly' value="<?= $project['assembly'] ?>">
 					</div>
 					<div class="input-group col-md my-3">
 						<div class="btn btn-info not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
-						<a class="btn btn-warning mx-3  <?= $dispaly ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+						<a class="btn btn-warning mx-3  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+						<a class="btn btn-warning mx-3  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 						<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
 					</div>
 				</div>
