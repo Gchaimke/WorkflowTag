@@ -82,7 +82,7 @@ class Projects extends CI_Controller
                 'checklist_version' => $this->input->post('checklist_version'),
                 'template' => $this->input->post('template'),
                 'restart_serial' => $this->input->post('restart_serial'),
-                'assembly'=> $this->input->post('assembly'),
+                'assembly' => $this->input->post('assembly'),
                 'scans' => $this->input->post('scans')
             );
             if ($this->input->post('checklist_version') != "") {
@@ -195,4 +195,5 @@ class Projects extends CI_Controller
             echo $error;
         }
     }
+
 }

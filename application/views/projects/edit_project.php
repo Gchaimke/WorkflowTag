@@ -81,6 +81,7 @@ if ($project['assembly']) {
 						<div class="btn btn-info not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
 						<a class="btn btn-warning mx-3  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 						<a class="btn btn-warning mx-3  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+						<span id='assembly_file' data-file='<?= $file ?>' onclick='delFile(this.id)' class='btn btn-danger <?= $dispaly_file ?>'>delete assembly</span></td>
 						<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
 					</div>
 				</div>
