@@ -39,21 +39,15 @@ class Projects extends CI_Controller
 
         // Check validation for user input in SignUp form
         $this->form_validation->set_rules('project', 'Project', 'trim|required|xss_clean|is_unique[projects.project]');
-        $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
-        $this->form_validation->set_rules('data', 'Data', 'trim|xss_clean');
-        $this->form_validation->set_rules('template', 'Template', 'trim|xss_clean');
-        $this->form_validation->set_rules('scans', 'Scans', 'trim|xss_clean');
         if ($this->form_validation->run()) {
             $data['client'] = $this->Clients_model->get_client_by_id($id);
-            $sql = array(
-                'client' => $data['client']['name'],
-                'project' => $this->input->post('project'),
-                'project_num' => $this->input->post('project_num'),
-                'data' => $this->input->post('data'),
-                'template' => $this->input->post('template'),
-                'restart_serial' => $this->input->post('restart_serial'),
-                'scans' => $this->input->post('scans')
-            );
+
+            $sql = $this->input->post();
+            $sql['client'] = $data['client']['name'];
+            unset($sql['data']);
+            unset($sql['files']);
+            unset($sql['submit']);
+
             $result = $this->Projects_model->addProjects($sql);
             if ($result) {
                 $this->create_checklist_version($sql['client'], $sql['project']);
@@ -75,16 +69,12 @@ class Projects extends CI_Controller
         $this->form_validation->set_rules('project', 'Project', 'trim|xss_clean');
         $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
         if ($id != '' && $this->form_validation->run()) {
-            $sql = array(
-                'id' => $id,
-                'data' => $this->input->post('data'),
-                'project_num' => $this->input->post('project_num'),
-                'checklist_version' => $this->input->post('checklist_version'),
-                'template' => $this->input->post('template'),
-                'restart_serial' => $this->input->post('restart_serial'),
-                'assembly' => $this->input->post('assembly'),
-                'scans' => $this->input->post('scans')
-            );
+            $sql = $this->input->post();
+            $sql['id'] = $id;
+            unset($sql['data']);
+            unset($sql['files']);
+            unset($sql['submit']);
+
             if ($this->input->post('checklist_version') != "") {
                 file_put_contents($this->input->post('checklist_version'), $this->input->post('data'));
             }
@@ -195,5 +185,4 @@ class Projects extends CI_Controller
             echo $error;
         }
     }
-
 }

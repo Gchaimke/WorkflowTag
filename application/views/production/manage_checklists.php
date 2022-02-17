@@ -18,8 +18,8 @@ if ($project['assembly']) {
 		<div class="container">
 			<center>
 				<h2 class="display-3"><?= $project_name ?></h2>
-				<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-				<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
+				<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> <?= $project['assembly_name'] ?> </a>
+				<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> <?= $project['assembly_name'] ?> </a>
 			</center>
 		</div>
 	</div>
@@ -31,6 +31,7 @@ if ($project['assembly']) {
 				echo $message_display . '</div>';
 			}
 			?>
+
 			<nav class="pagination-nav" aria-label="Checklist navigation">
 				<ul class="pagination-nav-menu">
 					<a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#add_one"><i class="fas fa-file-alt"></i> <?= lang('new') ?></a>

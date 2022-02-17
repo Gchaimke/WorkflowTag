@@ -70,12 +70,18 @@ if ($project['assembly']) {
 						</div>
 					</div>
 				</div>
+				<div class="input-group col-md my-3">
+					<div class="input-group-prepend">
+						<div class="input-group-text"><?= lang('assembly') ?> URL</div>
+					</div>
+					<input type="text" class="form-control" name='assembly' value="<?= $project['assembly'] ?>">
+				</div>
 				<div class="row">
 					<div class="input-group col-md my-3">
 						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('assembly') ?> URL</div>
+							<div class="input-group-text"><?= lang('assembly') ?> <?= lang('name') ?></div>
 						</div>
-						<input type="text" class="form-control" name='assembly' value="<?= $project['assembly'] ?>">
+						<input type="text" class="form-control" name='assembly_name' value="<?= $project['assembly_name'] ?>">
 					</div>
 					<div class="input-group col-md my-3">
 						<div class="btn btn-info not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
