@@ -146,7 +146,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				var photoCount=0;
 				var log ='$log';
 				var id='$id';
-				var project='$project';
+				var project='$project_name';
 				var serial='$serial';
 				var assembler ='$username';
 				var client='$client_name';
