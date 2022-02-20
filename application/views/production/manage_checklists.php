@@ -124,7 +124,7 @@ if ($project['assembly']) {
 				<div class="modal-body">
 					<center>
 						<form id="add_checklist" action="production/add_checklist" class="my-4">
-							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project_name); ?></h5>
 							<input type='hidden' name='client_id' value='<?= $client['id'] ?>'>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 							<input type='hidden' name='project' value='<?= $project_name ?>'>
@@ -155,7 +155,7 @@ if ($project['assembly']) {
 				<div class="modal-body">
 					<center>
 						<form id="add_batch" action="/production/gen_checklists" class="my-4">
-							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project); ?></h5>
+							<h5 style="color: red;"><?= sprintf(lang('batch_msg'), $project_name); ?></h5>
 							<input type='hidden' name='client_id' value='<?= $client['id'] ?>'>
 							<input type='hidden' name='client' value='<?= $client['name'] ?>'>
 							<input type='hidden' name='project' value='<?= $project_name ?>'>
