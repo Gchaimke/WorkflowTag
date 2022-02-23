@@ -1,6 +1,8 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
-	if ($this->session->userdata['logged_in']['role'] != "Admin") {
+	$editors = array("Admin", "Engineer");
+	$user_role = $this->session->userdata['logged_in']['role'];
+	if (!in_array($user_role, $editors)) {
 		header("location: /");
 	}
 }

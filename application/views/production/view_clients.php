@@ -1,5 +1,6 @@
 <?php
 if (isset($this->session->userdata['logged_in'])) {
+	$editors = array("Admin", "Engineer");
 	$user_role = $this->session->userdata['logged_in']['role'];
 }
 ?>
@@ -39,8 +40,10 @@ if (isset($this->session->userdata['logged_in'])) {
 													echo " ({$project['project_num']})";
 												} ?>
 											</a>
-											<?php if ($user_role == "Admin") : ?>
+											<?php if (in_array($user_role, $editors)) : ?>
 												<a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary mb-2 mx-1'><i class='fa fa-edit'></i></a>
+											<?php endif ?>
+											<?php if ($user_role != "Assembler") : ?>
 												<span class="btn btn-outline-primary mb-2 csv_btn" data-bs-toggle="modal" data-bs-target="#csv_month_selector" data-project-name="<?= $project['project'] ?>"><i class="bi bi-file-earmark-spreadsheet"></i></span>
 											<?php endif ?>
 										</div>
