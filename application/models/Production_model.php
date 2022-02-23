@@ -140,6 +140,21 @@ class Production_model extends CI_Model
 		return $response;
 	}
 
+	function getChecklists_by_project($project = '')
+	{
+		if ($this->db->table_exists('checklists')) {
+			// Select record
+			$this->db->select('*');
+			$this->db->from('checklists');
+			if ($project != '') {
+				$project = urldecode($project);
+				$this->db->where("project ='$project'");
+			}
+			$result = $this->db->get()->result();
+			return $result;
+		}
+	}
+
 	public function editChecklist($data)
 	{
 		$where = "id =" . $data['id'];

@@ -24,7 +24,7 @@ if (isset($this->session->userdata['logged_in'])) {
             ?>
             <nav class="pagination-nav" aria-label="Checklist navigation">
                 <ul class="pagination-nav-menu">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#csv_month_selector"><i class="fas fa-file-alt"></i></button>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#csv_month_selector"><i class="bi bi-file-earmark-spreadsheet"></i></button>
                 </ul>
                 <?php if (isset($links)) {
                     echo $links;
@@ -93,7 +93,7 @@ if (isset($this->session->userdata['logged_in'])) {
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary export_csv" data-bs-dismiss="modal">Send message</button>
+                    <button type="button" class="btn btn-primary export_csv" data-bs-dismiss="modal">Get CSV</button>
                 </div>
             </div>
         </div>
@@ -112,6 +112,6 @@ if (isset($this->session->userdata['logged_in'])) {
     }
     $('.export_csv').on('click', function() {
         let month = $('#csv-month').val();
-        window.location.replace("/production/export_csv/" + month);
+        window.location.replace("/production/export_notes_to_csv/" + month);
     })
 </script>

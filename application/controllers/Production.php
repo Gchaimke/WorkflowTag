@@ -800,41 +800,67 @@ class Production extends CI_Controller
         }
     }
 
-    public function export_csv($month = 1)
+    public function export_checklists_to_csv($month = 1, $project = "Decipher")
     {
-        $file_name = date('d_m_y') . "_notes.csv";
+        $checklists = $this->Production_model->getChecklists_by_project($project);
+        $file_name = date('d_m_y') . "_{$month}_{$project}_checklists.csv";
+        $csv_arr = array(array("date", "serial", "paka", "client", "project", "progress", "assembler", "qc", "scans", "pictures", "note"));
+        foreach ($checklists as $row) {
+            if ($month != 13) {
+                if (intval(date('m', strtotime($row->date))) != intval($month)) continue;
+            }
+            $row_arr = array();
+            foreach ($csv_arr[0] as $value) {
+                array_push($row_arr, $row->$value);
+            }
+            array_push($csv_arr, $row_arr);
+        }
+        // print_r($csv_arr);
+        $this->create_csv($file_name, $csv_arr);
+    }
+
+    public function export_notes_to_csv($month = 1)
+    {
         $notes = $this->Checklists_notes_model->get_all();
         $users = $this->users_names;
         $clients = $this->clients_names;
-        header('Content-Encoding: UTF-8');
-        header("Content-type: text/csv; charset=UTF-8");
-        header("Content-Disposition: attachment; filename=$file_name");
-        header("Pragma: no-cache");
-        header("Expires: 0");
-        $fp = fopen('php://output', 'w');
-        fprintf($fp, "\xEF\xBB\xBF");
-        $tmp_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Fault", "Action", "Assembler", "QC"));
-        foreach ($notes as  $note) {
+        $file_name = date('d_m_y') . "_{$month}_notes.csv";
+        $csv_arr = array(array("Date", "Client", "Project", "Checklist SN", "Row", "Note", "Fault", "Action", "Assembler", "QC"));
+        foreach ($notes as $row) {
             if ($month != 13) {
-                if (intval(date('m', strtotime($note->date))) != intval($month)) continue;
+                if (intval(date('m', strtotime($row->date))) != intval($month)) continue;
             }
-            array_push($tmp_arr, array(
-                $note->date,
-                $clients[$note->client_id],
-                $note->project,
-                $note->checklist_sn,
-                $note->row,
-                $note->note,
-                $note->fault,
-                $note->action,
-                $users[$note->assembler_id],
-                $users[$note->qc_id]
+            array_push($csv_arr, array(
+                $row->date,
+                $clients[$row->client_id],
+                $row->project,
+                $row->checklist_sn,
+                $row->row,
+                $row->note,
+                $row->fault,
+                $row->action,
+                $users[$row->assembler_id],
+                $users[$row->qc_id]
             ));
         }
-        foreach ($tmp_arr as $fields) {
-            fputcsv($fp, $fields);
+        $this->create_csv($file_name, $csv_arr);
+    }
+
+    function create_csv($file_name = "portal_export.csv", $data = null)
+    {
+        if (isset($data)) {
+            header('Content-Encoding: UTF-8');
+            header("Content-type: text/csv; charset=UTF-8");
+            header("Content-Disposition: attachment; filename=$file_name");
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            $fp = fopen('php://output', 'w');
+            fprintf($fp, "\xEF\xBB\xBF");
+            foreach ($data as $fields) {
+                fputcsv($fp, $fields);
+            }
+            fclose($fp);
         }
-        fclose($fp);
     }
 
     public function test()

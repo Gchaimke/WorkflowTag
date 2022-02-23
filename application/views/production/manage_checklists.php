@@ -173,6 +173,7 @@ if ($project['assembly']) {
 			</div>
 		</div>
 	</div>
+
 </main>
 <script>
 	var client = '<?= $client['name'] ?>';
