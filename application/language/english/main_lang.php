@@ -185,5 +185,6 @@ $lang['Serial number restarts every month'] = 'Serial number restarts every mont
  * Projects UI
  */
 $lang['project_num'] = 'Project Number';
+$lang['project'] = 'Project';
 
 

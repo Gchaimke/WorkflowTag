@@ -55,7 +55,7 @@ if (isset($this->session->userdata['logged_in'])) {
 				</div>
 				<input type="text" class="form-control" name='project_num'>
 			</div>
-			<input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
+			<input type='submit' class="btn btn-info btn-block my-3" name='submit' value='<?= lang('add')." ". lang('project')?>'>
 			<?php echo form_close(); ?>
 		</center>
 	</div>

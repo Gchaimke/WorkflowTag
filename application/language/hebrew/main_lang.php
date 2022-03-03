@@ -188,5 +188,6 @@ $lang['Serial number restarts every month'] = 'מספר סריאלי מתחיל 
 /**
  * Projects UI
  */
-$lang['project_num'] = 'Project Number';
+$lang['project_num'] = 'מספר פרואקט';
+$lang['project'] = 'פרואקט';
 

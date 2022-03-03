@@ -51,7 +51,7 @@ if (isset($this->session->userdata['logged_in'])) {
 								<?php endforeach ?>
 						</div>
 						<div class="card-footer text-center">
-							<a class='btn btn-outline-success' href='/projects/add_project/<?= $client['id'] ?>'><?= lang('add') ?>
+							<a class='btn btn-outline-success' href='/projects/add_project/<?= $client['id'] ?>'><?= lang('add')." ". lang('project')?> 
 								<i class='fas fa-file-alt mx-2'></i>
 							</a>
 						<?php else : ?>
