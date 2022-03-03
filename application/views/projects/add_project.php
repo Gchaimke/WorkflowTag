@@ -27,7 +27,6 @@ if (isset($this->session->userdata['logged_in'])) {
 
 			<?php echo form_open('projects/add_project/' . $client['id'], 'class=user-create'); ?>
 			<input type="hidden" name='data' value=''>
-			<input type="hidden" name='restart_serial' value=''>
 			<input type="hidden" name='scans' value=''>
 			<div class="input-group">
 				<div class="input-group-prepend">

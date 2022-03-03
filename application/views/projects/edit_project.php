@@ -65,7 +65,7 @@ if ($project['assembly']) {
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<div class="input-group-text">
-									<input type="checkbox" name="restart_serial" <?= $project['restart_serial'] != null ? "checked" : "" ?>>
+									<input type="checkbox" name="restart_serial" <?= $project['restart_serial'] != 0 ? "checked" : "" ?> value="1">
 									<div class="mx-2"><?= lang('Serial number restarts every month') ?></div>
 								</div>
 							</div>

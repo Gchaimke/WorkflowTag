@@ -64,7 +64,10 @@ if (isset($client)) {
 					</div>
 					<div class="users_check">
 						<?php
-						$user_clients = explode(",", $client['users']);
+						$user_clients = array();
+						if (isset($client['users'])) {
+							$user_clients = explode(",", $client['users']);
+						}
 						foreach ($users as $key => $user) {
 							echo "<div class='form-check'>";
 							if (in_array($user['id'], $user_clients)) {

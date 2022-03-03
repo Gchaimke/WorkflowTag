@@ -22,7 +22,9 @@ if (isset($this->session->userdata['logged_in'])) {
 		}
 		?>
 		<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-			<?php foreach ($clients as $key => $client) : ?>
+			<?php
+			if(!isset($clients)) return;
+			foreach ($clients as $key => $client) : ?>
 				<div class='col my-3'>
 					<div id='client_<?= $client['id'] ?>' class='card h-100'>
 						<div style='background-image:url(<?= $client['logo'] ?>)' class='card-header-bg'></div>

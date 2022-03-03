@@ -63,6 +63,7 @@ class Clients extends CI_Controller
             $data = array(
                 'name' => $this->input->post('name'),
                 'logo' => $logo,
+                'users' => $this->input->post('users')!=""?implode(",", $this->input->post('users')):"",
                 'status' => $this->input->post('status')
             );
             $result = $this->Clients_model->addClient($data);
@@ -72,6 +73,9 @@ class Clients extends CI_Controller
                 $data['message_display'] = ' Client ' . $this->input->post('name') . ' Exists!';
             }
         }
+        $users = $this->Users_model->getUsers();
+        usort($users, "sort_users_by_role");
+        $data['users'] =  $users;
         $this->load->view('header');
         $this->load->view('main_menu');
         $this->load->view('clients/create', $data);

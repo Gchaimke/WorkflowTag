@@ -44,6 +44,7 @@ class Projects extends CI_Controller
 
             $sql = $this->input->post();
             $sql['client'] = $data['client']['name'];
+            $sql['restart_serial'] = isset($sql['restart_serial']) ? 1 : 0;
             unset($sql['data']);
             unset($sql['files']);
             unset($sql['submit']);
@@ -70,6 +71,8 @@ class Projects extends CI_Controller
         $this->form_validation->set_rules('project_num', 'Project Number', 'trim|xss_clean');
         if ($id != '' && $this->form_validation->run()) {
             $sql = $this->input->post();
+            $sql['restart_serial'] = isset($sql['restart_serial']) ? 1 : 0;
+            $sql['id'] = $id;
             $sql['id'] = $id;
             unset($sql['data']);
             unset($sql['files']);

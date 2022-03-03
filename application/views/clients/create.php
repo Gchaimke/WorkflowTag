@@ -46,6 +46,26 @@ if (isset($this->session->userdata['logged_in'])) {
                         </select>
                         <label>Status</label>
                   </div>
+                  <div class="row">
+                        <div><?= lang('users') ?></div>
+                        <div class='form-check text-start'>
+                              <input class='form-check-input' type="checkbox" id="check_all"><label class='form-check-label' for='users'>Select all</label>
+                        </div>
+                        <div class="users_check">
+                              <?php
+                              $user_clients = array();
+                              if (isset($client['users'])) {
+                                    $user_clients = explode(",", $client['users']);
+                              }
+                              foreach ($users as $key => $user) {
+                                    echo "<div class='form-check'>";
+                                    echo "<input class='form-check-input' type='checkbox' name='users[{$user['id']}]' value='{$user['id']}' aria-label='{$user['name']}'>
+						<label class='form-check-label' for='users'>{$user['name']} ({$user['role']})</label>";
+                                    echo "</div>";
+                              }
+                              ?>
+                        </div>
+                  </div>
                   <input type='submit' class="btn btn-info btn-block" name='submit' value='Submit'>
                   <?php echo form_close(); ?>
             </center>
@@ -60,4 +80,7 @@ if (isset($this->session->userdata['logged_in'])) {
             $('#browse').prop('disabled', false);
       }
       var ext = '';
+      $("#check_all").click(function() {
+            $('input:checkbox').not(this).prop('checked', this.checked);
+      });
 </script>

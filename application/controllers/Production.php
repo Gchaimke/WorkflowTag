@@ -50,9 +50,12 @@ class Production extends CI_Controller
     public function index()
     {
         $data = array();
+        $client_users = array();
         $clients = $this->clients;
         foreach ($clients as $client) {
-            $client_users = explode(",", $client['users']);
+            if (isset($client['users'])) {
+                $client_users = explode(",", $client['users']);
+            }
             if (!in_array($this->user['id'], $client_users)) continue;
             $data['clients'][$client["name"]]['projects'] = $this->Projects_model->getProjects($client['name']);
             $data['clients'][$client["name"]]['status'] = $client['status'];
@@ -169,10 +172,14 @@ class Production extends CI_Controller
         $week = date('W', strtotime($date));
         if (isset($serial_project['template']) &&  $serial_project['template'] != "") {
             $serial = $serial_project['template']; //Get serial template
-            $prev_month = substr($last_system['serial'], strpos($serial, 'm'), substr_count($serial, 'm'));
-            $prev_year = date('y', strtotime($last_system['date']));
-            // admin_log("{$year} != {$prev_year}", 1, "Chaim");
-            if (($serial_project["restart_serial"] != null && $prev_month !=  $month) || $year != $prev_year) {
+            if (isset($last_system['serial'])) {
+                $prev_month = substr($last_system['serial'], strpos($serial, 'm'), substr_count($serial, 'm'));
+                $prev_year = date('y', strtotime($last_system['date']));
+
+                if (($serial_project["restart_serial"] != null && $prev_month !=  $month) || $year != $prev_year) {
+                    $last_system['serial'] = "00000000000000000";
+                }
+            }else{
                 $last_system['serial'] = "00000000000000000";
             }
             $serial = str_replace("yy", $year, $serial); //add year
