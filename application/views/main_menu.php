@@ -24,6 +24,9 @@ if (isset($_GET['client'])) {
   <div class="container-fluid">
     <a class="navbar-brand" href="/"><img src="/assets/img/workflow_tag_logo.png" width="40px" class="mx-2"><?= APP_VERSION ?></a>
     <div>
+      <?php if ($role != 'Assembler') { ?>
+        <a class="btn btn-outline-warning text-white" target="_blank" href="/assets/Portal.pdf"><i class="bi bi-info-circle"></i></a>
+      <?php } ?>
       <button class="search btn btn-outline-success me-2 text-white"><i class="search_icon fas fa-search"></i></button>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerMobile" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
