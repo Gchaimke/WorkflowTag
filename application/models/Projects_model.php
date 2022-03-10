@@ -52,6 +52,12 @@ class Projects_model extends CI_Model
 			'assembly_name' => array(
 				'type' => 'VARCHAR',
 				'constraint' => 250
+			),
+			'status' => array(
+				'type' => 'INT',
+				'constraint' => 1,
+				'unsigned' => TRUE,
+				'null' => TRUE,
 			)
 		);
 

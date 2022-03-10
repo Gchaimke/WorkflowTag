@@ -72,6 +72,7 @@ class Projects extends CI_Controller
         if ($id != '' && $this->form_validation->run()) {
             $sql = $this->input->post();
             $sql['restart_serial'] = isset($sql['restart_serial']) ? 1 : 0;
+            $sql['status'] = isset($sql['status']) ? 1 : 0;
             $sql['id'] = $id;
             $sql['id'] = $id;
             unset($sql['data']);

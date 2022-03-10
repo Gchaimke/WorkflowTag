@@ -190,4 +190,5 @@ $lang['Serial number restarts every month'] = 'מספר סריאלי מתחיל 
  */
 $lang['project_num'] = 'מספר פרואקט';
 $lang['project'] = 'פרואקט';
+$lang['Hide in projects'] = 'להסתיר בדף פרואקטים';
 

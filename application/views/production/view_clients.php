@@ -32,6 +32,8 @@ if (isset($this->session->userdata['logged_in'])) {
 							<div class='card-body'>
 								<?php if ($client['status'] == 1) :
 									foreach ($client['projects'] as $project) : ?>
+										<?php if ($project['status'] == 1) continue ?>
+
 										<div class="d-flex">
 											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary flex-fill mb-2'>
 												<?php

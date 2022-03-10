@@ -44,15 +44,28 @@ if ($project['assembly']) {
 			if (isset($project)) {	?>
 				<?php echo form_open("projects/edit_project/{$project['id']}", 'class=user-create'); ?>
 
-				<div class="input-group my-3">
-					<div class="input-group-prepend">
-						<div class="input-group-text"><?= lang('project_num') ?></div>
+				<div class="row">
+					<div class="col-md my-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><?= lang('project_num') ?></div>
+							</div>
+							<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+						</div>
 					</div>
-					<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+					<div class="col-md my-3">
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<div class="input-group-text">
+									<input type="checkbox" name="status" <?= $project['status'] != 0 ? "checked" : "" ?> value="1">
+									<div class="mx-2"><?= lang('Hide in projects') ?></div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<label>yy = Year | mm = Month | dm = D-fend Month | ww = week | x,xx,xxx,xxxx = Serialized number | pattern = AVxxx-mm-yy</label>
 				<div class="row">
-
 					<div class="col-md my-3">
 						<div class="input-group">
 							<div class="input-group-prepend">

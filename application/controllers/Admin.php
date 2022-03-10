@@ -244,14 +244,15 @@ class Admin extends CI_Controller
 	function upgrade_db()
 	{
 		$fields = array(
-			'users' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 500,
+			'status' => array(
+				'type' => 'INT',
+				'constraint' => 1,
+				'unsigned' => TRUE,
 				'null' => TRUE,
 			)
 		);
-		$table_name = 'clients';
-		// echo add_fields_to_table($this, $fields, $table_name) ? "Table: $table_name now up to date!" : "Table: $table_name is up to date!";
+		$table_name = 'projects';
+		echo add_fields_to_table($this, $fields, $table_name) ? "Table: $table_name now up to date!" : "Table: $table_name is up to date!";
 		// echo modify_field_table($this, "projects", "users", "clients") ? "<br>Field now up to date" : "<br>Field is up to date!";
 		// echo remove_field_from_table($this, "clients", "users") ? "<br>Field is removed!" : "<br>Field is not exists!";
 		// echo $this->Admin_model->add_checklist_client_id();
