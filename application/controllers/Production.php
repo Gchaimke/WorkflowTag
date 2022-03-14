@@ -175,11 +175,16 @@ class Production extends CI_Controller
             if (isset($last_system['serial'])) {
                 $prev_month = substr($last_system['serial'], strpos($serial, 'm'), substr_count($serial, 'm'));
                 $prev_year = date('y', strtotime($last_system['date']));
-
-                if (($serial_project["restart_serial"] != null && $prev_month !=  $month) || $year != $prev_year) {
+                // die("month=$prev_month year=$prev_year");
+                if ($prev_month != "" && $serial_project["restart_serial"] > 0) {
+                    if ($prev_month !=  $month) {
+                        $last_system['serial'] = "00000000000000000";
+                    }
+                }
+                if ($year != $prev_year) {
                     $last_system['serial'] = "00000000000000000";
                 }
-            }else{
+            } else {
                 $last_system['serial'] = "00000000000000000";
             }
             $serial = str_replace("yy", $year, $serial); //add year
