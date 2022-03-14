@@ -69,16 +69,16 @@ if (isset($this->session->userdata['logged_in'])) {
 			<?= "<img class='img-thumbnail' src='$logo'>" ?>
 		</div>
 		<div class="checklist-data">
-			<b id="project" class="navbar-text mobile-hide" href="#">Project Name: <?= $project_name ?></b>
+			<b id="project" class="navbar-text mobile-hide" >Project Name: <?= $project_name ?></b>
 			<b id="project_num" class="navbar-text mobile-hide" style="display: none;">PN: <?= $project_num ?></b>
 			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project_name ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
-			<b id="paka" class="navbar-text mobile-hide" href="#">WO: <?= $checklist['paka'] ?></b>
+			<b id="paka" class="navbar-text mobile-hide" style="display: none;">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
-			<b id="date" class="navbar-text mobile-hide" href="#">Date: <?= $date ?></b>
+			<b id="date" class="navbar-text mobile-hide" >Date: <?= $date ?></b>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li class="nav-item">
-				<div class="print-hide">
+				<div class="print-hide mt-1">
 					<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 					<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
 				</div>

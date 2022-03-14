@@ -27,7 +27,7 @@
         flex-basis: 100%;
     }
 
-    #project_assembly, #project_num {
+    #project_assembly, #project_num, #paka {
         display: initial !important;
     }
 
