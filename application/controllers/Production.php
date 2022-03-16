@@ -293,6 +293,16 @@ class Production extends CI_Controller
         return false;
     }
 
+    function change_paka()
+    {
+        $data = array(
+            'id' =>  $this->input->post('id'),
+            'paka' =>  $this->input->post('paka'),
+        );
+        $this->Production_model->editChecklist($data);
+        print_r("Updated, new Work Order is {$data['paka']}");
+    }
+
     private function build_checklist($project, $checklist)
     {
         $prefix_count = 0;

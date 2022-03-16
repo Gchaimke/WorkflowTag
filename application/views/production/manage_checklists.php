@@ -84,7 +84,7 @@ if ($project['assembly']) {
 										} else {
 											echo "SN template not found!";
 										}  ?></td>
-									<td class="mobile-hide"><?= $data->paka ?></td>
+									<td class="mobile-hide paka" data-id="<?= $data->id ?>" data-paka="<?= $data->paka ?>"><?= $data->paka ?></td>
 									<td class="mobile-hide"><?= $data->project ?></td>
 									<td class="mobile-hide"><?= $data->date ?></td>
 									<td><?= $editors ?></td>
@@ -173,7 +173,17 @@ if ($project['assembly']) {
 			</div>
 		</div>
 	</div>
-
+	<!-- Context-menu -->
+	<div class='context-menu'>
+		<button class="btn-close close_paka" aria-label="Close"></button>
+		<form id="edit_paka" class="m-4">
+			<h2></span>&nbsp;<span>Edit WorkOrder</h2>
+			<input id='checklist_paka' type="text" name="paka" value="" maxlength="15">
+			<input id='checklist_prev_paka' type="hidden" value="">
+			<input id='checklist_id' type="hidden" name="id" value="">
+			<input type="submit" class="btn btn-primary" value="<?= lang('update') ?>">
+		</form>
+	</div>
 </main>
 <script>
 	var client = '<?= $client['name'] ?>';
@@ -233,6 +243,7 @@ if ($project['assembly']) {
 	addMany.addEventListener('shown.bs.modal', function() {
 		$('#add_batch').find("input[name=count]").focus();
 	});
+
 	$('#add_batch').submit(function(event) {
 		// Stop the browser from submitting the form.
 		event.preventDefault();
@@ -287,4 +298,56 @@ if ($project['assembly']) {
 			}
 		});
 	})
+
+	//CONTEXTMENU START
+	$(".paka").bind('contextmenu', function(e) {
+		let id = $(this).attr("data-id")
+		let paka = $(this).attr("data-paka")
+
+		$("#checklist_id").val(id);
+		$("#checklist_paka").val(paka);
+		$("#checklist_prev_paka").val(paka);
+
+		var top = e.pageY + 20;
+		var left = e.pageX - 50;
+
+		// Show contextmenu
+		$(".context-menu").toggle(100).css({
+			top: top + "px",
+			left: left + "px"
+		});
+		return false;
+	});
+
+
+
+	$('#edit_paka').submit(function(event) {
+		// Stop the browser from submitting the form.
+		event.preventDefault();
+		paka = $("#checklist_paka").val()
+		prev_paka = $("#checklist_prev_paka").val()
+		let formData = $('#edit_paka').serialize();
+		if (paka != prev_paka) {
+			$.ajax("/production/change_paka", {
+				type: 'POST',
+				data: formData
+			}).done(function(o) {
+				if (o != 1) {
+					alert(o);
+				}
+				location.reload();
+			});
+		} else {
+			alert("Not Changed")
+		}
+		$(".context-menu").hide();
+	});
+
+	$('.close_paka').on("click", function() {
+		$(".context-menu").hide();
+	});
+
+	$('.context-menu').bind('contextmenu', function() {
+		return false;
+	});
 </script>
