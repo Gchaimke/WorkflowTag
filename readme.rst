@@ -22,11 +22,11 @@ For my test server i use Laragon5 with PHP version 7.4 and MariaDB 10
 Installation
 ************
 
-clone repo
-create DB in phpMyadmin
-change file name in folder WorkflowTag/application/config from database_tmp.php to database.php
-set conncetion to db in file database.php
-in first run the app creates tables with user: Admin pass: Admin, for security change this password after login
+1.clone repo
+2.create DB in phpMyadmin
+3.change file name in folder WorkflowTag/application/config from database_tmp.php to database.php
+4.set conncetion to db in file database.php
+5.in first run the app creates tables with user: Admin pass: Admin, for security change this password after login
 *******
 CodeIgniter License
 *******
