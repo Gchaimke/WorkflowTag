@@ -25,22 +25,29 @@ if (isset($this->session->userdata['logged_in'])) {
 				foreach ($clients as $key => $client) : ?>
 					<div class='col my-3'>
 						<div id='<?= $client['id'] ?>' class='card h-100'>
-							<div style='background-image:url(<?= $client['logo'] ?>)' class='card-header-bg'></div>
-							<div class='card-header'>
-								<div class='card-title h5 text-center'><?= $key ?></div>
-							</div>
+							<?php if ($client['logo'] != "") : ?>
+								<div style='background-image:url(<?= $client['logo'] ?>)' class='card-header-bg'></div>
+								<hr>
+							<?php else : ?>
+								<div class='card-header'>
+									<div class='card-title h5 text-center'><?= $key ?></div>
+								</div>
+							<?php endif ?>
 							<div class='card-body'>
 								<?php if ($client['status'] == 1) :
 									foreach ($client['projects'] as $project) : ?>
 										<?php if ($project['status'] == 1) continue ?>
+										<?php if (preg_match("/(ATP)/", $project['project']) && $user_role == "Assembler") continue ?>
 
 										<div class="d-flex">
 											<a href='/production/checklists?client=<?= $client['id'] ?>&project=<?= $project['project'] ?>' class=' btn btn-outline-primary flex-fill mb-2'>
-												<?php
-												echo $project['project'];
-												if ($project['project_num']) {
-													echo " ({$project['project_num']})";
-												} ?>
+												<div class="d-flex project-name">
+													<?php
+													echo "<div>{$project['project']}</div>";
+													if ($project['project_num']) {
+														echo "<div class='mini-text'>PN: {$project['project_num']}</div>";
+													} ?>
+												</div>
 											</a>
 											<?php if (in_array($user_role, $editors)) : ?>
 												<a href='/projects/edit_project/<?= $project['id'] ?>' class='btn btn-outline-primary mb-2 mx-1'><i class='fa fa-edit'></i></a>

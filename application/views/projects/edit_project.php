@@ -50,7 +50,7 @@ if ($project['assembly']) {
 							<div class="input-group-prepend">
 								<div class="input-group-text"><?= lang('project_num') ?></div>
 							</div>
-							<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>">
+							<input type="text" class="form-control" name='project_num' value="<?= $project['project_num'] ?>" placeholder="ZZ0PROJECT">
 						</div>
 					</div>
 					<div class="col-md my-3">
@@ -71,7 +71,7 @@ if ($project['assembly']) {
 							<div class="input-group-prepend">
 								<div class="input-group-text"><?= lang('Serial template') ?></div>
 							</div>
-							<input type="text" name="template" value="<?= $project['template'] ?>" class="form-control">
+							<input type="text" name="template" value="<?= $project['template'] ?>" class="form-control" placeholder="AVD-mm-yy-xxx">
 						</div>
 					</div>
 					<div class="col-md my-3">
@@ -142,13 +142,13 @@ if ($project['assembly']) {
 
 					<label>Checklist Data</label><br>
 					<label>Last column is function mark, columns separated by ';'.
-						<br> Functions: HD = Table Header | QC = QC Select | V = Regular Checkbox | N = Name Selection | I = data input</label>
+						<br> Functions: HD = Table Header | QC = QC Select | N = Name Selection | I = data input</label>
 					<textarea class="form-control data" name='data' rows="10" cols="170"><?= $project['data'] ?></textarea></br>
 				</div>
 				<div class="form-group">
 					<label>Scan Data</label><br>
 					<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header </label>
-					<textarea class="form-control" name='scans' rows="5" cols="170"><?= $project['scans'] ?></textarea></br>
+					<textarea class="form-control" name='scans' rows="5" cols="170" placeholder="PN;SN;HD"><?= $project['scans'] ?></textarea></br>
 				</div>
 				<input type='submit' class="btn btn-info btn-block submit" name='submit' value='Submit'></ <?php echo form_close(); ?> </center>
 			<?php } ?>

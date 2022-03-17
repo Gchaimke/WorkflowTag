@@ -7,6 +7,17 @@ main {
     background-color: #ffe3b8;
 }
 
+.mini-text {
+    font-size: 12px;
+    color: #484848;
+}
+
+.project-name {
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
 a.navbar-brand {
     font-size: 1rem;
 }

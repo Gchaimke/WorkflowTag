@@ -35,19 +35,19 @@ if (isset($this->session->userdata['logged_in'])) {
         <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <?= lang('users') ?>
-                <span class="badge badge-primary badge-pill"><?php echo $users_count ?></span>
+                <span><?php echo $users_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <?= lang('companies') ?>
-                <span class="badge badge-primary badge-pill"><?php echo $clients_count ?></span>
+                <span><?php echo $clients_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
-                <?= lang('forms') ?> ( You saved minimum <?php echo $checklists_count ?> pages! )
-                <span class="badge badge-primary badge-pill"><?php echo $checklists_count ?></span>
+                <?= lang('forms') ?><div>You saved minimum <b style="color: green;"><?php echo $checklists_count ?></b> pages!</div>
+                <span><?php echo $checklists_count ?></span>
             </li>
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 RMA Forms
-                <span class="badge badge-primary badge-pill"><?php echo $rma_forms_count ?></span>
+                <span><?php echo $rma_forms_count ?></span>
             </li>
         </ul><br>
         <div id="form-messages" class='alert hidden' role='alert'></div>
