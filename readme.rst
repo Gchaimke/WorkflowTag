@@ -16,7 +16,7 @@ This repo contains in-development code for future releases.
 Server Requirements
 *******************
 
-For my test server i use Laragon with PHP version 7.4 and MariaDB 10
+For my test server i use Laragon5 with PHP version 7.4 and MariaDB 10
 
 ************
 Installation
