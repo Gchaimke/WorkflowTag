@@ -27,6 +27,7 @@ Installation
 3. change file name in folder WorkflowTag/application/config from database_tmp.php to database.php
 4. set conncetion to db in file database.php
 5. in first run the app creates tables with user: Admin pass: Admin, for security change this password after login
+
 *******
 CodeIgniter License
 *******
