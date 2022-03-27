@@ -72,7 +72,7 @@ if (isset($this->session->userdata['logged_in'])) {
 		<div class="checklist-data">
 			<b id="project" class="navbar-text mobile-hide">Project Name: <?= $project_name ?></b>
 			<b id="project_num" class="navbar-text mobile-hide" style="display: none;">PN: <?= $project_num ?></b>
-			<b id="project_assembly" class="navbar-text" style="display: none;">Assembly: <?= $project_name ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
+			<b id="project_assembly" class="navbar-text" style="display: none;">DOC: <?= $project_name ?>_<?= $project_num ?>_REV_<?= $revision ?>.pdf</b>
 			<b id="paka" class="navbar-text mobile-hide" style="display: none;">WO: <?= $checklist['paka'] ?></b>
 			<b id="sn" class="navbar-text" href="#">SN: <?= $serial ?></b>
 			<b id="date" class="navbar-text mobile-hide">Date: <?= $date ?></b>
