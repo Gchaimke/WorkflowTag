@@ -2,7 +2,7 @@
 What is WorkflowTag
 ###################
 
-WorkflowTag is an Application Development with CodeIgniter Framework - a toolkit - for people
+WorkflowTag is an Application Development with CodeIgniter Framework - for people
 who need checklists to workflow. Its goal is to enable you to workflow projects
 much faster than you could if you were writing checklists from scratch on paper.
 
