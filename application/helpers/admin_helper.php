@@ -152,14 +152,17 @@ function create_new_tables($controller)
 
 function add_fields_to_table($controller, $fields, $table_name)
 {
-	$first_field_name = array_key_first($fields);
-	if (!$controller->db->field_exists($first_field_name, $table_name)) {
-		$controller->load->dbforge();
-		$controller->dbforge->add_column($table_name, $fields);
-		return true;
-	} else {
+	if (!$controller->db->table_exists($table_name)) {
 		return false;
 	}
+	$controller->load->dbforge();
+	// $first_field_name = array_key_first($fields);
+	foreach ($fields as $name => $value) {
+		if (!$controller->db->field_exists($name, $table_name)) {
+			$controller->dbforge->add_column($table_name, array($name => $value));
+		}
+	}
+	return true;
 }
 
 function modify_field_table($controller, $old_field_name, $new_field_name, $table_name)
