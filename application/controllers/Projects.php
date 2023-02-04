@@ -4,6 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Projects extends CI_Controller
 {
     private $user;
+    public $project_files = array(
+        'assembly' => 'primary',
+        'atp' => 'warning',
+        'packing' => 'info'
+    );
     public function __construct()
     {
         parent::__construct();
@@ -168,9 +173,10 @@ class Projects extends CI_Controller
         }
     }
 
-    public function assembly_upload()
+    public function file_upload()
     {
         $upload_folder = "Uploads/{$_GET['client']}/{$_GET['project']}/";
+        $file_name = $_GET['file'];
         if (!file_exists($upload_folder)) {
             mkdir($upload_folder, 0770, true);
         }
@@ -178,7 +184,7 @@ class Projects extends CI_Controller
             'upload_path' => $upload_folder,
             'overwrite' => TRUE,
             'allowed_types' => 'pdf',
-            'file_name' => 'assembly',
+            'file_name' => $file_name,
         );
         $this->load->library('upload', $config);
         if ($this->upload->do_upload('files')) {

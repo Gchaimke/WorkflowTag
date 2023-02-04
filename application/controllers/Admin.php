@@ -243,14 +243,7 @@ class Admin extends CI_Controller
 
 	function upgrade_db()
 	{
-		$fields = array(
-			'status' => array(
-				'type' => 'INT',
-				'constraint' => 1,
-				'unsigned' => TRUE,
-				'null' => TRUE,
-			)
-		);
+		$fields = $this->Projects_model->get_form_fields();
 		$table_name = 'projects';
 		echo add_fields_to_table($this, $fields, $table_name) ? "Table: $table_name now up to date!" : "Table: $table_name is up to date!";
 		// echo modify_field_table($this, "projects", "users", "clients") ? "<br>Field now up to date" : "<br>Field is up to date!";

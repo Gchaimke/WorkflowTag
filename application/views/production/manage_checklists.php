@@ -1,25 +1,30 @@
 <?php
 $project_name =  urldecode($_GET['project']);
 $client['name'] = is_array($client) ? $client['name'] : "error";
-$file = "./Uploads/" . urldecode($client['name']) . "/" . $project_name . "/assembly.pdf";
-$dispaly_file = "hidden";
-$dispaly_link = "hidden";
-if ($project['assembly']) {
-	$dispaly_link = "d-none d-xl-inline";
-} else {
-	if (file_exists($file)) {
-		$dispaly_file = "d-none d-xl-inline";
-	} else {
-	}
-}
+
 ?>
 <main role="main">
 	<div class="jumbotron">
 		<div class="container">
 			<center>
 				<h2 class="display-3"><?= $project_name ?></h2>
-				<a class="btn btn-warning  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> <?= $project['assembly_name'] ?> </a>
-				<a class="btn btn-warning  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> <?= $project['assembly_name'] ?> </a>
+				<?php
+				foreach ($this->project_files as $name => $color) :
+					$file = "./Uploads/" . urldecode($client['name']) . "/" . $project_name . "/$name.pdf";
+					$dispaly_file = "hidden";
+					$dispaly_link = "hidden";
+					if ($project[$name]) {
+						$dispaly_link = "d-none d-xl-inline";
+					} else {
+						if (file_exists($file)) {
+							$dispaly_file = "d-none d-xl-inline";
+						} else {
+						}
+					}
+				?>
+					<a class="btn btn-<?= $color ?> m-2>  <?= $dispaly_link ?>" target="_blank" href="<?= $project[$name] ?>"><i class="fas fa-link"></i> <i class="fas fa-file-pdf"></i> <?= lang($name) ?> <?= $project[$name . '_name'] ?> </a>
+					<a class="btn btn-<?= $color ?>  <?= $dispaly_file ?> m-2" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang($name) ?> <?= $project[$name . '_name'] ?> </a>
+				<?php endforeach ?>
 			</center>
 		</div>
 	</div>

@@ -2,66 +2,82 @@
 
 class Projects_model extends CI_Model
 {
+	private $form = array(
+		'id' => array(
+			'type' => 'INT',
+			'constraint' => 9,
+			'unsigned' => TRUE,
+			'auto_increment' => TRUE
+		),
+		'client' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 60
+		),
+		'project' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 100
+		),
+		'project_num' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 100,
+			'null' => TRUE,
+		),
+		'data' => array(
+			'type' => 'TEXT'
+		),
+		'checklist_version' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 50
+		),
+		'template' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 100,
+		),
+		'scans' => array(
+			'type' => 'TEXT'
+		),
+		'restart_serial' => array(
+			'type' => 'INT',
+			'constraint' => 1,
+			'default' => 0,
+			'null' => TRUE,
+		),
+		'assembly' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 500
+		),
+		'assembly_name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 250
+		),
+		'atp' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 500
+		),
+		'atp_name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 250
+		),
+		'packing' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 500
+		),
+		'packing_name' => array(
+			'type' => 'VARCHAR',
+			'constraint' => 250
+		),
+		'status' => array(
+			'type' => 'INT',
+			'constraint' => 1,
+			'unsigned' => TRUE,
+			'null' => TRUE,
+		)
+	);
+
 	function createDb()
 	{
 		$this->load->dbforge();
-		$project = array(
-			'id' => array(
-				'type' => 'INT',
-				'constraint' => 9,
-				'unsigned' => TRUE,
-				'auto_increment' => TRUE
-			),
-			'client' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 60
-			),
-			'project' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 100
-			),
-			'project_num' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 100,
-				'null' => TRUE,
-			),
-			'data' => array(
-				'type' => 'TEXT'
-			),
-			'checklist_version' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 50
-			),
-			'template' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 100,
-			),
-			'scans' => array(
-				'type' => 'TEXT'
-			),
-			'restart_serial' => array(
-				'type' => 'INT',
-				'constraint' => 1,
-				'default' => 0,
-				'null' => TRUE,
-			),
-			'assembly' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 500
-			),
-			'assembly_name' => array(
-				'type' => 'VARCHAR',
-				'constraint' => 250
-			),
-			'status' => array(
-				'type' => 'INT',
-				'constraint' => 1,
-				'unsigned' => TRUE,
-				'null' => TRUE,
-			)
-		);
-
-		$this->dbforge->add_field($project);
+		$this->dbforge->add_field($this->form);
 		// define primary key
 		$this->dbforge->add_key('id', TRUE);
 		// create table
@@ -81,6 +97,11 @@ class Projects_model extends CI_Model
 			fwrite($assembly, "Assembly;Verify;HD\n verify V\n verify input;I\n verify name select;N\n QC verify;QC\n");
 			fclose($assembly);
 		}
+	}
+
+	function get_form_fields()
+	{
+		return $this->form;
 	}
 
 	//id,client,project,data,template,scans

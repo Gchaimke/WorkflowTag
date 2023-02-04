@@ -65,6 +65,9 @@ $lang['update']        = 'Update';
 $lang['edit']        = 'Edit';
 $lang['delete']        = 'Delete';
 $lang['upload']        = 'Upload';
+$lang['packing']        = 'Packing';
+$lang['atp']        = 'ATP';
+$lang['view']        = 'View';
 $lang['blocked_ip']        = 'Blocked ip';
 $lang['blocked_ip_details']        = 'New line for each ip';
 

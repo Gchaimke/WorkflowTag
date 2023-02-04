@@ -65,6 +65,9 @@ $lang['update']        = 'עדכן';
 $lang['edit']        = 'ערוך';
 $lang['delete']        = 'מחק';
 $lang['upload']        = 'העלה';
+$lang['atp']        = 'ATP';
+$lang['packing']        = 'אריזה';
+$lang['view']        = 'הצג';
 $lang['blocked_ip']        = 'IP שחוסמו';
 $lang['blocked_ip_details']        = 'שורה חדשה לכל IP';
 

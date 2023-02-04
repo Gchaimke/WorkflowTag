@@ -4,6 +4,11 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Production extends CI_Controller
 {
     private $user;
+    public $project_files = array(
+        'assembly' => 'primary',
+        'atp' => 'warning',
+        'packing' => 'info'
+    );
     private $system_models = array(
         'Admin' => 'settings',
         'Clients' => 'clients',

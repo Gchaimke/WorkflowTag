@@ -6,17 +6,6 @@ if (isset($this->session->userdata['logged_in'])) {
 		header("location: /");
 	}
 }
-$file = "./Uploads/" . urldecode($project['client']) . "/" . $project['project'] . "/assembly.pdf";
-$dispaly_file = "hidden";
-$dispaly_link = "hidden";
-if ($project['assembly']) {
-	$dispaly_link = "";
-} else {
-	if (file_exists($file)) {
-		$dispaly_file = "";
-	} else {
-	}
-}
 
 ?>
 <script src="<?php echo base_url('assets/js/jQUpload/jquery.ui.widget.js'); ?>"></script>
@@ -85,70 +74,98 @@ if ($project['assembly']) {
 						</div>
 					</div>
 				</div>
-				<div class="input-group col-md my-3">
-					<div class="input-group-prepend">
-						<div class="input-group-text"><?= lang('assembly') ?> URL</div>
-					</div>
-					<input type="text" class="form-control" name='assembly' value="<?= $project['assembly'] ?>">
-				</div>
-				<div class="row">
-					<div class="input-group col-md my-3">
-						<div class="input-group-prepend">
-							<div class="input-group-text"><?= lang('assembly') ?> <?= lang('name') ?></div>
-						</div>
-						<input type="text" class="form-control" name='assembly_name' value="<?= $project['assembly_name'] ?>">
-					</div>
-					<div class="input-group col-md my-3">
-						<div class="btn btn-info not-print" onclick="document.getElementById('upload').click();"><i class="fa fa-file"></i> Upload Assembly</div>
-						<a class="btn btn-warning mx-3  <?= $dispaly_link ?>" target="_blank" href="<?= $project['assembly'] ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-						<a class="btn btn-warning mx-3  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang('assembly') ?> </a>
-						<span id='assembly_file' data-file='<?= $file ?>' onclick='delFile(this.id)' class='btn btn-danger <?= $dispaly_file ?>'>delete assembly</span></td>
-						<input id="upload" type="file" name="files" data-url="/projects/assembly_upload?client=<?= $project['client'] ?>&project=<?= $project['project'] ?>" hidden />
-					</div>
-				</div>
-				<div class="row my-3">
-					<div class="form-group col-md">
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><?= lang('checklist_version') ?></div>
+				<!-- Project Files Section -->
+				<?php
+				foreach ($this->project_files as $name => $color) {
+					$file = "./Uploads/" . urldecode($project['client']) . "/" . $project['project'] . "/" . $name . ".pdf";
+					$dispaly_file = "hidden";
+					$dispaly_link = "hidden";
+					if ($project[$name]) {
+						$dispaly_link = "";
+					} else {
+						if (file_exists($file)) {
+							$dispaly_file = "";
+						} else {
+						}
+					}
+				?>
+					<!-- <?= $name ?> -->
+					<div class="card text-white bg-<?= $color ?> mb-3">
+						<h5 class="card-header"><?= lang($name) ?></h5>
+						<div class="card-body">
+							<div class="input-group col-md my-3">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><?= lang($name) ?> URL</div>
+								</div>
+								<input type="text" class="form-control" name='<?= $name ?>' value="<?= $project[$name] ?>">
 							</div>
-							<select class="form-select col-4 checklist_version" name='checklist_version'>
-								<option value="">Select Version</option>
-								<?php if (isset($checklists)) {
-									foreach ($checklists as $checklist) {
-										if ($project['checklist_version'] == $checklist) {
-											echo "<option selected>$checklist</option>";
-										} else {
-											echo "<option>$checklist</option>";
+							<div class="row">
+								<div class="input-group col-md my-3">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><?= lang($name) ?> <?= lang('name') ?></div>
+									</div>
+									<input type="text" class="form-control" name='<?= $name ?>_name' value="<?= $project[$name . '_name'] ?>">
+								</div>
+								<div class="input-group col-md my-3">
+									<div class="btn btn-success not-print" onclick="document.getElementById('<?= $name ?>_upload').click();"><i class="fa fa-file"></i> <?= lang('upload') ?> <?= lang($name) ?></div>
+									<a class="btn btn-secondary mx-3  <?= $dispaly_link ?>" target="_blank" href="<?= $project[$name] ?>"><i class="fas fa-file-pdf"></i> <?= lang('view') ?> <?= lang($name) ?> </a>
+									<a class="btn btn-secondary mx-3  <?= $dispaly_file ?>" target="_blank" href="/<?= $file ?>"><i class="fas fa-file-pdf"></i> <?= lang($name) ?> </a>
+									<span id='<?= $name ?>_file' data-file='<?= $file ?>' onclick='delFile(this.id)' class='btn btn-danger <?= $dispaly_file ?>'><?= lang('delete') ?> <?= lang($name) ?></span></td>
+									<input id="<?= $name ?>_upload" type="file" name="files" data-url="/projects/file_upload?client=<?= $project['client'] ?>&file=<?= $name ?>&project=<?= $project['project'] ?>" hidden />
+								</div>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				<!-- Checklist Section -->
+				<div class="card mb-3">
+					<h5 class="card-header">Checklist</h5>
+					<div class="card-body">
+						<div class="row my-3">
+							<div class="form-group col-md">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><?= lang('checklist_version') ?></div>
+									</div>
+									<select class="form-select col-4 checklist_version" name='checklist_version'>
+										<option value="">Select Version</option>
+										<?php if (isset($checklists)) {
+											foreach ($checklists as $checklist) {
+												if ($project['checklist_version'] == $checklist) {
+													echo "<option selected>$checklist</option>";
+												} else {
+													echo "<option>$checklist</option>";
+												}
+											}
 										}
-									}
-								}
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="form-group col-md">
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text">Create new <?= lang('checklist_version') ?></div>
+										?>
+									</select>
+								</div>
 							</div>
-							<input class="form-control col-3 new_version" type="number">
-							<div class="btn btn-outline-success create_checklist_version">Create</div>
+							<div class="form-group col-md">
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<div class="input-group-text">Create new <?= lang('checklist_version') ?></div>
+									</div>
+									<input class="form-control col-3 new_version" type="number">
+									<div class="btn btn-outline-success create_checklist_version">Create</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="form-group">
+
+							<label>Checklist Data</label><br>
+							<label>Last column is function mark, columns separated by ';'.
+								<br> Functions: HD = Table Header | QC = QC Select | N = Name Selection | I = data input</label>
+							<textarea class="form-control data" name='data' rows="10" cols="170"><?= $project['data'] ?></textarea></br>
+						</div>
+						<div class="form-group">
+							<label>Scan Data</label><br>
+							<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header </label>
+							<textarea class="form-control" name='scans' rows="5" cols="170" placeholder="PN;SN;HD"><?= $project['scans'] ?></textarea></br>
 						</div>
 					</div>
-
-				</div>
-				<div class="form-group">
-
-					<label>Checklist Data</label><br>
-					<label>Last column is function mark, columns separated by ';'.
-						<br> Functions: HD = Table Header | QC = QC Select | N = Name Selection | I = data input</label>
-					<textarea class="form-control data" name='data' rows="10" cols="170"><?= $project['data'] ?></textarea></br>
-				</div>
-				<div class="form-group">
-					<label>Scan Data</label><br>
-					<label>Last column is function mark, columns separated by ';'. Functions: HD = Table Header </label>
-					<textarea class="form-control" name='scans' rows="5" cols="170" placeholder="PN;SN;HD"><?= $project['scans'] ?></textarea></br>
 				</div>
 				<input type='submit' class="btn btn-info btn-block submit" name='submit' value='Submit'></ <?php echo form_close(); ?> </center>
 			<?php } ?>
@@ -177,9 +194,55 @@ if ($project['assembly']) {
 		});
 	});
 
-	//Uploader for assembly
-	if ($("#upload").length) {
-		$("#upload").fileupload({
+	//Uploader assembly
+	if ($("#assembly_upload").length) {
+		$("#assembly_upload").fileupload({
+			autoUpload: true,
+			add: function(e, data) {
+				data.submit();
+			},
+			progress: function() {
+				$("#upload_spinner").css("display", "inherit");
+			},
+			done: function(e, data) {
+				if (data.result.includes("error")) {
+					if (data.result.includes("filetype")) {
+						alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג PDF!");
+					} else {
+						alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+					}
+				}
+				$('.submit').click();
+			}
+		});
+	}
+
+	//Uploader atp
+	if ($("#atp_upload").length) {
+		$("#atp_upload").fileupload({
+			autoUpload: true,
+			add: function(e, data) {
+				data.submit();
+			},
+			progress: function() {
+				$("#upload_spinner").css("display", "inherit");
+			},
+			done: function(e, data) {
+				if (data.result.includes("error")) {
+					if (data.result.includes("filetype")) {
+						alert("אין אפשרות להעלות קובץ מסוג הזה, אפשר רק קבצי מסוג PDF!");
+					} else {
+						alert(data.result.replace(/<\/?[^>]+(>|$)/g, ""));
+					}
+				}
+				$('.submit').click();
+			}
+		});
+	}
+
+	//Uploader packing
+	if ($("#packing_upload").length) {
+		$("#packing_upload").fileupload({
 			autoUpload: true,
 			add: function(e, data) {
 				data.submit();
