@@ -169,7 +169,7 @@ class Production extends CI_Controller
     {
         $serials = array();
         $dfend_month = array('01' => '1', '02' => '2', '03' => '3', '04' => '4', '05' => '5', '06' => '6', '07' => '7', '08' => '8', '09' => '9', '10' => 'A', '11' => 'B', '12' => 'C');
-        $xcount_arr = array("xxxx", "xxx", "xx");
+        $xcount_arr = array("xxxxx", "xxxx", "xxx", "xx");
         $serial_project = $this->Projects_model->getProject('', $project);
         $last_system = $this->Production_model->getLastChecklist($project);
         $month = date('m', strtotime($date));
@@ -209,13 +209,29 @@ class Production extends CI_Controller
 
     private function zero_count($x, $num)
     {
+        if ($x == 5) {
+            if ($num < 10) {
+                return "0000" . $num;
+            } else if ($num < 100) {
+                return "000" . $num;
+            } else if ($num < 1000) {
+                return "00" . $num;
+            } else if ($num < 10000) {
+                return "0" . $num;
+            } else {
+                return $num;
+            }
+        }
+
         if ($x == 4) {
             if ($num < 10) {
                 return "000" . $num;
             } else if ($num < 100) {
                 return "00" . $num;
-            } else {
+            } else if ($num < 1000) {
                 return "0" . $num;
+            } else {
+                return $num;
             }
         }
 
